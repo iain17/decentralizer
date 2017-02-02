@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"fmt"
-	"github.com/iain17/dht-hallo/service/restapi/operations"
+	"github.com/iain17/dht-hello/service/restapi/operations"
 )
 
 func StartSearch(params operations.StartSearchParams) middleware.Responder {

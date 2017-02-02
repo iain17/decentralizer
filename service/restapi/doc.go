@@ -1,4 +1,4 @@
-/*Package restapi dht-hallo
+/*Package restapi dht-hello
 
     Schemes:
       http

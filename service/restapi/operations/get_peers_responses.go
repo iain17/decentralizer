@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/iain17/dht-hallo/service/models"
+	"github.com/iain17/dht-hello/service/models"
 )
 
 /*GetPeersInternalServerError unexpected error

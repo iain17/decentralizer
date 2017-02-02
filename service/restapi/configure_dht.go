@@ -8,8 +8,8 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
-	"github.com/iain17/dht-hallo/service/restapi/operations"
-	"github.com/iain17/dht-hallo/api/handlers"
+	"github.com/iain17/dht-hello/service/restapi/operations"
+	"github.com/iain17/dht-hello/api/handlers"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten
