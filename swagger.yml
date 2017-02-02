@@ -1,0 +1,87 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: dht-hallo
+host: 127.0.0.1
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /v1/peers/{identifier}:
+    get:
+      summary: Gets ips that are also looking on this identifier
+      operationId: getPeers
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: The identifier of peers
+          type: string
+      responses:
+        default:
+          description: Expected response to a valid request
+          schema:
+            $ref: '#/definitions/Peers'
+        "500":
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Start the search for this identifier.
+      operationId: startSearch
+      parameters:
+       - name: port
+         in: query
+         type: integer
+         format: int32
+         default: 0
+      responses:
+          default:
+            description: Expected response to a valid request
+          "500":
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+    delete:
+      summary: Stop the search for this identifier.
+      operationId: stopSearch
+      responses:
+          default:
+            description: Expected response to a valid request
+          "500":
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+definitions:
+  Peer:
+    required:
+      - ip
+      - port
+    properties:
+      ip:
+        type: string
+        readOnly: true
+        format: ipv4
+        description: The IP address of a peer
+      port:
+        type: integer
+        readOnly: true
+        description: The port of the peer
+  Peers:
+    type: array
+    items:
+      $ref: '#/definitions/Peer'
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
