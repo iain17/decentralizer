@@ -11,8 +11,10 @@ import (
 func StopSearch(params operations.StopSearchParams) middleware.Responder {
 	err := dht.StopSearch(params.Identifier)
 	if err != nil {
-		return operations.NewGetPeersDefault(int(err.Code())).WithPayload(&models.Error{
+		code := err.Code()
+		return operations.NewGetPeersDefault(int(code)).WithPayload(&models.Error{
 			Message: swag.String(err.Error()),
+			Code: &code,
 		})
 	}
 	return operations.NewStopSearchOK()

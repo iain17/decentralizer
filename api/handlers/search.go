@@ -10,7 +10,7 @@ import (
 )
 
 func StartSearch(params operations.StartSearchParams) middleware.Responder {
-	err := dht.Search(params.Identifier, *params.Port, *params.ImpliedPort)
+	err := dht.NewSearch(params.Identifier, *params.Port, *params.ImpliedPort)
 	if err != nil {
 		logger.Debug(err)
 		return operations.NewStartSearchDefault(500).WithPayload(&models.Error{

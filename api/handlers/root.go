@@ -7,4 +7,5 @@ import (
 
 func init() {
 	logger.SetOutput(os.Stdout)
+	logger.SetLevel(logger.DebugLevel)
 }

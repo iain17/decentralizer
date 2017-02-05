@@ -10,7 +10,7 @@
 		{
 			"name": "start search",
 			"request": {
-				"url": "127.0.0.1:8080/v1/peers/okayThisIsATest?port=865&impliedPort=0",
+				"url": "127.0.0.1:8080/v1/peers/asd123?port=8081",
 				"method": "POST",
 				"header": [
 					{
@@ -30,7 +30,7 @@
 		{
 			"name": "Get search results",
 			"request": {
-				"url": "127.0.0.1:8080/v1/peers/okayThisIsATest",
+				"url": "127.0.0.1:8080/v1/peers/asd123",
 				"method": "GET",
 				"header": [],
 				"body": {},
