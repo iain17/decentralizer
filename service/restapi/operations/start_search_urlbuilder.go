@@ -6,13 +6,17 @@ package operations
 import (
 	"errors"
 	"net/url"
+	"strings"
 
 	"github.com/go-openapi/swag"
 )
 
 // StartSearchURL generates an URL for the start search operation
 type StartSearchURL struct {
-	Port *int32
+	Identifier string
+
+	ImpliedPort *bool
+	Port        *int32
 
 	// avoid unkeyed usage
 	_ struct{}
@@ -24,9 +28,23 @@ func (o *StartSearchURL) Build() (*url.URL, error) {
 
 	var _path = "/v1/peers/{identifier}"
 
+	identifier := o.Identifier
+	if identifier != "" {
+		_path = strings.Replace(_path, "{identifier}", identifier, -1)
+	} else {
+		return nil, errors.New("Identifier is required on StartSearchURL")
+	}
 	result.Path = _path
 
 	qs := make(url.Values)
+
+	var impliedPort string
+	if o.ImpliedPort != nil {
+		impliedPort = swag.FormatBool(*o.ImpliedPort)
+	}
+	if impliedPort != "" {
+		qs.Set("impliedPort", impliedPort)
+	}
 
 	var port string
 	if o.Port != nil {

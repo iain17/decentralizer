@@ -11,49 +11,33 @@ import (
 	"github.com/iain17/dht-hello/service/models"
 )
 
-/*StartSearchInternalServerError unexpected error
+/*StartSearchOK Expected response to a valid request
 
-swagger:response startSearchInternalServerError
+swagger:response startSearchOK
 */
-type StartSearchInternalServerError struct {
-
-	// In: body
-	Payload *models.Error `json:"body,omitempty"`
+type StartSearchOK struct {
 }
 
-// NewStartSearchInternalServerError creates StartSearchInternalServerError with default headers values
-func NewStartSearchInternalServerError() *StartSearchInternalServerError {
-	return &StartSearchInternalServerError{}
-}
-
-// WithPayload adds the payload to the start search internal server error response
-func (o *StartSearchInternalServerError) WithPayload(payload *models.Error) *StartSearchInternalServerError {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the start search internal server error response
-func (o *StartSearchInternalServerError) SetPayload(payload *models.Error) {
-	o.Payload = payload
+// NewStartSearchOK creates StartSearchOK with default headers values
+func NewStartSearchOK() *StartSearchOK {
+	return &StartSearchOK{}
 }
 
 // WriteResponse to the client
-func (o *StartSearchInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *StartSearchOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(500)
-	if o.Payload != nil {
-		if err := producer.Produce(rw, o.Payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
+	rw.WriteHeader(200)
 }
 
-/*StartSearchDefault Expected response to a valid request
+/*StartSearchDefault unexpected error
 
 swagger:response startSearchDefault
 */
 type StartSearchDefault struct {
 	_statusCode int
+
+	// In: body
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewStartSearchDefault creates StartSearchDefault with default headers values
@@ -78,8 +62,24 @@ func (o *StartSearchDefault) SetStatusCode(code int) {
 	o._statusCode = code
 }
 
+// WithPayload adds the payload to the start search default response
+func (o *StartSearchDefault) WithPayload(payload *models.Error) *StartSearchDefault {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the start search default response
+func (o *StartSearchDefault) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *StartSearchDefault) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(o._statusCode)
+	if o.Payload != nil {
+		if err := producer.Produce(rw, o.Payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

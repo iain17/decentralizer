@@ -84,6 +84,35 @@
                         
                     </section>
                     
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                identifier
+                                            <td><p>The identifier of peers</p>
+                                        </td>
+                                            <td>path</td>
+                                            <td><span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                                    <span class="json-property-required"></span>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
                     
                         <section class="sw-responses">
                                 <p><a href="#sw-default-produces">Uses default content-types: </a>
@@ -91,11 +120,28 @@
                                 </p>
                             
                             <dl>
-                                    <dt class="sw-response-500">
-                                        500 Internal Server Error
+                                    <dt class="sw-response-200">
+                                        200 OK
                                     
                                     </dt>
-                                    <dd class="sw-response-500">
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Expected response to a valid request</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-default">
+                                        default 
+                                    
+                                    </dt>
+                                    <dd class="sw-response-default">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p>unexpected error</p>
@@ -110,23 +156,6 @@
                                                                 <a class="json-schema-ref" href="#/definitions/Error">Error</a>
                                                     </div>
                                                 </div></div>
-                                            
-                                            </div>                </dd>
-                                    <dt class="sw-response-default">
-                                        default 
-                                    
-                                    </dt>
-                                    <dd class="sw-response-default">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <p>Expected response to a valid request</p>
-                                            
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                
-                                                <div class="col-md-6 sw-response-model">
-                                            </div>
                                             
                                             </div>                </dd>
                             </dl>
@@ -178,32 +207,11 @@
                                 </p>
                             
                             <dl>
-                                    <dt class="sw-response-500">
-                                        500 Internal Server Error
+                                    <dt class="sw-response-200">
+                                        200 OK
                                     
                                     </dt>
-                                    <dd class="sw-response-500">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <p>unexpected error</p>
-                                            
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                
-                                                <div class="col-md-6 sw-response-model">
-                                                <div  class="panel panel-definition">
-                                                    <div class="panel-body">
-                                                                <a class="json-schema-ref" href="#/definitions/Error">Error</a>
-                                                    </div>
-                                                </div></div>
-                                            
-                                            </div>                </dd>
-                                    <dt class="sw-response-default">
-                                        default 
-                                    
-                                    </dt>
-                                    <dd class="sw-response-default">
+                                    <dd class="sw-response-200">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p>Expected response to a valid request</p>
@@ -216,6 +224,27 @@
                                                 <div  class="panel panel-definition">
                                                     <div class="panel-body">
                                                                 <a class="json-schema-ref" href="#/definitions/Peers">Peers</a>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-default">
+                                        default 
+                                    
+                                    </dt>
+                                    <dd class="sw-response-default">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>unexpected error</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <a class="json-schema-ref" href="#/definitions/Error">Error</a>
                                                     </div>
                                                 </div></div>
                                             
@@ -247,12 +276,39 @@
                                 <tbody>
                                         <tr>
                                             <td>
+                                                identifier
+                                            <td><p>The identifier of peers</p>
+                                        </td>
+                                            <td>path</td>
+                                            <td><span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                                    <span class="json-property-required"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
                                                 port
                                             <td></td>
                                             <td>query</td>
                                             <td><span class="json-property-type">integer</span>    <span class="json-property-format">(int32)</span>
                                         <span class="json-property-range" title="Value limits"></span>
                                         
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                impliedPort
+                                            <td></td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">boolean</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                                <span class="json-property-default-value">true</span>
                                             </td>
                                             <td>
                                             </td>
@@ -267,11 +323,28 @@
                                 </p>
                             
                             <dl>
-                                    <dt class="sw-response-500">
-                                        500 Internal Server Error
+                                    <dt class="sw-response-200">
+                                        200 OK
                                     
                                     </dt>
-                                    <dd class="sw-response-500">
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Expected response to a valid request</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-default">
+                                        default 
+                                    
+                                    </dt>
+                                    <dd class="sw-response-default">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p>unexpected error</p>
@@ -286,23 +359,6 @@
                                                                 <a class="json-schema-ref" href="#/definitions/Error">Error</a>
                                                     </div>
                                                 </div></div>
-                                            
-                                            </div>                </dd>
-                                    <dt class="sw-response-default">
-                                        default 
-                                    
-                                    </dt>
-                                    <dd class="sw-response-default">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <p>Expected response to a valid request</p>
-                                            
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                
-                                                <div class="col-md-6 sw-response-model">
-                                            </div>
                                             
                                             </div>                </dd>
                             </dl>
@@ -388,7 +444,7 @@
                                             </dd>
                                             <dt data-property-name="port">
                                                 <span class="json-property-name">port:</span>
-                                                <span class="json-property-type">integer</span>
+                                                <span class="json-property-type">integer</span>    <span class="json-property-format">(int32)</span>
                                                 <span class="json-property-range" title="Value limits"></span>
                                                 
                                                     <span class="json-property-required"></span>

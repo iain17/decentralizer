@@ -6,10 +6,15 @@ package operations
 import (
 	"errors"
 	"net/url"
+	"strings"
 )
 
 // StopSearchURL generates an URL for the stop search operation
 type StopSearchURL struct {
+	Identifier string
+
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // Build a url path and query string
@@ -18,6 +23,12 @@ func (o *StopSearchURL) Build() (*url.URL, error) {
 
 	var _path = "/v1/peers/{identifier}"
 
+	identifier := o.Identifier
+	if identifier != "" {
+		_path = strings.Replace(_path, "{identifier}", identifier, -1)
+	} else {
+		return nil, errors.New("Identifier is required on StopSearchURL")
+	}
 	result.Path = _path
 
 	return &result, nil

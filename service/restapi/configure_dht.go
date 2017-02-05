@@ -6,7 +6,6 @@ import (
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
-	middleware "github.com/go-openapi/runtime/middleware"
 
 	"github.com/iain17/dht-hello/service/restapi/operations"
 	"github.com/iain17/dht-hello/api/handlers"
@@ -34,13 +33,9 @@ func configureAPI(api *operations.DhtAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.GetPeersHandler = operations.GetPeersHandlerFunc(func(params operations.GetPeersParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetPeers has not yet been implemented")
-	})
+	api.GetPeersHandler = operations.GetPeersHandlerFunc(handlers.GetPeers)
 	api.StartSearchHandler = operations.StartSearchHandlerFunc(handlers.StartSearch)
-	api.StopSearchHandler = operations.StopSearchHandlerFunc(func(params operations.StopSearchParams) middleware.Responder {
-		return middleware.NotImplemented("operation .StopSearch has not yet been implemented")
-	})
+	api.StopSearchHandler = operations.StopSearchHandlerFunc(handlers.StopSearch)
 
 	api.ServerShutdown = func() {}
 

@@ -11,44 +11,43 @@ import (
 	"github.com/iain17/dht-hello/service/models"
 )
 
-/*GetPeersInternalServerError unexpected error
+/*GetPeersOK Expected response to a valid request
 
-swagger:response getPeersInternalServerError
+swagger:response getPeersOK
 */
-type GetPeersInternalServerError struct {
+type GetPeersOK struct {
 
 	// In: body
-	Payload *models.Error `json:"body,omitempty"`
+	Payload models.Peers `json:"body,omitempty"`
 }
 
-// NewGetPeersInternalServerError creates GetPeersInternalServerError with default headers values
-func NewGetPeersInternalServerError() *GetPeersInternalServerError {
-	return &GetPeersInternalServerError{}
+// NewGetPeersOK creates GetPeersOK with default headers values
+func NewGetPeersOK() *GetPeersOK {
+	return &GetPeersOK{}
 }
 
-// WithPayload adds the payload to the get peers internal server error response
-func (o *GetPeersInternalServerError) WithPayload(payload *models.Error) *GetPeersInternalServerError {
+// WithPayload adds the payload to the get peers o k response
+func (o *GetPeersOK) WithPayload(payload models.Peers) *GetPeersOK {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the get peers internal server error response
-func (o *GetPeersInternalServerError) SetPayload(payload *models.Error) {
+// SetPayload sets the payload to the get peers o k response
+func (o *GetPeersOK) SetPayload(payload models.Peers) {
 	o.Payload = payload
 }
 
 // WriteResponse to the client
-func (o *GetPeersInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *GetPeersOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(500)
-	if o.Payload != nil {
-		if err := producer.Produce(rw, o.Payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
+	rw.WriteHeader(200)
+	if err := producer.Produce(rw, o.Payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
 	}
+
 }
 
-/*GetPeersDefault Expected response to a valid request
+/*GetPeersDefault unexpected error
 
 swagger:response getPeersDefault
 */
@@ -56,7 +55,7 @@ type GetPeersDefault struct {
 	_statusCode int
 
 	// In: body
-	Payload models.Peers `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetPeersDefault creates GetPeersDefault with default headers values
@@ -82,13 +81,13 @@ func (o *GetPeersDefault) SetStatusCode(code int) {
 }
 
 // WithPayload adds the payload to the get peers default response
-func (o *GetPeersDefault) WithPayload(payload models.Peers) *GetPeersDefault {
+func (o *GetPeersDefault) WithPayload(payload *models.Error) *GetPeersDefault {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get peers default response
-func (o *GetPeersDefault) SetPayload(payload models.Peers) {
+func (o *GetPeersDefault) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 
@@ -96,8 +95,9 @@ func (o *GetPeersDefault) SetPayload(payload models.Peers) {
 func (o *GetPeersDefault) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(o._statusCode)
-	if err := producer.Produce(rw, o.Payload); err != nil {
-		panic(err) // let the recovery middleware deal with this
+	if o.Payload != nil {
+		if err := producer.Produce(rw, o.Payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
 	}
-
 }

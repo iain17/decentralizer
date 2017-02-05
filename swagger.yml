@@ -23,39 +23,54 @@ paths:
           type: string
       responses:
         default:
-          description: Expected response to a valid request
-          schema:
-            $ref: '#/definitions/Peers'
-        "500":
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+        "200":
+          description: Expected response to a valid request
+          schema:
+            $ref: '#/definitions/Peers'
     post:
       summary: Start the search for this identifier.
       operationId: startSearch
       parameters:
+       - name: identifier
+         in: path
+         required: true
+         description: The identifier of peers
+         type: string
        - name: port
          in: query
          type: integer
          format: int32
          default: 0
+       - name: impliedPort
+         in: query
+         type: boolean
+         default: true
       responses:
           default:
-            description: Expected response to a valid request
-          "500":
             description: unexpected error
             schema:
               $ref: '#/definitions/Error'
+          "200":
+            description: Expected response to a valid request
     delete:
       summary: Stop the search for this identifier.
       operationId: stopSearch
+      parameters:
+       - name: identifier
+         in: path
+         required: true
+         description: The identifier of peers
+         type: string
       responses:
           default:
-            description: Expected response to a valid request
-          "500":
             description: unexpected error
             schema:
               $ref: '#/definitions/Error'
+          "200":
+            description: Expected response to a valid request
 definitions:
   Peer:
     required:
@@ -69,6 +84,7 @@ definitions:
         description: The IP address of a peer
       port:
         type: integer
+        format: int32
         readOnly: true
         description: The port of the peer
   Peers:

@@ -11,49 +11,33 @@ import (
 	"github.com/iain17/dht-hello/service/models"
 )
 
-/*StopSearchInternalServerError unexpected error
+/*StopSearchOK Expected response to a valid request
 
-swagger:response stopSearchInternalServerError
+swagger:response stopSearchOK
 */
-type StopSearchInternalServerError struct {
-
-	// In: body
-	Payload *models.Error `json:"body,omitempty"`
+type StopSearchOK struct {
 }
 
-// NewStopSearchInternalServerError creates StopSearchInternalServerError with default headers values
-func NewStopSearchInternalServerError() *StopSearchInternalServerError {
-	return &StopSearchInternalServerError{}
-}
-
-// WithPayload adds the payload to the stop search internal server error response
-func (o *StopSearchInternalServerError) WithPayload(payload *models.Error) *StopSearchInternalServerError {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the stop search internal server error response
-func (o *StopSearchInternalServerError) SetPayload(payload *models.Error) {
-	o.Payload = payload
+// NewStopSearchOK creates StopSearchOK with default headers values
+func NewStopSearchOK() *StopSearchOK {
+	return &StopSearchOK{}
 }
 
 // WriteResponse to the client
-func (o *StopSearchInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *StopSearchOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(500)
-	if o.Payload != nil {
-		if err := producer.Produce(rw, o.Payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
+	rw.WriteHeader(200)
 }
 
-/*StopSearchDefault Expected response to a valid request
+/*StopSearchDefault unexpected error
 
 swagger:response stopSearchDefault
 */
 type StopSearchDefault struct {
 	_statusCode int
+
+	// In: body
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewStopSearchDefault creates StopSearchDefault with default headers values
@@ -78,8 +62,24 @@ func (o *StopSearchDefault) SetStatusCode(code int) {
 	o._statusCode = code
 }
 
+// WithPayload adds the payload to the stop search default response
+func (o *StopSearchDefault) WithPayload(payload *models.Error) *StopSearchDefault {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the stop search default response
+func (o *StopSearchDefault) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *StopSearchDefault) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(o._statusCode)
+	if o.Payload != nil {
+		if err := producer.Produce(rw, o.Payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

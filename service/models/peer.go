@@ -22,7 +22,7 @@ type Peer struct {
 	// The port of the peer
 	// Required: true
 	// Read Only: true
-	Port int64 `json:"port"`
+	Port int32 `json:"port"`
 }
 
 // Validate validates this peer
@@ -56,7 +56,7 @@ func (m *Peer) validateIP(formats strfmt.Registry) error {
 
 func (m *Peer) validatePort(formats strfmt.Registry) error {
 
-	if err := validate.Required("port", "body", int64(m.Port)); err != nil {
+	if err := validate.Required("port", "body", int32(m.Port)); err != nil {
 		return err
 	}
 
