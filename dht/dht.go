@@ -41,6 +41,7 @@ func (s *search) stop() {
 	if s.Announcement != nil {
 		s.Announcement.Close()
 	}
+	logger.Infof("Search with %x stopped", s.hash)
 }
 
 func (s *search) announce() error {
@@ -58,7 +59,7 @@ func (s *search) announce() error {
 }
 
 func Search(identifier string, port int32, impliedPort bool) error {
-	logger.Infof("Start searching for other DHT clients with identifier '%s'", identifier)
+	logger.Infof("Start searching for other DHT clients with identifier '%s' with port %d and impliedPort %t", identifier, port, impliedPort)
 	existing := get(identifier)
 	if existing != nil {
 		existing.stop()
