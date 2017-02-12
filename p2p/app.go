@@ -5,7 +5,6 @@ import (
 	logger "github.com/Sirupsen/logrus"
 	"crypto/sha1"
 	"github.com/ipfs/go-ipfs/blocks"
-	floodsub "github.com/libp2p/go-floodsub"
 	"io"
 	"golang.org/x/net/context"
 )
@@ -78,14 +77,11 @@ func (s *p2pApp) search() {
 	if err != nil {
 		logger.Error(err)
 	}
-
-	out := make(chan interface{})
+	s.p2p.Node.Floodsub.Publish(s.name, []byte("apples"))
+	//s.p2p.Node.Floodsub.ListPeers(s.name)
 
 	go func() {
 		defer sub.Cancel()
-		defer close(out)
-
-		out <- floodsub.Message{}
 
 		for {
 			msg, err := sub.Next(s.p2p.Ctx)
@@ -96,7 +92,7 @@ func (s *p2pApp) search() {
 				return
 			}
 
-			out <- msg
+			logger.Println(msg)
 		}
 	}()
 
