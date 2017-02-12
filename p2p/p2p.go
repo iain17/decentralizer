@@ -56,6 +56,11 @@ func ipfsSetup(ctx context.Context, repoRoot string) (*core.IpfsNode, error) {
 	cfg := &core.BuildCfg{
 		Repo:   r,
 		Online: true,
+		Permament: true, // It is temporary way to signify that node is permament
+		ExtraOpts: map[string]bool{
+			"pubsub": true,
+			//"mplex":  false,
+		},
 	}
 
 	return core.NewNode(ctx, cfg)

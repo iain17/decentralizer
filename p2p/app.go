@@ -2,9 +2,12 @@ package p2p
 
 import (
 	corenet "github.com/ipfs/go-ipfs/core/corenet"
-	"time"
 	logger "github.com/Sirupsen/logrus"
 	"crypto/sha1"
+	"github.com/ipfs/go-ipfs/blocks"
+	floodsub "github.com/libp2p/go-floodsub"
+	"io"
+	"golang.org/x/net/context"
 )
 
 type p2pApp struct {
@@ -70,36 +73,43 @@ func (s *p2pApp) listen() error {
 	}
 }
 
-func (s *p2pApp) search() error {
-	for {
-		s.broadcastUs()
-
-		logger.Debug("Find others.")
-		res, err := s.p2p.Node.Routing.GetValues(s.p2p.Ctx, s.hash, 2)
-		if err != nil {
-			logger.Error(err)
-		}
-
-		for _, a := range res {
-			logger.Debugf("From %s says %s", a.From.Pretty(), string(a.Val))
-
-			con, err := corenet.Dial(s.p2p.Node, a.From, s.protocol)
-			if err != nil {
-				logger.Warn(err)
-			}
-			logger.Debug(con)
-
-		}
-
-		time.Sleep(1 * time.Second)
-	}
-}
-
-func (s *p2pApp) broadcastUs() {
-	logger.Debug("broadcastUs")
-	t1 := time.Now()
-	err := s.p2p.Node.Routing.PutValue(s.p2p.Ctx, s.hash, []byte(t1.Format(time.UnixDate)))
+func (s *p2pApp) search() {
+	sub, err := s.p2p.Node.Floodsub.Subscribe(s.name)//Topic name is set here.
 	if err != nil {
 		logger.Error(err)
 	}
+
+	out := make(chan interface{})
+
+	go func() {
+		defer sub.Cancel()
+		defer close(out)
+
+		out <- floodsub.Message{}
+
+		for {
+			msg, err := sub.Next(s.p2p.Ctx)
+			if err == io.EOF || err == context.Canceled {
+				return
+			} else if err != nil {
+				logger.Error(err)
+				return
+			}
+
+			out <- msg
+		}
+	}()
+
+	//discover
+	go func() {
+		blk := blocks.NewBlock([]byte("floodsub:" + sub.Topic()))
+		cid, err := s.p2p.Node.Blocks.AddBlock(blk)
+		if err != nil {
+			logger.Error("pubsub discovery: ", err)
+			return
+		}
+		logger.Debugf("Discovered: %s", cid)
+	}()
+
+
 }
