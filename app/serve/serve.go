@@ -2,7 +2,6 @@ package serve
 
 import (
 	"github.com/spf13/cobra"
-	//"gopkg.in/gin-gonic/gin.v1"
 	"golang.org/x/net/context"
 	"github.com/iain17/dht-hello/p2p"
 )
@@ -24,10 +23,7 @@ func Run(cmd *cobra.Command, args []string) {
 	}
 
 	p2p.NewApp("test")
-
 	select{}
-
-	//
 	//
 	//router := gin.Default()
 	//v1 := router.Group("/v1/:app")
@@ -36,5 +32,6 @@ func Run(cmd *cobra.Command, args []string) {
 	//	v1.POST("/", )
 	//	v1.POST("/read", readEndpoint)
 	//}
+	//
 	//router.Run()
 }

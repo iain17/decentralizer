@@ -2,12 +2,13 @@ package p2p
 
 import (
 	corenet "github.com/ipfs/go-ipfs/core/corenet"
+	"time"
 	logger "github.com/Sirupsen/logrus"
 	"crypto/sha1"
-	"github.com/ipfs/go-ipfs/blocks"
-	"io"
-	"golang.org/x/net/context"
+	"fmt"
 )
+
+const interval = 30
 
 type p2pApp struct {
 	name string
@@ -17,7 +18,6 @@ type p2pApp struct {
 }
 
 func newP2pApp(p2p *p2p, name string) *p2pApp {
-
 	hash, err := getHash(name)
 
 	if err != nil {
@@ -29,7 +29,7 @@ func newP2pApp(p2p *p2p, name string) *p2pApp {
 		hash: hash,
 		name: name,
 		p2p: p2p,
-		protocol: "/app/"+hash,
+		protocol: "/app/whyrusleeping",
 	}
 	logger.Infof("Registering app with name '%s'\n", name)
 	go app.listen()
@@ -72,40 +72,47 @@ func (s *p2pApp) listen() error {
 	}
 }
 
-func (s *p2pApp) search() {
-	sub, err := s.p2p.Node.Floodsub.Subscribe(s.name)//Topic name is set here.
+func (s *p2pApp) search() error {
+	for {
+		t := time.Now().UTC()
+		key := getKey(t, s.hash)
+
+		go s.broadcastUs(key)
+
+		logger.Debug("Find others. %s", key)
+		res, err := s.p2p.Node.Routing.GetValues(s.p2p.Ctx, key, 10)
+		if err != nil {
+			logger.Error(err)
+		}
+
+		for _, a := range res {
+			logger.Debugf("From %s says %s", a.From.Pretty(), string(a.Val))
+
+			con, err := corenet.Dial(s.p2p.Node, a.From, s.protocol)
+			if err != nil {
+				logger.Warn(err)
+			}
+			logger.Debug(con)
+
+		}
+
+		t = time.Now().UTC()
+		secLeft := interval - (t.Second() % interval)
+		fmt.Printf("%d", secLeft)
+		time.Sleep(time.Duration(secLeft) * time.Second)
+	}
+}
+
+func (s *p2pApp) broadcastUs(key string) {
+	logger.Debugf("broadcastUs")
+	err := s.p2p.Node.Routing.PutValue(s.p2p.Ctx, key, []byte("test"))
 	if err != nil {
 		logger.Error(err)
 	}
-	s.p2p.Node.Floodsub.Publish(s.name, []byte("apples"))
-	//s.p2p.Node.Floodsub.ListPeers(s.name)
+}
 
-	go func() {
-		defer sub.Cancel()
-
-		for {
-			msg, err := sub.Next(s.p2p.Ctx)
-			if err == io.EOF || err == context.Canceled {
-				return
-			} else if err != nil {
-				logger.Error(err)
-				return
-			}
-
-			logger.Println(msg)
-		}
-	}()
-
-	//discover
-	go func() {
-		blk := blocks.NewBlock([]byte("floodsub:" + sub.Topic()))
-		cid, err := s.p2p.Node.Blocks.AddBlock(blk)
-		if err != nil {
-			logger.Error("pubsub discovery: ", err)
-			return
-		}
-		logger.Debugf("Discovered: %s", cid)
-	}()
-
-
+func getKey(t time.Time, hash string) string {
+	//TODO: Optimize. Sprintf is slow and unnecessary here.
+	return fmt.Sprintf("%s-%d-%02d-%02dT%02d:%02d:%d", hash, t.Year(), t.Month(), t.Day(),
+		t.Hour(), t.Minute(), t.Second() / interval)
 }
