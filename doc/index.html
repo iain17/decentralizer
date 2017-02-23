@@ -37,31 +37,31 @@
             <tbody>
                     <tr>
                             <td class="swagger--summary-path" rowspan="3">
-                                <a href="#path--v1-peers--identifier-">/v1/peers/{identifier}</a>
+                                <a href="#path--v1-peers--appName-">/v1/peers/{appName}</a>
                             </td>
                         <td>
-                            <a href="#operation--v1-peers--identifier--delete">DELETE</a>
+                            <a href="#operation--v1-peers--appName--delete">DELETE</a>
                         </td>
                         <td>
-                            <p>Stop the search for this identifier.</p>
+                            <p>Stop the search for this appName.</p>
         
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="#operation--v1-peers--identifier--get">GET</a>
+                            <a href="#operation--v1-peers--appName--get">GET</a>
                         </td>
                         <td>
-                            <p>Gets ips that are also looking on this identifier</p>
+                            <p>Gets peers that are also looking on this appName</p>
         
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="#operation--v1-peers--identifier--post">POST</a>
+                            <a href="#operation--v1-peers--appName--post">POST</a>
                         </td>
                         <td>
-                            <p>Start the search for this identifier.</p>
+                            <p>Start the search for peers based on a common name.</p>
         
                         </td>
                     </tr>
@@ -73,11 +73,11 @@
     <h2>Paths</h2>
     
         
-        <span id="path--v1-peers--identifier-"></span>
-            <div id="operation--v1-peers--identifier--delete" class="swagger--panel-operation-delete panel">
+        <span id="path--v1-peers--appName-"></span>
+            <div id="operation--v1-peers--appName--delete" class="swagger--panel-operation-delete panel">
                 <div class="panel-heading">
-                    <div class="operation-summary">Stop the search for this identifier.</div>
-                    <h3 class="panel-title"><span class="operation-name">DELETE</span> <strong>/v1/peers/{identifier}</strong></h3>
+                    <div class="operation-summary">Stop the search for this appName.</div>
+                    <h3 class="panel-title"><span class="operation-name">DELETE</span> <strong>/v1/peers/{appName}</strong></h3>
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
@@ -98,8 +98,8 @@
                                 <tbody>
                                         <tr>
                                             <td>
-                                                identifier
-                                            <td><p>The identifier of peers</p>
+                                                appName
+                                            <td><p>The name of this app. This could be anything.</p>
                                         </td>
                                             <td>path</td>
                                             <td><span class="json-property-type">string</span>
@@ -161,10 +161,10 @@
                             </dl>
                         </section>
                 </div>
-            </div>    <div id="operation--v1-peers--identifier--get" class="swagger--panel-operation-get panel">
+            </div>    <div id="operation--v1-peers--appName--get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
-                    <div class="operation-summary">Gets ips that are also looking on this identifier</div>
-                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/v1/peers/{identifier}</strong></h3>
+                    <div class="operation-summary">Gets peers that are also looking on this appName</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/v1/peers/{appName}</strong></h3>
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
@@ -185,8 +185,8 @@
                                 <tbody>
                                         <tr>
                                             <td>
-                                                identifier
-                                            <td><p>The identifier of peers</p>
+                                                appName
+                                            <td><p>The appName of peers</p>
                                         </td>
                                             <td>path</td>
                                             <td><span class="json-property-type">string</span>
@@ -252,10 +252,10 @@
                             </dl>
                         </section>
                 </div>
-            </div>    <div id="operation--v1-peers--identifier--post" class="swagger--panel-operation-post panel">
+            </div>    <div id="operation--v1-peers--appName--post" class="swagger--panel-operation-post panel">
                 <div class="panel-heading">
-                    <div class="operation-summary">Start the search for this identifier.</div>
-                    <h3 class="panel-title"><span class="operation-name">POST</span> <strong>/v1/peers/{identifier}</strong></h3>
+                    <div class="operation-summary">Start the search for peers based on a common name.</div>
+                    <h3 class="panel-title"><span class="operation-name">POST</span> <strong>/v1/peers/{appName}</strong></h3>
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
@@ -276,8 +276,8 @@
                                 <tbody>
                                         <tr>
                                             <td>
-                                                identifier
-                                            <td><p>The identifier of peers</p>
+                                                appName
+                                            <td><p>The name of this app. This could be anything.</p>
                                         </td>
                                             <td>path</td>
                                             <td><span class="json-property-type">string</span>
@@ -291,24 +291,12 @@
                                         <tr>
                                             <td>
                                                 port
-                                            <td></td>
+                                            <td><p>The port you&#39;d like to advertise to the other peers about the service you are hosting.</p>
+                                        </td>
                                             <td>query</td>
                                             <td><span class="json-property-type">integer</span>    <span class="json-property-format">(int32)</span>
                                         <span class="json-property-range" title="Value limits"></span>
                                         
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                impliedPort
-                                            <td></td>
-                                            <td>query</td>
-                                            <td><span class="json-property-type">boolean</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                                <span class="json-property-default-value">true</span>
                                             </td>
                                             <td>
                                             </td>
@@ -371,6 +359,68 @@
         <h2>Schema definitions</h2>
     
             
+                <div id="definition-Detail" class="panel panel-definition">
+                        <div class="panel-heading">
+                                <h3 class="panel-title"><a name="/definitions/Detail"></a>Detail:
+                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                                </h3>
+                        </div>
+                    <div class="panel-body">
+                            
+                                <section class="json-schema-properties">
+                                    <dl>
+                                            <dt data-property-name="name">
+                                                <span class="json-property-name">name:</span>
+                                                <span class="json-property-type">string</span>
+                                                <span class="json-property-range" title="Value limits"></span>
+                                                
+                                            </dt>
+                                            <dd>
+                                                
+                                                <div class="json-inner-schema">
+                                                    
+                                                </div>
+                                            </dd>
+                                            <dt data-property-name="value">
+                                                <span class="json-property-name">value:</span>
+                                                <span class="json-property-type">object</span>
+                                                <span class="json-property-range" title="Value limits"></span>
+                                                
+                                            </dt>
+                                            <dd>
+                                                
+                                                <div class="json-inner-schema">
+                                                    
+                                                </div>
+                                            </dd>
+                                    </dl>
+                                </section>
+                    </div>
+                </div>        
+                <div id="definition-Details" class="panel panel-definition">
+                        <div class="panel-heading">
+                                <h3 class="panel-title"><a name="/definitions/Details"></a>Details:
+                                    <span class="json-property-type"><span class="json-property-type">object[]</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                                </h3>
+                        </div>
+                    <div class="panel-body">
+                            
+                                            <section class="json-schema-array-items">
+                                                <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/Detail">Detail</a>
+                                                </span>
+                                                <span class="json-property-range" title="Value limits"></span>
+                                                
+                                                <div class="json-inner-schema">
+                                                    
+                                                </div>
+                                            </section>    </div>
+                </div>        
                 <div id="definition-Error" class="panel panel-definition">
                         <div class="panel-heading">
                                 <h3 class="panel-title"><a name="/definitions/Error"></a>Error:
@@ -436,7 +486,7 @@
                                                     <span class="json-property-read-only"></span>
                                             </dt>
                                             <dd>
-                                                <p>The IP address of a peer</p>
+                                                <p>The IP address of the peer</p>
                                 
                                                 <div class="json-inner-schema">
                                                     
@@ -451,7 +501,20 @@
                                                     <span class="json-property-read-only"></span>
                                             </dt>
                                             <dd>
-                                                <p>The port of the peer</p>
+                                                <p>The port of the peer&#39;s service.</p>
+                                
+                                                <div class="json-inner-schema">
+                                                    
+                                                </div>
+                                            </dd>
+                                            <dt data-property-name="details">
+                                                <span class="json-property-name">details:</span>
+                                                <span class="json-property-type">object</span>
+                                                <span class="json-property-range" title="Value limits"></span>
+                                                
+                                            </dt>
+                                            <dd>
+                                                <p>Anything. All the details the peer wants to mention to others.</p>
                                 
                                                 <div class="json-inner-schema">
                                                     

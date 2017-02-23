@@ -3,7 +3,6 @@ package handlers
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/iain17/dht-hello/service/restapi/operations"
-	"github.com/iain17/dht-hello/dht"
 	"github.com/iain17/dht-hello/service/models"
 	"github.com/go-openapi/swag"
 	logger "github.com/Sirupsen/logrus"

@@ -28,11 +28,11 @@ type GetPeersParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request
 
-	/*The identifier of peers
+	/*The appName of peers
 	  Required: true
 	  In: path
 	*/
-	Identifier string
+	AppName string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -41,8 +41,8 @@ func (o *GetPeersParams) BindRequest(r *http.Request, route *middleware.MatchedR
 	var res []error
 	o.HTTPRequest = r
 
-	rIdentifier, rhkIdentifier, _ := route.Params.GetOK("identifier")
-	if err := o.bindIdentifier(rIdentifier, rhkIdentifier, route.Formats); err != nil {
+	rAppName, rhkAppName, _ := route.Params.GetOK("appName")
+	if err := o.bindAppName(rAppName, rhkAppName, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -52,13 +52,13 @@ func (o *GetPeersParams) BindRequest(r *http.Request, route *middleware.MatchedR
 	return nil
 }
 
-func (o *GetPeersParams) bindIdentifier(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetPeersParams) bindAppName(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
-	o.Identifier = raw
+	o.AppName = raw
 
 	return nil
 }

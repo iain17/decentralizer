@@ -11,15 +11,35 @@ consumes:
 produces:
   - application/json
 paths:
-  /v1/peers/{identifier}:
+  /v1/peers/{appName}:
+    post:
+      summary: Add a detail to the service
+      operationId: addDetail
+      parameters:
+       - name: appName
+         in: path
+         required: true
+         description: The name of this app. This could be anything.
+         type: string
+       - name: name
+         in: name
+         type: string
+         description: The name of the details
+         required: true
+       - name: value
+         in: value
+         type: object
+         description: The value of the detail
+         required: true
+  /v1/peers/{appName}:
     get:
-      summary: Gets ips that are also looking on this identifier
+      summary: Gets peers that are also looking on this appName
       operationId: getPeers
       parameters:
-        - name: identifier
+        - name: appName
           in: path
           required: true
-          description: The identifier of peers
+          description: The appName of peers
           type: string
       responses:
         default:
@@ -31,23 +51,20 @@ paths:
           schema:
             $ref: '#/definitions/Peers'
     post:
-      summary: Start the search for this identifier.
+      summary: Start the search for peers based on a common name.
       operationId: startSearch
       parameters:
-       - name: identifier
+       - name: appName
          in: path
          required: true
-         description: The identifier of peers
+         description: The name of this app. This could be anything.
          type: string
        - name: port
          in: query
          type: integer
+         description: The port you'd like to advertise to the other peers about the service you are hosting.
          format: int32
          default: 0
-       - name: impliedPort
-         in: query
-         type: boolean
-         default: true
       responses:
           default:
             description: unexpected error
@@ -56,13 +73,13 @@ paths:
           "200":
             description: Expected response to a valid request
     delete:
-      summary: Stop the search for this identifier.
+      summary: Stop the search for this appName.
       operationId: stopSearch
       parameters:
-       - name: identifier
+       - name: appName
          in: path
          required: true
-         description: The identifier of peers
+         description: The name of this app. This could be anything.
          type: string
       responses:
           default:
@@ -81,16 +98,30 @@ definitions:
         type: string
         readOnly: true
         format: ipv4
-        description: The IP address of a peer
+        description: The IP address of the peer
       port:
         type: integer
         format: int32
         readOnly: true
-        description: The port of the peer
+        description: The port of the peer's service.
+      details:
+        description: Anything. All the details the peer wants to mention to others.
+        schema:
+          $ref: '#/definitions/Details'
+  Detail:
+    properties:
+      name:
+        type: string
+      value:
+        type: object
   Peers:
     type: array
     items:
       $ref: '#/definitions/Peer'
+  Details:
+    type: array
+    items:
+      $ref: '#/definitions/Detail'
   Error:
     required:
       - code

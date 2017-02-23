@@ -27,9 +27,9 @@ func NewStopSearch(ctx *middleware.Context, handler StopSearchHandler) *StopSear
 	return &StopSearch{Context: ctx, Handler: handler}
 }
 
-/*StopSearch swagger:route DELETE /v1/peers/{identifier} stopSearch
+/*StopSearch swagger:route DELETE /v1/peers/{appName} stopSearch
 
-Stop the search for this identifier.
+Stop the search for this appName.
 
 */
 type StopSearch struct {

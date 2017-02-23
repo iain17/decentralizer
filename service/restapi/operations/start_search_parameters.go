@@ -18,12 +18,9 @@ import (
 // with the default values initialized.
 func NewStartSearchParams() StartSearchParams {
 	var (
-		impliedPortDefault = bool(true)
-		portDefault        = int32(0)
+		portDefault = int32(0)
 	)
 	return StartSearchParams{
-		ImpliedPort: &impliedPortDefault,
-
 		Port: &portDefault,
 	}
 }
@@ -37,17 +34,12 @@ type StartSearchParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request
 
-	/*The identifier of peers
+	/*The name of this app. This could be anything.
 	  Required: true
 	  In: path
 	*/
-	Identifier string
-	/*
-	  In: query
-	  Default: true
-	*/
-	ImpliedPort *bool
-	/*
+	AppName string
+	/*The port you'd like to advertise to the other peers about the service you are hosting.
 	  In: query
 	  Default: 0
 	*/
@@ -62,13 +54,8 @@ func (o *StartSearchParams) BindRequest(r *http.Request, route *middleware.Match
 
 	qs := runtime.Values(r.URL.Query())
 
-	rIdentifier, rhkIdentifier, _ := route.Params.GetOK("identifier")
-	if err := o.bindIdentifier(rIdentifier, rhkIdentifier, route.Formats); err != nil {
-		res = append(res, err)
-	}
-
-	qImpliedPort, qhkImpliedPort, _ := qs.GetOK("impliedPort")
-	if err := o.bindImpliedPort(qImpliedPort, qhkImpliedPort, route.Formats); err != nil {
+	rAppName, rhkAppName, _ := route.Params.GetOK("appName")
+	if err := o.bindAppName(rAppName, rhkAppName, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -83,33 +70,13 @@ func (o *StartSearchParams) BindRequest(r *http.Request, route *middleware.Match
 	return nil
 }
 
-func (o *StartSearchParams) bindIdentifier(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *StartSearchParams) bindAppName(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
-	o.Identifier = raw
-
-	return nil
-}
-
-func (o *StartSearchParams) bindImpliedPort(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	var raw string
-	if len(rawData) > 0 {
-		raw = rawData[len(rawData)-1]
-	}
-	if raw == "" { // empty values pass all other validations
-		var impliedPortDefault bool = bool(true)
-		o.ImpliedPort = &impliedPortDefault
-		return nil
-	}
-
-	value, err := swag.ConvertBool(raw)
-	if err != nil {
-		return errors.InvalidType("impliedPort", "query", "bool", raw)
-	}
-	o.ImpliedPort = &value
+	o.AppName = raw
 
 	return nil
 }

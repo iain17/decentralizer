@@ -6,30 +6,51 @@ package operations
 import (
 	"errors"
 	"net/url"
+	golangswaggerpaths "path"
 	"strings"
 )
 
 // GetPeersURL generates an URL for the get peers operation
 type GetPeersURL struct {
-	Identifier string
+	AppName string
 
+	_basePath string
 	// avoid unkeyed usage
 	_ struct{}
+}
+
+// WithBasePath sets the base path for this url builder, only required when it's different from the
+// base path specified in the swagger spec.
+// When the value of the base path is an empty string
+func (o *GetPeersURL) WithBasePath(bp string) *GetPeersURL {
+	o.SetBasePath(bp)
+	return o
+}
+
+// SetBasePath sets the base path for this url builder, only required when it's different from the
+// base path specified in the swagger spec.
+// When the value of the base path is an empty string
+func (o *GetPeersURL) SetBasePath(bp string) {
+	o._basePath = bp
 }
 
 // Build a url path and query string
 func (o *GetPeersURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/v1/peers/{identifier}"
+	var _path = "/v1/peers/{appName}"
 
-	identifier := o.Identifier
-	if identifier != "" {
-		_path = strings.Replace(_path, "{identifier}", identifier, -1)
+	appName := o.AppName
+	if appName != "" {
+		_path = strings.Replace(_path, "{appName}", appName, -1)
 	} else {
-		return nil, errors.New("Identifier is required on GetPeersURL")
+		return nil, errors.New("AppName is required on GetPeersURL")
 	}
-	result.Path = _path
+	_basePath := o._basePath
+	if _basePath == "" {
+		_basePath = "/"
+	}
+	result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	return &result, nil
 }

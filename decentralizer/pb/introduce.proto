@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+message IntroductionRequest {
+  string hash = 1;
+}
+
+message IntroductionReply {
+  peer peer = 1;
+}
+
+message peer {
+  string ip = 1;
+  uint32 port = 2;
+  uint32 rpcPort = 3;
+  map<string, string> details = 4;
+}

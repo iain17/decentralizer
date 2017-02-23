@@ -27,9 +27,9 @@ func NewStartSearch(ctx *middleware.Context, handler StartSearchHandler) *StartS
 	return &StartSearch{Context: ctx, Handler: handler}
 }
 
-/*StartSearch swagger:route POST /v1/peers/{identifier} startSearch
+/*StartSearch swagger:route POST /v1/peers/{appName} startSearch
 
-Start the search for this identifier.
+Start the search for peers based on a common name.
 
 */
 type StartSearch struct {

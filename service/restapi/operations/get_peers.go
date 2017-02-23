@@ -27,9 +27,9 @@ func NewGetPeers(ctx *middleware.Context, handler GetPeersHandler) *GetPeers {
 	return &GetPeers{Context: ctx, Handler: handler}
 }
 
-/*GetPeers swagger:route GET /v1/peers/{identifier} getPeers
+/*GetPeers swagger:route GET /v1/peers/{appName} getPeers
 
-Gets ips that are also looking on this identifier
+Gets peers that are also looking on this appName
 
 */
 type GetPeers struct {

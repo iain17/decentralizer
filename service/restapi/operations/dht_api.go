@@ -207,17 +207,17 @@ func (o *DhtAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/v1/peers/{identifier}"] = NewGetPeers(o.context, o.GetPeersHandler)
+	o.handlers["GET"]["/v1/peers/{appName}"] = NewGetPeers(o.context, o.GetPeersHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/v1/peers/{identifier}"] = NewStartSearch(o.context, o.StartSearchHandler)
+	o.handlers["POST"]["/v1/peers/{appName}"] = NewStartSearch(o.context, o.StartSearchHandler)
 
 	if o.handlers["DELETE"] == nil {
 		o.handlers[strings.ToUpper("DELETE")] = make(map[string]http.Handler)
 	}
-	o.handlers["DELETE"]["/v1/peers/{identifier}"] = NewStopSearch(o.context, o.StopSearchHandler)
+	o.handlers["DELETE"]["/v1/peers/{appName}"] = NewStopSearch(o.context, o.StopSearchHandler)
 
 }
 

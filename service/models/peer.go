@@ -14,12 +14,15 @@ import (
 // swagger:model Peer
 type Peer struct {
 
-	// The IP address of a peer
+	// Anything. All the details the peer wants to mention to others.
+	Details interface{} `json:"details,omitempty"`
+
+	// The IP address of the peer
 	// Required: true
 	// Read Only: true
 	IP strfmt.IPv4 `json:"ip"`
 
-	// The port of the peer
+	// The port of the peer's service.
 	// Required: true
 	// Read Only: true
 	Port int32 `json:"port"`
