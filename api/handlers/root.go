@@ -22,5 +22,5 @@ func init() {
 		panic(err)
 	}
 	service := dService.GetService("iain")
-	service.SetDetail("cool", true)
+	service.SetDetail("cool", "1")
 }

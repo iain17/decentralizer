@@ -31,6 +31,7 @@ func getUdpConn() (*net.UDPConn, *stun.Host, error) {
 	return conn, host, nil
 }
 
+//TODO: Reachable check
 func getTcpConn() (net.Listener, error) {
 	lis, err := net.Listen("tcp", ":0")
 	if err != nil {

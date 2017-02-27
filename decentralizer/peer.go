@@ -15,10 +15,10 @@ type Peer struct {
 	RPCPort int32 `json:"rpcPort"`
 
 	// Anything. All the details the peer wants to mention to others.
-	Details map[string]interface{} `json:"details,omitempty"`
+	Details map[string]string `json:"details,omitempty"`
 }
 
-func NewPeer(ip string, RPCPort, port int32, details map[string]interface{}) *Peer {
+func NewPeer(ip string, RPCPort, port int32, details map[string]string) *Peer {
 	return &Peer{
 		IP: ip,
 		RPCPort: RPCPort,

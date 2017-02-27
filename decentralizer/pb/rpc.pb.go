@@ -2,6 +2,17 @@
 // source: rpc.proto
 // DO NOT EDIT!
 
+/*
+Package pb is a generated protocol buffer package.
+
+It is generated from these files:
+	rpc.proto
+
+It has these top-level messages:
+	GetServiceRequest
+	GetServiceResponse
+	Peer
+*/
 package pb
 
 import proto "github.com/golang/protobuf/proto"
@@ -18,43 +29,96 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-// The request message containing the user's name.
-type HelloRequest struct {
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+
+type GetServiceRequest struct {
+	Hash string `protobuf:"bytes,1,opt,name=hash" json:"hash,omitempty"`
 }
 
-func (m *HelloRequest) Reset()                    { *m = HelloRequest{} }
-func (m *HelloRequest) String() string            { return proto.CompactTextString(m) }
-func (*HelloRequest) ProtoMessage()               {}
-func (*HelloRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (m *GetServiceRequest) Reset()                    { *m = GetServiceRequest{} }
+func (m *GetServiceRequest) String() string            { return proto.CompactTextString(m) }
+func (*GetServiceRequest) ProtoMessage()               {}
+func (*GetServiceRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
-func (m *HelloRequest) GetName() string {
+func (m *GetServiceRequest) GetHash() string {
 	if m != nil {
-		return m.Name
+		return m.Hash
 	}
 	return ""
 }
 
-// The response message containing the greetings
-type HelloReply struct {
-	Message string `protobuf:"bytes,1,opt,name=message" json:"message,omitempty"`
+type GetServiceResponse struct {
+	Result *Peer   `protobuf:"bytes,1,opt,name=result" json:"result,omitempty"`
+	Peers  []*Peer `protobuf:"bytes,2,rep,name=peers" json:"peers,omitempty"`
 }
 
-func (m *HelloReply) Reset()                    { *m = HelloReply{} }
-func (m *HelloReply) String() string            { return proto.CompactTextString(m) }
-func (*HelloReply) ProtoMessage()               {}
-func (*HelloReply) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
+func (m *GetServiceResponse) Reset()                    { *m = GetServiceResponse{} }
+func (m *GetServiceResponse) String() string            { return proto.CompactTextString(m) }
+func (*GetServiceResponse) ProtoMessage()               {}
+func (*GetServiceResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
-func (m *HelloReply) GetMessage() string {
+func (m *GetServiceResponse) GetResult() *Peer {
 	if m != nil {
-		return m.Message
+		return m.Result
+	}
+	return nil
+}
+
+func (m *GetServiceResponse) GetPeers() []*Peer {
+	if m != nil {
+		return m.Peers
+	}
+	return nil
+}
+
+type Peer struct {
+	Ip      string            `protobuf:"bytes,1,opt,name=ip" json:"ip,omitempty"`
+	Port    uint32            `protobuf:"varint,2,opt,name=port" json:"port,omitempty"`
+	RpcPort uint32            `protobuf:"varint,3,opt,name=rpcPort" json:"rpcPort,omitempty"`
+	Details map[string]string `protobuf:"bytes,4,rep,name=details" json:"details,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+}
+
+func (m *Peer) Reset()                    { *m = Peer{} }
+func (m *Peer) String() string            { return proto.CompactTextString(m) }
+func (*Peer) ProtoMessage()               {}
+func (*Peer) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
+
+func (m *Peer) GetIp() string {
+	if m != nil {
+		return m.Ip
 	}
 	return ""
+}
+
+func (m *Peer) GetPort() uint32 {
+	if m != nil {
+		return m.Port
+	}
+	return 0
+}
+
+func (m *Peer) GetRpcPort() uint32 {
+	if m != nil {
+		return m.RpcPort
+	}
+	return 0
+}
+
+func (m *Peer) GetDetails() map[string]string {
+	if m != nil {
+		return m.Details
+	}
+	return nil
 }
 
 func init() {
-	proto.RegisterType((*HelloRequest)(nil), "pb.HelloRequest")
-	proto.RegisterType((*HelloReply)(nil), "pb.HelloReply")
+	proto.RegisterType((*GetServiceRequest)(nil), "pb.getServiceRequest")
+	proto.RegisterType((*GetServiceResponse)(nil), "pb.getServiceResponse")
+	proto.RegisterType((*Peer)(nil), "pb.peer")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -68,8 +132,7 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for Decentralizer service
 
 type DecentralizerClient interface {
-	// Sends a greeting
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
+	RPCGetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error)
 }
 
 type decentralizerClient struct {
@@ -80,9 +143,9 @@ func NewDecentralizerClient(cc *grpc.ClientConn) DecentralizerClient {
 	return &decentralizerClient{cc}
 }
 
-func (c *decentralizerClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
-	out := new(HelloReply)
-	err := grpc.Invoke(ctx, "/pb.Decentralizer/SayHello", in, out, c.cc, opts...)
+func (c *decentralizerClient) RPCGetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error) {
+	out := new(GetServiceResponse)
+	err := grpc.Invoke(ctx, "/pb.Decentralizer/RPCGetService", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -92,28 +155,27 @@ func (c *decentralizerClient) SayHello(ctx context.Context, in *HelloRequest, op
 // Server API for Decentralizer service
 
 type DecentralizerServer interface {
-	// Sends a greeting
-	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+	RPCGetService(context.Context, *GetServiceRequest) (*GetServiceResponse, error)
 }
 
 func RegisterDecentralizerServer(s *grpc.Server, srv DecentralizerServer) {
 	s.RegisterService(&_Decentralizer_serviceDesc, srv)
 }
 
-func _Decentralizer_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
+func _Decentralizer_RPCGetService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServiceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DecentralizerServer).SayHello(ctx, in)
+		return srv.(DecentralizerServer).RPCGetService(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.Decentralizer/SayHello",
+		FullMethod: "/pb.Decentralizer/RPCGetService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DecentralizerServer).SayHello(ctx, req.(*HelloRequest))
+		return srv.(DecentralizerServer).RPCGetService(ctx, req.(*GetServiceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -123,25 +185,34 @@ var _Decentralizer_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*DecentralizerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _Decentralizer_SayHello_Handler,
+			MethodName: "RPCGetService",
+			Handler:    _Decentralizer_RPCGetService_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "rpc.proto",
 }
 
-func init() { proto.RegisterFile("rpc.proto", fileDescriptor1) }
+func init() { proto.RegisterFile("rpc.proto", fileDescriptor0) }
 
-var fileDescriptor1 = []byte{
-	// 143 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0xe2, 0x2c, 0x2a, 0x48, 0xd6,
-	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48, 0x52, 0x52, 0xe2, 0xe2, 0xf1, 0x48, 0xcd,
-	0xc9, 0xc9, 0x0f, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc,
-	0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x95, 0xd4, 0xb8, 0xb8, 0xa0, 0x6a,
-	0x0a, 0x72, 0x2a, 0x85, 0x24, 0xb8, 0xd8, 0x73, 0x53, 0x8b, 0x8b, 0x13, 0xd3, 0x61, 0x8a, 0x60,
-	0x5c, 0x23, 0x7b, 0x2e, 0x5e, 0x97, 0xd4, 0xe4, 0xd4, 0xbc, 0x92, 0xa2, 0xc4, 0x9c, 0xcc, 0xaa,
-	0xd4, 0x22, 0x21, 0x3d, 0x2e, 0x8e, 0xe0, 0xc4, 0x4a, 0xb0, 0x5e, 0x21, 0x01, 0xbd, 0x82, 0x24,
-	0x3d, 0x64, 0xab, 0xa4, 0xf8, 0x90, 0x44, 0x0a, 0x72, 0x2a, 0x95, 0x18, 0x92, 0xd8, 0xc0, 0xee,
-	0x32, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0xfe, 0x4a, 0x7a, 0x44, 0xa4, 0x00, 0x00, 0x00,
+var fileDescriptor0 = []byte{
+	// 280 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x64, 0x91, 0x41, 0x4b, 0xfb, 0x40,
+	0x14, 0xc4, 0xff, 0xbb, 0x49, 0xdb, 0x7f, 0x9e, 0x46, 0xf4, 0xa1, 0x12, 0x7a, 0x90, 0x90, 0x8b,
+	0x3d, 0x45, 0xa8, 0x17, 0xe9, 0x49, 0xb4, 0xa2, 0xc7, 0xba, 0x82, 0xf7, 0x24, 0x3e, 0x6c, 0x30,
+	0x24, 0xeb, 0xee, 0xa6, 0x50, 0xbf, 0x95, 0xdf, 0x50, 0x76, 0x93, 0x48, 0xd5, 0xdb, 0xcc, 0x6f,
+	0x07, 0xe6, 0x31, 0x0b, 0x81, 0x92, 0x45, 0x2a, 0x55, 0x63, 0x1a, 0xe4, 0x32, 0x4f, 0xce, 0xe1,
+	0xe8, 0x95, 0xcc, 0x13, 0xa9, 0x4d, 0x59, 0x90, 0xa0, 0xf7, 0x96, 0xb4, 0x41, 0x04, 0x7f, 0x9d,
+	0xe9, 0x75, 0xc4, 0x62, 0x36, 0x0b, 0x84, 0xd3, 0xc9, 0x33, 0xe0, 0x6e, 0x50, 0xcb, 0xa6, 0xd6,
+	0x84, 0x31, 0x8c, 0x15, 0xe9, 0xb6, 0x32, 0x2e, 0xbb, 0x37, 0xff, 0x9f, 0xca, 0x3c, 0x95, 0x44,
+	0x4a, 0xf4, 0x1c, 0xcf, 0x60, 0x64, 0xbd, 0x8e, 0x78, 0xec, 0xfd, 0x08, 0x74, 0x38, 0xf9, 0x64,
+	0xe0, 0x5b, 0x85, 0x07, 0xc0, 0x4b, 0xd9, 0x57, 0xf2, 0x52, 0xda, 0x23, 0x64, 0xa3, 0x4c, 0xc4,
+	0x63, 0x36, 0x0b, 0x85, 0xd3, 0x18, 0xc1, 0x44, 0xc9, 0x62, 0x65, 0xb1, 0xe7, 0xf0, 0x60, 0xf1,
+	0x02, 0x26, 0x2f, 0x64, 0xb2, 0xb2, 0xd2, 0x91, 0xef, 0x8a, 0x4e, 0x86, 0xa2, 0x74, 0xd9, 0xf1,
+	0xbb, 0xda, 0xa8, 0xad, 0x18, 0x52, 0xd3, 0x05, 0xec, 0xef, 0x3e, 0xe0, 0x21, 0x78, 0x6f, 0xb4,
+	0xed, 0xfb, 0xad, 0xc4, 0x63, 0x18, 0x6d, 0xb2, 0xaa, 0x25, 0x77, 0x41, 0x20, 0x3a, 0xb3, 0xe0,
+	0x57, 0x6c, 0xfe, 0x08, 0xe1, 0x92, 0x0a, 0xaa, 0x8d, 0xca, 0xaa, 0xf2, 0x83, 0x14, 0x5e, 0x43,
+	0x28, 0x56, 0xb7, 0xf7, 0xdf, 0xfb, 0xa0, 0x6b, 0xff, 0x33, 0xec, 0xf4, 0xf4, 0x37, 0xee, 0x66,
+	0x4c, 0xfe, 0xdd, 0xf0, 0x07, 0x96, 0x8f, 0xdd, 0xb7, 0x5c, 0x7e, 0x05, 0x00, 0x00, 0xff, 0xff,
+	0xd1, 0x6b, 0xc3, 0x8e, 0xa3, 0x01, 0x00, 0x00,
 }

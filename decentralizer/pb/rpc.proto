@@ -1,19 +1,35 @@
 syntax = "proto3";
-
+option optimize_for = SPEED;
 package pb;
 
 // The greeting service definition.
 service Decentralizer {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc RPCGetService (getServiceRequest) returns (getServiceResponse) {}
+
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+//// The request message containing the user's name.
+//message HelloRequest {
+//  string name = 1;
+//}
+//
+//// The response message containing the greetings
+//message HelloReply {
+//  string message = 1;
+//}
+
+message getServiceRequest {
+  string hash = 1;
 }
 
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
+message getServiceResponse {
+    peer result = 1;
+    repeated peer peers = 2;
+}
+
+message peer {
+  string ip = 1;
+  uint32 port = 2;
+  uint32 rpcPort = 3;
+  map<string, string> details = 4;
 }

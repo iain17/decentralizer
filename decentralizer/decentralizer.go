@@ -6,7 +6,6 @@ import (
 	"crypto/sha1"
 	logger "github.com/Sirupsen/logrus"
 	"time"
-	"net"
 )
 
 type Decentralizer interface {
@@ -20,7 +19,6 @@ type decentralizer struct {
 	introPort uint16
 	ip string
 	dht *dht.Server
-	introConn *net.UDPConn
 }
 
 func New() (Decentralizer, error) {
@@ -29,16 +27,10 @@ func New() (Decentralizer, error) {
 
 	}
 
-	//Setup intro server
-	err := instance.setupIntroServer()
-	if err != nil {
-		logger.Error("Could not setup intro server. This means you will not show up as a peer. You can only read!")
-		logger.Error(err)
-	}
-
 	//Setup RPC server
-	err = instance.listenRpcServer()
+	err := instance.listenRpcServer()
 	if err != nil {
+		logger.Error("Could not setup rpc server. This means you will not show up as a peer. You can only read!")
 		logger.Warn(err)
 	}
 
@@ -62,7 +54,7 @@ func (d *decentralizer) AddService(name string, port int32) error {
 		return errors.New("A service with that name already exists.")
 	}
 
-	self := NewPeer(d.ip, int32(d.rpcPort), port, map[string]interface{}{})
+	self := NewPeer(d.ip, int32(d.rpcPort), port, map[string]string{})
 	d.services[hash], err = newService(name, hash, self)
 	if err != nil {
 		return err
@@ -79,7 +71,7 @@ func (s *decentralizer) setupService(hash string, service *service) {
 	}
 	logger.Infof("Announcing %x", hash)
 	var err error
-	service.Announcement, err = s.dht.Announce(hash, int(s.introPort), true)
+	service.Announcement, err = s.dht.Announce(hash, int(s.rpcPort), false)
 	if err != nil {
 		logger.Warn(err)
 	}
@@ -91,7 +83,7 @@ func (s *decentralizer) setupService(hash string, service *service) {
 				break
 			}
 			for _, peer := range peers.Peers {
-				service.DiscoveredAddress(peer.IP, peer.Port, s.introConn)
+				service.DiscoveredAddress(peer.IP, peer.Port)
 			}
 
 		}

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	logger "github.com/Sirupsen/logrus"
 	"net"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -33,7 +34,18 @@ func (d *decentralizer) listenRpcServer() error {
 	return nil
 }
 
-// SayHello implements helloworld.GreeterServer
-func (d *decentralizer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
+func (d *decentralizer) RPCGetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.GetServiceResponse, error) {
+	service := d.services[req.Hash]
+	if service != nil {
+		return nil, errors.New("No such service registered under that hash")
+	}
+	return &pb.GetServiceResponse{
+		Result: &pb.Peer{
+			Ip: service.self.IP,
+			Port: uint32(service.self.Port),
+			RpcPort: uint32(service.self.RPCPort),
+			Details: service.self.Details,
+		},
+		//TODO others.
+	}, nil
 }
