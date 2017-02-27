@@ -5,6 +5,7 @@ import (
 	//logger "github.com/Sirupsen/logrus"
 	"github.com/anacrolix/dht"
 	"github.com/pkg/errors"
+	"net"
 )
 
 type service struct {
@@ -36,4 +37,8 @@ func (s *service) GetPeers() []*Peer {
 
 func (s *service) SetDetail(name string, value interface{}) {
 	s.self.Details[name] = value;
+}
+
+func (s *service) DiscoveredAddress(IP net.IP, Port int) {
+
 }

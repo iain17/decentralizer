@@ -6,6 +6,7 @@ import (
 	"errors"
 	"github.com/iain17/dht-hello/decentralizer/upnp"
 	"fmt"
+	"csgosquad/server/utils/logger"
 )
 
 //Returns a forwarded udp connection.
@@ -15,12 +16,13 @@ func getUdpConn() (*net.UDPConn, *stun.Host, error) {
 		return nil, nil, err
 	}
 	port := conn.LocalAddr().(*net.UDPAddr).Port
-	err = upnp.Open(port, port, "UDP")
+	err = upnp.Open(port, port, "udp")
 	if err != nil {
-		return nil, nil, err
+		logger.Warning(err)
 	}
 	nat, host, err := stun.NewClientWithConnection(conn).Discover()
-	if nat != stun.NATFull {
+	logger.Infof("Nat type is %s", nat.String())
+	if nat != stun.NATFull && nat != stun.NATNone {
 		return nil, nil, errors.New(nat.String())
 	}
 	conn.Close()
@@ -36,7 +38,7 @@ func getTcpConn() (net.Listener, error) {
 	}
 	//Forward the port
 	port := lis.Addr().(*net.TCPAddr).Port
-	err = upnp.Open(port, port, "TCP")
+	err = upnp.Open(port, port, "tcp")
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Could not forward TCP RPC server. %v", err))
 	}

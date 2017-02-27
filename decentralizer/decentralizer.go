@@ -31,11 +31,11 @@ func New() (Decentralizer, error) {
 	//Setup RPC server
 	err := instance.listenRpcServer()
 	if err != nil {
-		return nil, err
+		logger.Warn(err)
 	}
 
 	//Setup intro server
-	err = instance.listenIntroServer()
+	err = instance.setupIntroServer()
 	if err != nil {
 		return nil, err
 	}
@@ -67,6 +67,7 @@ func (d *decentralizer) AddService(name string, port int32) error {
 	return err
 }
 
+//TODO: Improve this whole situation.
 func (s *decentralizer) setupService(hash string, service *service) {
 
 	if service.Announcement != nil {
@@ -81,12 +82,12 @@ func (s *decentralizer) setupService(hash string, service *service) {
 
 	go func() {
 		for {
-			peers, ok := <-service.Announcement.Peers
+			_, ok := <-service.Announcement.Peers
 			if !ok {
 				logger.Debug("done!")
 				break
 			}
-			logger.Info(peers)
+
 		}
 	}()
 }
