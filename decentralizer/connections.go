@@ -6,7 +6,7 @@ import (
 	"errors"
 	"github.com/iain17/dht-hello/decentralizer/upnp"
 	"fmt"
-	"csgosquad/server/utils/logger"
+	logger "github.com/Sirupsen/logrus"
 )
 
 //Returns a forwarded udp connection.
@@ -21,7 +21,7 @@ func getUdpConn() (*net.UDPConn, *stun.Host, error) {
 		logger.Warning(err)
 	}
 	nat, host, err := stun.NewClientWithConnection(conn).Discover()
-	logger.Infof("Nat type is %s", nat.String())
+	logger.Infof("Nat type is %s, %s", nat.String(), conn.LocalAddr().(*net.UDPAddr).String())
 	if nat != stun.NATFull && nat != stun.NATNone {
 		return nil, nil, errors.New(nat.String())
 	}

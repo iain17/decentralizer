@@ -19,7 +19,6 @@ func init() {
 		initErr = err
 		return
 	}
-	logger.Infof("Gateway found %s", gatewayIP.String())
 	natpmpClient = natpmp.NewClientWithTimeout(gatewayIP, 3 * time.Second)
 
 	//upnp
@@ -29,6 +28,7 @@ func init() {
 func Open(localPort, remotePort int, protocol string) error {
 	err := openUpnp(localPort, remotePort, protocol)
 	if err != nil {
+		logger.Warn(err)
 		err = openNatpmp(localPort, remotePort, protocol)
 	}
 	if err == nil {

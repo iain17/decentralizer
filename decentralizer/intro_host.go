@@ -19,7 +19,8 @@ func (d *decentralizer) setupIntroServer() error {
 	d.introPort = uint16(port)
 	d.ip = host.IP()
 	logger.Infof("Intro server listening at %d", port)
-	go d.listenIntroServer(conn)
+	d.introConn = conn
+	go d.listenIntroServer(d.introConn)
 	return nil
 }
 

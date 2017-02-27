@@ -3,9 +3,10 @@ package decentralizer
 import (
 	"github.com/pkg/errors"
 	"github.com/anacrolix/dht"
-	"net"
 	"crypto/sha1"
 	logger "github.com/Sirupsen/logrus"
+	"time"
+	"net"
 )
 
 type Decentralizer interface {
@@ -19,7 +20,6 @@ type decentralizer struct {
 	introPort uint16
 	ip string
 	dht *dht.Server
-
 	introConn *net.UDPConn
 }
 
@@ -28,23 +28,27 @@ func New() (Decentralizer, error) {
 		services: services{},
 
 	}
-	//Setup RPC server
-	err := instance.listenRpcServer()
-	if err != nil {
-		logger.Warn(err)
-	}
 
 	//Setup intro server
-	err = instance.setupIntroServer()
+	err := instance.setupIntroServer()
 	if err != nil {
-		return nil, err
+		logger.Error("Could not setup intro server. This means you will not show up as a peer. You can only read!")
+		logger.Error(err)
+	}
+
+	//Setup RPC server
+	err = instance.listenRpcServer()
+	if err != nil {
+		logger.Warn(err)
 	}
 
 	//Setup Dht server
 	err = instance.setupDht()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
+
+	logger.Info("Setup process finished.")
 
 	return instance, nil
 }
@@ -59,7 +63,7 @@ func (d *decentralizer) AddService(name string, port int32) error {
 	}
 
 	self := NewPeer(d.ip, int32(d.rpcPort), port, map[string]interface{}{})
-	d.services[hash], err = newService(name, self)
+	d.services[hash], err = newService(name, hash, self)
 	if err != nil {
 		return err
 	}
@@ -82,12 +86,18 @@ func (s *decentralizer) setupService(hash string, service *service) {
 
 	go func() {
 		for {
-			_, ok := <-service.Announcement.Peers
+			peers, ok := <-service.Announcement.Peers
 			if !ok {
-				logger.Debug("done!")
 				break
 			}
+			for _, peer := range peers.Peers {
+				service.DiscoveredAddress(peer.IP, peer.Port, s.introConn)
+			}
 
+		}
+		if service.running {
+			time.Sleep(1 * time.Second)
+			s.setupService(hash, service)
 		}
 	}()
 }
