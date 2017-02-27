@@ -34,18 +34,14 @@ func (d *decentralizer) listenRpcServer() error {
 	return nil
 }
 
+//TODO: Do all of this with UDP instead? Faster? Worth it?
 func (d *decentralizer) RPCGetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.GetServiceResponse, error) {
 	service := d.services[req.Hash]
-	if service != nil {
+	if service == nil {
 		return nil, errors.New("No such service registered under that hash")
 	}
 	return &pb.GetServiceResponse{
-		Result: &pb.Peer{
-			Ip: service.self.IP,
-			Port: uint32(service.self.Port),
-			RpcPort: uint32(service.self.RPCPort),
-			Details: service.self.Details,
-		},
-		//TODO others.
+		Result: service.self.Peer,
+		Peers: service.GetPeers(),
 	}, nil
 }

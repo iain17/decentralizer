@@ -6,10 +6,12 @@ import (
 	"crypto/sha1"
 	logger "github.com/Sirupsen/logrus"
 	"time"
+	"google.golang.org/grpc/grpclog"
+	"io/ioutil"
 )
 
 type Decentralizer interface {
-	AddService(name string, port int32) error
+	AddService(name string, port uint32) error
 	GetService(name string) *service
 }
 
@@ -19,6 +21,12 @@ type decentralizer struct {
 	introPort uint16
 	ip string
 	dht *dht.Server
+}
+
+func init() {
+	grpcLogger := logger.New()
+	grpcLogger.Out = ioutil.Discard
+	grpclog.SetLogger(grpclog.Logger(grpcLogger))
 }
 
 func New() (Decentralizer, error) {
@@ -45,7 +53,7 @@ func New() (Decentralizer, error) {
 	return instance, nil
 }
 
-func (d *decentralizer) AddService(name string, port int32) error {
+func (d *decentralizer) AddService(name string, port uint32) error {
 	hash, err := getHash(name)
 	if err != nil {
 		return err
@@ -54,7 +62,7 @@ func (d *decentralizer) AddService(name string, port int32) error {
 		return errors.New("A service with that name already exists.")
 	}
 
-	self := NewPeer(d.ip, int32(d.rpcPort), port, map[string]string{})
+	self := NewPeer(d.ip, uint32(d.rpcPort), port, map[string]string{})
 	d.services[hash], err = newService(name, hash, self)
 	if err != nil {
 		return err
@@ -75,7 +83,6 @@ func (s *decentralizer) setupService(hash string, service *service) {
 	if err != nil {
 		logger.Warn(err)
 	}
-
 	go func() {
 		for {
 			peers, ok := <-service.Announcement.Peers
@@ -83,12 +90,12 @@ func (s *decentralizer) setupService(hash string, service *service) {
 				break
 			}
 			for _, peer := range peers.Peers {
-				service.DiscoveredAddress(peer.IP, peer.Port)
+				service.DiscoveredAddress(peer.IP, uint32(peer.Port))
 			}
 
 		}
 		if service.running {
-			time.Sleep(1 * time.Second)
+			time.Sleep(5 * time.Second)
 			s.setupService(hash, service)
 		}
 	}()

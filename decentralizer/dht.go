@@ -10,10 +10,11 @@ import (
 
 func (d *decentralizer) setupDht() error {
 	var err error
-	conn, _, err := getUdpConn()
+	conn, host, err := getUdpConn()
 	if err != nil {
 		return err
 	}
+	d.ip = host.IP()
 	d.dht, err = dht.NewServer(&dht.ServerConfig{
 		Conn: conn,//Use the forwarded udp connection.
 		OnQuery: d.onQuery,
