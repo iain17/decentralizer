@@ -23,7 +23,7 @@ func getUdpConn() (*net.UDPConn, *stun.Host, error) {
 	nat, host, err := stun.NewClientWithConnection(conn).Discover()
 	logger.Infof("Nat type is %s, %s", nat.String(), conn.LocalAddr().(*net.UDPAddr).String())
 	if nat != stun.NATFull && nat != stun.NATNone {
-		return nil, nil, errors.New(nat.String())
+		logger.Warn(errors.New("Could not forward UDP connection"+nat.String()))
 	}
 	conn.Close()
 	conn, err = net.ListenUDP("udp", conn.LocalAddr().(*net.UDPAddr))
