@@ -113,3 +113,10 @@ func (s *service) introduce(IP net.IP, address string) {
 		s.DiscoveredAddress(ip, peer.Port)
 	}
 }
+
+func (s *service) stop() {
+	s.running = false
+	if s.Announcement != nil {
+		s.Announcement.Close()
+	}
+}

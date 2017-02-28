@@ -21,7 +21,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewDhtAPI(swaggerSpec)
+	api := operations.NewDecentralizerAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 

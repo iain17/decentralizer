@@ -13,6 +13,7 @@ import (
 type Decentralizer interface {
 	AddService(name string, port uint32) error
 	GetService(name string) *service
+	StopService(name string) error
 }
 
 type decentralizer struct {
@@ -120,4 +121,19 @@ func (d *decentralizer) GetService(name string) *service {
 	}
 
 	return d.services[hash]
+}
+
+func (d *decentralizer) StopService(name string) error {
+	hash, err := getHash(name)
+	if err != nil {
+		logger.Error(err)
+		return nil
+	}
+
+	if d.services[hash] == nil {
+		return errors.New("No service found")
+	}
+	d.services[hash].stop()
+	delete(d.services, hash)
+	return nil
 }

@@ -4,7 +4,6 @@ import (
 	logger "github.com/Sirupsen/logrus"
 	"os"
 	"github.com/iain17/decentralizer/decentralizer"
-	"time"
 )
 
 var dService decentralizer.Decentralizer
@@ -17,13 +16,4 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
-	err = dService.AddService("iain", 0)
-	if err != nil {
-		panic(err)
-	}
-	service := dService.GetService("iain")
-	service.SetDetail("cool", "1")
-	service.SetDetail("Time started", time.Now().String())
-	service.SetDetail("dedicated", "1")
 }

@@ -5,6 +5,7 @@ package models
 
 import (
 	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/validate"
@@ -15,7 +16,7 @@ import (
 type Peer struct {
 
 	// Anything. All the details the peer wants to mention to others.
-	Details interface{} `json:"details,omitempty"`
+	Details []*Detail `json:"details"`
 
 	// The IP address of the peer
 	// Required: true
@@ -32,6 +33,11 @@ type Peer struct {
 func (m *Peer) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateDetails(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateIP(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -45,6 +51,30 @@ func (m *Peer) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *Peer) validateDetails(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Details) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Details); i++ {
+
+		if swag.IsZero(m.Details[i]) { // not required
+			continue
+		}
+
+		if m.Details[i] != nil {
+
+			if err := m.Details[i].Validate(formats); err != nil {
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 

@@ -6,7 +6,6 @@ import (
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
-	middleware "github.com/go-openapi/runtime/middleware"
 	graceful "github.com/tylerb/graceful"
 
 	"github.com/iain17/decentralizer/service/restapi/operations"
@@ -15,13 +14,13 @@ import (
 
 // This file is safe to edit. Once it exists it will not be overwritten
 
-//go:generate swagger generate server --target .. --name dht --spec ../../swagger.yml
+//go:generate swagger generate server --target .. --name decentralizer --spec ../../swagger.yml
 
-func configureFlags(api *operations.DhtAPI) {
+func configureFlags(api *operations.DecentralizerAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.DhtAPI) http.Handler {
+func configureAPI(api *operations.DecentralizerAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -36,12 +35,8 @@ func configureAPI(api *operations.DhtAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.GetPeersHandler = operations.GetPeersHandlerFunc(handlers.GetPeers)
-	api.StartSearchHandler = operations.StartSearchHandlerFunc(func(params operations.StartSearchParams) middleware.Responder {
-		return middleware.NotImplemented("operation .StartSearch has not yet been implemented")
-	})
-	api.StopSearchHandler = operations.StopSearchHandlerFunc(func(params operations.StopSearchParams) middleware.Responder {
-		return middleware.NotImplemented("operation .StopSearch has not yet been implemented")
-	})
+	api.StartSearchHandler = operations.StartSearchHandlerFunc(handlers.StartSearch)
+	api.StopSearchHandler = operations.StopSearchHandlerFunc(handlers.StopSearch)
 
 	api.ServerShutdown = func() {}
 

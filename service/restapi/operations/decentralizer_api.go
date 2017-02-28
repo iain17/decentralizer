@@ -16,9 +16,9 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewDhtAPI creates a new Dht instance
-func NewDhtAPI(spec *loads.Document) *DhtAPI {
-	return &DhtAPI{
+// NewDecentralizerAPI creates a new Decentralizer instance
+func NewDecentralizerAPI(spec *loads.Document) *DecentralizerAPI {
+	return &DecentralizerAPI{
 		handlers:        make(map[string]map[string]http.Handler),
 		formats:         strfmt.Default,
 		defaultConsumes: "application/json",
@@ -28,8 +28,8 @@ func NewDhtAPI(spec *loads.Document) *DhtAPI {
 	}
 }
 
-/*DhtAPI the dht API */
-type DhtAPI struct {
+/*DecentralizerAPI the decentralizer API */
+type DecentralizerAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -66,42 +66,42 @@ type DhtAPI struct {
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *DhtAPI) SetDefaultProduces(mediaType string) {
+func (o *DecentralizerAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *DhtAPI) SetDefaultConsumes(mediaType string) {
+func (o *DecentralizerAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *DhtAPI) SetSpec(spec *loads.Document) {
+func (o *DecentralizerAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *DhtAPI) DefaultProduces() string {
+func (o *DecentralizerAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *DhtAPI) DefaultConsumes() string {
+func (o *DecentralizerAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *DhtAPI) Formats() strfmt.Registry {
+func (o *DecentralizerAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *DhtAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *DecentralizerAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the DhtAPI
-func (o *DhtAPI) Validate() error {
+// Validate validates the registrations in the DecentralizerAPI
+func (o *DecentralizerAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -132,19 +132,19 @@ func (o *DhtAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *DhtAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *DecentralizerAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *DhtAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *DecentralizerAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 
 	return nil
 
 }
 
 // ConsumersFor gets the consumers for the specified media types
-func (o *DhtAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *DecentralizerAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 
 	result := make(map[string]runtime.Consumer)
 	for _, mt := range mediaTypes {
@@ -160,7 +160,7 @@ func (o *DhtAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 }
 
 // ProducersFor gets the producers for the specified media types
-func (o *DhtAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *DecentralizerAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 
 	result := make(map[string]runtime.Producer)
 	for _, mt := range mediaTypes {
@@ -176,7 +176,7 @@ func (o *DhtAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *DhtAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *DecentralizerAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -188,8 +188,8 @@ func (o *DhtAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-// Context returns the middleware context for the dht API
-func (o *DhtAPI) Context() *middleware.Context {
+// Context returns the middleware context for the decentralizer API
+func (o *DecentralizerAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -197,7 +197,7 @@ func (o *DhtAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *DhtAPI) initHandlerCache() {
+func (o *DecentralizerAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 
 	if o.handlers == nil {
@@ -223,7 +223,7 @@ func (o *DhtAPI) initHandlerCache() {
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *DhtAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *DecentralizerAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -233,7 +233,7 @@ func (o *DhtAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middelware as you see fit
-func (o *DhtAPI) Init() {
+func (o *DecentralizerAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}

@@ -3,28 +3,33 @@ package handlers
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/iain17/decentralizer/service/restapi/operations"
-	//"github.com/iain17/decentralizer/service/models"
-	//"github.com/go-openapi/swag"
-	//"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
+	"github.com/iain17/decentralizer/service/models"
+	"github.com/go-openapi/swag"
 )
 
 func GetPeers(params operations.GetPeersParams) middleware.Responder {
-
-	//service := service.GetService(params.Identifier)
-	return middleware.NotImplemented("sorry")
-
-	//peers, err := dht.GetClients(params.Identifier)
-	//if err != nil {
-	//	return operations.NewGetPeersDefault(int(err.Code())).WithPayload(&models.Error{
-	//		Message: swag.String(err.Error()),
-	//	})
-	//}
-	//results := models.Peers{}
-	//for _, peer := range peers {
-	//	results = append(results, &models.Peer{
-	//		IP: strfmt.IPv4(peer.IP.String()),
-	//		Port: int32(peer.Port),
-	//	})
-	//}
-	//return operations.NewGetPeersOK().WithPayload(results)
+	service := dService.GetService(params.AppName)
+	if service != nil {
+		return operations.NewGetPeersDefault(404).WithPayload(&models.Error{
+			Message: swag.String("Service does not exist."),
+		})
+	}
+	peers := service.GetPeers()
+	results := models.Peers{}
+	for _, peer := range peers {
+		var details []*models.Detail
+		for key, value := range peer.Details {
+			details = append(details, &models.Detail{
+				Name: key,
+				Value: value,
+			})
+		}
+		results = append(results, &models.Peer{
+			Details: details,
+			IP: strfmt.IPv4(peer.Ip),
+			Port: int32(peer.Port),
+		})
+	}
+	return operations.NewGetPeersOK().WithPayload(results)
 }

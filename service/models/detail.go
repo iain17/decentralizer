@@ -17,7 +17,7 @@ type Detail struct {
 	Name string `json:"name,omitempty"`
 
 	// value
-	Value interface{} `json:"value,omitempty"`
+	Value string `json:"value,omitempty"`
 }
 
 // Validate validates this detail

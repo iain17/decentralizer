@@ -106,14 +106,15 @@ definitions:
         description: The port of the peer's service.
       details:
         description: Anything. All the details the peer wants to mention to others.
-        schema:
-          $ref: '#/definitions/Details'
+        type: array
+        items:
+          $ref: '#/definitions/Detail'
   Detail:
     properties:
       name:
         type: string
       value:
-        type: object
+        type: string
   Peers:
     type: array
     items:
