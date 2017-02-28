@@ -4,7 +4,7 @@ import (
 	"github.com/ccding/go-stun/stun"
 	"net"
 	"errors"
-	"github.com/iain17/dht-hello/decentralizer/upnp"
+	"github.com/iain17/decentralizer/decentralizer/upnp"
 	"fmt"
 	logger "github.com/Sirupsen/logrus"
 )

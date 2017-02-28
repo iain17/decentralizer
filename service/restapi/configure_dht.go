@@ -9,8 +9,8 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	graceful "github.com/tylerb/graceful"
 
-	"github.com/iain17/dht-hello/service/restapi/operations"
-	"github.com/iain17/dht-hello/api/handlers"
+	"github.com/iain17/decentralizer/service/restapi/operations"
+	"github.com/iain17/decentralizer/api/handlers"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten

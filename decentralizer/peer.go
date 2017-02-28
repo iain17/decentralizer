@@ -1,7 +1,7 @@
 package decentralizer
 
 import (
-	"github.com/iain17/dht-hello/decentralizer/pb"
+	"github.com/iain17/decentralizer/decentralizer/pb"
 	"strconv"
 	"time"
 )

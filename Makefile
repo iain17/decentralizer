@@ -1,6 +1,6 @@
 build:
-	GOOS=linux GOARCH=amd64 go build -o bin/dht-hello service/cmd/dht-server/main.go
-	GOOS=windows GOARCH=amd64 go build -o bin/dht-hello.exe service/cmd/dht-server/main.go
+	GOOS=linux GOARCH=amd64 go build -o bin/decentralizer service/cmd/dht-server/main.go
+	GOOS=windows GOARCH=amd64 go build -o bin/decentralizer.exe service/cmd/dht-server/main.go
 
 run:
 	go run service/cmd/dht-server/main.go --port 8080

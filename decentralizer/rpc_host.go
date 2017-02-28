@@ -2,7 +2,7 @@ package decentralizer
 
 import (
 	"golang.org/x/net/context"
-	"github.com/iain17/dht-hello/decentralizer/pb"
+	"github.com/iain17/decentralizer/decentralizer/pb"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc"
 	"fmt"

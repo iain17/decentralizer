@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/iain17/dht-hello/service/restapi/operations"
+	"github.com/iain17/decentralizer/service/restapi/operations"
 )
 
 func StopSearch(params operations.StopSearchParams) middleware.Responder {

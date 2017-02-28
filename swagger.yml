@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: dht-hello
+  title: decentralizer
 host: 127.0.0.1
 basePath: /
 schemes:

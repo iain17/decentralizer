@@ -17,7 +17,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	graceful "github.com/tylerb/graceful"
 
-	"github.com/iain17/dht-hello/service/restapi/operations"
+	"github.com/iain17/decentralizer/service/restapi/operations"
 )
 
 const (

@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/iain17/dht-hello/service/restapi/operations"
-	//"github.com/iain17/dht-hello/service/models"
+	"github.com/iain17/decentralizer/service/restapi/operations"
+	//"github.com/iain17/decentralizer/service/models"
 	//"github.com/go-openapi/swag"
 	//"github.com/go-openapi/strfmt"
 )

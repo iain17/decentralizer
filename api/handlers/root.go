@@ -3,7 +3,7 @@ package handlers
 import (
 	logger "github.com/Sirupsen/logrus"
 	"os"
-	"github.com/iain17/dht-hello/decentralizer"
+	"github.com/iain17/decentralizer/decentralizer"
 	"time"
 )
 

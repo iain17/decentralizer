@@ -9,7 +9,7 @@ import (
 	"time"
 	"strconv"
 	"google.golang.org/grpc"
-	"github.com/iain17/dht-hello/decentralizer/pb"
+	"github.com/iain17/decentralizer/decentralizer/pb"
 	"golang.org/x/net/context"
 )
 

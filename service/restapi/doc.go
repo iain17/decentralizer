@@ -1,4 +1,4 @@
-/*Package restapi dht-hello
+/*Package restapi decentralizer
 
     Schemes:
       http
