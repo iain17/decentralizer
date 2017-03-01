@@ -3,20 +3,9 @@ option optimize_for = SPEED;
 package pb;
 
 // The greeting service definition.
-service Decentralizer {
+service rpc {
   rpc RPCGetService (getServiceRequest) returns (getServiceResponse) {}
-
 }
-
-//// The request message containing the user's name.
-//message HelloRequest {
-//  string name = 1;
-//}
-//
-//// The response message containing the greetings
-//message HelloReply {
-//  string message = 1;
-//}
 
 message getServiceRequest {
   string hash = 1;
@@ -28,8 +17,8 @@ message getServiceResponse {
 }
 
 message peer {
-  string ip = 1;
-  uint32 port = 2;
-  uint32 rpcPort = 3;
-  map<string, string> details = 4;
+    string ip = 1;
+    uint32 port = 2;
+    uint32 rpcPort = 3;
+    map<string, string> details = 4;
 }
