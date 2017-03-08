@@ -1,0 +1,78 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		2721387F1E70CB8D00180B0D /* decentralizer.grpc.pb.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = decentralizer.grpc.pb.cc; sourceTree = "<group>"; };
+		272138801E70CB8D00180B0D /* decentralizer.grpc.pb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = decentralizer.grpc.pb.h; sourceTree = "<group>"; };
+		272138811E70CB8D00180B0D /* decentralizer.pb.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = decentralizer.pb.cc; sourceTree = "<group>"; };
+		272138821E70CB8D00180B0D /* decentralizer.pb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = decentralizer.pb.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		272138781E70CB7200180B0D = {
+			isa = PBXGroup;
+			children = (
+				2721387F1E70CB8D00180B0D /* decentralizer.grpc.pb.cc */,
+				272138801E70CB8D00180B0D /* decentralizer.grpc.pb.h */,
+				272138811E70CB8D00180B0D /* decentralizer.pb.cc */,
+				272138821E70CB8D00180B0D /* decentralizer.pb.h */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		272138791E70CB7200180B0D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+			};
+			buildConfigurationList = 2721387C1E70CB7200180B0D /* Build configuration list for PBXProject "decentralizer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 272138781E70CB7200180B0D;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		2721387D1E70CB7200180B0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		2721387E1E70CB7200180B0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2721387C1E70CB7200180B0D /* Build configuration list for PBXProject "decentralizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2721387D1E70CB7200180B0D /* Debug */,
+				2721387E1E70CB7200180B0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 272138791E70CB7200180B0D /* Project object */;
+}

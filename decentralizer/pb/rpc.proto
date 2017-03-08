@@ -1,6 +1,7 @@
 syntax = "proto3";
 option optimize_for = SPEED;
 package pb;
+import "models.proto";
 
 // The greeting service definition.
 service rpc {
@@ -14,11 +15,4 @@ message getServiceRequest {
 message getServiceResponse {
     peer result = 1;
     repeated peer peers = 2;
-}
-
-message peer {
-    string ip = 1;
-    uint32 port = 2;
-    uint32 rpcPort = 3;
-    map<string, string> details = 4;
 }

@@ -94,7 +94,7 @@ func (s *service) introduce(IP net.IP, address string) {
 		return
 	}
 	defer conn.Close()
-	c := pb.NewDecentralizerClient(conn)
+	c := pb.NewRpcClient(conn)
 	res, err := c.RPCGetService(context.Background(), &pb.GetServiceRequest{
 		Hash: s.hash,
 	})

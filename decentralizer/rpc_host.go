@@ -21,7 +21,7 @@ func (d *decentralizer) listenRpcServer() error {
 	}
 	port := lis.Addr().(*net.TCPAddr).Port
 	s := grpc.NewServer()
-	pb.RegisterDecentralizerServer(s, d)
+	pb.RegisterRpcServer(s, d)
 	reflection.Register(s)
 	d.rpcPort = uint16(port)
 
