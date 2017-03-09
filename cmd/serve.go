@@ -26,9 +26,8 @@ func run(cmd *cobra.Command, args []string) {
 	logger.SetLevel(logger.DebugLevel)
 
 	//Components
-	go serve.Serve(addr)
-
-	logger.Info("Server is up and running.")
+	go serve.Serve(addr, typeService == "http")
+	logger.Infof("Protobuf server listening at %s", addr)
 
 	select {}
 }
@@ -36,5 +35,5 @@ func run(cmd *cobra.Command, args []string) {
 func init() {
 	RootCmd.AddCommand(serveCmd)
 	serveCmd.PersistentFlags().StringVarP(&addr,"listen", "l", ":8080", "The network interface and port to listen on. Default :8080")
-	serveCmd.PersistentFlags().StringVarP(&typeService,"type", "t", "proto", "The choice of how you'd like to interact with the service. Proto or HTTP")
+	serveCmd.PersistentFlags().StringVarP(&typeService,"type", "t", "http", "The choice of how you'd like to interact with the service. Proto or HTTP")
 }

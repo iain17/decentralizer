@@ -1,9 +1,9 @@
 package serve
 
 import (
-	"net"
 	logger "github.com/Sirupsen/logrus"
 	desc "github.com/iain17/decentralizer/decentralizer"
+	"net"
 )
 
 var service desc.Decentralizer
@@ -16,16 +16,20 @@ func setup() {
 	}
 }
 
-func Serve(addr string) {
+func Serve(addr string, http bool) {
 	if service == nil {
 		setup()
 	}
-
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		panic(err)
 	}
-	go serveGrpc(lis)
+
+	if http {
+		go serveHttp(lis)
+	} else {
+		go serveGrpc(lis)
+	}
 	logger.Infof("Protobuf server listening at %s", addr)
 	//TODO: Apart from protobuf, grpc. Could we add a simple http api?
 }
