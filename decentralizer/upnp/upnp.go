@@ -5,7 +5,7 @@ import (
 	natpmp "github.com/jackpal/go-nat-pmp"
 	"github.com/scottjg/upnp"
 	logger "github.com/Sirupsen/logrus"
-	"time"
+	//"time"
 	"strings"
 )
 
@@ -19,7 +19,7 @@ func init() {
 		initErr = err
 		return
 	}
-	natpmpClient = natpmp.NewClientWithTimeout(gatewayIP, 3 * time.Second)
+	natpmpClient = natpmp.NewClient(gatewayIP)//NewClientWithTimeout 3 * time.Second
 
 	//upnp
 	upnpClient = new(upnp.Upnp)

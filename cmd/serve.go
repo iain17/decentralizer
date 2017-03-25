@@ -17,8 +17,8 @@ var serveCmd = &cobra.Command{
 
 var (
 	// Addr is the server listen address.
-	addr string
-	typeService string
+	httpListen string
+	protoListen string
 )
 
 func run(cmd *cobra.Command, args []string) {
@@ -26,15 +26,15 @@ func run(cmd *cobra.Command, args []string) {
 	logger.SetLevel(logger.DebugLevel)
 
 	//Components
-	go serve.Serve(addr)
-
-	logger.Info("Server is up and running.")
+	serve.Setup()
+	go serve.ServeHttp(httpListen)
+	go serve.ServeGrpc(protoListen)
 
 	select {}
 }
 
 func init() {
+	serveCmd.Flags().StringVarP(&httpListen,"httpListen", "", "127.0.0.1:8080", "The network interface and port that the http server will listen on. Default 127.0.0.1:8080")
+	serveCmd.Flags().StringVarP(&protoListen,"ProtoListen", "", "127.0.0.1:8081", "The network interface and port that the protobuf server will listen on. Default 127.0.0.1:8081")
 	RootCmd.AddCommand(serveCmd)
-	serveCmd.PersistentFlags().StringVarP(&addr,"listen", "l", ":8080", "The network interface and port to listen on. Default :8080")
-	serveCmd.PersistentFlags().StringVarP(&typeService,"type", "t", "proto", "The choice of how you'd like to interact with the service. Proto or HTTP")
 }

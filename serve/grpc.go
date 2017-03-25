@@ -7,13 +7,19 @@ import (
 	"net"
 	"golang.org/x/net/context"
 	"github.com/pkg/errors"
+	logger "github.com/Sirupsen/logrus"
 )
 
 type decentralizer struct {
 
 }
 
-func serveGrpc(lis net.Listener) pb.DecentralizerServer {
+func ServeGrpc(addr string) pb.DecentralizerServer {
+	lis, err := net.Listen("tcp", addr)
+	if err != nil {
+		panic(err)
+	}
+
 	instance := &decentralizer{
 
 	}
@@ -21,6 +27,7 @@ func serveGrpc(lis net.Listener) pb.DecentralizerServer {
 	pb.RegisterDecentralizerServer(s, instance)
 	reflection.Register(s)
 
+	logger.Infof("Protobuf server listening at %s", addr)
 	if err := s.Serve(lis); err != nil {
 		panic(err)
 	}

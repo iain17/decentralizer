@@ -52,7 +52,7 @@ func (s *service) GetPeers() []*pb.Peer {
 		peers = append(peers, peer.Peer)
 		i++
 	}
-	return nil
+	return peers
 }
 
 func (s *service) SetDetail(name string, value string) {
@@ -116,6 +116,7 @@ func (s *service) introduce(IP net.IP, address string) {
 
 func (s *service) stop() {
 	s.running = false
+	logger.Infof("Stopping %s", s.name)
 	if s.Announcement != nil {
 		s.Announcement.Close()
 	}
