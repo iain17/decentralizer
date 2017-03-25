@@ -92,7 +92,6 @@ void protobuf_InitDefaults_models_2eproto_impl() {
 
   ::google::protobuf::internal::GetEmptyString();
   peer_default_instance_.DefaultConstruct();
-  ::google::protobuf::internal::GetEmptyString();
   peer_default_instance_.get_mutable()->InitAsDefaultInstance();
 }
 

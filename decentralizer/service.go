@@ -20,6 +20,8 @@ type service struct {
 	Announcement *dht.Announce
 	self *Peer
 	peers map[string]*Peer
+	//Initial map. Used for map a address to a time we queried it.
+	//Only used at the very first stage.
 	seen map[string]time.Time
 }
 
@@ -42,14 +44,19 @@ func newService(name, hash string, peer *Peer) (*service, error) {
 
 func (s *service) GetPeers() []*pb.Peer {
 	var peers []*pb.Peer
-	i := 0
-	for _, peer := range s.peers {
+	for key, peer := range s.peers {
 		//TODO make this a parameter.
-		if i >= 100 {
+		if len(peers) >= 100 {
 			break
 		}
+		//expired
+		diff := time.Now().Sub(peer.seen)
+		if diff > time.Duration(45 * time.Second) {
+			delete(s.peers, key)
+			continue
+		}
+
 		peers = append(peers, peer.Peer)
-		i++
 	}
 	return peers
 }
@@ -65,10 +72,11 @@ func (s *service) PeerDiscovered(pbPeer *pb.Peer) {
 	}
 	key := peer.GetKey()
 	if s.peers[key] == nil {
+		logger.Infof("Discovered %s", key)
 		s.peers[key] = &peer
 	}
 	s.peers[key].seen = peer.seen
-	logger.Infof("Discovered %s", key)
+
 	for key, value := range s.peers[key].Details {
 		logger.Infof("Detail: %s = %s", key, value)
 	}
@@ -77,7 +85,7 @@ func (s *service) PeerDiscovered(pbPeer *pb.Peer) {
 func (s *service) DiscoveredAddress(IP net.IP, Port uint32) {
 	address := IP.String() + ":" + strconv.Itoa(int(Port))
 	diff := time.Now().Sub(s.seen[address])
-	if diff < time.Duration(30 * time.Second) {
+	if diff < time.Duration(15 * time.Second) {
 		return
 	}
 	s.seen[address] = time.Now()
@@ -86,7 +94,7 @@ func (s *service) DiscoveredAddress(IP net.IP, Port uint32) {
 
 //TODO: queue? Only x amount of outgoing connections?
 func (s *service) introduce(IP net.IP, address string) {
-	res, err := getService(address, s.hash)
+	res, err := s.getService(address)
 	if err != nil {
 		logger.Warn(err)
 		return

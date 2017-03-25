@@ -68,20 +68,24 @@ func (s *rpcServer) GetService(args *pb.GetServiceRequest, reply *pb.GetServiceR
 	if service == nil {
 		return errors.New("No such service registered under that hash")
 	}
+	if(args.Me != nil) {
+		service.PeerDiscovered(args.Me)
+	}
 	reply.Result = service.self.Peer
 	reply.Peers = service.GetPeers()
 	return nil
 }
 
-func getService(addr string, hash string) (*pb.GetServiceResponse, error) {
-	//Todo put this in the rpc struct?
-	s := &rpcx.DirectClientSelector{Network: "kcp", Address: addr}
-	client := rpcx.NewClient(s)
+func (s *service) getService(addr string) (*pb.GetServiceResponse, error) {
+	//TODO: Make global DirectClientSelector?
+	ss := &rpcx.DirectClientSelector{Network: "kcp", Address: addr}
+	client := rpcx.NewClient(ss)
 	client.Block = bc
 	defer client.Close()
 
 	args := &pb.GetServiceRequest{
-		Hash: hash,
+		Me: s.self.Peer,
+		Hash: s.hash,
 	}
 	var reply pb.GetServiceResponse
 	err := client.Call("Decentralizer.GetService", args, &reply)

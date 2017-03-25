@@ -9,7 +9,8 @@ service rpc {
 }
 
 message getServiceRequest {
-  string hash = 1;
+    peer me = 1;
+    string hash = 2;
 }
 
 message getServiceResponse {
