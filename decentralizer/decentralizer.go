@@ -6,8 +6,6 @@ import (
 	"crypto/sha1"
 	logger "github.com/Sirupsen/logrus"
 	"time"
-	"google.golang.org/grpc/grpclog"
-	"io/ioutil"
 )
 
 type Decentralizer interface {
@@ -22,12 +20,6 @@ type decentralizer struct {
 	introPort uint16
 	ip string
 	dht *dht.Server
-}
-
-func init() {
-	grpcLogger := logger.New()
-	grpcLogger.Out = ioutil.Discard
-	grpclog.SetLogger(grpclog.Logger(grpcLogger))
 }
 
 func New() (Decentralizer, error) {

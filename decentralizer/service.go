@@ -8,9 +8,7 @@ import (
 	"net"
 	"time"
 	"strconv"
-	"google.golang.org/grpc"
 	"github.com/iain17/decentralizer/decentralizer/pb"
-	"golang.org/x/net/context"
 )
 
 type service struct {
@@ -46,6 +44,7 @@ func (s *service) GetPeers() []*pb.Peer {
 	var peers []*pb.Peer
 	i := 0
 	for _, peer := range s.peers {
+		//TODO make this a parameter.
 		if i >= 100 {
 			break
 		}
@@ -87,21 +86,12 @@ func (s *service) DiscoveredAddress(IP net.IP, Port uint32) {
 
 //TODO: queue? Only x amount of outgoing connections?
 func (s *service) introduce(IP net.IP, address string) {
-	// Set up a connection to the server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithTimeout(1 * time.Second))
+	res, err := getService(address, s.hash)
 	if err != nil {
-		//logger.Warning(err)
+		logger.Warn(err)
 		return
 	}
-	defer conn.Close()
-	c := pb.NewRpcClient(conn)
-	res, err := c.RPCGetService(context.Background(), &pb.GetServiceRequest{
-		Hash: s.hash,
-	})
-	if err != nil {
-		//logger.Debug(err)
-		return
-	}
+
 	res.Result.Ip = IP.String()
 	s.PeerDiscovered(res.Result)
 	//Discover peers of this peer.

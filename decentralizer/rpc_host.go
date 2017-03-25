@@ -1,47 +1,92 @@
 package decentralizer
 
 import (
-	"golang.org/x/net/context"
 	"github.com/iain17/decentralizer/decentralizer/pb"
-	"google.golang.org/grpc/reflection"
-	"google.golang.org/grpc"
-	"fmt"
 	logger "github.com/Sirupsen/logrus"
-	"net"
 	"github.com/pkg/errors"
+	"crypto/sha1"
+
+	"github.com/smallnest/rpcx"
+	kcp "github.com/xtaci/kcp-go"
+	"golang.org/x/crypto/pbkdf2"
+	"strconv"
+	"net"
 )
 
+type rpcServer struct {
+	d *decentralizer
+}
+
+//TODO: Later make these a configurable vars
+const cryptKey = "jock"
+const cryptSalt = "flora"
+var bc kcp.BlockCrypt
+
+func init() {
+	var err error
+	pass := pbkdf2.Key([]byte(cryptKey), []byte(cryptSalt), 4096, 32, sha1.New)
+	bc, err = kcp.NewAESBlockCrypt(pass)
+	if err != nil {
+		panic(err)
+	}
+}
+
 /*
-- The rpc server is a TCP GRPC server that is used to exchange messages between nodes.
+- The rpc server is a TCP rpcx-kcp server that is used to exchange messages between nodes.
  */
 func (d *decentralizer) listenRpcServer() error {
-	lis, err := getTcpConn()
+	conn, _, err := getUdpConn()
 	if err != nil {
 		return err
 	}
-	port := lis.Addr().(*net.TCPAddr).Port
-	s := grpc.NewServer()
-	pb.RegisterRpcServer(s, d)
-	reflection.Register(s)
+	conn.Close()
+
+	port := conn.LocalAddr().(*net.UDPAddr).Port
+	sPort := strconv.Itoa(port)
 	d.rpcPort = uint16(port)
 
+	ln, err := kcp.ListenWithOptions(":"+sPort, bc, 10, 3)
+	if err != nil {
+		return err
+	}
+
+	server := rpcx.NewServer()
+	rpc := &rpcServer{
+		d: d,
+	}
+	server.RegisterName("Decentralizer", rpc)
+
 	go func() {
-		if err := s.Serve(lis); err != nil {
-			panic(fmt.Sprintf("failed to serve: %v", err))
-		}
+		server.ServeListener(ln)
 	}()
 	logger.Infof("RPC server listening at %d", port)
 	return nil
 }
 
-//TODO: Do all of this with UDP instead? Faster? Worth it?
-func (d *decentralizer) RPCGetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.GetServiceResponse, error) {
-	service := d.services[req.Hash]
+func (s *rpcServer) GetService(args *pb.GetServiceRequest, reply *pb.GetServiceResponse) error {
+	service := s.d.services[args.Hash]
 	if service == nil {
-		return nil, errors.New("No such service registered under that hash")
+		return errors.New("No such service registered under that hash")
 	}
-	return &pb.GetServiceResponse{
-		Result: service.self.Peer,
-		Peers: service.GetPeers(),
-	}, nil
+	reply.Result = service.self.Peer
+	reply.Peers = service.GetPeers()
+	return nil
+}
+
+func getService(addr string, hash string) (*pb.GetServiceResponse, error) {
+	//Todo put this in the rpc struct?
+	s := &rpcx.DirectClientSelector{Network: "kcp", Address: addr}
+	client := rpcx.NewClient(s)
+	client.Block = bc
+	defer client.Close()
+
+	args := &pb.GetServiceRequest{
+		Hash: hash,
+	}
+	var reply pb.GetServiceResponse
+	err := client.Call("Decentralizer.GetService", args, &reply)
+	if err != nil {
+		return nil, err
+	}
+	return &reply, nil
 }

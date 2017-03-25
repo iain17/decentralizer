@@ -10,11 +10,13 @@ import (
 )
 
 //Returns a forwarded udp connection.
+//read this: http://networkengineering.stackexchange.com/questions/7781/why-stun-doesnt-work-with-symmetric-nat
 func getUdpConn() (*net.UDPConn, *stun.Host, error) {
 	conn, err := net.ListenUDP("udp", nil)
 	if err != nil {
 		return nil, nil, err
 	}
+	//On top of the UDP hole punching, try UPNP.
 	port := conn.LocalAddr().(*net.UDPAddr).Port
 	err = upnp.Open(port, port, "udp")
 	if err != nil {
