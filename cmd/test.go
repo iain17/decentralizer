@@ -15,10 +15,12 @@
 package cmd
 
 import (
-	"fmt"
-
+	//"fmt"
+	"github.com/pkg/profile"
 	"github.com/spf13/cobra"
 	"github.com/iain17/decentralizer/decentralizer"
+	//"time"
+	"fmt"
 	"time"
 )
 
@@ -33,6 +35,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		defer profile.Start().Stop()
 
 		d, err := decentralizer.New()
 		if err != nil {
@@ -44,14 +47,17 @@ to quickly create a Cobra application.`,
 		}
 
 		service := d.GetService("test123")
-		for {
-			fmt.Println("Fetching peers....")
-			peers := service.GetPeers()
-			for _, peer := range peers {
-				fmt.Println(peer)
+		go func() {
+			for {
+				fmt.Println("Fetching peers....")
+				peers := service.GetPeers()
+				for _, peer := range peers {
+					fmt.Println(peer)
+				}
+				time.Sleep(5 * time.Second)
 			}
-			time.Sleep(5 * time.Second)
-		}
+		}()
+		select{}
 	},
 }
 

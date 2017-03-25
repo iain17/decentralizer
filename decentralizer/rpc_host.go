@@ -5,12 +5,15 @@ import (
 	logger "github.com/Sirupsen/logrus"
 	"github.com/pkg/errors"
 	"crypto/sha1"
-
 	"github.com/smallnest/rpcx"
 	kcp "github.com/xtaci/kcp-go"
+	kcpLog "github.com/smallnest/rpcx/log"
 	"golang.org/x/crypto/pbkdf2"
 	"strconv"
 	"net"
+	"github.com/Sirupsen/logrus"
+	"time"
+	"io/ioutil"
 )
 
 type rpcServer struct {
@@ -23,6 +26,11 @@ const cryptSalt = "flora"
 var bc kcp.BlockCrypt
 
 func init() {
+	//Disable annyoing kcp logging.
+	kcpLogger := logrus.New()
+	kcpLogger.Out = ioutil.Discard
+	kcpLog.SetLogger(kcpLogger)
+
 	var err error
 	pass := pbkdf2.Key([]byte(cryptKey), []byte(cryptSalt), 4096, 32, sha1.New)
 	bc, err = kcp.NewAESBlockCrypt(pass)
@@ -45,7 +53,9 @@ func (d *decentralizer) listenRpcServer() error {
 	sPort := strconv.Itoa(port)
 	d.rpcPort = uint16(port)
 
+	//block for encryption
 	ln, err := kcp.ListenWithOptions(":"+sPort, bc, 10, 3)
+	//ln, err := kcp.ListenWithOptions(":"+sPort, nil, 10, 3)
 	if err != nil {
 		return err
 	}
@@ -76,10 +86,21 @@ func (s *rpcServer) GetService(args *pb.GetServiceRequest, reply *pb.GetServiceR
 	return nil
 }
 
-func (s *service) getService(addr string) (*pb.GetServiceResponse, error) {
-	//TODO: Make global DirectClientSelector?
-	ss := &rpcx.DirectClientSelector{Network: "kcp", Address: addr}
+func (s *service) getServiceRequest(addr string) (*pb.GetServiceResponse, error) {
+	ss := &rpcx.DirectClientSelector{
+		Network: "kcp",
+		Address: addr,
+		DialTimeout: 300 * time.Millisecond,
+	}
 	client := rpcx.NewClient(ss)
+	//Make it fail fast! The majority of these calls will go nowhere anyways. No point to keep waiting
+	client.FailMode = rpcx.Failtry
+	client.Retries = 0
+	client.Timeout = 300 * time.Millisecond
+	client.ReadTimeout = 300 * time.Millisecond
+	client.WriteTimeout = 300 * time.Millisecond
+
+	//Encryption
 	client.Block = bc
 	defer client.Close()
 

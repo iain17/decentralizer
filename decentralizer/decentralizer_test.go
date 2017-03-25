@@ -13,6 +13,6 @@ func TestAddService(t *testing.T) {
 
 	service := d.GetService("iain")
 	assert.NotNil(t, service)
-	service.SetDetail("dedicated", true)
+	service.SetDetail("dedicated", "yes")
 	select{}
 }

@@ -9,6 +9,7 @@ import (
 	"time"
 	"strconv"
 	"github.com/iain17/decentralizer/decentralizer/pb"
+	lane "gopkg.in/oleiade/lane.v1"
 )
 
 type service struct {
@@ -22,7 +23,8 @@ type service struct {
 	peers map[string]*Peer
 	//Initial map. Used for map a address to a time we queried it.
 	//Only used at the very first stage.
-	seen map[string]time.Time
+	seen map[string]*time.Time
+	queryQueue *lane.Deque
 }
 
 type services map[string]*service
@@ -31,31 +33,29 @@ func newService(name, hash string, peer *Peer) (*service, error) {
 	if peer == nil {
 		return nil, errors.New("Peer should not be nil")
 	}
-	return &service{
+	instance := &service{
 		name:   name,
 		hash: hash,
 		running: true,
 		self:	peer,
 		Cron:   gocron.NewScheduler(),
 		peers: map[string]*Peer{},
-		seen: map[string]time.Time{},
-	}, nil
+		seen: map[string]*time.Time{},
+		queryQueue: lane.NewDeque(),
+	}
+	instance.Cron.Every(5).Seconds().Do(instance.manage)
+	instance.Cron.Every(1).Seconds().Do(instance.query)
+	instance.Cron.Start()
+	return instance, nil
 }
 
 func (s *service) GetPeers() []*pb.Peer {
 	var peers []*pb.Peer
-	for key, peer := range s.peers {
-		//TODO make this a parameter.
+	for _, peer := range s.peers {
+		//TODO make the limit a parameter.
 		if len(peers) >= 100 {
 			break
 		}
-		//expired
-		diff := time.Now().Sub(peer.seen)
-		if diff > time.Duration(45 * time.Second) {
-			delete(s.peers, key)
-			continue
-		}
-
 		peers = append(peers, peer.Peer)
 	}
 	return peers
@@ -66,6 +66,10 @@ func (s *service) SetDetail(name string, value string) {
 }
 
 func (s *service) PeerDiscovered(pbPeer *pb.Peer) {
+	ip := net.ParseIP(pbPeer.Ip)
+	if ip == nil {
+		return
+	}
 	peer := Peer{
 		Peer: pbPeer,
 		seen: time.Now(),
@@ -82,38 +86,72 @@ func (s *service) PeerDiscovered(pbPeer *pb.Peer) {
 	}
 }
 
-func (s *service) DiscoveredAddress(IP net.IP, Port uint32) {
-	address := IP.String() + ":" + strconv.Itoa(int(Port))
-	diff := time.Now().Sub(s.seen[address])
-	if diff < time.Duration(15 * time.Second) {
+func (s *service) DiscoveredAddress(ip string, port int, priority bool) {
+	address := ip + ":" + strconv.Itoa(int(port))
+	if s.seen[address] != nil {
 		return
 	}
-	s.seen[address] = time.Now()
-	go s.introduce(IP, address)
+	last := time.Now()
+	s.seen[address] = &last
+	if priority {
+		s.queryQueue.Prepend(address)
+	} else {
+		s.queryQueue.Append(address)
+	}
 }
 
-//TODO: queue? Only x amount of outgoing connections?
-func (s *service) introduce(IP net.IP, address string) {
-	res, err := s.getService(address)
-	if err != nil {
-		logger.Warn(err)
-		return
-	}
-
-	res.Result.Ip = IP.String()
-	s.PeerDiscovered(res.Result)
-	//Discover peers of this peer.
-	for _, peer := range res.Peers {
-		ip := net.ParseIP(peer.Ip)
-		if ip == nil {
+//Called every 15 seconds to do maintenance work
+func (s *service) manage() {
+	for key, peer := range s.peers {
+		diff := time.Now().Sub(peer.seen)
+		//Delete if expired expired
+		if diff >= 10*time.Second {
+			logger.Infof("Peer %s has expired", key)
+			delete(s.peers, key)
 			continue
 		}
-		s.DiscoveredAddress(ip, peer.Port)
+
+		if diff >= 5*time.Second {
+			//logger.Infof("Querying peer %s", key)
+			s.queryQueue.Prepend(peer.GetAddress())
+			continue
+		}
+	}
+	for key, _ := range s.seen {
+		diff := time.Now().Sub(*s.seen[key])
+		if diff > time.Duration(30*time.Second) {
+			delete(s.seen, key)
+		}
+	}
+}
+
+func (s *service) query() {
+	i := 0
+	for {
+		address := s.queryQueue.Shift()
+		if address == nil || i > 100 {
+			break
+		}
+
+		go func(address string) {
+			res, err := s.getServiceRequest(address)
+			if err != nil {
+				//logger.Warn(err)
+				return
+			}
+			s.PeerDiscovered(res.Result)
+			for _, peer := range res.Peers {
+				s.DiscoveredAddress(peer.Ip, int(peer.Port), true)
+			}
+			logger.Infof("Querying address %s", address)
+		}(address.(string))
+		i++
 	}
 }
 
 func (s *service) stop() {
 	s.running = false
+	s.Cron.Clear()
 	logger.Infof("Stopping %s", s.name)
 	if s.Announcement != nil {
 		s.Announcement.Close()

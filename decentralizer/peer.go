@@ -26,3 +26,7 @@ func NewPeer(ip string, RPCPort, port uint32, details map[string]string) *Peer {
 func (s *Peer) GetKey() string {
 	return s.Ip + ":" + strconv.Itoa(int(s.RpcPort))
 }
+
+func (s *Peer) GetAddress() string {
+	return s.Ip + ":" + strconv.Itoa(int(s.RpcPort))
+}

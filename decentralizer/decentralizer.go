@@ -5,7 +5,6 @@ import (
 	"github.com/anacrolix/dht"
 	"crypto/sha1"
 	logger "github.com/Sirupsen/logrus"
-	"time"
 )
 
 type Decentralizer interface {
@@ -60,38 +59,8 @@ func (d *decentralizer) AddService(name string, port uint32) error {
 	if err != nil {
 		return err
 	}
-	d.setupService(hash, d.services[hash])
+	go d.discoveryUsingDht(hash, d.services[hash])
 	return err
-}
-
-//TODO: Improve this whole situation.
-func (s *decentralizer) setupService(hash string, service *service) {
-
-	if service.Announcement != nil {
-		service.Announcement.Close()
-	}
-	logger.Infof("Announcing %x", hash)
-	var err error
-	service.Announcement, err = s.dht.Announce(hash, int(s.rpcPort), false)
-	if err != nil {
-		logger.Warn(err)
-	}
-	go func() {
-		for {
-			peers, ok := <-service.Announcement.Peers
-			if !ok {
-				break
-			}
-			for _, peer := range peers.Peers {
-				service.DiscoveredAddress(peer.IP, uint32(peer.Port))
-			}
-
-		}
-		if service.running {
-			time.Sleep(5 * time.Second)
-			s.setupService(hash, service)
-		}
-	}()
 }
 
 //TODO: Cache that hash.
