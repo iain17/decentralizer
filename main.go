@@ -26,6 +26,7 @@ import (
 	cli "github.com/urfave/cli"
 	ui "github.com/whyrusleeping/gooey"
 	logging "github.com/ipfs/go-log"
+	"github.com/libp2p/go-libp2p/p2p/host/basic"
 )
 
 type notifee struct {
@@ -69,7 +70,10 @@ func makeHost() (*bhost.BasicHost, error) {
 		panic(err)
 	}
 
-	h := bhost.New(netw, bhost.NATPortMap)
+	natManager := basichost.NewNATManager(netw)
+	h, err := bhost.NewHost(ctx, netw, &bhost.HostOpts{
+		NATManager: natManager,
+	})
 
 	//MDNS
 	//svc, err := disc.NewMdnsService(ctx, h, time.Second*30)
@@ -79,7 +83,7 @@ func makeHost() (*bhost.BasicHost, error) {
 	//
 	//svc.RegisterNotifee(&notifee{h})
 
-	dhtSvc, err := disc2.NewDhtService(ctx, h, time.Second*5)
+	dhtSvc, err := disc2.NewDhtService(ctx, h)
 	if err != nil {
 		return nil, err
 	}

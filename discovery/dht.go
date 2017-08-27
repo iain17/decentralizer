@@ -6,7 +6,6 @@ import (
 	"io"
 	"net"
 	"sync"
-	"time"
 
 	logging "github.com/ipfs/go-log"
 	"github.com/libp2p/go-libp2p-host"
@@ -15,9 +14,10 @@ import (
 	ma "github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr-net"
 	"github.com/whyrusleeping/mdns"
-	"github.com/nictuku/dht"
+	"github.com/anacrolix/dht"
 	"crypto/sha1"
 	"fmt"
+	"time"
 )
 
 var log = logging.Logger("dht")
@@ -35,13 +35,12 @@ type Notifee interface {
 }
 
 type dhtService struct {
-	node      *dht.DHT
-	ih        dht.InfoHash
+	node      *dht.Server
 	host      host.Host
+	hash 	  string
 
 	lk       sync.Mutex
 	notifees []Notifee
-	interval time.Duration
 	lastPeers map[string]byte
 }
 
@@ -73,20 +72,12 @@ func getDialableListenAddrs(ph host.Host) ([]*net.TCPAddr, error) {
 	return out, nil
 }
 
-func NewDhtService(ctx context.Context, peerhost host.Host, interval time.Duration) (Service, error) {
-	//hash, err := getHash(ServiceTag)
-	//if err != nil {
-	//	return nil, err
-	//}
-	ih, err := dht.DecodeInfoHash("deca7a89a1dbdc4b213de1c0d5351e92582f31fb")
-	config := dht.NewConfig()
-
-	addrs, err := getDialableListenAddrs(peerhost)
+func NewDhtService(ctx context.Context, peerhost host.Host) (Service, error) {
+	hash, err := getHash("abcyouandme")
 	if err != nil {
-		return nil, fmt.Errorf("Could not get a dialable listen address: %s", err)
+		return nil, err
 	}
-	config.Port = addrs[0].Port
-	node, err := dht.New(config)
+	node, err := dht.NewServer(nil)
 	if err != nil {
 		return nil, fmt.Errorf("new dht init err: %s", err)
 	}
@@ -94,47 +85,37 @@ func NewDhtService(ctx context.Context, peerhost host.Host, interval time.Durati
 	s := &dhtService{
 		host:     peerhost,
 		node: 	  node,
-		ih: 	  ih,
-		interval: interval,
+		hash:	  hash,
+		lastPeers: make(map[string]byte),
 	}
 
-	go s.pollForEntries(ctx)
-	go s.awaitPeers(ctx)
+	go s.receive(ctx)
 
 	return s, nil
 }
 
 func (m *dhtService) Close() error {
-	m.node.Stop()
+	m.node.Close()
 	return nil
 }
 
-func (m *dhtService) pollForEntries(ctx context.Context) {
-	ticker := time.NewTicker(m.interval)
-	for {
-		select {
-		case <-ticker.C:
-			m.request()
-			log.Debug("dht query complete")
-		case <-ctx.Done():
-			log.Debug("dht service halting")
-			return
-		}
-	}
-}
-
-func (m *dhtService) awaitPeers(ctx context.Context) {
+func (m *dhtService) receive(ctx context.Context) {
 	log.Debug("awaitPeers")
+	annoucement, err := m.request()
+	if err != nil {
+		log.Warning(err)
+		return
+	}
 	for {
 		select {
-		case r := <-m.node.PeersRequestResults:
-			log.Debug("We've got results")
-			for _, peers := range r {
-				for _, x := range peers {
-					host := dht.DecodePeerAddress(x)
-					m.addPeer(host)
-				}
+		case result := <- annoucement.Peers:
+			for _, peer := range result.Peers {
+				log.Info(peer)
+				m.addPeer(peer)
 			}
+			time.Sleep(5 * time.Second)
+			m.receive(ctx)
+			return
 		case <-ctx.Done():
 			log.Debug("dht service halting")
 			return
@@ -142,9 +123,13 @@ func (m *dhtService) awaitPeers(ctx context.Context) {
 	}
 }
 
-func (m *dhtService) request() {
-	log.Debugf("sending request %s...", m.ih)
-	m.node.PeersRequest(string(m.ih), true)
+func (m *dhtService) request() (*dht.Announce, error) {
+	addrs, err := getDialableListenAddrs(m.host)
+	if err != nil {
+		return nil, fmt.Errorf("Could not get a dialable listen address: %s", err)
+	}
+	log.Debugf("sending request %s...", m.hash)
+	return m.node.Announce(m.hash, addrs[0].Port, false)
 }
 
 func (m *dhtService) RegisterNotifee(n Notifee) {
@@ -168,11 +153,11 @@ func (m *dhtService) UnregisterNotifee(n Notifee) {
 	m.lk.Unlock()
 }
 
-func (m *dhtService) addPeer(peer string) {
+func (m *dhtService) addPeer(peer dht.Peer) {
 	m.lk.Lock()
-	exists := m.lastPeers[peer] == 1
+	exists := m.lastPeers[peer.String()] == 1
 	if !exists {
-		m.lastPeers[peer] = 1
+		m.lastPeers[peer.String()] = 1
 		if len(m.lastPeers) > 1000 {
 			m.lastPeers = make(map[string]byte)
 		}
@@ -184,25 +169,25 @@ func (m *dhtService) addPeer(peer string) {
 
 	//TODO: Self checker
 	log.Debug("new peer %q received", peer)
-	//maddr, err := manet.FromNetAddr(&net.TCPAddr{
-	//	IP:   e.AddrV4,
-	//	Port: e.Port,
-	//})
-	//if err != nil {
-	//	log.Warning("Error parsing multiaddr from mdns entry: ", err)
-	//	return
-	//}
-	//
-	//pi := pstore.PeerInfo{
-	//	ID:    mpeer,
-	//	Addrs: []ma.Multiaddr{maddr},
-	//}
-	//
-	//m.lk.Lock()
-	//for _, n := range m.notifees {
-	//	go n.HandlePeerFound(pi)
-	//}
-	//m.lk.Unlock()
+	maddr, err := manet.FromNetAddr(&net.TCPAddr{
+		IP:   peer.IP,
+		Port: peer.Port,
+	})
+	if err != nil {
+		log.Warning("Error parsing multiaddr from mdns entry: ", err)
+		return
+	}
+
+	pi := pstore.PeerInfo{
+		//ID:    mpeer,
+		Addrs: []ma.Multiaddr{maddr},
+	}
+
+	m.lk.Lock()
+	for _, n := range m.notifees {
+		go n.HandlePeerFound(pi)
+	}
+	m.lk.Unlock()
 }
 
 func (m *dhtService) handleEntry(e *mdns.ServiceEntry) {
