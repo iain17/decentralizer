@@ -19,11 +19,13 @@ import (
 	peer "github.com/libp2p/go-libp2p-peer"
 	pstore "github.com/libp2p/go-libp2p-peerstore"
 	swarm "github.com/libp2p/go-libp2p-swarm"
-	disc "github.com/libp2p/go-libp2p/p2p/discovery"
+	//disc "github.com/libp2p/go-libp2p/p2p/discovery"
+	disc2 "github.com/iain17/decentralizer/discovery"
 	bhost "github.com/libp2p/go-libp2p/p2p/host/basic"
 	ma "github.com/multiformats/go-multiaddr"
 	cli "github.com/urfave/cli"
 	ui "github.com/whyrusleeping/gooey"
+	logging "github.com/ipfs/go-log"
 )
 
 type notifee struct {
@@ -69,12 +71,19 @@ func makeHost() (*bhost.BasicHost, error) {
 
 	h := bhost.New(netw, bhost.NATPortMap)
 
-	svc, err := disc.NewMdnsService(ctx, h, time.Second*5)
+	//MDNS
+	//svc, err := disc.NewMdnsService(ctx, h, time.Second*30)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//svc.RegisterNotifee(&notifee{h})
+
+	dhtSvc, err := disc2.NewDhtService(ctx, h, time.Second*5)
 	if err != nil {
 		return nil, err
 	}
-
-	svc.RegisterNotifee(&notifee{h})
+	dhtSvc.RegisterNotifee(&notifee{h})
 
 	return h, nil
 }
@@ -180,6 +189,8 @@ var sendCommand = cli.Command{
 	},
 }
 
+var log = logging.Logger("abc")
+
 var recvCommand = cli.Command{
 	Name: "recv",
 	Action: func(c *cli.Context) error {
@@ -190,6 +201,10 @@ var recvCommand = cli.Command{
 		if err != nil {
 			return err
 		}
+		logging.SetDebugLogging()
+		log.Debug("Starting...")
+		select{}
+		return nil
 
 		name, err := os.Hostname()
 		if err != nil {
