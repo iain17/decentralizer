@@ -1,327 +1,51 @@
 package main
 
 import (
-	"bufio"
-	"context"
-	"crypto/rand"
-	"encoding/json"
-	"fmt"
-	"io"
-	"os"
-	"os/user"
-	"strconv"
-	"sync"
-	"time"
-
-	human "github.com/dustin/go-humanize"
-	crypto "github.com/libp2p/go-libp2p-crypto"
-	inet "github.com/libp2p/go-libp2p-net"
-	peer "github.com/libp2p/go-libp2p-peer"
-	pstore "github.com/libp2p/go-libp2p-peerstore"
-	swarm "github.com/libp2p/go-libp2p-swarm"
-	//disc "github.com/libp2p/go-libp2p/p2p/discovery"
-	disc2 "github.com/iain17/decentralizer/discovery"
-	bhost "github.com/libp2p/go-libp2p/p2p/host/basic"
-	ma "github.com/multiformats/go-multiaddr"
-	cli "github.com/urfave/cli"
-	ui "github.com/whyrusleeping/gooey"
-	logging "github.com/ipfs/go-log"
-	"github.com/libp2p/go-libp2p/p2p/host/basic"
+	//"github.com/iain17/decentralizer/app"
+	//"fmt"
+	//"time"
+	//peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"github.com/iain17/decentralizer/network"
 )
 
-type notifee struct {
-	h *bhost.BasicHost
-}
-
-func (n *notifee) HandlePeerFound(pi pstore.PeerInfo) {
-	n.h.Connect(context.Background(), pi)
-}
-
-func makeHost() (*bhost.BasicHost, error) {
-	// Generate an identity keypair using go's cryptographic randomness source
-	priv, pub, err := crypto.GenerateEd25519Key(rand.Reader)
-	if err != nil {
-		panic(err)
-	}
-
-	// A peers ID is the hash of its public key
-	pid, err := peer.IDFromPublicKey(pub)
-	if err != nil {
-		panic(err)
-	}
-
-	// We've created the identity, now we need to store it.
-	// A peerstore holds information about peers, including your own
-	ps := pstore.NewPeerstore()
-	ps.AddPrivKey(pid, priv)
-	ps.AddPubKey(pid, pub)
-
-	maddr, err := ma.NewMultiaddr("/ip4/0.0.0.0/tcp/0")
-	if err != nil {
-		panic(err)
-	}
-
-	// Make a context to govern the lifespan of the swarm
-	ctx := context.Background()
-
-	// Put all this together
-	netw, err := swarm.NewNetwork(ctx, []ma.Multiaddr{maddr}, pid, ps, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	natManager := basichost.NewNATManager(netw)
-	h, err := bhost.NewHost(ctx, netw, &bhost.HostOpts{
-		NATManager: natManager,
-	})
-
-	//MDNS
-	//svc, err := disc.NewMdnsService(ctx, h, time.Second*30)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//svc.RegisterNotifee(&notifee{h})
-	time.Sleep(2 * time.Second)
-	dhtSvc, err := disc2.NewDhtService(ctx, h, "p2pdrop")
-	if err != nil {
-		log.Warning(err)
-	}
-	dhtSvc.RegisterNotifee(&notifee{h})
-
-	return h, nil
-}
+//This is the privatekey
+const ourNetwork = "2d2d2d2d2d424547494e205253412050524956415445204b45592d2d2d2d2d0a4d4949456f77494241414b434151454178655a54466a55454a6e6b66385a68355346522b4757786f74663857396f306a6b55613437574b52677a7270555871790a385241766c586f6566314d4d78686d5167523367383151686775312f386e61464a7a704f4e44414e70774d31676e3053323961705a6a696e6758415a705a39450a4672363645326234504c365a756a5136477a745333726d7567494a5a76506c4f6732524f6e44724f6753596c34326c446c5738507342643478415750543762680a7652756534795049613661434c4d7074324f4838694a2f6252686a67486d656c3537354549746a7164697870726769627a5a6c77485a437a74466e304b52755a0a574e70724b7a6156537456625a4f4477523641482f355356424f3749392b61353949786d31506a624b53444c625846766a6d74514c4f56574d6d6459413447740a447555453572713547322f417367654f632b70486b55346148566c467158666a75736e657577494441514142416f494241514338376151496f5668792b6c4f360a713975745a3678797a5149794c584e5973576c784f646b3246314866764a4165443074687842674a5665706a6c332b735a352b4442476c4c4939685354445a480a335570464a753664392f6f7770576d695235474865716d43517a6632354851336e354b375042346367384d64437346722b4977346a79775149616773573055630a6d633251746d5174316835725157594f6375486f655879366d63336249397875572f3739324b5677696e6c636d666371586c356365632b5131616934524d44300a5638415048473442685a774852614865576b7933794e35357a6d704a68506a34335443754f4c384b31452b476f64593276554633526c3068767a466f4453497a0a534e35385a2f55656c6e4d736e5175677a6553486d627955647971675748432b725865733251423159656f6e76373435537a6b773069366c50672f704d5443770a6e684e56552b5768416f4742414d3830534c423972586b795a59687352795048715a7576443150674355586f5852416b6b69686553475631436a542b325753670a763456504235735238432f4765753555444b4655383435623477545a686847467039703349646f5a5058564a3454536e5678763266502b725532515079702f6c0a715565524330596c393463326e764c4b666d7a377843446c3356663039577066384b596c424f726774746f436b4c4154576c4b5939433035416f4742415053420a4755613836447a594c64726a512f535854574a773069304464374f487765456a336e557268364f3330546b566157764e58565a5a5339423332536b42454736510a524c772f452f6a6a676c3048365348615854386a596743596f31537953323262447451534c6d55795369777a565a424164536e4f2b3476365844386c696346700a62736c4f384269617643503951434d6a5141306f58504b615a51685970537a6e3251583336682b54416f47415638526478655232527041435566634c617978330a75326f376f3975534566714b3850754d72577a435862646c79327a6e794b674f642f6b787a34325a6e364d4444314371794f75692f766f4d2f31446b6153656b0a4966573063523266327236676c68304c324e786674697872396b5a36486143365134593873456f457631467a6f6f514461555a376e545041766a4555677971410a564e2f355a5551714c383547573037585134566d614945436759414945372b3341345355686675313047347452565a4d477a67475071675571545a7862704c700a77663967484446774e6c48654f74474c6962576b644745624a71725a5444444a477a685972344e642b5758744e5636424f48554457676544513853554956777a0a43307133457873364c4a5032435073563333325632545a3036354f4b62535934786a2f4f51455a59316750705a542b3362343771674d6b33706c3447687234330a6f55483975774b4267473278577470673769336a322b6c5635476e6172443236486743316f5841624c2f30326467552f2f6c4f72726c39726e786836753369640a4e69715845534d69565253714936544778424a30714969517135767a57683173493239332b42345476457934376275574930656730753841447637533254576a0a5671384e35334863643644463138745131396c66556c32516c744c64384c55626155634b6a6634525a464d63645573316146426b0a2d2d2d2d2d454e44205253412050524956415445204b45592d2d2d2d2d0a"
 
 func main() {
-	c := cli.NewApp()
-	c.Commands = []cli.Command{
-		sendCommand,
-		recvCommand,
+
+	network, err := network.UnmarshalFromPrivateKey(ourNetwork)
+	if err != nil {
+		panic(err)
 	}
-	c.RunAndExitOnError()
+
+
+	/*//Create a random new ipfs node.
+	path := fmt.Sprintf("/tmp/ipfs/%d", time.Now().Unix())
+
+	node := app.OpenIPFSRepo(path, -1)
+
+	go app.Receive(node, topic, func(peer peer.ID, message string) {
+		fmt.Printf("%s: %s\n", peer.String(), message)
+	})
+
+	go func() {
+		for {
+			app.Publish(node, topic, time.Now().String())
+			time.Sleep(5 * time.Second)
+		}
+	}()
+
+	select{}*/
 }
 
-type hello struct {
-	Name     string
-	Hostname string
-	File     string
-	Size     uint64
-	peer     peer.ID
-}
-
-var sendCommand = cli.Command{
-	Name: "send",
-	Action: func(c *cli.Context) error {
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
-
-		h, err := makeHost()
-		if err != nil {
-			return err
-		}
-
-		finame := c.Args().First()
-
-		name, err := os.Hostname()
-		if err != nil {
-			return err
-		}
-
-		u, err := user.Current()
-		if err != nil {
-			return err
-		}
-
-		st, err := os.Stat(finame)
-		if err != nil {
-			return err
-		}
-		//logging.SetDebugLogging()
-
-		app := new(ui.App)
-		app.Title = "p2pdrop"
-		app.Log = ui.NewLog(3, 10)
-
-		myhello := hello{
-			Name:     u.Username,
-			Hostname: name,
-			File:     finame,
-			Size:     uint64(st.Size()),
-		}
-
-		h.Network().SetConnHandler(func(c inet.Conn) {
-			s, err := h.NewStream(ctx, c.RemotePeer(), "/p2pdrop/1.0.0/hello")
-			if err != nil {
-				app.Log.Add(fmt.Sprintf("error opening stream: %s", err))
-				return
-			}
-			defer s.Close()
-
-			if err := json.NewEncoder(s).Encode(myhello); err != nil {
-				app.Log.Add(fmt.Sprintf("error writing hello: %s", err))
-				return
-			}
-		})
-
-		h.SetStreamHandler("/p2pdrop/1.0.0/hello", func(s inet.Stream) {
-			defer s.Close()
-			var otherhello hello
-			if err := json.NewDecoder(s).Decode(&otherhello); err != nil {
-				app.Log.Add(fmt.Sprintf("reading hello: %s", err))
-				return
-			}
-
-			app.Log.Add(fmt.Sprintf("Found someone: %s@%s - %s (%s)", otherhello.Name, otherhello.Hostname, otherhello.File, human.Bytes(otherhello.Size)))
-		})
-		h.SetStreamHandler("/p2pdrop/1.0.0/get", func(s inet.Stream) {
-			defer s.Close()
-			fi, err := os.Open(finame)
-			if err != nil {
-				fmt.Println("error opening file: ", err)
-				return
-			}
-			_, err = io.Copy(s, fi)
-			if err != nil {
-				fmt.Println("error copying file: ", err)
-				return
-			}
-		})
-
-		for range time.Tick(time.Second) {
-			app.Print()
-		}
-		return nil
-	},
-}
-
-var log = logging.Logger("abc")
-
-var recvCommand = cli.Command{
-	Name: "recv",
-	Action: func(c *cli.Context) error {
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
-
-		h, err := makeHost()
-		if err != nil {
-			return err
-		}
-		logging.SetDebugLogging()
-
-		name, err := os.Hostname()
-		if err != nil {
-			return err
-		}
-
-		u, err := user.Current()
-		if err != nil {
-			return err
-		}
-
-		app := new(ui.App)
-		app.Title = "p2pdrop"
-		app.Log = ui.NewLog(3, 10)
-
-		myhello := hello{
-			Name:     u.Username,
-			Hostname: name,
-		}
-
-		h.Network().SetConnHandler(func(c inet.Conn) {
-			s, err := h.NewStream(ctx, c.RemotePeer(), "/p2pdrop/1.0.0/hello")
-			if err != nil {
-				app.Log.Add(fmt.Sprintf("error opening stream: %s", err))
-				return
-			}
-			defer s.Close()
-
-			if err := json.NewEncoder(s).Encode(myhello); err != nil {
-				app.Log.Add(fmt.Sprintf("error writing hello: %s", err))
-				return
-			}
-		})
-
-		var hellolk sync.Mutex
-		var hellos []hello
-		h.SetStreamHandler("/p2pdrop/1.0.0/hello", func(s inet.Stream) {
-			defer s.Close()
-			var otherhello hello
-			if err := json.NewDecoder(s).Decode(&otherhello); err != nil {
-				app.Log.Add(fmt.Sprintf("reading hello: %s", err))
-				return
-			}
-			if otherhello.File == "" {
-				return
-			}
-
-			otherhello.peer = s.Conn().RemotePeer()
-
-			hellolk.Lock()
-			n := len(hellos)
-			hellos = append(hellos, otherhello)
-			hellolk.Unlock()
-
-			app.Log.Add(fmt.Sprintf("%d: %s@%s - %s (%s)", n, otherhello.Name, otherhello.Hostname, otherhello.File, human.Bytes(otherhello.Size)))
-		})
-
-		log.Debug("Starting...")
-		go func() {
-			for {
-				peers := h.Peerstore().Peers()
-				if len(peers) == 0 {
-					log.Debug("No peers")
-				} else {
-					for _, peer := range peers {
-						log.Debug(peer)
-					}
-				}
-				time.Sleep(10 * time.Second)
-			}
-
-		}()
-		select {}
-
-		app.NewDataLine(13, "Select file by number:", "")
-		app.NewDataLine(2, "-------", "")
-		go func() {
-			for range time.Tick(time.Second) {
-				app.Print()
-			}
-		}()
-
-		scan := bufio.NewScanner(os.Stdin)
-		for scan.Scan() {
-			n, err := strconv.Atoi(scan.Text())
-			if err != nil {
-				app.Log.Add(fmt.Sprintf("input error: %s", err))
-				continue
-			}
-
-			hellolk.Lock()
-			hl := hellos[n]
-			hellolk.Unlock()
-
-			fmt.Printf("fetching %s from %s\n", hl.File, hl.Name)
-			s, err := h.NewStream(ctx, hl.peer, "/p2pdrop/1.0.0/get")
-			if err != nil {
-				fmt.Println("Errr:", err)
-				break
-			}
-
-			outfi, err := os.Create(hl.File)
-			if err != nil {
-				fmt.Println("create err: ", err)
-				break
-			}
-			defer outfi.Close()
-
-			_, err = io.Copy(outfi, s)
-			if err != nil {
-				fmt.Println("create err: ", err)
-				break
-			}
-			fmt.Println("Success!")
-			break
-		}
-		return nil
-	},
+func newNetwork() {
+	network, err := network.New()
+	if err != nil {
+		panic(err)
+	}
+	println(network.MarshalFromPrivateKey())
+	//pem, err := network.ExportPrivateKey()
+	//println(string(pem))
+	//println(string(network.Marshal()))
+	//println(network.InfoHash())
 }

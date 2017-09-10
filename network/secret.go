@@ -1,60 +1,90 @@
+//With this file you can create a unique new network or Unmarshal an existing one from a public key
 package network
 
 import (
 	"crypto/sha1"
 	"encoding/hex"
-	"fmt"
-	"net"
+	"crypto/rsa"
+	"crypto/rand"
+	"errors"
 )
 
-type NetworkSecret struct {
-	Key []byte
-	Net *net.IPNet
+type Network struct {
+	PublicKey *rsa.PublicKey
+	PrivateKey *rsa.PrivateKey
 }
 
-func NewNetworkSecret(network *net.IPNet) *NetworkSecret {
-	return &NetworkSecret{
-		Net: network,
-		Key: randomBytes(16),
+func New() (*Network, error) {
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		return nil, err
 	}
+	return &Network{
+		PrivateKey: privateKey,
+		PublicKey: &privateKey.PublicKey,
+	}, nil
 }
 
-func (ns NetworkSecret) Bytes() []byte {
-	return append(ns.Key, append(ns.Net.IP, ns.Net.Mask...)...)
+func (ns Network) Bytes() []byte {
+	publicKey, err := ExportPublicKey(ns.PublicKey)
+	if err != nil {
+		panic(err)
+	}
+	return publicKey
 }
 
-func (ns NetworkSecret) Marshal() string {
+func (ns Network) Marshal() string {
 	return hex.EncodeToString(ns.Bytes())
 }
 
-func NetworkSecretUnmarshal(v string) (*NetworkSecret, error) {
+func (ns Network) MarshalFromPrivateKey() string {
+	return hex.EncodeToString(ExportPrivateKey(ns.PrivateKey))
+}
+
+func Unmarshal(v string) (*Network, error) {
 	data, err := hex.DecodeString(v)
 	if err != nil {
 		return nil, err
 	}
-	if len(data) != 24 {
-		return nil, fmt.Errorf("mismatch secret length: 24 != %d", len(data))
+	publicKey, err := ParsePublicKey(data)
+	if err != nil {
+		return nil, err
 	}
-	secret := &NetworkSecret{
-		Key: data[:16],
-		Net: &net.IPNet{
-			IP:   data[16:20],
-			Mask: data[20:],
-		},
+	secret := &Network{
+		PublicKey: publicKey,
 	}
 	return secret, nil
 }
 
-func (ns NetworkSecret) InfoHash() string {
+func UnmarshalFromPrivateKey(v string) (*Network, error) {
+	data, err := hex.DecodeString(v)
+	if err != nil {
+		return nil, err
+	}
+	privateKey, err := ParsePrivateKey(data)
+	if err != nil {
+		return nil, err
+	}
+	publicKey := &privateKey.PublicKey
+	secret := &Network{
+		PrivateKey: privateKey,
+		PublicKey: publicKey,
+	}
+	return secret, nil
+}
+
+func (ns Network) InfoHash() string {
 	hashBytes := sha1.Sum(ns.Bytes())
 	return hex.EncodeToString(hashBytes[:])
 }
 
-func (ns NetworkSecret) CIDR() string {
-	return ns.Net.String()
+func (ns Network) ExportPublicKey() ([]byte, error) {
+	return ExportPublicKey(ns.PublicKey)
 }
 
-func (ns NetworkSecret) Encode(data []byte) []byte {
-	// TODO: Make me happy
-	return data
+func (ns Network) ExportPrivateKey() ([]byte, error) {
+	if ns.PrivateKey == nil {
+		return nil, errors.New("No private key set.")
+	}
+	return ExportPrivateKey(ns.PrivateKey), nil
 }
