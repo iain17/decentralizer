@@ -80,12 +80,11 @@ func makeHost() (*bhost.BasicHost, error) {
 	//if err != nil {
 	//	return nil, err
 	//}
-	//
 	//svc.RegisterNotifee(&notifee{h})
-
-	dhtSvc, err := disc2.NewDhtService(ctx, h)
+	time.Sleep(2 * time.Second)
+	dhtSvc, err := disc2.NewDhtService(ctx, h, "p2pdrop")
 	if err != nil {
-		return nil, err
+		log.Warning(err)
 	}
 	dhtSvc.RegisterNotifee(&notifee{h})
 
@@ -136,6 +135,7 @@ var sendCommand = cli.Command{
 		if err != nil {
 			return err
 		}
+		//logging.SetDebugLogging()
 
 		app := new(ui.App)
 		app.Title = "p2pdrop"
@@ -206,9 +206,6 @@ var recvCommand = cli.Command{
 			return err
 		}
 		logging.SetDebugLogging()
-		log.Debug("Starting...")
-		select{}
-		return nil
 
 		name, err := os.Hostname()
 		if err != nil {
@@ -265,6 +262,23 @@ var recvCommand = cli.Command{
 
 			app.Log.Add(fmt.Sprintf("%d: %s@%s - %s (%s)", n, otherhello.Name, otherhello.Hostname, otherhello.File, human.Bytes(otherhello.Size)))
 		})
+
+		log.Debug("Starting...")
+		go func() {
+			for {
+				peers := h.Peerstore().Peers()
+				if len(peers) == 0 {
+					log.Debug("No peers")
+				} else {
+					for _, peer := range peers {
+						log.Debug(peer)
+					}
+				}
+				time.Sleep(10 * time.Second)
+			}
+
+		}()
+		select {}
 
 		app.NewDataLine(13, "Select file by number:", "")
 		app.NewDataLine(2, "-------", "")

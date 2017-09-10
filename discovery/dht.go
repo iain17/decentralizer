@@ -1,5 +1,5 @@
 package discovery
-
+//Discover peers around a certain name using mainline DHT bootstrap
 import (
 	"context"
 	"errors"
@@ -9,15 +9,16 @@ import (
 
 	logging "github.com/ipfs/go-log"
 	"github.com/libp2p/go-libp2p-host"
-	"github.com/libp2p/go-libp2p-peer"
 	pstore "github.com/libp2p/go-libp2p-peerstore"
 	ma "github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr-net"
-	"github.com/whyrusleeping/mdns"
 	"github.com/anacrolix/dht"
 	"crypto/sha1"
 	"fmt"
 	"time"
+	peer "github.com/libp2p/go-libp2p-peer"
+	crypto "github.com/libp2p/go-libp2p-crypto"
+	"crypto/rand"
 )
 
 var log = logging.Logger("dht")
@@ -54,6 +55,25 @@ func getHash(value string) (string, error) {
 	return string(h.Sum(nil)), nil
 }
 
+func IsPublicIP(IP net.IP) bool {
+	if IP.IsLoopback() || IP.IsLinkLocalMulticast() || IP.IsLinkLocalUnicast() {
+		return false
+	}
+	if ip4 := IP.To4(); ip4 != nil {
+		switch true {
+		case ip4[0] == 10:
+			return false
+		case ip4[0] == 172 && ip4[1] >= 16 && ip4[1] <= 31:
+			return false
+		case ip4[0] == 192 && ip4[1] == 168:
+			return false
+		default:
+			return true
+		}
+	}
+	return false
+}
+
 func getDialableListenAddrs(ph host.Host) ([]*net.TCPAddr, error) {
 	var out []*net.TCPAddr
 	for _, addr := range ph.Addrs() {
@@ -62,6 +82,9 @@ func getDialableListenAddrs(ph host.Host) ([]*net.TCPAddr, error) {
 			continue
 		}
 		tcp, ok := na.(*net.TCPAddr)
+		if !IsPublicIP(tcp.IP) {
+			continue
+		}
 		if ok {
 			out = append(out, tcp)
 		}
@@ -72,8 +95,8 @@ func getDialableListenAddrs(ph host.Host) ([]*net.TCPAddr, error) {
 	return out, nil
 }
 
-func NewDhtService(ctx context.Context, peerhost host.Host) (Service, error) {
-	hash, err := getHash("abcyouandme")
+func NewDhtService(ctx context.Context, peerhost host.Host, name string) (Service, error) {
+	hash, err := getHash(name)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +133,6 @@ func (m *dhtService) receive(ctx context.Context) {
 		select {
 		case result := <- annoucement.Peers:
 			for _, peer := range result.Peers {
-				log.Info(peer)
 				m.addPeer(peer)
 			}
 			time.Sleep(5 * time.Second)
@@ -125,15 +147,20 @@ func (m *dhtService) receive(ctx context.Context) {
 
 func (m *dhtService) request() (*dht.Announce, error) {
 	addrs, err := getDialableListenAddrs(m.host)
+	//No external ips. Just discovering others.
 	if err != nil {
-		return nil, fmt.Errorf("Could not get a dialable listen address: %s", err)
+		log.Warning(err)
+		log.Debugf("Requesting peers...")
+		return m.node.Announce(m.hash, 0, true)
+	} else {
+		log.Debugf("Requesting peers and announcing us...")
+		return m.node.Announce(m.hash, addrs[0].Port, false)
 	}
-	log.Debugf("sending request %s...", m.hash)
-	return m.node.Announce(m.hash, addrs[0].Port, false)
 }
 
 func (m *dhtService) RegisterNotifee(n Notifee) {
 	m.lk.Lock()
+	n.HandlePeerFound(pstore.PeerInfo{})
 	m.notifees = append(m.notifees, n)
 	m.lk.Unlock()
 }
@@ -153,11 +180,11 @@ func (m *dhtService) UnregisterNotifee(n Notifee) {
 	m.lk.Unlock()
 }
 
-func (m *dhtService) addPeer(peer dht.Peer) {
+func (m *dhtService) addPeer(dhtPeer dht.Peer) {
 	m.lk.Lock()
-	exists := m.lastPeers[peer.String()] == 1
+	exists := m.lastPeers[dhtPeer.String()] == 1
 	if !exists {
-		m.lastPeers[peer.String()] = 1
+		m.lastPeers[dhtPeer.String()] = 1
 		if len(m.lastPeers) > 1000 {
 			m.lastPeers = make(map[string]byte)
 		}
@@ -168,52 +195,29 @@ func (m *dhtService) addPeer(peer dht.Peer) {
 	}
 
 	//TODO: Self checker
-	log.Debug("new peer %q received", peer)
+	log.Debug("new peer %q received", dhtPeer)
 	maddr, err := manet.FromNetAddr(&net.TCPAddr{
-		IP:   peer.IP,
-		Port: peer.Port,
+		IP:   dhtPeer.IP,
+		Port: dhtPeer.Port,
 	})
 	if err != nil {
 		log.Warning("Error parsing multiaddr from mdns entry: ", err)
 		return
 	}
 
-	pi := pstore.PeerInfo{
-		//ID:    mpeer,
-		Addrs: []ma.Multiaddr{maddr},
-	}
-
-	m.lk.Lock()
-	for _, n := range m.notifees {
-		go n.HandlePeerFound(pi)
-	}
-	m.lk.Unlock()
-}
-
-func (m *dhtService) handleEntry(e *mdns.ServiceEntry) {
-	log.Debugf("Handling MDNS entry: %s:%d %s", e.AddrV4, e.Port, e.Info)
-	mpeer, err := peer.IDB58Decode(e.Info)
+	_, pub, err := crypto.GenerateEd25519Key(rand.Reader)
 	if err != nil {
-		log.Warning("Error parsing peer ID from mdns entry: ", err)
-		return
+		panic(err)
 	}
 
-	if mpeer == m.host.ID() {
-		log.Debug("got our own mdns entry, skipping")
-		return
-	}
-
-	maddr, err := manet.FromNetAddr(&net.TCPAddr{
-		IP:   e.AddrV4,
-		Port: e.Port,
-	})
+	// A peers ID is the hash of its public key
+	pid, err := peer.IDFromPublicKey(pub)
 	if err != nil {
-		log.Warning("Error parsing multiaddr from mdns entry: ", err)
-		return
+		panic(err)
 	}
 
 	pi := pstore.PeerInfo{
-		ID:    mpeer,
+		ID:    pid,
 		Addrs: []ma.Multiaddr{maddr},
 	}
 
