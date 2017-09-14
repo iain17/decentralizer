@@ -1,0 +1,11 @@
+syntax = "proto3";
+package pb;
+
+message Hearbeat {}
+message PeerInfo {
+    int32 version = 1;
+    map<string, string> info = 2;
+}
+message Transfer {
+    string data = 1;
+}
