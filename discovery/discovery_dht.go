@@ -1,19 +1,20 @@
 package discovery
 
 import (
-	"github.com/nictuku/dht"
+	"github.com/anacrolix/dht"
 	"sync"
-	"time"
 	"github.com/op/go-logging"
 	"context"
+	"time"
+	"net"
 )
 
 type DiscoveryDHT struct {
-	node      *dht.DHT
-	ih        dht.InfoHash
+	node      *dht.Server
+	announce *dht.Announce
 	localNode *LocalNode
 	context context.Context
-
+	ih [20]byte
 	lastPeers map[string]bool
 	mutex     sync.Mutex
 
@@ -26,65 +27,78 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.context = ctx
 	d.lastPeers = map[string]bool{}
 
-	d.ih, err = dht.DecodeInfoHash(ln.network.InfoHash())
+	conn, err := net.ListenPacket("udp", ":0")
+	if err != nil {
+		return err
+	}
+	d.node, err = dht.NewServer(&dht.ServerConfig{
+		Conn: conn,
+		StartingNodes: dht.GlobalBootstrapAddrs,
+		NoSecurity: true,
+	})
+
+	copy(d.ih[:], d.localNode.network.InfoHash())
 	if err != nil {
 		return
 	}
-	config := dht.NewConfig()
-	config.Port = ln.port
-	d.node, err = dht.New(config)
 	go d.Run()
-	return err
+	return
 }
 
 func (d *DiscoveryDHT) Stop() {
-	d.node.Stop()
+	if d.announce != nil {
+		d.announce.Close()
+	}
+	d.node.Close()
 }
 
 func (d *DiscoveryDHT) Run() {
-	ticker := time.NewTicker(10 * time.Second)
-	defer func() {
-		d.Stop()
-		ticker.Stop()
-	}()
+	defer d.Stop()
 	d.request()
+	if d.announce == nil {
+		d.logger.Error("Can't initiate DHT.")
+		return
+	}
 
 	for {
 		select {
 		case <-d.context.Done():
 			return
-		case <-ticker.C:
-			d.request()
-		case r := <-d.node.PeersRequestResults:
-			for _, peers := range r {
-				if len(peers) == 0 {
-					d.logger.Debug("No peers received.")
-				}
-				for _, x := range peers {
-					host := dht.DecodePeerAddress(x)
-					d.addPeer(host)
-				}
+		case peers, ok := <-d.announce.Peers:
+			if !ok {
+				time.Sleep(10 * time.Second)
+				d.request()
+				continue
+			}
+			for _, peer := range peers.Peers {
+				go d.addPeer(&peer)
 			}
 		}
 	}
 }
 
 func (d *DiscoveryDHT) request() {
-	d.logger.Debug("sending request...")
-	d.node.PeersRequest(string(d.ih), true)
+	d.logger.Debugf("sending request '%s'", d.ih)
+	var err error
+	d.announce, err = d.node.Announce(d.ih, d.localNode.port, false)
+	if err != nil {
+		d.logger.Warning(err)
+	}
 }
 
-func (d *DiscoveryDHT) exists(peer string) bool {
+func (d *DiscoveryDHT) addPeer(peer *dht.Peer) {
 	d.mutex.Lock()
-	defer d.mutex.Unlock()
-	return d.lastPeers[peer]
-}
-
-func (d *DiscoveryDHT) addPeer(peer string) {
-	d.logger.Debugf("addPeer %s", peer)
-	if d.exists(peer) {
+	key := peer.String()
+	if d.lastPeers[key] {
+		d.mutex.Unlock()
 		return
 	}
-	d.logger.Debugf("new peer %q received", peer)
-	d.localNode.netTableService.GetDHTInChannel() <- peer
+	d.lastPeers[key] = true
+	d.mutex.Unlock()
+
+	d.logger.Debugf("new potential DHT peer %q discovered", peer)
+	d.localNode.netTableService.GetNewConnChan() <- &net.UDPAddr{
+		IP:   peer.IP[:],
+		Port: int(peer.Port),
+	}
 }

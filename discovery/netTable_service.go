@@ -12,7 +12,7 @@ type NetTableService struct {
 	localNode *LocalNode
 	context context.Context
 	//waitGroup sync.WaitGroup
-	dhtInChan chan string
+	newConn chan *net.UDPAddr
 
 	lock      sync.RWMutex
 	blackList map[string]time.Time
@@ -27,7 +27,7 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.logger = logging.MustGetLogger("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
-	nt.dhtInChan = make(chan string, 10)
+	nt.newConn = make(chan *net.UDPAddr, 10)
 	nt.blackList = make(map[string]time.Time)
 	nt.peers = make(map[string]*RemoteNode)
 	nt.Run()
@@ -50,7 +50,7 @@ func (nt *NetTableService) processDHTIn() {
 		select {
 		case <-nt.context.Done():
 			return
-		case host, ok := <-nt.dhtInChan:
+		case host, ok := <-nt.newConn:
 			if !ok {
 				return
 			}
@@ -60,7 +60,7 @@ func (nt *NetTableService) processDHTIn() {
 			}
 
 			if err := nt.tryConnect(host); err != nil {
-				nt.logger.Info("unable connect %s err: %s", host, err)
+				nt.logger.Debugf("unable connect %s err: %s", host, err)
 			}
 		}
 	}
@@ -74,8 +74,8 @@ func (nt *NetTableService) Stop() {
 	nt.lock.Unlock()
 }
 
-func (nt *NetTableService) GetDHTInChannel() chan<- string {
-	return nt.dhtInChan
+func (nt *NetTableService) GetNewConnChan() chan<- *net.UDPAddr {
+	return nt.newConn
 }
 
 func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
@@ -114,7 +114,7 @@ func (nt *NetTableService) heartbeat() {
 	}
 }
 
-func (nt *NetTableService) tryConnect(h string) error {
+func (nt *NetTableService) tryConnect(h *net.UDPAddr) error {
 	rn, err := connect(h, nt.localNode)
 	if err != nil {
 		nt.addToBlackList(h)
@@ -127,15 +127,15 @@ func (nt *NetTableService) tryConnect(h string) error {
 
 //The black list is just a list of nodes we've already tried and or are connected to.
 //TODO: Fix that we don't connect to ourselves.
-func (nt *NetTableService) addToBlackList(h string) {
+func (nt *NetTableService) addToBlackList(h *net.UDPAddr) {
 	nt.lock.Lock()
-	nt.blackList[h] = time.Now()
+	nt.blackList[h.String()] = time.Now()
 	nt.lock.Unlock()
 }
 
-func (nt *NetTableService) isBlackListed(h string) bool {
+func (nt *NetTableService) isBlackListed(h *net.UDPAddr) bool {
 	nt.lock.Lock()
-	_, ok := nt.blackList[h]
+	_, ok := nt.blackList[h.String()]
 	nt.lock.Unlock()
 	return ok
 }
