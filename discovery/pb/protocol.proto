@@ -1,5 +1,6 @@
 syntax = "proto3";
 package pb;
+option optimize_for = LITE_RUNTIME;
 
 message Hearbeat {}
 message PeerInfo {

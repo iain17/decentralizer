@@ -27,8 +27,11 @@ func NewRemoteNode(conn net.Conn) *RemoteNode {
 }
 
 func (rn *RemoteNode) sendHeartBeat() error {
-	rn.logger.Debug("Sending heartbeat")
-	return rn.write(pb.HeartBeatMessage, []byte{'L', 'O', 'V', 'E'})
+	transfer, err := proto.Marshal(&pb.Hearbeat{})
+	if err != nil {
+		return err
+	}
+	return rn.write(transfer)
 }
 
 func (rn *RemoteNode) Send(message string) error {
@@ -38,13 +41,12 @@ func (rn *RemoteNode) Send(message string) error {
 	if err != nil {
 		return err
 	}
-	return rn.write(pb.TransferMessage, transfer)
+	return rn.write(transfer)
 }
 
-func (rn *RemoteNode) write(messageType pb.MessageType, data []byte) error {
+func (rn *RemoteNode) write(data []byte) error {
 	rn.logger.Debug("sending message...")
-	packet := pb.NewPacket(messageType, data)
-	err := packet.Write(rn.conn)
+	_, err := rn.conn.Write(data)
 	if err != nil {
 		return err
 	}
@@ -75,10 +77,11 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		}
 		rn.logger.Debug("received, %+v", packet)
 
-		switch packet.Body.Type {
-		case pb.HeartBeatMessage:
-			rn.logger.Debug("heard beat received: %s", packet.Body.Data)
+		switch packet.GetMsg().(type) {
+		case *pb.Message_Heartbeat :
+			rn.logger.Debug("heard beat received")
 			rn.lastHeartbeat = time.Now()
+			break
 		}
 	}
 }

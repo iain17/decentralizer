@@ -60,16 +60,6 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	return ln.write(w, pb.TransferMessage, peerInfo)
-}
-
-func (rn *LocalNode) write(w io.Writer, messageType pb.MessageType, data []byte) error {
-	rn.logger.Debug("sending message...")
-	packet := pb.NewPacket(messageType, data)
-	err := packet.Write(w)
-	if err != nil {
-		return err
-	}
-	rn.logger.Debug("message sent")
-	return nil
+	_, err = w.Write(peerInfo)
+	return err
 }
