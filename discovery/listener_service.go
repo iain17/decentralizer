@@ -18,7 +18,7 @@ type ListenerService struct {
 }
 
 func (l *ListenerService) Init(ctx context.Context, ln *LocalNode) error {
-	l.logger = logging.MustGetLogger("UPNP")
+	l.logger = logging.MustGetLogger("listener")
 	l.localNode = ln
 	l.context = ctx
 
@@ -57,16 +57,19 @@ func (l *ListenerService) Stop() {
 
 //We receive a connection from a possible new peer.
 func (l *ListenerService) process(c net.Conn) error {
+	l.logger.Debug("Waiting for heartbeat...")
 	err := pb.DecodeHeartBeat(c)
 	if err != nil {
 		return err
 	}
 
+	l.logger.Debug("Sending our peer info...")
 	err = l.localNode.sendPeerInfo(c)
 	if err != nil {
 		return err
 	}
 
+	l.logger.Debug("Waiting for peer info...")
 	peerInfo, err := pb.DecodePeerInfo(c)
 	if err != nil {
 		return err

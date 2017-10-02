@@ -73,9 +73,8 @@ func UnmarshalFromPrivateKey(v string) (*Network, error) {
 	return secret, nil
 }
 
-func (ns Network) InfoHash() string {
-	hashBytes := sha1.Sum(ns.Bytes())
-	return hex.EncodeToString(hashBytes[:10])
+func (ns Network) InfoHash() [20]byte {
+	return sha1.Sum(ns.Bytes())
 }
 
 func (ns Network) ExportPublicKey() ([]byte, error) {

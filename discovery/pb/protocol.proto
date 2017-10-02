@@ -3,9 +3,17 @@ package pb;
 
 message Hearbeat {}
 message PeerInfo {
-    int32 version = 1;
     map<string, string> info = 2;
 }
 message Transfer {
     string data = 1;
+}
+
+message Message {
+    int64 version = 1;
+    oneof msg {
+        Hearbeat heartbeat = 2;
+        PeerInfo peerInfo = 3;
+        Transfer transfer = 4;
+    }
 }

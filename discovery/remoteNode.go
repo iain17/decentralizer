@@ -27,7 +27,8 @@ func NewRemoteNode(conn net.Conn) *RemoteNode {
 }
 
 func (rn *RemoteNode) sendHeartBeat() error {
-	return rn.write(pb.HearBeatMessage, []byte{'L', 'O', 'V', 'E'})
+	rn.logger.Debug("Sending heartbeat")
+	return rn.write(pb.HeartBeatMessage, []byte{'L', 'O', 'V', 'E'})
 }
 
 func (rn *RemoteNode) Send(message string) error {
@@ -75,7 +76,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		rn.logger.Debug("received, %+v", packet)
 
 		switch packet.Body.Type {
-		case pb.HearBeatMessage:
+		case pb.HeartBeatMessage:
 			rn.logger.Debug("heard beat received: %s", packet.Body.Data)
 			rn.lastHeartbeat = time.Now()
 		}

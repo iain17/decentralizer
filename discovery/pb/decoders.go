@@ -4,33 +4,46 @@ import (
 	"io"
 	"errors"
 	"github.com/gogo/protobuf/proto"
+	"fmt"
+	"io/ioutil"
+	"github.com/iain17/decentralizer/discovery/env"
 )
 
-//This file is to remove code dup
+func Decode(r io.Reader) (*Message, error) {
+	data, err := ioutil.ReadAll(r)
+	if err != nil {
+		return nil, err
+	}
+	var result Message
+	if err := proto.Unmarshal(data, &result); err != nil {
+		return nil, err
+	}
+	if result.Version != env.VERSION {
+		return nil, errors.New(fmt.Sprintf("Invalid version"))
+	}
+	return &result, nil
+}
 
-//We don't actually call protobuf here because a heartbeat doesn't contain anything.
 func DecodeHeartBeat(r io.Reader) error {
-	packet, err := Decode(r)
+	message, err := Decode(r)
 	if err != nil {
 		return err
 	}
-	if packet.Body.Type != HearBeatMessage {
-		return errors.New("message type was incorrect")
+	result := message.GetHeartbeat()
+	if result == nil {
+		return errors.New(fmt.Sprintf("Did not receive a HeartBeat message"))
 	}
 	return nil
 }
 
 func DecodePeerInfo(r io.Reader) (*PeerInfo, error) {
-	packet, err := Decode(r)
+	message, err := Decode(r)
 	if err != nil {
 		return nil, err
 	}
-	if packet.Body.Type != PeerInfoMessage {
-		return nil, errors.New("message type was incorrect")
+	result := message.GetPeerInfo()
+	if result == nil {
+		return nil, errors.New(fmt.Sprintf("Did not receive a PeerInfo message"))
 	}
-	var result PeerInfo
-	if err := proto.Unmarshal(packet.Body.Data, &result); err != nil {
-		return nil, err
-	}
-	return &result, nil
+	return result, nil
 }

@@ -85,7 +85,7 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 	nt.peers[addr] = rn
 	nt.lock.Unlock()
 
-	nt.logger.Info("added node %s", addr)
+	nt.logger.Info("Connected to %s", addr)
 	go rn.listen(nt.localNode)
 }
 

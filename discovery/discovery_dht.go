@@ -1,12 +1,13 @@
 package discovery
 
 import (
-	"github.com/anacrolix/dht"
+	"github.com/iain17/dht"
 	"sync"
 	"github.com/op/go-logging"
 	"context"
 	"time"
 	"net"
+	"encoding/hex"
 )
 
 type DiscoveryDHT struct {
@@ -34,10 +35,8 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.node, err = dht.NewServer(&dht.ServerConfig{
 		Conn: conn,
 		StartingNodes: dht.GlobalBootstrapAddrs,
-		NoSecurity: true,
 	})
-
-	copy(d.ih[:], d.localNode.network.InfoHash())
+	d.ih = d.localNode.network.InfoHash()
 	if err != nil {
 		return
 	}
@@ -66,7 +65,8 @@ func (d *DiscoveryDHT) Run() {
 			return
 		case peers, ok := <-d.announce.Peers:
 			if !ok {
-				time.Sleep(10 * time.Second)
+				d.announce.Close()
+				time.Sleep(30 * time.Second)
 				d.request()
 				continue
 			}
@@ -78,7 +78,7 @@ func (d *DiscoveryDHT) Run() {
 }
 
 func (d *DiscoveryDHT) request() {
-	d.logger.Debugf("sending request '%s'", d.ih)
+	d.logger.Debugf("sending request '%s'", hex.EncodeToString(d.ih[:]))
 	var err error
 	d.announce, err = d.node.Announce(d.ih, d.localNode.port, false)
 	if err != nil {
