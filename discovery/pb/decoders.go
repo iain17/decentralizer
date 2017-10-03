@@ -3,19 +3,38 @@ package pb
 import (
 	"io"
 	"errors"
-	"github.com/gogo/protobuf/proto"
 	"fmt"
-	"io/ioutil"
 	"github.com/iain17/decentralizer/discovery/env"
+	"bufio"
+	"github.com/golang/protobuf/proto"
 )
 
+func Write(w io.Writer, data []byte) error {
+	s, err := w.Write(data)
+
+	if err != nil {
+		return err
+	}
+	if len(data) != s {
+		errors.New("Didn't write all of the data")
+	}
+	s, err = w.Write([]byte{'\n'})
+	if err != nil {
+		return err
+	}
+	if len(data) != 1 {
+		errors.New("Didn't write the delimiter")
+	}
+	return err
+}
+
 func Decode(r io.Reader) (*Message, error) {
-	data, err := ioutil.ReadAll(r)
+	data, err := bufio.NewReader(r).ReadBytes('\n')
 	if err != nil {
 		return nil, err
 	}
 	var result Message
-	if err := proto.Unmarshal(data, &result); err != nil {
+	if err := proto.Unmarshal(data[:len(data)-1], &result); err != nil {
 		return nil, err
 	}
 	if result.Version != env.VERSION {

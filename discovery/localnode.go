@@ -8,6 +8,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/op/go-logging"
+	"github.com/iain17/decentralizer/discovery/env"
 )
 
 type LocalNode struct {
@@ -54,12 +55,16 @@ func NewLocalNode(ctx context.Context, network *network.Network) (*LocalNode, er
 }
 
 func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
-	peerInfo, err := proto.Marshal(&pb.PeerInfo{
-		Info: ln.info,
+	peerInfo, err := proto.Marshal(&pb.Message{
+		Version: env.VERSION,
+		Msg: &pb.Message_PeerInfo{
+			PeerInfo: &pb.PeerInfo{
+				Info: ln.info,
+			},
+		},
 	})
 	if err != nil {
 		return err
 	}
-	_, err = w.Write(peerInfo)
-	return err
+	return pb.Write(w, peerInfo)
 }

@@ -19,9 +19,19 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 		return nil, errDial
 	}
 	rn := NewRemoteNode(conn)
+	err := rn.sendHeartBeat()
+	if err != nil {
+		conn.Close()
+		return nil, err
+	}
 
-	//We start by sending our heartbeat.
-	rn.sendHeartBeat()
+	rn.logger.Debug("Waiting for heartbeat...")
+	err = pb.DecodeHeartBeat(rn.conn)
+	if err != nil {
+		conn.Close()
+		return nil, err
+	}
+	rn.logger.Debug("Received heartbeat...")
 
 	//They will respond by sending their peer info
 	rn.logger.Debug("Waiting for peer info...")
@@ -30,6 +40,7 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 		conn.Close()
 		return nil, errPeerInfo
 	}
+	rn.logger.Debug("Received peer info...")
 	rn.info = peerInfo.Info
 
 	//We send our peer peer info back

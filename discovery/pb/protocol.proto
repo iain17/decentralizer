@@ -2,7 +2,9 @@ syntax = "proto3";
 package pb;
 option optimize_for = LITE_RUNTIME;
 
-message Hearbeat {}
+message Hearbeat {
+    string message = 1;
+}
 message PeerInfo {
     map<string, string> info = 2;
 }

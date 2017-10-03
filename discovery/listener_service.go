@@ -57,25 +57,33 @@ func (l *ListenerService) Stop() {
 
 //We receive a connection from a possible new peer.
 func (l *ListenerService) process(c net.Conn) error {
-	l.logger.Debug("Waiting for heartbeat...")
-	err := pb.DecodeHeartBeat(c)
+	rn := NewRemoteNode(c)
+	err := rn.sendHeartBeat()
 	if err != nil {
 		return err
 	}
 
-	l.logger.Debug("Sending our peer info...")
+	rn.logger.Debug("Waiting for heartbeat...")
+	err = pb.DecodeHeartBeat(c)
+	if err != nil {
+		return err
+	}
+	rn.logger.Debug("Received the heartbeat...")
+
+	rn.logger.Debug("Sending our peer info...")
 	err = l.localNode.sendPeerInfo(c)
 	if err != nil {
 		return err
 	}
+	rn.logger.Debug("Sent our peer info...")
 
-	l.logger.Debug("Waiting for peer info...")
+	rn.logger.Debug("Waiting for peer info...")
 	peerInfo, err := pb.DecodePeerInfo(c)
 	if err != nil {
 		return err
 	}
+	rn.logger.Debug("Received peer info...")
 
-	rn := NewRemoteNode(c)
 	rn.info = peerInfo.Info
 	l.localNode.netTableService.AddRemoteNode(rn)
 	return nil

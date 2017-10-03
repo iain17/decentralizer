@@ -8,6 +8,7 @@ import (
 	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/golang/protobuf/proto"
 	"io"
+	"github.com/iain17/decentralizer/discovery/env"
 )
 
 type RemoteNode struct {
@@ -27,31 +28,35 @@ func NewRemoteNode(conn net.Conn) *RemoteNode {
 }
 
 func (rn *RemoteNode) sendHeartBeat() error {
-	transfer, err := proto.Marshal(&pb.Hearbeat{})
-	if err != nil {
-		return err
-	}
-	return rn.write(transfer)
-}
-
-func (rn *RemoteNode) Send(message string) error {
-	transfer, err := proto.Marshal(&pb.Transfer{
-		Data: message,
+	rn.logger.Debug("sending heartbeat...")
+	heartbeat, err := proto.Marshal(&pb.Message{
+		Version: env.VERSION,
+		Msg: &pb.Message_Heartbeat{
+			Heartbeat: &pb.Hearbeat{
+				Message: "LOVE IS THE KEY",
+			},
+		},
 	})
 	if err != nil {
 		return err
 	}
-	return rn.write(transfer)
+	return pb.Write(rn.conn, heartbeat)
 }
 
-func (rn *RemoteNode) write(data []byte) error {
-	rn.logger.Debug("sending message...")
-	_, err := rn.conn.Write(data)
+func (rn *RemoteNode) Send(message string) error {
+	rn.logger.Debug("sending data...")
+	transfer, err := proto.Marshal(&pb.Message{
+		Version: env.VERSION,
+		Msg: &pb.Message_Transfer{
+			Transfer: &pb.Transfer{
+				Data: message,
+			},
+		},
+	})
 	if err != nil {
 		return err
 	}
-	rn.logger.Debug("message sent")
-	return nil
+	return pb.Write(rn.conn, transfer)
 }
 
 func (rn *RemoteNode) Close() {
