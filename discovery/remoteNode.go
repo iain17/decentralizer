@@ -33,7 +33,7 @@ func (rn *RemoteNode) sendHeartBeat() error {
 		Version: env.VERSION,
 		Msg: &pb.Message_Heartbeat{
 			Heartbeat: &pb.Hearbeat{
-				Message: "LOVE IS THE KEY",
+				Message: "",
 			},
 		},
 	})
@@ -65,8 +65,9 @@ func (rn *RemoteNode) Close() {
 }
 
 func (rn *RemoteNode) listen(ln *LocalNode) {
-	defer rn.logger.Debug("listener stopped...")
 	defer func() {
+		rn.logger.Debug("Connection closed.")
+		rn.conn.Close()
 		ln.netTableService.RemoveRemoteNode(rn.conn.RemoteAddr())
 	}()
 
@@ -74,17 +75,17 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 	for {
 		packet, err := pb.Decode(rn.conn)
 		if err != nil {
-			rn.logger.Error("decode error, %v", err)
-			if err == io.EOF {
+			rn.logger.Errorf("decode error, %v", err)
+			if err == io.EOF || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
 				break
 			}
 			continue
 		}
-		rn.logger.Debug("received, %+v", packet)
+		rn.logger.Debugf("received, %+v", packet)
 
 		switch packet.GetMsg().(type) {
 		case *pb.Message_Heartbeat :
-			rn.logger.Debug("heard beat received")
+			rn.logger.Debug("heart beat received")
 			rn.lastHeartbeat = time.Now()
 			break
 		}
