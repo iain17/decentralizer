@@ -32,9 +32,6 @@ func Write(w io.Writer, data []byte) error {
 func Decode(r io.Reader) (*Message, error) {
 	data, err := bufio.NewReader(r).ReadBytes(delimiter)
 	if err != nil {
-		if err == io.EOF {
-			return Decode(r)
-		}
 		return nil, err
 	}
 	var result Message

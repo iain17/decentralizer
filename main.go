@@ -9,6 +9,7 @@ import (
 	"github.com/iain17/decentralizer/discovery"
 	"github.com/op/go-logging"
 	"time"
+	"fmt"
 )
 
 //This is the privatekey
@@ -35,7 +36,7 @@ func main() {
 
 	peers := d.WaitForPeers(5, 300)
 	for _, peer := range peers {
-		println(peer)
+		fmt.Printf("%#v", peer.Info)
 	}
 
 	/*//Create a random new ipfs node.

@@ -8,7 +8,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/hashicorp/golang-lru"
 )
-const CONCCURENT_NEW_CONNECTION = 10
 
 type NetTableService struct {
 	localNode *LocalNode
@@ -17,6 +16,7 @@ type NetTableService struct {
 	newPeer chan *RemoteNode
 
 	blackList *lru.Cache
+	seen *lru.Cache
 	peers     *lru.Cache
 
 	heartbeatTicker <-chan time.Time
@@ -31,6 +31,10 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION)
 	var err error
 	nt.blackList, err = lru.New(1000)
+	if err != nil {
+		return err
+	}
+	nt.seen, err = lru.New(1000)
 	if err != nil {
 		return err
 	}
@@ -91,8 +95,17 @@ func (nt *NetTableService) Stop() {
 	}
 }
 
-func (nt *NetTableService) GetNewConnChan() chan<- *net.UDPAddr {
-	return nt.newConn
+func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
+	if addr.IP.String() == nt.localNode.ip && addr.Port == nt.localNode.port {
+		return
+	}
+	key := addr.String()
+	if nt.seen.Contains(key) {
+		return
+	}
+	nt.seen.Add(key, true)
+	nt.logger.Debugf("new potential peer %q discovered", addr)
+	nt.newConn <- addr
 }
 
 func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
@@ -124,7 +137,7 @@ func (nt *NetTableService) isEnoughPeers() bool {
 }
 
 func (nt *NetTableService) heartbeat() {
-	nt.heartbeatTicker = time.Tick(30 * time.Second)
+	nt.heartbeatTicker = time.Tick(HEARTBEAT_DELAY * time.Second)
 	for {
 		select {
 		case _, ok := <-nt.heartbeatTicker:
@@ -138,13 +151,15 @@ func (nt *NetTableService) heartbeat() {
 					continue
 				}
 				peer := value.(*RemoteNode)
-				if time.Since(peer.lastHeartbeat).Seconds() >= 10 {
+				if time.Since(peer.lastHeartbeat).Seconds() >= HEARTBEAT_DELAY * 2 {
 					nt.logger.Debugf("Closing peer connection. Haven't received a heartbeat for far too long")
 					peer.Close()
+					continue
 				}
 				i++
 				if err := peer.sendHeartBeat(); err != nil {
-					nt.logger.Error("error on send heartbeat. %v", err)
+					peer.Close()
+					nt.logger.Errorf("error on send heartbeat. %v", err)
 				}
 			}
 		}
@@ -172,5 +187,5 @@ func (nt *NetTableService) addToBlackList(h *net.UDPAddr) {
 }
 
 func (nt *NetTableService) isBlackListed(h *net.UDPAddr) bool {
-	return nt.blackList.Contains(h)
+	return nt.blackList.Contains(h) || (h.IP.String() == nt.localNode.ip && h.Port == nt.localNode.port)
 }

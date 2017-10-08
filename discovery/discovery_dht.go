@@ -2,7 +2,6 @@ package discovery
 
 import (
 	"github.com/iain17/dht"
-	"sync"
 	"github.com/op/go-logging"
 	"context"
 	"time"
@@ -16,8 +15,6 @@ type DiscoveryDHT struct {
 	localNode *LocalNode
 	context context.Context
 	ih [20]byte
-	lastPeers map[string]bool
-	mutex     sync.Mutex
 
 	logger *logging.Logger
 }
@@ -26,7 +23,6 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.logger = logging.MustGetLogger("DiscoveryDHT")
 	d.localNode = ln
 	d.context = ctx
-	d.lastPeers = map[string]bool{}
 
 	conn, err := net.ListenPacket("udp", ":0")
 	if err != nil {
@@ -72,7 +68,10 @@ func (d *DiscoveryDHT) Run() {
 			}
 			if !d.localNode.netTableService.isEnoughPeers() {
 				for _, peer := range peers.Peers {
-					go d.addPeer(&peer)
+					go d.localNode.netTableService.Discovered(&net.UDPAddr{
+						IP:   peer.IP[:],
+						Port: int(peer.Port),
+					})
 				}
 			}
 		}
@@ -85,22 +84,5 @@ func (d *DiscoveryDHT) request() {
 	d.announce, err = d.node.Announce(d.ih, d.localNode.port, false)
 	if err != nil {
 		d.logger.Warning(err)
-	}
-}
-
-func (d *DiscoveryDHT) addPeer(peer *dht.Peer) {
-	d.mutex.Lock()
-	key := peer.String()
-	if d.lastPeers[key] {
-		d.mutex.Unlock()
-		return
-	}
-	d.lastPeers[key] = true
-	d.mutex.Unlock()
-
-	d.logger.Debugf("new potential DHT peer %q discovered", peer)
-	d.localNode.netTableService.GetNewConnChan() <- &net.UDPAddr{
-		IP:   peer.IP[:],
-		Port: int(peer.Port),
 	}
 }

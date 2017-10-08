@@ -12,11 +12,13 @@ import (
 type LocalNode struct {
 	Node
 	discovery *Discovery
+	ip string//Gets filled in by stun service.
 	port int
 	//Services
 	listenerService ListenerService
 	upNpService UPnPService
 	netTableService NetTableService
+	StunService StunService
 	//Peer discoveries
 	discoveryDHT  DiscoveryDHT
 }
@@ -25,11 +27,12 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	instance := &LocalNode{
 		Node: Node{
 			logger: logging.MustGetLogger("LocalNode"),
-			Info: map[string]string{},
+			Info:   map[string]string{},
 		},
 		discovery: discovery,
-		port: freeport.GetUDPPort(),
+		port:      freeport.GetUDPPort(),
 	}
+
 	err := instance.listenerService.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
@@ -41,6 +44,11 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	}
 
 	err = instance.upNpService.Init(discovery.ctx, instance)
+	if err != nil {
+		return nil, err
+	}
+
+	err = instance.StunService.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
 	}
