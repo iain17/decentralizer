@@ -9,7 +9,7 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-var delimiter = byte(004)
+var delimiter = byte(255)
 
 func Write(w io.Writer, data []byte) error {
 	s, err := w.Write(data)

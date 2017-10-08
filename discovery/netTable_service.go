@@ -98,7 +98,7 @@ func (nt *NetTableService) GetNewConnChan() chan<- *net.UDPAddr {
 func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 	addr := rn.conn.RemoteAddr().String()
 	nt.peers.Add(addr, rn)
-	nt.logger.Info("Connected to %s", addr)
+	nt.logger.Infof("Connected to %s", addr)
 	go rn.listen(nt.localNode)
 	nt.newPeer <- rn
 }
@@ -124,7 +124,7 @@ func (nt *NetTableService) isEnoughPeers() bool {
 }
 
 func (nt *NetTableService) heartbeat() {
-	nt.heartbeatTicker = time.Tick(5 * time.Second)
+	nt.heartbeatTicker = time.Tick(30 * time.Second)
 	for {
 		select {
 		case _, ok := <-nt.heartbeatTicker:
