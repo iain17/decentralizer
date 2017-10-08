@@ -8,11 +8,11 @@ import (
 	"github.com/pkg/errors"
 	"github.com/hashicorp/golang-lru"
 )
+const CONCCURENT_NEW_CONNECTION = 10
 
 type NetTableService struct {
 	localNode *LocalNode
 	context context.Context
-	//waitGroup sync.WaitGroup
 	newConn chan *net.UDPAddr
 	newPeer chan *RemoteNode
 
@@ -28,7 +28,7 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.logger = logging.MustGetLogger("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
-	nt.newConn = make(chan *net.UDPAddr, 10)
+	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION)
 	var err error
 	nt.blackList, err = lru.New(1000)
 	if err != nil {
@@ -50,8 +50,8 @@ func evicted(_ interface{}, value interface{}) {
 }
 
 func (nt *NetTableService) Run() error {
-	//Spawn 10 workers.
-	for i := 0; i < 10; i++ {
+	//Spawn some workers
+	for i := 0; i < CONCCURENT_NEW_CONNECTION; i++ {
 		go nt.processDHTIn()
 	}
 	//Send a heart beat to the peers we are connected to

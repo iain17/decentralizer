@@ -9,28 +9,32 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
+var delimiter = byte(004)
+
 func Write(w io.Writer, data []byte) error {
 	s, err := w.Write(data)
-
 	if err != nil {
 		return err
 	}
 	if len(data) != s {
-		errors.New("Didn't write all of the data")
+		return errors.New("Didn't write all of the data")
 	}
-	s, err = w.Write([]byte{'\n'})
+	s, err = w.Write([]byte{delimiter})
 	if err != nil {
 		return err
 	}
-	if len(data) != 1 {
-		errors.New("Didn't write the delimiter")
+	if s != 1 {
+		return errors.New("Didn't write the delimiter")
 	}
 	return err
 }
 
 func Decode(r io.Reader) (*Message, error) {
-	data, err := bufio.NewReader(r).ReadBytes('\n')
+	data, err := bufio.NewReader(r).ReadBytes(delimiter)
 	if err != nil {
+		if err == io.EOF {
+			return Decode(r)
+		}
 		return nil, err
 	}
 	var result Message

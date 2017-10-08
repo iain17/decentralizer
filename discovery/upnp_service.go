@@ -37,7 +37,7 @@ func (s *UPnPService) Run() {
 		default:
 			err := s.process(s.localNode.port)
 			if err != nil {
-				s.logger.Error("error on process, %v", err)
+				s.logger.Error("error on forwarding process, %v", err)
 			}
 			time.Sleep(time.Minute)
 		}
