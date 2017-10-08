@@ -21,6 +21,7 @@ type LocalNode struct {
 	StunService StunService
 	//Peer discoveries
 	discoveryDHT  DiscoveryDHT
+	discoveryIRC  DiscoveryIRC
 }
 
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {
@@ -54,6 +55,11 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	}
 
 	err = instance.discoveryDHT.Init(discovery.ctx, instance)
+	if err != nil {
+		return nil, err
+	}
+
+	err = instance.discoveryIRC.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
 	}
