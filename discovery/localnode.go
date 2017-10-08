@@ -1,8 +1,6 @@
 package discovery
 
 import (
-	"github.com/iain17/decentralizer/network"
-	"context"
 	"github.com/iain17/freeport"
 	"io"
 	"github.com/golang/protobuf/proto"
@@ -13,7 +11,7 @@ import (
 
 type LocalNode struct {
 	Node
-	network *network.Network
+	discovery *Discovery
 	port int
 	//Services
 	listenerService ListenerService
@@ -23,30 +21,31 @@ type LocalNode struct {
 	discoveryDHT  DiscoveryDHT
 }
 
-func NewLocalNode(ctx context.Context, network *network.Network) (*LocalNode, error) {
+func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	instance := &LocalNode{
 		Node: Node{
 			logger: logging.MustGetLogger("LocalNode"),
+			Info: map[string]string{},
 		},
-		network: network,
+		discovery: discovery,
 		port: freeport.GetUDPPort(),
 	}
-	err := instance.listenerService.Init(ctx, instance)
+	err := instance.listenerService.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
 	}
 
-	err = instance.netTableService.Init(ctx, instance)
+	err = instance.netTableService.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
 	}
 
-	err = instance.upNpService.Init(ctx, instance)
+	err = instance.upNpService.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
 	}
 
-	err = instance.discoveryDHT.Init(ctx, instance)
+	err = instance.discoveryDHT.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +58,8 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 		Version: env.VERSION,
 		Msg: &pb.Message_PeerInfo{
 			PeerInfo: &pb.PeerInfo{
-				Info: ln.info,
+				Network: string(ln.discovery.network.ExportPublicKey()),
+				Info: ln.Info,
 			},
 		},
 	})
@@ -67,4 +67,8 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 		return err
 	}
 	return pb.Write(w, peerInfo)
+}
+
+func (ln *LocalNode) String() string {
+	return "Local node."
 }

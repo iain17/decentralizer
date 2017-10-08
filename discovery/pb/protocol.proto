@@ -6,6 +6,7 @@ message Hearbeat {
     string message = 1;
 }
 message PeerInfo {
+    string network = 1;
     map<string, string> info = 2;
 }
 message Transfer {

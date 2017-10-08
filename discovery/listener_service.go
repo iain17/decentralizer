@@ -78,13 +78,13 @@ func (l *ListenerService) process(c net.Conn) error {
 	rn.logger.Debug("Sent our peer info...")
 
 	rn.logger.Debug("Waiting for peer info...")
-	peerInfo, err := pb.DecodePeerInfo(c)
+	peerInfo, err := pb.DecodePeerInfo(c, string(l.localNode.discovery.network.ExportPublicKey()))
 	if err != nil {
 		return err
 	}
 	rn.logger.Debug("Received peer info...")
 
-	rn.info = peerInfo.Info
+	rn.Info = peerInfo.Info
 	l.localNode.netTableService.AddRemoteNode(rn)
 	return nil
 }

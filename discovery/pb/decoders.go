@@ -55,7 +55,7 @@ func DecodeHeartBeat(r io.Reader) error {
 	return nil
 }
 
-func DecodePeerInfo(r io.Reader) (*PeerInfo, error) {
+func DecodePeerInfo(r io.Reader, network string) (*PeerInfo, error) {
 	message, err := Decode(r)
 	if err != nil {
 		return nil, err
@@ -63,6 +63,10 @@ func DecodePeerInfo(r io.Reader) (*PeerInfo, error) {
 	result := message.GetPeerInfo()
 	if result == nil {
 		return nil, errors.New(fmt.Sprintf("Did not receive a PeerInfo message"))
+	}
+	//Check network
+	if result.Network != network {
+		return nil, errors.New(fmt.Sprintf("Peer not from the same network. Received %s got %s", result.Network, network))
 	}
 	return result, nil
 }

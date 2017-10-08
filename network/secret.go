@@ -10,8 +10,9 @@ import (
 )
 
 type Network struct {
-	PublicKey *rsa.PublicKey
-	PrivateKey *rsa.PrivateKey
+	publicKey  *rsa.PublicKey
+	privateKey *rsa.PrivateKey
+	publicKeyBytes []byte
 }
 
 func New() (*Network, error) {
@@ -20,13 +21,13 @@ func New() (*Network, error) {
 		return nil, err
 	}
 	return &Network{
-		PrivateKey: privateKey,
-		PublicKey: &privateKey.PublicKey,
+		privateKey: privateKey,
+		publicKey:  &privateKey.PublicKey,
 	}, nil
 }
 
 func (ns Network) Bytes() []byte {
-	publicKey, err := ExportPublicKey(ns.PublicKey)
+	publicKey, err := ExportPublicKey(ns.publicKey)
 	if err != nil {
 		panic(err)
 	}
@@ -38,7 +39,7 @@ func (ns Network) Marshal() string {
 }
 
 func (ns Network) MarshalFromPrivateKey() string {
-	return hex.EncodeToString(ExportPrivateKey(ns.PrivateKey))
+	return hex.EncodeToString(ExportPrivateKey(ns.privateKey))
 }
 
 func Unmarshal(v string) (*Network, error) {
@@ -51,7 +52,7 @@ func Unmarshal(v string) (*Network, error) {
 		return nil, err
 	}
 	secret := &Network{
-		PublicKey: publicKey,
+		publicKey: publicKey,
 	}
 	return secret, nil
 }
@@ -67,8 +68,8 @@ func UnmarshalFromPrivateKey(v string) (*Network, error) {
 	}
 	publicKey := &privateKey.PublicKey
 	secret := &Network{
-		PrivateKey: privateKey,
-		PublicKey: publicKey,
+		privateKey: privateKey,
+		publicKey:  publicKey,
 	}
 	return secret, nil
 }
@@ -77,13 +78,20 @@ func (ns Network) InfoHash() [20]byte {
 	return sha1.Sum(ns.Bytes())
 }
 
-func (ns Network) ExportPublicKey() ([]byte, error) {
-	return ExportPublicKey(ns.PublicKey)
+func (ns Network) ExportPublicKey() []byte {
+	if ns.publicKeyBytes == nil {
+		var err error
+		ns.publicKeyBytes, err = ExportPublicKey(ns.publicKey)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return ns.publicKeyBytes
 }
 
 func (ns Network) ExportPrivateKey() ([]byte, error) {
-	if ns.PrivateKey == nil {
+	if ns.privateKey == nil {
 		return nil, errors.New("No private key set.")
 	}
-	return ExportPrivateKey(ns.PrivateKey), nil
+	return ExportPrivateKey(ns.privateKey), nil
 }

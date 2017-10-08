@@ -7,8 +7,8 @@ func TestNew(t *testing.T) {
 	network, err := New()
 	assert.NoError(t, err)
 	assert.NotEmpty(t, network.Marshal())
-	assert.NotNil(t, network.PrivateKey)
-	assert.NotNil(t, network.PublicKey)
+	assert.NotNil(t, network.privateKey)
+	assert.NotNil(t, network.publicKey)
 }
 
 func TestNetwork_InfoHash(t *testing.T) {

@@ -36,7 +36,7 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 		Conn: conn,
 		StartingNodes: dht.GlobalBootstrapAddrs,
 	})
-	d.ih = d.localNode.network.InfoHash()
+	d.ih = d.localNode.discovery.network.InfoHash()
 	if err != nil {
 		return
 	}
@@ -70,8 +70,10 @@ func (d *DiscoveryDHT) Run() {
 				d.request()
 				continue
 			}
-			for _, peer := range peers.Peers {
-				go d.addPeer(&peer)
+			if !d.localNode.netTableService.isEnoughPeers() {
+				for _, peer := range peers.Peers {
+					go d.addPeer(&peer)
+				}
 			}
 		}
 	}

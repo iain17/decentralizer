@@ -7,8 +7,8 @@ import (
 	//peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/decentralizer/network"
 	"github.com/iain17/decentralizer/discovery"
-	"context"
 	"github.com/op/go-logging"
+	"time"
 )
 
 //This is the privatekey
@@ -26,15 +26,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	node, err := discovery.NewLocalNode(ctx, network)
+	d, err := discovery.New(network, 10)
 	if err != nil {
 		panic(err)
 	}
-	print(node)
-	select{}
+	d.LocalNode.Info["created"] = time.Now().Format(time.UnixDate)
+	d.LocalNode.Info["address"] = "yo ipfs!"
 
+	peers := d.WaitForPeers(5, 300)
+	for _, peer := range peers {
+		println(peer)
+	}
 
 	/*//Create a random new ipfs node.
 	path := fmt.Sprintf("/tmp/ipfs/%d", time.Now().Unix())

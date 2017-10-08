@@ -66,7 +66,7 @@ func (rn *RemoteNode) Close() {
 
 func (rn *RemoteNode) listen(ln *LocalNode) {
 	defer func() {
-		rn.logger.Debug("Connection closed.")
+		rn.logger.Debug("Stopping with listening.")
 		rn.conn.Close()
 		ln.netTableService.RemoveRemoteNode(rn.conn.RemoteAddr())
 	}()
@@ -76,7 +76,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		packet, err := pb.Decode(rn.conn)
 		if err != nil {
 			rn.logger.Errorf("decode error, %v", err)
-			if err == io.EOF || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
+			if err == io.EOF || err.Error() == "no packet read timeout" || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
 				break
 			}
 			continue
@@ -90,4 +90,8 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 			break
 		}
 	}
+}
+
+func (rn *RemoteNode) String() string {
+	return fmt.Sprintf("Remote node(%s) with info: %#v", rn.conn.RemoteAddr().String(), rn.Info)
 }

@@ -35,13 +35,13 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 
 	//They will respond by sending their peer info
 	rn.logger.Debug("Waiting for peer info...")
-	peerInfo, errPeerInfo := pb.DecodePeerInfo(rn.conn)
+	peerInfo, errPeerInfo := pb.DecodePeerInfo(rn.conn, string(ln.discovery.network.ExportPublicKey()))
 	if errPeerInfo != nil {
 		conn.Close()
 		return nil, errPeerInfo
 	}
 	rn.logger.Debug("Received peer info...")
-	rn.info = peerInfo.Info
+	rn.Info = peerInfo.Info
 
 	//We send our peer peer info back
 	rn.logger.Debug("Sending our peer info")
