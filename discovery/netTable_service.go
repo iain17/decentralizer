@@ -56,14 +56,14 @@ func evicted(_ interface{}, value interface{}) {
 func (nt *NetTableService) Run() error {
 	//Spawn some workers
 	for i := 0; i < CONCCURENT_NEW_CONNECTION; i++ {
-		go nt.processDHTIn()
+		go nt.processNewConnection()
 	}
 	//Send a heart beat to the peers we are connected to
 	go nt.heartbeat()
 	return nil
 }
 
-func (nt *NetTableService) processDHTIn() {
+func (nt *NetTableService) processNewConnection() {
 	defer nt.Stop()
 	for {
 		select {

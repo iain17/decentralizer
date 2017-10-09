@@ -5,12 +5,23 @@ option optimize_for = LITE_RUNTIME;
 message Hearbeat {
     string message = 1;
 }
+
 message PeerInfo {
     string network = 1;
     map<string, string> info = 2;
 }
+
 message Transfer {
     string data = 1;
+}
+
+message Peer {
+    string ip = 1;
+    int32 port = 2;
+}
+
+message Peers {
+    repeated Peer peers = 1;
 }
 
 message Message {
@@ -19,5 +30,6 @@ message Message {
         Hearbeat heartbeat = 2;
         PeerInfo peerInfo = 3;
         Transfer transfer = 4;
+        Peers peers = 5;
     }
 }

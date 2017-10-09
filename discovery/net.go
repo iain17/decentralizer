@@ -17,7 +17,7 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	if errDial != nil {
 		return nil, errDial
 	}
-	rn := NewRemoteNode(conn)
+	rn := NewRemoteNode(conn, ln)
 
 	//Handshake dance.
 	rn.logger.Debug("Sending our peer info")

@@ -57,7 +57,7 @@ func (l *ListenerService) Stop() {
 
 //We receive a connection from a possible new peer.
 func (l *ListenerService) process(c net.Conn) error {
-	rn := NewRemoteNode(c)
+	rn := NewRemoteNode(c, l.localNode)
 
 	rn.logger.Debug("Waiting for peer info...")
 	peerInfo, err := pb.DecodePeerInfo(c, string(l.localNode.discovery.network.ExportPublicKey()))
