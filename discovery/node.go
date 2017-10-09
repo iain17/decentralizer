@@ -3,7 +3,7 @@ package discovery
 import "github.com/op/go-logging"
 
 type Node struct {
-	Info map[string]string
+	info map[string]string
 	logger        *logging.Logger
 }
 

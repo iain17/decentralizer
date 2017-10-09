@@ -70,6 +70,9 @@ func (rn *RemoteNode) Close() {
 
 func (rn *RemoteNode) listen(ln *LocalNode) {
 	defer func() {
+		if r := recover(); r != nil {
+			rn.logger.Errorf("panic: %s", r)
+		}
 		rn.logger.Debug("Stopping with listening.")
 		rn.conn.Close()
 		ln.netTableService.RemoveRemoteNode(rn.conn.RemoteAddr())
@@ -94,8 +97,12 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 			rn.lastHeartbeat = time.Now()
 			break
 		case *pb.Message_Peers:
-			msg := packet.GetMsg().(*pb.Message_Peers)
-			rn.receiveSharedPeers(msg.Peers.Peers)
+			msg := packet.GetMsg().(*pb.Message_Peers).Peers
+			rn.receiveSharedPeers(msg.Peers)
+			break
+		case *pb.Message_PeerInfo:
+			msg := packet.GetMsg().(*pb.Message_PeerInfo).PeerInfo
+			rn.info = msg.Info
 			break
 		}
 	}
@@ -157,5 +164,5 @@ func (rn *RemoteNode) SharePeers() error {
 
 
 func (rn *RemoteNode) String() string {
-	return fmt.Sprintf("Remote node(%s) with info: %#v", rn.conn.RemoteAddr().String(), rn.Info)
+	return fmt.Sprintf("Remote node(%s) with info: %#v", rn.conn.RemoteAddr().String(), rn.info)
 }

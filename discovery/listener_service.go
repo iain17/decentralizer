@@ -73,7 +73,7 @@ func (l *ListenerService) process(c net.Conn) error {
 	}
 	rn.logger.Debug("Sent our peer info...")
 
-	rn.Info = peerInfo.Info
+	rn.info = peerInfo.Info
 	l.localNode.netTableService.AddRemoteNode(rn)
 	return nil
 }

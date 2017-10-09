@@ -10,4 +10,3 @@ This package is used to discover fellow peers around a certain topic using publi
 ## TODO
 1. (must) Save Net table. For fast boot.
 2. (optional) add callback for data received
-3. (must) Update peer info.

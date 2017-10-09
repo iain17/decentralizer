@@ -28,7 +28,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	instance := &LocalNode{
 		Node: Node{
 			logger: logging.MustGetLogger("LocalNode"),
-			Info:   map[string]string{},
+			info:   map[string]string{},
 		},
 		discovery: discovery,
 		port:      freeport.GetUDPPort(),
@@ -73,7 +73,7 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 		Msg: &pb.Message_PeerInfo{
 			PeerInfo: &pb.PeerInfo{
 				Network: string(ln.discovery.network.ExportPublicKey()),
-				Info: ln.Info,
+				Info: ln.info,
 			},
 		},
 	})
@@ -85,4 +85,12 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 
 func (ln *LocalNode) String() string {
 	return "Local node."
+}
+
+//Will trigger updating the clients I'm connected to
+func (ln *LocalNode) SetInfo(key string, value string) {
+	ln.info[key] = value
+	for _, peer := range ln.netTableService.GetPeers() {
+		go ln.sendPeerInfo(peer.conn)
+	}
 }

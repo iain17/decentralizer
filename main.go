@@ -31,12 +31,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	d.LocalNode.Info["created"] = time.Now().Format(time.UnixDate)
-	d.LocalNode.Info["address"] = "yo ipfs!"
+	d.LocalNode.SetInfo("created", time.Now().Format(time.UnixDate))
+	d.LocalNode.SetInfo("address", "Yo IPFS!")
 
 	peers := d.WaitForPeers(5, 300)
 	for _, peer := range peers {
-		fmt.Printf("%#v", peer.Info)
+		fmt.Printf("%#v", peer)
 	}
 
 	/*//Create a random new ipfs node.

@@ -145,12 +145,7 @@ func (nt *NetTableService) heartbeat() {
 				break
 			}
 			i := 0
-			for _, key := range nt.peers.Keys() {
-				value, res := nt.peers.Get(key)
-				if !res {
-					continue
-				}
-				peer := value.(*RemoteNode)
+			for _, peer := range nt.GetPeers() {
 				if time.Since(peer.lastHeartbeat).Seconds() >= HEARTBEAT_DELAY * 2 {
 					nt.logger.Debugf("Closing peer connection. Haven't received a heartbeat for far too long")
 					peer.Close()
