@@ -39,7 +39,7 @@ func Decode(r io.Reader) (*Message, error) {
 		return nil, err
 	}
 	if result.Version != env.VERSION {
-		return nil, errors.New(fmt.Sprintf("Invalid version"))
+		return nil, errors.New(fmt.Sprintf("Invalid version. Received %d, expected %d", result.Version, env.VERSION))
 	}
 	return &result, nil
 }

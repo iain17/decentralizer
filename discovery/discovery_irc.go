@@ -35,10 +35,13 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.connection.UseTLS = true
 
 	d.connection.AddCallback("001", func(e *irc.Event) { d.connection.Join(d.channel) })
-	d.connection.AddCallback("366", func(e *irc.Event) {  })
+	d.connection.AddCallback("366", func(e *irc.Event) {
+		d.Advertise()
+	})
 
 	d.connection.AddCallback("PRIVMSG", func(event *irc.Event) {
 		message := event.Message()
+		d.logger.Debugf("Received message: %s", message)
 		if strings.HasPrefix(message, IRC_PREFIX) {
 			ipPort := strings.Split(message[len(IRC_PREFIX):], ":")
 			if len(ipPort) != 2 {
@@ -54,11 +57,13 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 				IP:   net.ParseIP(ipPort[0]),
 				Port: port,
 			})
+		} else {
+			d.logger.Debug("Message hasn't got the IRC prefix.")
 		}
 	})
-
+	err = d.connection.Connect(IRC_SERVER)
 	go d.Run()
-	return d.connection.Connect(IRC_SERVER)
+	return err
 }
 
 func (d *DiscoveryIRC) Stop() {
@@ -68,27 +73,33 @@ func (d *DiscoveryIRC) Stop() {
 }
 
 func (d *DiscoveryIRC) Run() {
-	t := time.NewTimer(30 * time.Second)
 	defer func () {
+		d.logger.Info("Stopping...")
 		d.Stop()
-		t.Stop()
 	}()
 
 	for {
 		select {
 		case <-d.context.Done():
 			return
-		case <-t.C:
+		default:
 			if !d.connection.Connected() {
+				d.logger.Warning("Reconnecting...")
 				err := d.connection.Connect(IRC_SERVER)
-				d.logger.Error(err)
+				if err != nil {
+					d.logger.Error(err)
+				}
 				continue
 			}
-
-			if d.localNode.ip == "" {
-				d.logger.Debug("Not sending a message because we don't know our ip yet.")
-			}
-			d.connection.Privmsgf(d.channel, "%s%s:%d", IRC_PREFIX, d.localNode.ip, d.localNode.port)
+			d.Advertise()
+			time.Sleep(30 * time.Second)
 		}
+	}
+}
+
+func (d *DiscoveryIRC) Advertise() {
+	if d.localNode.ip != "" {
+		d.connection.Privmsgf(d.channel, "%s%s:%d", IRC_PREFIX, d.localNode.ip, d.localNode.port)
+		d.logger.Debug("Sent IRC message")
 	}
 }

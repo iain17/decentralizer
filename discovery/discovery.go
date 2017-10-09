@@ -35,10 +35,6 @@ func (d *Discovery) Stop() {
 	d.cancel()
 }
 
-func (d *Discovery) GetNewPeerChan() chan<- *RemoteNode {
-	return d.LocalNode.netTableService.newPeer
-}
-
 func (d *Discovery) WaitForPeers(num int, timeout float64) []*RemoteNode {
 	started := time.Now()
 	for d.LocalNode.netTableService.peers.Len() < num {

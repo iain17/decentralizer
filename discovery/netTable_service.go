@@ -7,13 +7,18 @@ import (
 	"net"
 	"github.com/pkg/errors"
 	"github.com/hashicorp/golang-lru"
+	"github.com/iain17/decentralizer/discovery/pb"
+	"strings"
+	"strconv"
+	"github.com/golang/protobuf/proto"
+	"io/ioutil"
+	"os"
 )
 
 type NetTableService struct {
 	localNode *LocalNode
 	context context.Context
 	newConn chan *net.UDPAddr
-	newPeer chan *RemoteNode
 
 	blackList *lru.Cache
 	seen *lru.Cache
@@ -28,7 +33,7 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.logger = logging.MustGetLogger("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
-	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION)
+	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION * 2)
 	var err error
 	nt.blackList, err = lru.New(1000)
 	if err != nil {
@@ -42,7 +47,10 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	if err != nil {
 		return err
 	}
-	nt.newPeer = make(chan *RemoteNode)
+	err = nt.Restore()
+	if err != nil {
+		nt.logger.Warningf("Could not restore previous connected peers: %s", err)
+	}
 	nt.Run()
 	return nil
 }
@@ -86,13 +94,57 @@ func (nt *NetTableService) processNewConnection() {
 }
 
 func (nt *NetTableService) Stop() {
-	for _, key := range nt.peers.Keys() {
-		value, res := nt.peers.Get(key)
-		if !res {
+	for _, peer := range nt.GetPeers() {
+		peer.Close()
+	}
+}
+
+func (nt *NetTableService) Save() error {
+	var peers []*pb.Peer
+	for _, peer := range nt.GetPeers() {
+		ipPort := strings.Split(peer.conn.RemoteAddr().String(), ":")
+		if len(ipPort) != 2 {
 			continue
 		}
-		value.(*RemoteNode).Close()
+		port, err := strconv.Atoi(ipPort[1])
+		if err != nil {
+			continue
+		}
+		peers = append(peers, &pb.Peer{
+			Ip: ipPort[0],
+			Port: int32(port),
+		})
 	}
+	data, err := proto.Marshal(&pb.Peers{
+		Peers: peers,
+	})
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(NET_TABLE_FILE, data, 0644)
+}
+
+func (nt *NetTableService) Restore() error {
+	file, err := os.Open(NET_TABLE_FILE)
+	if err != nil {
+		return err
+	}
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		return err
+	}
+	peers := &pb.Peers{}
+	err = proto.Unmarshal(data, peers)
+	if err != nil {
+		return err
+	}
+	for _, peer := range peers.Peers {
+		nt.Discovered(&net.UDPAddr{
+			IP:   net.ParseIP(peer.Ip),
+			Port: int(peer.Port),
+		})
+	}
+	return nil
 }
 
 func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
@@ -113,7 +165,10 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 	nt.peers.Add(addr, rn)
 	nt.logger.Infof("Connected to %s", addr)
 	go rn.listen(nt.localNode)
-	nt.newPeer <- rn
+	err := nt.Save()
+	if err != nil {
+		nt.logger.Warningf("Error saving peers: %s", err)
+	}
 }
 
 func (nt *NetTableService) RemoveRemoteNode(addr net.Addr) {
