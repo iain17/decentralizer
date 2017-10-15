@@ -41,6 +41,9 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 		d.Advertise()
 	})
 	d.connection.AddCallback("PRIVMSG", func(event *irc.Event) {
+		if d.localNode.netTableService.isEnoughPeers() {
+			return
+		}
 		message := event.Message()
 		d.logger.Debugf("Received message: %s", message)
 		if strings.HasPrefix(message, IRC_PREFIX) {

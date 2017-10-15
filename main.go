@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/iain17/decentralizer/app"
 	"github.com/op/go-logging"
+	"time"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )
 
 //This is the privatekey
@@ -24,16 +26,16 @@ func main() {
 	}
 	println(app)
 
-	//go app.Receive(node, topic, func(peer peer.ID, message string) {
-	//	fmt.Printf("%s: %s\n", peer.String(), message)
-	//})
-	//
-	//go func() {
-	//	for {
-	//		app.Publish(node, topic, time.Now().String())
-	//		time.Sleep(5 * time.Second)
-	//	}
-	//}()
+	go app.Receive(topic, func(peer peer.ID, message string) {
+		logger.Infof("Received: %s: %s\n", peer.String(), message)
+	})
+
+	go func() {
+		for {
+			app.Publish(topic, time.Now().String())
+			time.Sleep(5 * time.Second)
+		}
+	}()
 
 	select{}
 }

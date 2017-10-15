@@ -3,20 +3,18 @@ package app
 import (
 	"context"
 	"strings"
-	"github.com/ipfs/go-ipfs/core"
 	"fmt"
-	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )
 
-func Receive(node *core.IpfsNode, topic string, didChange func(peer peer.ID, message string)) {
-	sub, err := node.Floodsub.Subscribe(topic)
+func (d *Decentralizer) Receive(topic string, didChange func(peer peer.ID, message string)) {
+	sub, err := d.i.Floodsub.Subscribe(topic)
 	if err != nil {
 		panic(err)
 	}
 
 	var lastMessage string
 	for {
-		logger.Debug("looking for messages")
 		msg, err := sub.Next(context.Background())
 		if err != nil {
 			fmt.Println(err)
@@ -28,16 +26,21 @@ func Receive(node *core.IpfsNode, topic string, didChange func(peer peer.ID, mes
 		if lastMessage == message {
 			continue
 		}
-		didChange(peer, message)
+		if peer.String() != d.i.Identity.String() {
+			didChange(peer, message)
+		}
 
 		//Send to the nodes I'm connected to.
-		Publish(node, topic, message)
+		d.Publish(topic, message)
 		lastMessage = message
 	}
 }
 
-func Publish(node *core.IpfsNode, topic string, message string) {
+func (d *Decentralizer) Publish(topic string, message string) {
 	//st := fmt.Sprintf("%s::#%s", sp.String(), h.String())
 	fmt.Println("Publishing", message)
-	node.Floodsub.Publish(topic, []byte(message))
+	test := d.i.Peerstore.Peers()
+	println(len(test))
+	println(test)
+	d.i.Floodsub.Publish(topic, []byte(message))
 }

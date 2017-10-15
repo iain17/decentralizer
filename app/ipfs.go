@@ -34,6 +34,7 @@ func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
 	cfg := &core.BuildCfg{
 		Repo:   r,
 		Online: true,
+		Permament: true,
 		ExtraOpts: map[string]bool{
 			"pubsub": true,
 		},

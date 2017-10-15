@@ -8,6 +8,7 @@ import (
 	"github.com/iain17/decentralizer/discovery"
 	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
+	"context"
 )
 
 var logger = logging.MustGetLogger("bootstrap")
@@ -34,6 +35,7 @@ func (d *Decentralizer) bootstrap() []pstore.PeerInfo {
 			continue
 		}
 		peers = append(peers, *peerInfo)
+		d.i.PeerHost.Connect(context.Background(), *peerInfo)
 	}
 	return peers
 }
