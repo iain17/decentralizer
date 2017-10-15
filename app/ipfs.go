@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"strings"
 	"github.com/ipfs/go-ipfs/repo"
+	"time"
 )
 
 func OpenIPFSRepo(path string, portIdx int) *core.IpfsNode {
@@ -28,6 +29,7 @@ func OpenIPFSRepo(path string, portIdx int) *core.IpfsNode {
 	if err != nil {
 		panic(err)
 	}
+	conf, err := r.Config()
 
 	resetRepoConfigPorts(r, portIdx)
 
@@ -43,6 +45,12 @@ func OpenIPFSRepo(path string, portIdx int) *core.IpfsNode {
 	if err != nil {
 		panic(err)
 	}
+	node.Bootstrap(core.BootstrapConfig{
+		MinPeerThreshold:  4,
+		Period:            30 * time.Second,
+		ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
+		BootstrapPeers: bootstrap,
+	})
 	return node
 }
 

@@ -26,11 +26,8 @@ func TestNetwork_Marshal(t *testing.T) {
 	unmarshalednetwork, err := Unmarshal(networkMarshaled)
 	assert.NoError(t, err)
 
-	exportPublicKey1, err := network.ExportPublicKey()
-	assert.NoError(t, err)
-
-	exportPublicKey2, err := unmarshalednetwork.ExportPublicKey()
-	assert.NoError(t, err)
+	exportPublicKey1 := network.ExportPublicKey()
+	exportPublicKey2 := unmarshalednetwork.ExportPublicKey()
 
 	assert.Equal(t, exportPublicKey1, exportPublicKey2)
 }
@@ -49,11 +46,8 @@ func TestNetwork_MarshalFromPrivateKey(t *testing.T) {
 	exportPrivateKey2, err := unmarshalednetwork.ExportPrivateKey()
 	assert.NoError(t, err)
 
-	exportPublicKey1, err := network.ExportPublicKey()
-	assert.NoError(t, err)
-
-	exportPublicKey2, err := unmarshalednetwork.ExportPublicKey()
-	assert.NoError(t, err)
+	exportPublicKey1 := network.ExportPublicKey()
+	exportPublicKey2 := unmarshalednetwork.ExportPublicKey()
 
 	assert.Equal(t, exportPrivateKey1, exportPrivateKey2)
 	assert.Equal(t, exportPublicKey1, exportPublicKey2)
