@@ -4,7 +4,6 @@ import (
 	"context"
 	"strings"
 	"github.com/ipfs/go-ipfs/core"
-	"github.com/iain17/logger"
 	"fmt"
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )

@@ -41,4 +41,6 @@ func TestNetwork_Sign_Verify(t *testing.T) {
 	//Now a slave can verify if that was sent by a master
 	err = slave.Verify(hash, signature)
 	assert.NoError(t, err)
+	//Sadly only a master can decrypt the message
+	err = slave.Decrypt(ciphertext)
 }

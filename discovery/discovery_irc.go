@@ -34,11 +34,12 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.connection.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	d.connection.UseTLS = true
 
-	d.connection.AddCallback("001", func(e *irc.Event) { d.connection.Join(d.channel) })
+	d.connection.AddCallback("001", func(e *irc.Event) {
+		d.connection.Join(d.channel)
+	})
 	d.connection.AddCallback("366", func(e *irc.Event) {
 		d.Advertise()
 	})
-
 	d.connection.AddCallback("PRIVMSG", func(event *irc.Event) {
 		message := event.Message()
 		d.logger.Debugf("Received message: %s", message)

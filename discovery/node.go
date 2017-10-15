@@ -1,6 +1,9 @@
 package discovery
 
-import "github.com/op/go-logging"
+import (
+	"github.com/op/go-logging"
+	"fmt"
+)
 
 type Node struct {
 	info map[string]string
@@ -8,5 +11,13 @@ type Node struct {
 }
 
 func (n *Node) String() string {
-	return "Bare node."
+	return fmt.Sprintf("bare node with info: %#v", n.info)
+}
+
+func (n *Node) SetInfo(key string, value string) {
+	n.info[key] = value
+}
+
+func (n *Node) GetInfo(key string) string {
+	return n.info[key]
 }
