@@ -27,7 +27,7 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	rn.logger.Debug("Waiting for their peer info...")
 	peerInfo, err := pb.DecodePeerInfo(rn.conn, string(ln.discovery.network.ExportPublicKey()))
 	if err != nil {
-		rn.logger.Error(err)
+		rn.logger.Debug(err)
 		conn.Close()
 		return nil, err
 	}

@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"github.com/miolini/upnp"
 	"time"
-	"github.com/op/go-logging"
 	"context"
+	"github.com/iain17/logger"
 )
 
 type UPnPService struct {
 	mapping *upnp.Upnp
 	localNode *LocalNode
-	logger  *logging.Logger
+	logger  *logger.Logger
 	context context.Context
 }
 
 func (s *UPnPService) Init(ctx context.Context, ln *LocalNode) error {
 	s.mapping = new(upnp.Upnp)
-	s.logger = logging.MustGetLogger("UpNp")
+	s.logger = logger.New("UpNp")
 	s.localNode = ln
 	s.context = ctx
 	go s.Run()

@@ -1,13 +1,13 @@
 package discovery
 
 import (
-	"github.com/op/go-logging"
 	"fmt"
+	"github.com/iain17/logger"
 )
 
 type Node struct {
 	info map[string]string
-	logger        *logging.Logger
+	logger        *logger.Logger
 }
 
 func (n *Node) String() string {

@@ -7,3 +7,4 @@ build:
 
 generate:
     protoc --go_out=. discovery/pb/protocol.proto
+    protoc --go_out=. app/pb/protocol.proto

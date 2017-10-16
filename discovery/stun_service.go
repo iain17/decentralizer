@@ -1,22 +1,22 @@
 package discovery
 
 import (
-	"github.com/op/go-logging"
 	"context"
 	"github.com/ccding/go-stun/stun"
 	"time"
 	"fmt"
+	"github.com/iain17/logger"
 )
 
 type StunService struct {
 	client *stun.Client
 	localNode *LocalNode
-	logger  *logging.Logger
+	logger  *logger.Logger
 	context context.Context
 }
 
 func (s *StunService) Init(ctx context.Context, ln *LocalNode) error {
-	s.logger = logging.MustGetLogger("Stun")
+	s.logger = logger.New("Stun")
 	s.localNode = ln
 	s.context = ctx
 	s.client = stun.NewClientWithConnection(s.localNode.listenerService.socket)

@@ -3,10 +3,10 @@ package discovery
 import (
 	"github.com/anacrolix/utp"
 	"net"
-	"github.com/op/go-logging"
 	"context"
 	"fmt"
 	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/logger"
 )
 
 type ListenerService struct {
@@ -14,11 +14,11 @@ type ListenerService struct {
 	context context.Context
 	socket    *utp.Socket
 
-	logger *logging.Logger
+	logger *logger.Logger
 }
 
 func (l *ListenerService) Init(ctx context.Context, ln *LocalNode) error {
-	l.logger = logging.MustGetLogger("listener")
+	l.logger = logger.New("listener")
 	l.localNode = ln
 	l.context = ctx
 

@@ -1,7 +1,6 @@
 package discovery
 
 import (
-	"github.com/op/go-logging"
 	"context"
 	"time"
 	"github.com/thoj/go-ircevent"
@@ -11,6 +10,7 @@ import (
 	"strings"
 	"net"
 	"strconv"
+	"github.com/iain17/logger"
 )
 
 type DiscoveryIRC struct {
@@ -18,11 +18,11 @@ type DiscoveryIRC struct {
 	localNode *LocalNode
 	context context.Context
 	channel string
-	logger *logging.Logger
+	logger *logger.Logger
 }
 
 func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
-	d.logger = logging.MustGetLogger("DiscoveryIRC")
+	d.logger = logger.New("DiscoveryIRC")
 	d.localNode = ln
 	d.context = ctx
 	infoHash := d.localNode.discovery.network.InfoHash()

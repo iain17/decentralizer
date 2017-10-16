@@ -3,7 +3,6 @@ package discovery
 import (
 	"time"
 	"context"
-	"github.com/op/go-logging"
 	"net"
 	"github.com/pkg/errors"
 	"github.com/hashicorp/golang-lru"
@@ -13,6 +12,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
 	"os"
+	"github.com/iain17/logger"
 )
 
 type NetTableService struct {
@@ -26,11 +26,11 @@ type NetTableService struct {
 
 	heartbeatTicker <-chan time.Time
 
-	logger *logging.Logger
+	logger *logger.Logger
 }
 
 func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
-	nt.logger = logging.MustGetLogger("NetTable")
+	nt.logger = logger.New("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
 	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION * 2)

@@ -6,6 +6,9 @@ import (
 	"github.com/ipfs/go-ipfs/core"
 	"fmt"
 	"time"
+	"github.com/iain17/decentralizer/app/ipfs"
+	"github.com/iain17/decentralizer/app/pb"
+	"github.com/iain17/logger"
 )
 
 type Decentralizer struct {
@@ -25,7 +28,7 @@ func New(networkStr string) (*Decentralizer, error) {
 	}
 	//Demo purposes
 	path := fmt.Sprintf("/tmp/ipfs/%d", time.Now().Unix())
-	i, err := OpenIPFSRepo(path, -1)
+	i, err := ipfs.OpenIPFSRepo(path, -1)
 	if err != nil {
 		return nil, err
 	}
@@ -34,6 +37,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		d: d,
 		i: i,
 	}
+	logger.Infof("Our DiD is: %d", pb.GetPeer(i.Identity).DId)
 	instance.i.Bootstrap(core.BootstrapConfig{
 		MinPeerThreshold:  4,
 		Period:            30 * time.Second,

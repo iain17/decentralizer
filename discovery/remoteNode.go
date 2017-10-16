@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"time"
 	"net"
-	"github.com/op/go-logging"
 	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/golang/protobuf/proto"
 	"io"
 	"github.com/iain17/decentralizer/discovery/env"
 	"strings"
 	"strconv"
+	"github.com/iain17/logger"
 )
 
 type RemoteNode struct {
@@ -23,7 +23,7 @@ type RemoteNode struct {
 func NewRemoteNode(conn net.Conn, ln *LocalNode) *RemoteNode {
 	return &RemoteNode{
 		Node: Node{
-			logger:        logging.MustGetLogger(fmt.Sprintf("RemoteNode(%s)", conn.RemoteAddr().String())),
+			logger:        logger.New(fmt.Sprintf("RemoteNode(%s)", conn.RemoteAddr().String())),
 		},
 		ln: ln,
 		conn:          conn,
@@ -83,13 +83,13 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 	for {
 		packet, err := pb.Decode(rn.conn)
 		if err != nil {
-			rn.logger.Errorf("decode error, %v", err)
 			if err == io.EOF || err.Error() == "no packet read timeout" || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
 				break
 			}
+			rn.logger.Debugf("decode error, %v", err)
 			continue
 		}
-		rn.logger.Debugf("received, %+v", packet)
+		//rn.logger.Debugf("received, %+v", packet)
 
 		switch packet.GetMsg().(type) {
 		case *pb.Message_Heartbeat :

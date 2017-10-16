@@ -1,4 +1,4 @@
-package app
+package ipfs
 
 import (
 	"os"
@@ -9,7 +9,12 @@ import (
 	"fmt"
 	"strings"
 	"github.com/ipfs/go-ipfs/repo"
+	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
+
+func init() {
+	//logging.SetDebugLogging()
+}
 
 func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
 	r, err := fsrepo.Open(path)

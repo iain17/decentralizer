@@ -5,8 +5,8 @@ import (
 	"io"
 	"github.com/golang/protobuf/proto"
 	"github.com/iain17/decentralizer/discovery/pb"
-	"github.com/op/go-logging"
 	"github.com/iain17/decentralizer/discovery/env"
+	"github.com/iain17/logger"
 )
 
 type LocalNode struct {
@@ -27,13 +27,12 @@ type LocalNode struct {
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	instance := &LocalNode{
 		Node: Node{
-			logger: logging.MustGetLogger("LocalNode"),
+			logger: logger.New("LocalNode"),
 			info:   map[string]string{},
 		},
 		discovery: discovery,
 		port:      freeport.GetUDPPort(),
 	}
-
 	err := instance.listenerService.Init(discovery.ctx, instance)
 	if err != nil {
 		return nil, err

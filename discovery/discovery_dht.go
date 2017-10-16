@@ -2,11 +2,11 @@ package discovery
 
 import (
 	"github.com/iain17/dht"
-	"github.com/op/go-logging"
 	"context"
 	"time"
 	"net"
 	"encoding/hex"
+	"github.com/iain17/logger"
 )
 
 type DiscoveryDHT struct {
@@ -16,11 +16,11 @@ type DiscoveryDHT struct {
 	context context.Context
 	ih [20]byte
 
-	logger *logging.Logger
+	logger *logger.Logger
 }
 
 func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
-	d.logger = logging.MustGetLogger("DiscoveryDHT")
+	d.logger = logger.New("DiscoveryDHT")
 	d.localNode = ln
 	d.context = ctx
 

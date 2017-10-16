@@ -4,14 +4,13 @@ import (
 	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
 	"time"
 	"github.com/ipfs/go-ipfs/core"
-	"github.com/op/go-logging"
 	"github.com/iain17/decentralizer/discovery"
 	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
+	"strings"
 	"context"
+	"github.com/iain17/logger"
 )
-
-var logger = logging.MustGetLogger("bootstrap")
 
 func init() {
 	core.DefaultBootstrapConfig = core.BootstrapConfig{
@@ -34,15 +33,24 @@ func (d *Decentralizer) bootstrap() []pstore.PeerInfo {
 			logger.Warning(err)
 			continue
 		}
+		err = d.i.PeerHost.Connect(context.Background(), *peerInfo)
+		if err != nil {
+			logger.Warning(err)
+			continue
+		}
 		peers = append(peers, *peerInfo)
-		d.i.PeerHost.Connect(context.Background(), *peerInfo)
 	}
+	logger.Infof("Bootstrapped %d peers", len(peers))
 	return peers
 }
 
 func (d *Decentralizer) setInfo() {
 	ln := d.d.LocalNode
-	addrs := ma.Join(d.i.PeerHost.Addrs()...).String()
+	addrs := ""
+	for _, addr := range d.i.PeerHost.Addrs() {
+		addrs += addr.String() + DELIMITER_ADDR
+	}
+
 	ln.SetInfo("peerId", d.i.Identity.Pretty())
 	ln.SetInfo("addr", addrs)
 }
@@ -53,12 +61,17 @@ func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	addrs, err := ma.NewMultiaddr(remoteNode.GetInfo("addr"))
-	if err != nil {
-		return nil, err
+	var addrs []ma.Multiaddr
+	for _, strAddr := range strings.Split(remoteNode.GetInfo("addr"), DELIMITER_ADDR) {
+		addr, err := ma.NewMultiaddr(strAddr)
+		if err != nil {
+			logger.Warning(err)
+			continue
+		}
+		addrs = append(addrs, addr)
 	}
 	return &pstore.PeerInfo{
 		ID: peerId,
-		Addrs: ma.Split(addrs),
+		Addrs: addrs,
 	}, nil
 }

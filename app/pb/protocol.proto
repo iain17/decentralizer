@@ -1,0 +1,29 @@
+syntax = "proto3";
+package pb;
+option optimize_for = LITE_RUNTIME;
+
+message DPeer {
+    uint64 dId = 1;//DecentralizerId
+    string pId= 2;//peerId
+}
+
+message SessionInfo {
+    DPeer owner = 1;
+    int32 type = 2;
+    string name = 3;
+    uint64 address = 4;
+    uint32 port = 5;
+    map<string, string> details = 6;
+}
+
+message UpsertSession
+{
+    SessionInfo info = 1;
+}
+
+message PubSubMessage {
+    int64 version = 1;
+    oneof msg {
+        UpsertSession upsertSession = 2;
+    }
+}
