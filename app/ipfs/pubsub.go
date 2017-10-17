@@ -29,6 +29,6 @@ func Subscribe(node *core.IpfsNode, topic string, didChange func(peer peer.ID, d
 	return sub, err
 }
 
-func Publish(node *core.IpfsNode, topic string, data []byte) {
-	node.Floodsub.Publish(topic, data)
+func Publish(node *core.IpfsNode, topic string, data []byte) error {
+	return node.Floodsub.Publish(topic, data)
 }

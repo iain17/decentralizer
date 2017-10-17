@@ -5,6 +5,7 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )
 
+//libp2p peer id to uint64. Some apps expect some user id kind of thing. This will make it so we are compatible.
 func GetPeer(id libp2pPeer.ID) DPeer {
 	h := fnv.New64a()
 	sId := id.Pretty()

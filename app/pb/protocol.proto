@@ -9,7 +9,7 @@ message DPeer {
 
 message SessionInfo {
     DPeer owner = 1;
-    int32 type = 2;
+    uint32 type = 2;
     string name = 3;
     uint64 address = 4;
     uint32 port = 5;
@@ -21,7 +21,7 @@ message UpsertSession
     SessionInfo info = 1;
 }
 
-message PubSubMessage {
+message DMessage {
     int64 version = 1;
     oneof msg {
         UpsertSession upsertSession = 2;
