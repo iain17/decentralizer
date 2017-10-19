@@ -2,18 +2,15 @@ syntax = "proto3";
 package pb;
 option optimize_for = LITE_RUNTIME;
 
-message DPeer {
+message SessionInfo {
     uint64 dId = 1;//DecentralizerId
     string pId= 2;//peerId
-}
 
-message SessionInfo {
-    DPeer owner = 1;
-    uint32 type = 2;
-    string name = 3;
-    uint64 address = 4;
-    uint32 port = 5;
-    map<string, string> details = 6;
+    uint32 type = 3;
+    string name = 4;
+    uint64 address = 5;
+    uint32 port = 6;
+    map<string, string> details = 7;
 }
 
 message UpsertSession

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/iain17/decentralizer/network"
 	"time"
+	"net"
 )
 
 type Discovery struct {
@@ -45,4 +46,14 @@ func (d *Discovery) WaitForPeers(num int, timeout float64) []*RemoteNode {
 		time.Sleep(1 * time.Second)
 	}
 	return d.LocalNode.netTableService.GetPeers()
+}
+
+func (d *Discovery) GetIP() net.IP {
+	for {
+		if d.LocalNode.ip != "" {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+	return net.ParseIP(d.LocalNode.ip)
 }

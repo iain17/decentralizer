@@ -6,6 +6,8 @@ import (
 	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
+	"github.com/derekparker/delve/cmd/dlv/cmds"
+	"io"
 )
 
 func Subscribe(node *core.IpfsNode, topic string, didChange func(peer peer.ID, data []byte)) (*floodsub.Subscription, error) {
@@ -16,9 +18,11 @@ func Subscribe(node *core.IpfsNode, topic string, didChange func(peer peer.ID, d
 	go func() {
 		for {
 			msg, err := sub.Next(context.Background())
-			if err != nil {
-				logger.Debug(err)
-				break
+			if err == io.EOF || err == context.Canceled {
+				return
+			} else if err != nil {
+				logger.Error(err)
+				return
 			}
 			peer := msg.GetFrom()
 			if peer.String() != node.Identity.String() {

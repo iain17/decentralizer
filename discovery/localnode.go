@@ -12,8 +12,8 @@ import (
 type LocalNode struct {
 	Node
 	discovery *Discovery
-	ip string//Gets filled in by stun service.
-	port int
+	ip        string //Gets filled in by stun service.
+	port      int
 	//Services
 	listenerService ListenerService
 	upNpService UPnPService
