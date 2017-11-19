@@ -10,7 +10,7 @@ func main() {
 	type Person struct {
 		Email string
 		Name  string
-		Age   int
+		Age   uint
 		Details map[string]string
 	}
 
@@ -39,6 +39,16 @@ func main() {
 						Name:    "details",
 						Unique:  false,
 						Indexer: &memdb.StringMapFieldIndex{Field: "Details"},
+					},
+					"age_details":{
+						Name:    "age_details",
+						Unique:  false,
+						Indexer: &memdb.CompoundIndex{
+							Indexes: []memdb.Indexer{
+								&memdb.UintFieldIndex{Field: "Age"},
+								&memdb.StringMapFieldIndex{Field: "Details"},
+							},
+						},
 					},
 				},
 			},
@@ -71,7 +81,7 @@ func main() {
 		panic(err)
 	}
 
-	p = &Person{"iain@aol.com", "Iain", 23, map[string]string{
+	p = &Person{"iain@aol.com", "Iain", 24, map[string]string{
 		"cool": "yes",
 		"id": "123",
 	}}
@@ -87,7 +97,7 @@ func main() {
 	defer txn.Abort()
 
 	// Lookup by email
-	raw, err := txn.First("person", "details", "cool", "yes")
+	raw, err := txn.First("person", "age_details", "23_cool", "yes")
 	if err != nil {
 		panic(err)
 	}

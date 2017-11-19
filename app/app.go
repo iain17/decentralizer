@@ -10,6 +10,7 @@ import (
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
 	"github.com/iain17/decentralizer/app/sessionstore"
+	"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
 )
 
 type Decentralizer struct {
@@ -17,7 +18,8 @@ type Decentralizer struct {
 	d *discovery.Discovery
 	i *core.IpfsNode
 
-	sessions *sessionstore.Store
+	sessions map[uint32]*sessionstore.Store
+	subscriptions map[uint32]*floodsub.Subscription
 }
 
 var configPath = configdir.New("eCORp", "Decentralizer")
@@ -35,15 +37,12 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	sessions, err := sessionstore.New(1000, time.Duration((EXPIRE_TIME_SESSION * 1.5) * time.Second))
-	if err != nil {
-		return nil, err
-	}
 	instance := &Decentralizer{
 		n: n,
 		d: d,
 		i: i,
-		sessions: sessions,
+		sessions: make(map[uint32]*sessionstore.Store),
+		subscriptions: make(map[uint32]*floodsub.Subscription),
 	}
 	logger.Infof("Our DiD is: %v", pb.GetPeer(i.Identity))
 	instance.i.Bootstrap(core.BootstrapConfig{

@@ -6,7 +6,6 @@ import (
 	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
-	"github.com/derekparker/delve/cmd/dlv/cmds"
 	"io"
 )
 

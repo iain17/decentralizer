@@ -6,11 +6,12 @@ message SessionInfo {
     uint64 dId = 1;//DecentralizerId
     string pId= 2;//peerId
 
-    uint32 type = 3;
-    string name = 4;
-    uint64 address = 5;
-    uint32 port = 6;
-    map<string, string> details = 7;
+    uint64 sessionId = 3;
+    uint32 type = 4;
+    string name = 5;
+    uint64 address = 6;
+    uint32 port = 7;
+    map<string, string> details = 8;
 }
 
 message UpsertSession
