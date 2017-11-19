@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/iain17/decentralizer/app"
 	"github.com/iain17/logger"
+	"os"
+	"time"
 )
 
 //This is the privatekey
@@ -22,6 +24,13 @@ func main() {
 		panic(err)
 	}
 	println(app)
-
+	hostname, err := os.Hostname()
+	if err != nil {
+		panic(err)
+	}
+	app.UpsertSession(1, hostname, 303, map[string]string{
+		"this": "is cool",
+		"created": time.Now().Format(time.RFC3339),
+	})
 	select{}
 }

@@ -4,23 +4,21 @@ import (
 	"fmt"
 	"github.com/iain17/decentralizer/app/pb"
 	"github.com/iain17/decentralizer/utils"
-	"time"
-	"github.com/golang/protobuf/proto"
-	"github.com/iain17/decentralizer/app/ipfs"
-	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/logger"
-	"github.com/iain17/decentralizer/app/sessionstore"
 	"errors"
+	"github.com/golang/protobuf/proto"
+	"strconv"
 )
 
-func (d *Decentralizer) UpsertSession(sessionType uint32, name string, port uint32, details map[string]string) (uint64, error) {
-	if d.sessions[sessionType] == nil {
-		var err error
-		d.sessions[sessionType], err = sessionstore.New(1000, time.Duration((EXPIRE_TIME_SESSION * 1.5) * time.Second))
-		if err != nil {
-			return 0, err
-		}
-	}
+func getSessionId(info *pb.SessionInfo) uint64 {
+	return info.Type+uint64(info.Port)+info.DId
+}
+
+func getKey(sessionType uint64) string {
+	return fmt.Sprintf("MATCHMAKING_%d", sessionType)
+}
+
+func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	pId, dId := pb.GetPeer(d.i.Identity)
 	info := &pb.SessionInfo{
 		DId: dId,
@@ -31,69 +29,54 @@ func (d *Decentralizer) UpsertSession(sessionType uint32, name string, port uint
 		Port: port,
 		Details: details,
 	}
-	return d.sessions[sessionType].Insert(info)
+	info.SessionId = getSessionId(info)
+	d.sessions[info.SessionId] = info
+	return info.SessionId, d.setSession(info)
 }
 
-func (d *Decentralizer) DeleteSession(sessionType uint32, sessionId uint64) error {
-	if d.sessions[sessionType] == nil {
-		return errors.New("no such sessionType exists")
+func (d *Decentralizer) setSession(info *pb.SessionInfo) error {
+	msg, err := proto.Marshal(info)
+	if err != nil {
+		return err
 	}
-	return d.sessions[sessionType].Remove(sessionId)
+	return d.i.Routing.PutValue(d.i.Context(), getKey(info.Type), msg)
 }
 
-//Every x amount of seconds advertise the sessions we are hosting.
-func (d *Decentralizer) Advertise() {
-	for {
-		time.Sleep(EXPIRE_TIME_SESSION * time.Second)
-
-		for _, sessionStore := range d.sessions {
-
-			localSessions, err := sessionStore.FindByPeerId(d.i.Identity.Pretty())
-			if err != nil {
-				logger.Warning(err)
-				continue
-			}
-			logger.Info("Advertising %d of sessions", len(localSessions))
-			for _, sessionInfo := range localSessions {
-				msg, err := proto.Marshal(&pb.DMessage{
-					Version: pb.VERSION,
-					Msg: &pb.DMessage_UpsertSession{
-						UpsertSession: &pb.UpsertSession{
-							Info: sessionInfo,
-						},
-					},
-				})
-				if err != nil {
-					logger.Warning(err)
-					continue
-				}
-				err = ipfs.Publish(d.i, getPubSubKey(sessionInfo.Type), msg)
-			}
-
-		}
+func (d *Decentralizer) DeleteSession(sessionId uint64) error {
+	if d.sessions[sessionId] == nil {
+		return errors.New("no such session exists")
 	}
+	delete(d.sessions, sessionId)
+	return d.i.Routing.PutValue(d.i.Context(), getKey(d.sessions[sessionId].Type), nil)
 }
 
-//TODO: Validate the session first.
-func (d *Decentralizer) GetSessions(sessionType uint32, key, value string) error {
-	if d.sessions[sessionType] == nil {
-		var err error
-		d.sessions[sessionType], err = sessionstore.New(1000, time.Duration((EXPIRE_TIME_SESSION * 1.5) * time.Second))
+func (d *Decentralizer) GetSession(sessionType uint64) (*pb.SessionInfo, error) {
+	data, err := d.i.Routing.GetValue(d.i.Context(), getKey(sessionType))
+	if err != nil {
+		return nil, err
+	}
+	var session pb.SessionInfo
+	err = proto.Unmarshal(data, &session)
+	if err != nil {
+		return nil, err
+	}
+	return &session, nil
+}
+
+func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, error) {
+	rawSessions, err := d.i.Routing.GetValues(d.i.Context(), strconv.FormatUint(sessionType, 16), 0)
+	if err != nil {
+		return nil, err
+	}
+	var result []*pb.SessionInfo
+	for _, rawSession := range rawSessions {
+		var session pb.SessionInfo
+		err = proto.Unmarshal(rawSession.Val, &session)
 		if err != nil {
-			return err
+			logger.Debug(err)
+			continue
 		}
+		result = append(result, &session)
 	}
-	//Start listening to these kind of sessions.
-	if d.subscriptions[sessionType] == nil {
-		ipfs.Subscribe(d.i, getPubSubKey(sessionType), d.receivedSession)
-	}
-	localSessions, err := d.sessions[sessionType].FindByDetails(key, value)
-}
-
-func (d *Decentralizer) receivedSession(peer peer.ID, message []byte) {
-	logger.Infof("Received: %s: %s\n", peer.String(), message)
-}
-
-func getPubSubKey(sessionType uint32) string {
-	return fmt.Sprintf("MATCHMAKING_%d", sessionType)
+	return result, nil
 }

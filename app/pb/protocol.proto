@@ -7,21 +7,9 @@ message SessionInfo {
     string pId= 2;//peerId
 
     uint64 sessionId = 3;
-    uint32 type = 4;
+    uint64 type = 4;
     string name = 5;
     uint64 address = 6;
     uint32 port = 7;
     map<string, string> details = 8;
-}
-
-message UpsertSession
-{
-    SessionInfo info = 1;
-}
-
-message DMessage {
-    int64 version = 1;
-    oneof msg {
-        UpsertSession upsertSession = 2;
-    }
 }

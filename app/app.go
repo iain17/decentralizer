@@ -9,8 +9,8 @@ import (
 	"github.com/iain17/decentralizer/app/pb"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
-	"github.com/iain17/decentralizer/app/sessionstore"
 	"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
+	"errors"
 )
 
 type Decentralizer struct {
@@ -18,11 +18,11 @@ type Decentralizer struct {
 	d *discovery.Discovery
 	i *core.IpfsNode
 
-	sessions map[uint32]*sessionstore.Store
+	sessions	  map[uint64]*pb.SessionInfo
 	subscriptions map[uint32]*floodsub.Subscription
 }
 
-var configPath = configdir.New("eCORp", "Decentralizer")
+var configPath = configdir.New("ECorp", "Decentralizer")
 
 func New(networkStr string) (*Decentralizer, error) {
 	n, err := network.UnmarshalFromPrivateKey(networkStr)
@@ -33,7 +33,11 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	i, err := ipfs.OpenIPFSRepo(configPath.LocalPath, -1)
+	paths := configPath.QueryFolders(configdir.System)
+	if len(paths) == 0 {
+		return nil, errors.New("queryFolder request failed")
+	}
+	i, err := ipfs.OpenIPFSRepo(paths[0].Path, -1)
 	if err != nil {
 		return nil, err
 	}
@@ -41,16 +45,14 @@ func New(networkStr string) (*Decentralizer, error) {
 		n: n,
 		d: d,
 		i: i,
-		sessions: make(map[uint32]*sessionstore.Store),
-		subscriptions: make(map[uint32]*floodsub.Subscription),
 	}
-	logger.Infof("Our DiD is: %v", pb.GetPeer(i.Identity))
+	_, dID := pb.GetPeer(i.Identity)
+	logger.Infof("Our DiD is: %v", dID)
 	instance.i.Bootstrap(core.BootstrapConfig{
 		MinPeerThreshold:  4,
 		Period:            30 * time.Second,
 		ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
 		BootstrapPeers: instance.bootstrap,
 	})
-	go instance.Advertise()
 	return instance, nil
 }
