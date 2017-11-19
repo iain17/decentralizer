@@ -9,7 +9,7 @@ import (
 	"github.com/iain17/decentralizer/app/pb"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
-	"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
+	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
 	"errors"
 )
 
@@ -19,13 +19,13 @@ type Decentralizer struct {
 	i *core.IpfsNode
 
 	sessions	  map[uint64]*pb.SessionInfo
-	subscriptions map[uint32]*floodsub.Subscription
+	//subscriptions map[uint32]*floodsub.Subscription
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
 
 func New(networkStr string) (*Decentralizer, error) {
-	n, err := network.UnmarshalFromPrivateKey(networkStr)
+	n1, err := network.UnmarshalFromPrivateKey(networkStr)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	paths := configPath.QueryFolders(configdir.System)
+	paths := configPath.QueryFolders(configdir.Global)
 	if len(paths) == 0 {
 		return nil, errors.New("queryFolder request failed")
 	}
@@ -45,6 +45,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		n: n,
 		d: d,
 		i: i,
+		sessions: make(map[uint64]*pb.SessionInfo),
 	}
 	_, dID := pb.GetPeer(i.Identity)
 	logger.Infof("Our DiD is: %v", dID)
