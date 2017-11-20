@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
-	"os"
 	"github.com/iain17/logger"
 )
 
@@ -121,11 +120,11 @@ func (nt *NetTableService) Save() error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(NET_TABLE_FILE, data, 0644)
+	return configPath.QueryCacheFolder().WriteFile(NET_TABLE_FILE, data)
 }
 
 func (nt *NetTableService) Restore() error {
-	file, err := os.Open(NET_TABLE_FILE)
+	file, err := configPath.QueryCacheFolder().Open(NET_TABLE_FILE)
 	if err != nil {
 		return err
 	}

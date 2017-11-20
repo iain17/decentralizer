@@ -2,6 +2,7 @@ package discovery
 
 import (
 	"github.com/iain17/freeport"
+	"github.com/rs/xid"
 	"io"
 	"github.com/golang/protobuf/proto"
 	"github.com/iain17/decentralizer/discovery/pb"
@@ -12,6 +13,7 @@ import (
 type LocalNode struct {
 	Node
 	discovery *Discovery
+	id 		  string//To figure out if its us
 	ip        string //Gets filled in by stun service.
 	port      int
 	//Services
@@ -22,6 +24,7 @@ type LocalNode struct {
 	//Peer discoveries
 	discoveryDHT  DiscoveryDHT
 	discoveryIRC  DiscoveryIRC
+	discoveryMDNS  DiscoveryMDNS
 }
 
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {
@@ -30,6 +33,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 			logger: logger.New("LocalNode"),
 			info:   map[string]string{},
 		},
+		id: xid.New().String(),
 		discovery: discovery,
 		port:      freeport.GetUDPPort(),
 	}
@@ -63,6 +67,11 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 		return nil, err
 	}
 
+	err = instance.discoveryMDNS.Init(discovery.ctx, instance)
+	if err != nil {
+		return nil, err
+	}
+
 	return instance, nil
 }
 
@@ -72,6 +81,7 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 		Msg: &pb.Message_PeerInfo{
 			PeerInfo: &pb.PeerInfo{
 				Network: string(ln.discovery.network.ExportPublicKey()),
+				Id: ln.id,
 				Info: ln.info,
 			},
 		},

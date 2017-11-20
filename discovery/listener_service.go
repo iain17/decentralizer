@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/iain17/logger"
+	"errors"
 )
 
 type ListenerService struct {
@@ -63,6 +64,9 @@ func (l *ListenerService) process(c net.Conn) error {
 	peerInfo, err := pb.DecodePeerInfo(c, string(l.localNode.discovery.network.ExportPublicKey()))
 	if err != nil {
 		return err
+	}
+	if peerInfo.Id == l.localNode.id {
+		return errors.New("peer is me")
 	}
 	rn.logger.Debug("Received peer info...")
 

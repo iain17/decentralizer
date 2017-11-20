@@ -10,8 +10,8 @@ import (
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
 	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
-	"errors"
 	"github.com/iain17/decentralizer/app/sessionstore"
+	"fmt"
 )
 
 type Decentralizer struct {
@@ -26,6 +26,15 @@ type Decentralizer struct {
 
 var configPath = configdir.New("ECorp", "Decentralizer")
 
+func getIpfsPath() (string, error) {
+	//paths := configPath.QueryFolders(configdir.Global)
+	//if len(paths) == 0 {
+	//	return "", errors.New("queryFolder request failed")
+	//}
+	//return paths[0].Path, nil
+	return fmt.Sprintf("/tmp/%d", time.Now().Unix()), nil
+}
+
 func New(networkStr string) (*Decentralizer, error) {
 	n, err := network.UnmarshalFromPrivateKey(networkStr)
 	if err != nil {
@@ -35,11 +44,11 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	paths := configPath.QueryFolders(configdir.Global)
-	if len(paths) == 0 {
-		return nil, errors.New("queryFolder request failed")
+	path, err := getIpfsPath()
+	if err != nil {
+		return nil, err
 	}
-	i, err := ipfs.OpenIPFSRepo(paths[0].Path, -1)
+	i, err := ipfs.OpenIPFSRepo(path, -1)
 	if err != nil {
 		return nil, err
 	}
