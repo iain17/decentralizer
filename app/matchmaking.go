@@ -6,19 +6,27 @@ import (
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/logger"
 	"errors"
-	"github.com/golang/protobuf/proto"
-	"strconv"
+	"time"
+	"github.com/iain17/decentralizer/app/sessionstore"
 )
 
-func getSessionId(info *pb.SessionInfo) uint64 {
-	return info.Type+uint64(info.Port)+info.DId
+func getKey(sessionType uint64) string {
+	return fmt.Sprintf("%d", sessionType)
 }
 
-func getKey(sessionType uint64) string {
-	return fmt.Sprintf("MATCHMAKING_%d", sessionType)
+func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
+	if d.sessions[sessionType] == nil {
+		var err error
+		d.sessions[sessionType], err = sessionstore.New(1000, time.Duration((EXPIRE_TIME_SESSION * 1.5) * time.Second))
+		if err != nil {
+			return nil
+		}
+	}
+	return d.sessions[sessionType]
 }
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
+	sessions := d.getSessionStorage(sessionType)
 	pId, dId := pb.GetPeer(d.i.Identity)
 	info := &pb.SessionInfo{
 		DId: dId,
@@ -29,42 +37,40 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		Port: port,
 		Details: details,
 	}
-	info.SessionId = getSessionId(info)
-	d.sessions[info.SessionId] = info
-	return info.SessionId, d.setSession(info)
-}
-
-func (d *Decentralizer) setSession(info *pb.SessionInfo) error {
-	msg, err := proto.Marshal(info)
-	if err != nil {
-		return err
-	}
-	return d.i.Routing.PutValue(d.i.Context(), getKey(info.Type), msg)
+	d.i.Routing.PutValue(d.i.Context(), getKey(info.Type), []byte("Everything in this world is magic... except to the magician."))
+	sessionId, err := sessions.Insert(info)
+	d.sessionIdToSessionType[sessionId] = sessionType
+	return sessionId, err
 }
 
 func (d *Decentralizer) DeleteSession(sessionId uint64) error {
-	if d.sessions[sessionId] == nil {
+	if d.sessionIdToSessionType[sessionId] == 0 {
 		return errors.New("no such session exists")
 	}
-	delete(d.sessions, sessionId)
-	return d.i.Routing.PutValue(d.i.Context(), getKey(d.sessions[sessionId].Type), nil)
+	sessionType := d.sessionIdToSessionType[sessionId]
+	sessions := d.getSessionStorage(sessionType)
+	return sessions.Remove(sessionId)
 }
 
-func (d *Decentralizer) GetSession(sessionType uint64) (*pb.SessionInfo, error) {
-	data, err := d.i.Routing.GetValue(d.i.Context(), getKey(sessionType))
-	if err != nil {
-		return nil, err
-	}
-	var session pb.SessionInfo
-	err = proto.Unmarshal(data, &session)
-	if err != nil {
-		return nil, err
-	}
-	return &session, nil
+func (d *Decentralizer) GetSessions(sessionType uint64, key, value string) ([]*pb.SessionInfo, error) {
+	sessions := d.getSessionStorage(sessionType)
+	return sessions.FindByDetails(key, value)
 }
 
-func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, error) {
-	rawSessions, err := d.i.Routing.GetValues(d.i.Context(), strconv.FormatUint(sessionType, 16), 0)
+func (d *Decentralizer) refreshSessions(sessionType uint64) {
+	answers, err := d.i.Routing.GetValues(d.i.Context(), getKey(sessionType), 1)
+	if err != nil {
+		logger.Warning(err)
+		return
+	}
+	for _, answer := range answers {
+		logger.Infof("Peer %s has possible sessions", answer.From)
+	}
+}
+
+
+/*
+rawSessions, err := d.i.Routing.GetValues(d.i.Context(), strconv.FormatUint(sessionType, 16), 0)
 	if err != nil {
 		return nil, err
 	}
@@ -79,4 +85,4 @@ func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, erro
 		result = append(result, &session)
 	}
 	return result, nil
-}
+ */

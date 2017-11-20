@@ -11,6 +11,7 @@ import (
 	"github.com/shibukawa/configdir"
 	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
 	"errors"
+	"github.com/iain17/decentralizer/app/sessionstore"
 )
 
 type Decentralizer struct {
@@ -18,14 +19,15 @@ type Decentralizer struct {
 	d *discovery.Discovery
 	i *core.IpfsNode
 
-	sessions	  map[uint64]*pb.SessionInfo
+	sessions map[uint64]*sessionstore.Store
+	sessionIdToSessionType map[uint64]uint64
 	//subscriptions map[uint32]*floodsub.Subscription
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
 
 func New(networkStr string) (*Decentralizer, error) {
-	n1, err := network.UnmarshalFromPrivateKey(networkStr)
+	n, err := network.UnmarshalFromPrivateKey(networkStr)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +47,8 @@ func New(networkStr string) (*Decentralizer, error) {
 		n: n,
 		d: d,
 		i: i,
-		sessions: make(map[uint64]*pb.SessionInfo),
+		sessions: make(map[uint64]*sessionstore.Store),
+		sessionIdToSessionType: make(map[uint64]uint64),
 	}
 	_, dID := pb.GetPeer(i.Identity)
 	logger.Infof("Our DiD is: %v", dID)
