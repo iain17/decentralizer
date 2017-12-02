@@ -3,8 +3,7 @@ package main
 import (
 	"github.com/iain17/decentralizer/app"
 	"github.com/iain17/logger"
-	"os"
-	"time"
+	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
 
 //This is the privatekey
@@ -16,6 +15,7 @@ func init() {
 		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
+	logging.Configure(logging.LevelDebug)
 }
 
 func main() {
@@ -23,14 +23,29 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	println(app)
-	hostname, err := os.Hostname()
-	if err != nil {
-		panic(err)
-	}
-	app.UpsertSession(1, hostname, 303, map[string]string{
-		"this": "is cool",
-		"created": time.Now().Format(time.RFC3339),
-	})
+	app.SaveUserFile()
+	//println(app)
+	//hostname, err := os.Hostname()
+	//if err != nil {
+	//	panic(err)
+	//}
+	//app.UpsertSession(1, hostname, 303, map[string]string{
+	//	"this": "is cool",
+	//	"created": time.Now().Format(time.RFC3339),
+	//})
+	//
+	//for {
+	//	logger.Info("Sessions:")
+	//	sessions, err := app.GetSessions(1, "this", "is cool")
+	//	if err != nil {
+	//		logger.Error(err)
+	//	} else {
+	//		for _, sess := range sessions {
+	//			logger.Info(sess.Name)
+	//		}
+	//	}
+	//	time.Sleep(1 * time.Second)
+	//}
+
 	select{}
 }

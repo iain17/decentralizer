@@ -13,3 +13,11 @@ message SessionInfo {
     uint32 port = 7;
     map<string, string> details = 8;
 }
+
+message SessionResponse {
+    repeated SessionInfo results = 1;
+}
+
+message SessionRequest {
+    uint64 type = 1;
+}

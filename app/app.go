@@ -18,6 +18,7 @@ type Decentralizer struct {
 	n *network.Network
 	d *discovery.Discovery
 	i *core.IpfsNode
+	b *ipfs.BitswapService
 
 	sessions map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
@@ -52,10 +53,15 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
+	b, err := ipfs.NewBitSwap(i)
+	if err != nil {
+		return nil, err
+	}
 	instance := &Decentralizer{
 		n: n,
 		d: d,
 		i: i,
+		b: b,
 		sessions: make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
