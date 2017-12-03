@@ -1,0 +1,34 @@
+syntax = "proto3";
+option optimize_for = SPEED;
+package pb;
+import "models.proto";
+
+service decentralizer {
+    //Start the search for peers. Returns messages received from peers.
+    rpc search(searchRequest) returns (stream peerMessageReceived) {};
+    //Get peers found for a specific service.
+    rpc getPeers(getPeersRequest) returns (getPeersResponse) {};
+}
+
+message getPeersRequest {
+    //Name of your service.
+    string name = 1;
+    //Limit of how many peers you would like the receive. Send 0 to get all.
+    int32 limit = 2;
+}
+
+message getPeersResponse {
+    repeated peer peers = 1;
+}
+
+message searchRequest {
+    //Name of your service.
+    string name = 1;
+    //The port of this service. If you are not advertising any services and just find to find peers. Set this to 0.
+    int32 port = 2;
+}
+
+message peerMessageReceived {
+    string Peer = 1;
+    bytes data = 2;
+}

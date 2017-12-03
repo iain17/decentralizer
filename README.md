@@ -20,27 +20,6 @@ Often times I've wondered what it would take to create a simple piece of softwar
 - [UDP hole punching (Stun)](https://github.com/ccding/go-stun)
 - UpNp
 
-## Implementation
+## Disclaimer
 
-Follow the instructions below to implement decentralizer in your app.
-
-## Client generation
-Between the decentralizer tool and your actual service we communicate using [GRPC](grpc.io). Generate the client files for the language of your choice. This can be C++, Java, node or even another Go project.
-
-## Usage
-
-1. Bundle this application with your application and run it in the background. See the C++ example for an example.
-Specify a port like so ```decentralizer serve --listen :8080``` so the host app knows where to connect to.
-
-2. Implement the client in whatever language you're writing the app in.
-
-3. Start off with a search request. As long as the request (stream) is open, we expect the host application to be still running and interested.
-This search request should be ran on another thread of your application.
-
-4. Request peers. You can pass along limits, minimum amounts etc. The service will then respond with peers.
-
-##Todo
-
-This project is a work in progress. I discourage you to use it in production.
-
-- Write a C++ example.
+This project is a work in progress. Please do not use it unless you know what you're doing. Don't expect any support and do NOT use this in production!

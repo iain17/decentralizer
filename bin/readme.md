@@ -1,0 +1,1 @@
+Run ```make build``` in the root directory. This will build the project and the results are saved here in the bin directory.
