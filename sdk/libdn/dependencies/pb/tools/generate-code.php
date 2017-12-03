@@ -1,15 +1,11 @@
 <?php
 $script = new DataScript();
-$script->read('messages.txt');
+$script->read('messages.json');
 
 generate_file($script->data, 'cpp-h.tpl', 'c++/MessageDefinition.h');
 generate_file($script->data, 'cpp-c.tpl', 'c++/MessageDefinition.cpp');
 generate_file($script->data, 'go.tpl', 'golang/reply/reply.go');
 generate_file($script->data, 'gomap.tpl', 'golang/mapping.go');
-//generate_file($script->data, 'csharp.tpl', '../server/NPServer/NP/MessageDefinition.cs');
-
-//generate_file($script->data, 'csharp.tpl', '../../plaza/client/Plaza/NP/MessageDefinition.cs');
-//generate_file($script->data, 'js.tpl', '../npm/server/messageDefinition.js');
 
 function generate_file($messages, $template, $output)
 {
@@ -27,75 +23,18 @@ class DataScript
 	
 	public function read($file)
 	{
-		$text = file_get_contents($file);
-		$state = 'root';
-		$currentBlock = array();
-		$currentKey = '';
-		$currentValue = '';
-		
-		for ($i = 0; $i < strlen($text); $i++)
-		{
-			$c = $text[$i];
-			
-			switch ($state)
-			{
-				case 'root':
-					if ($c == '{')
-					{
-						$currentBlock = array();
-						$state = 'block';
-					}
-				break;
-				case 'block':
-					if ($c == '}')
-					{
-						$this->data[] = $currentBlock;
-						$state = 'root';
-					}
-					else if ($c == '"')
-					{
-						if (empty($currentKey))
-						{
-							$state = 'key';
-						}
-						else
-						{
-							$state = 'value';
-						}
-					}
-					else if ($c == "\n")
-					{
-						$currentKey = '';
-						$currentValue = '';
-					}
-				break;
-				case 'key':
-				case 'value':
-					if ($c == '"')
-					{
-						if ($state == 'value')
-						{
-							$currentBlock[$currentKey] = $currentValue;
-						}
-					
-						$state = 'block';
-					}
-					else
-					{
-						if ($state == 'key')
-						{
-							$currentKey .= $c;
-						}
-						else
-						{
-							$currentValue .= $c;
-						}
-					}
-				break;
+		$this->data = array();
+		$messages = json_decode(file_get_contents($file), true);
+		$type = 1000;
+		foreach($messages as $message) {
+			if(empty($message['message'])) {
+				continue;
 			}
+			$message['name'] = "RPC".$message['message'];
+			$message['type'] = $type;
+			$this->data[] = $message;
+			$type++;
 		}
-		
-		assert($state == 'root');
 	}
 	
 	public function write()

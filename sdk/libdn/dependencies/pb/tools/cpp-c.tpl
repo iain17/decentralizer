@@ -1,6 +1,6 @@
 // This file has been automatically generated.
 
-#include "../../libconnect/StdInc.h"
+#include "../../libdn/StdInc.h"
 #include "MessageDefinition.h"
 
 <?php

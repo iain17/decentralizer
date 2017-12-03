@@ -15,8 +15,8 @@ const signature = 0xDEADC0DE
 const DATA_PACKET_SIZE = 256
 
 var name_to_id = map[string]int{
-	 "HelloRequest":  1000,
- "HelloReply":  1001,
+	 "HealthRequest":  1000,
+ "HealthReply":  1001,
 }
 
 var InvalidMessage = errors.New("Invalid message")

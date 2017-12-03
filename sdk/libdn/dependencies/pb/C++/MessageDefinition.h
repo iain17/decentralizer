@@ -28,21 +28,21 @@ extern rpc_message_type_s g_rpcMessageTypes[];
 #define NUM_RPC_MESSAGE_TYPES 2 
 
 // message class definitions
-class RPCHelloRequest : public INPRPCMessage
+class RPCHealthRequest : public INPRPCMessage
 {
 private:
-	NPRPCBuffer<HelloRequest> _buffer;
+	NPRPCBuffer<HealthRequest> _buffer;
 	
 	uint8_t* _payload;
 public:
-	RPCHelloRequest()
+	RPCHealthRequest()
 	{
 		_payload = NULL;
 	}
 
 	enum { Type = 1000 };
 	
-	HelloRequest* GetBuffer();
+	HealthRequest* GetBuffer();
 
 	virtual void Deserialize(const uint8_t* message, size_t length);
 	virtual uint8_t* Serialize(size_t* length, uint32_t id);
@@ -51,23 +51,23 @@ public:
 	
 	virtual void Free();
 	virtual void FreePayload();
-	static RPCHelloRequest* Create();
+	static RPCHealthRequest* Create();
 };
-class RPCHelloReply : public INPRPCMessage
+class RPCHealthReply : public INPRPCMessage
 {
 private:
-	NPRPCBuffer<HelloReply> _buffer;
+	NPRPCBuffer<HealthReply> _buffer;
 	
 	uint8_t* _payload;
 public:
-	RPCHelloReply()
+	RPCHealthReply()
 	{
 		_payload = NULL;
 	}
 
 	enum { Type = 1001 };
 	
-	HelloReply* GetBuffer();
+	HealthReply* GetBuffer();
 
 	virtual void Deserialize(const uint8_t* message, size_t length);
 	virtual uint8_t* Serialize(size_t* length, uint32_t id);
@@ -76,5 +76,5 @@ public:
 	
 	virtual void Free();
 	virtual void FreePayload();
-	static RPCHelloReply* Create();
+	static RPCHealthReply* Create();
 };

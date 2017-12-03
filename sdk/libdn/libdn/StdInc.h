@@ -21,7 +21,7 @@
 #include "DNAsyncImpl.h"
 
 // messages
-#include "hello.pb.h"
+#include "common.pb.h"
 #include "MessageDefinition.h"
 
 // global state

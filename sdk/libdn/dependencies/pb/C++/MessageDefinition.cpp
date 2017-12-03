@@ -1,19 +1,19 @@
 // This file has been automatically generated.
 
-#include "../../libconnect/StdInc.h"
+#include "../../libdn/StdInc.h"
 #include "MessageDefinition.h"
 
-HelloRequest* RPCHelloRequest::GetBuffer()
+HealthRequest* RPCHealthRequest::GetBuffer()
 {
 	return _buffer.GetPayload();
 }
 
-void RPCHelloRequest::Deserialize(const uint8_t* message, size_t length)
+void RPCHealthRequest::Deserialize(const uint8_t* message, size_t length)
 {
 	_buffer.Deserialize(message, length);
 }
 
-uint8_t* RPCHelloRequest::Serialize(size_t* length, uint32_t id)
+uint8_t* RPCHealthRequest::Serialize(size_t* length, uint32_t id)
 {
 	if (_payload)
 	{
@@ -44,12 +44,12 @@ uint8_t* RPCHelloRequest::Serialize(size_t* length, uint32_t id)
 	return _payload;
 }
 
-int RPCHelloRequest::GetType()
+int RPCHealthRequest::GetType()
 {
 	return 1000;
 }
 
-void RPCHelloRequest::Free()
+void RPCHealthRequest::Free()
 {
 	if (_payload != NULL)
 	{
@@ -59,7 +59,7 @@ void RPCHelloRequest::Free()
 	delete this;
 }
 
-void RPCHelloRequest::FreePayload()
+void RPCHealthRequest::FreePayload()
 {
 	if (_payload != NULL)
 	{
@@ -68,22 +68,22 @@ void RPCHelloRequest::FreePayload()
 	}
 }
 
-RPCHelloRequest* RPCHelloRequest::Create()
+RPCHealthRequest* RPCHealthRequest::Create()
 {
-	return new RPCHelloRequest();
+	return new RPCHealthRequest();
 }
 
-HelloReply* RPCHelloReply::GetBuffer()
+HealthReply* RPCHealthReply::GetBuffer()
 {
 	return _buffer.GetPayload();
 }
 
-void RPCHelloReply::Deserialize(const uint8_t* message, size_t length)
+void RPCHealthReply::Deserialize(const uint8_t* message, size_t length)
 {
 	_buffer.Deserialize(message, length);
 }
 
-uint8_t* RPCHelloReply::Serialize(size_t* length, uint32_t id)
+uint8_t* RPCHealthReply::Serialize(size_t* length, uint32_t id)
 {
 	if (_payload)
 	{
@@ -114,12 +114,12 @@ uint8_t* RPCHelloReply::Serialize(size_t* length, uint32_t id)
 	return _payload;
 }
 
-int RPCHelloReply::GetType()
+int RPCHealthReply::GetType()
 {
 	return 1001;
 }
 
-void RPCHelloReply::Free()
+void RPCHealthReply::Free()
 {
 	if (_payload != NULL)
 	{
@@ -129,7 +129,7 @@ void RPCHelloReply::Free()
 	delete this;
 }
 
-void RPCHelloReply::FreePayload()
+void RPCHealthReply::FreePayload()
 {
 	if (_payload != NULL)
 	{
@@ -138,14 +138,14 @@ void RPCHelloReply::FreePayload()
 	}
 }
 
-RPCHelloReply* RPCHelloReply::Create()
+RPCHealthReply* RPCHealthReply::Create()
 {
-	return new RPCHelloReply();
+	return new RPCHealthReply();
 }
 
 
 rpc_message_type_s g_rpcMessageTypes[] = 
 {
-	{ 1000, (CreateMessageCB)&RPCHelloRequest::Create },
-	{ 1001, (CreateMessageCB)&RPCHelloReply::Create },
+	{ 1000, (CreateMessageCB)&RPCHealthRequest::Create },
+	{ 1001, (CreateMessageCB)&RPCHealthReply::Create },
 };

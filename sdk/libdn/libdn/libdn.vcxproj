@@ -132,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCONNECT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;F:\Visual Studio projects\libConnect\dependencies\pb\C++</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\pb\C++</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -180,7 +180,7 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dependencies\pb\C++\hello.pb.cc" />
+    <ClCompile Include="..\dependencies\pb\C++\common.pb.cc" />
     <ClCompile Include="..\dependencies\pb\C++\MessageDefinition.cpp" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="NPAsync.cpp" />
