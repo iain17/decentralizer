@@ -46,6 +46,9 @@ func (l *ListenerService) Run() {
 			l.logger.Debugf("new connection from %q", conn.RemoteAddr().String())
 
 			if err = l.process(conn); err != nil {
+				if err.Error() == "peer reset" {
+					continue
+				}
 				l.logger.Errorf("error on process, %v", err)
 			}
 		}
@@ -66,7 +69,7 @@ func (l *ListenerService) process(c net.Conn) error {
 		return err
 	}
 	if peerInfo.Id == l.localNode.id {
-		return errors.New("peer is me")
+		return errors.New("we can't add ourselves")
 	}
 	rn.logger.Debug("Received peer info...")
 

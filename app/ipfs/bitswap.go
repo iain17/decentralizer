@@ -1,7 +1,6 @@
 package ipfs
 
 import (
-	"github.com/giantswarm/retry-go"
 	"github.com/ipfs/go-ipfs/core"
 	"github.com/ipfs/go-ipfs/exchange/bitswap"
 	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
@@ -11,7 +10,6 @@ import (
 	"unsafe"
 	"gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
-	"time"
 )
 
 var log = logging.Logger("BitswapService")
@@ -43,7 +41,9 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 
 func (b *BitswapService) Find(subject string, num int) <-chan peer.ID {
 	log.Debugf("Find subject: %s", subject)
-	return b.network.FindProvidersAsync(b.node.Context(), StringToCid(subject), num)
+	peers := b.network.FindProvidersAsync(b.node.Context(), StringToCid(subject), num)
+	log.Debugf("Found %d around %s", len(peers), subject)
+	return peers
 }
 
 func (b *BitswapService) Provide(subject string) error {

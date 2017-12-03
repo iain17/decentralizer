@@ -12,12 +12,13 @@ import (
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"sync"
 	"github.com/gogo/protobuf/proto"
-	"io"
 	"github.com/iain17/logger"
+	"context"
+	"github.com/iain17/timeout"
 )
 
 func getKey(sessionType uint64) string {
-	return fmt.Sprintf("%d", sessionType)
+	return fmt.Sprintf("MATCHMAKING_%d", sessionType)
 }
 
 func (d *Decentralizer) initMatchmaking() {
@@ -69,22 +70,39 @@ func (d *Decentralizer) DeleteSession(sessionId uint64) error {
 	return sessions.Remove(sessionId)
 }
 
-func (d *Decentralizer) GetSessions(sessionType uint64, key, value string) ([]*pb.SessionInfo, error) {
+func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, error) {
 	retry.Do(func() error {
 		d.refreshSessions(sessionType)
 		return nil
 	}, retry.Timeout(10 * time.Second))
 	sessions := d.getSessionStorage(sessionType)
+	return sessions.FindAll()
+}
+
+func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value string) ([]*pb.SessionInfo, error) {
+	sessions := d.getSessionStorage(sessionType)
+	timeout.Do(func(ctx context.Context) {
+		d.refreshSessions(sessionType)
+	}, 10 * time.Second)
 	return sessions.FindByDetails(key, value)
 }
 
 func (d *Decentralizer) refreshSessions(sessionType uint64) {
 	var wg sync.WaitGroup
 	sessionsStorage := d.getSessionStorage(sessionType)
-	for peer := range d.b.Find(getKey(sessionType), MAX_SESSIONS) {
+	seen := map[string]bool{}
+	for provider := range d.b.Find(getKey(sessionType), MAX_SESSIONS) {
+		//Stop any duplicates
+		id := provider.String()
+		if seen[id] {
+			continue
+		}
+		seen[id] = true
+
 		wg.Add(1)
-		go func() {
-			sessions, err := d.getSessions(peer, sessionType)
+		go func(id peer.ID) {
+			logger.Infof("Request sessions from %s", id.Pretty())
+			sessions, err := d.getSessions(id, sessionType)
 			if err != nil {
 				logger.Error(err)
 				return
@@ -96,14 +114,15 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 				}
 				d.sessionIdToSessionType[sessionId] = sessionType
 			}
-		}()
+			wg.Done()
+		}(provider)
 	}
 	wg.Wait()
 }
 
 func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
-	reqData := make([]byte, MAX_SIZE)
-	_, err := io.ReadFull(stream, reqData)
+	logger.Info("getSessionResponse")
+	reqData, err := pb.Read(stream)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -114,18 +133,28 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
 		logger.Error(err)
 		return
 	}
+	logger.Info("getSessionResponse type=%d", request.Type)
 	sessionsStorage := d.getSessionStorage(request.Type)
+	logger.Info("getSessionResponse FindByPeerId")
 	sessions, err := sessionsStorage.FindByPeerId(d.i.Identity.Pretty())
+	logger.Info("getSessionResponse FindByPeerId end")
 	if err != nil {
 		logger.Error(err)
 		return
 	}
+	logger.Info("getSessionResponse 1")
 
 	//Response
 	response, err := proto.Marshal(&pb.SessionResponse{
 		Results: sessions,
 	})
-	_, err = stream.Write(response)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	logger.Info("getSessionResponse::write start", request.Type)
+	err = pb.Write(stream, response)
+	logger.Info("getSessionResponse::write stop", request.Type)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -144,14 +173,13 @@ func (d *Decentralizer) getSessions(peer peer.ID, sessionType uint64) ([]*pb.Ses
 	if err != nil {
 		return nil, err
 	}
-	_, err = stream.Write(reqData)
+	err = pb.Write(stream, reqData)
 	if err != nil {
 		return nil, err
 	}
 
 	//Response
-	resData := make([]byte, MAX_SIZE)
-	_, err = io.ReadFull(stream, resData)
+	resData, err := pb.Read(stream)
 	if err != nil {
 		return nil, err
 	}

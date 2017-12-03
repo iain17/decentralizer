@@ -73,6 +73,20 @@ func (s *Store) Remove(sessionId uint64) error {
 	return err
 }
 
+func (s *Store) FindAll() (result []*pb.SessionInfo, err error) {
+	txn := s.db.Txn(false)
+	defer txn.Abort()
+	p, err := txn.Get(TABLE, "details")
+	for {
+		if session, ok := p.Next().(*pb.SessionInfo); ok {
+			result = append(result, session)
+		} else {
+			break
+		}
+	}
+	return
+}
+
 func (s *Store) FindByDetails(key, value string) (result []*pb.SessionInfo, err error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
@@ -80,6 +94,8 @@ func (s *Store) FindByDetails(key, value string) (result []*pb.SessionInfo, err 
 	for {
 		if session, ok := p.Next().(*pb.SessionInfo); ok {
 			result = append(result, session)
+		} else {
+			break
 		}
 	}
 	return
@@ -92,6 +108,8 @@ func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error
 	for {
 		if session, ok := p.Next().(*pb.SessionInfo); ok {
 			result = append(result, session)
+		} else {
+			break
 		}
 	}
 	return

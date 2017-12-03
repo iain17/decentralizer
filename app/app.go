@@ -11,7 +11,7 @@ import (
 	"github.com/shibukawa/configdir"
 	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
 	"github.com/iain17/decentralizer/app/sessionstore"
-	"fmt"
+	"errors"
 )
 
 type Decentralizer struct {
@@ -28,12 +28,12 @@ type Decentralizer struct {
 var configPath = configdir.New("ECorp", "Decentralizer")
 
 func getIpfsPath() (string, error) {
-	//paths := configPath.QueryFolders(configdir.Global)
-	//if len(paths) == 0 {
-	//	return "", errors.New("queryFolder request failed")
-	//}
-	//return paths[0].Path, nil
-	return fmt.Sprintf("/tmp/%d", time.Now().Unix()), nil
+	paths := configPath.QueryFolders(configdir.Global)
+	if len(paths) == 0 {
+		return "", errors.New("queryFolder request failed")
+	}
+	return paths[0].Path, nil
+	//return fmt.Sprintf("/tmp/%d", time.Now().Unix()), nil
 }
 
 func New(networkStr string) (*Decentralizer, error) {
@@ -45,6 +45,7 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
+	bootstrap(d)
 	path, err := getIpfsPath()
 	if err != nil {
 		return nil, err
@@ -65,6 +66,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		sessions: make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
+	instance.initMatchmaking()
 	_, dID := pb.GetPeer(i.Identity)
 	logger.Infof("Our DiD is: %v", dID)
 	instance.i.Bootstrap(core.BootstrapConfig{
@@ -74,4 +76,13 @@ func New(networkStr string) (*Decentralizer, error) {
 		BootstrapPeers: instance.bootstrap,
 	})
 	return instance, nil
+}
+
+
+func bootstrap(d *discovery.Discovery) {
+	logger.Info("Connecting to the network...")
+	peers := d.WaitForPeers(MIN_DISCOVERED_PEERS, 300)
+	if len(peers) == 0 {
+		logger.Error("Could not find any peers in 5 minutes. Something is wrong.")
+	}
 }
