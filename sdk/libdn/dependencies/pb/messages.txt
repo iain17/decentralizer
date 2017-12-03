@@ -1,0 +1,10 @@
+{
+	"name" "RPCHelloRequest"
+	"type" "1000"
+	"message" "HelloRequest"
+}
+{
+	"name" "RPCHelloReply"
+	"type" "1001"
+	"message" "HelloReply"
+}
