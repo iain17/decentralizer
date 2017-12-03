@@ -17,8 +17,8 @@ Debug/*
 Release/*
 Normal/*
 ipch/*
-libconnect/Debug/*
-libconnect/Release/*
+libdn/Debug/*
+libdn/Release/*
 example/Debug/*
 example/Release/*
 /libconnect.VC.db
