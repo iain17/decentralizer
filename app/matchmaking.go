@@ -38,7 +38,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	sessions := d.getSessionStorage(sessionType)
-	pId, dId := pb.GetPeer(d.i.Identity)
+	pId, dId := pb.PeerToDnId(d.i.Identity)
 	info := &pb.SessionInfo{
 		DId: dId,
 		PId: pId,
@@ -121,7 +121,6 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 }
 
 func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
-	logger.Info("getSessionResponse")
 	reqData, err := pb.Read(stream)
 	if err != nil {
 		logger.Error(err)
@@ -133,16 +132,12 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
 		logger.Error(err)
 		return
 	}
-	logger.Info("getSessionResponse type=%d", request.Type)
 	sessionsStorage := d.getSessionStorage(request.Type)
-	logger.Info("getSessionResponse FindByPeerId")
 	sessions, err := sessionsStorage.FindByPeerId(d.i.Identity.Pretty())
-	logger.Info("getSessionResponse FindByPeerId end")
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-	logger.Info("getSessionResponse 1")
 
 	//Response
 	response, err := proto.Marshal(&pb.SessionResponse{
@@ -152,9 +147,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
 		logger.Error(err)
 		return
 	}
-	logger.Info("getSessionResponse::write start", request.Type)
 	err = pb.Write(stream, response)
-	logger.Info("getSessionResponse::write stop", request.Type)
 	if err != nil {
 		logger.Error(err)
 		return

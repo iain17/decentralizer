@@ -45,7 +45,6 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	bootstrap(d)
 	path, err := getIpfsPath()
 	if err != nil {
 		return nil, err
@@ -67,22 +66,13 @@ func New(networkStr string) (*Decentralizer, error) {
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
 	instance.initMatchmaking()
-	_, dID := pb.GetPeer(i.Identity)
-	logger.Infof("Our DiD is: %v", dID)
-	instance.i.Bootstrap(core.BootstrapConfig{
+	_, dnID := pb.PeerToDnId(i.Identity)
+	logger.Infof("Our dnID is: %v", dnID)
+	go instance.i.Bootstrap(core.BootstrapConfig{
 		MinPeerThreshold:  4,
 		Period:            30 * time.Second,
 		ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
 		BootstrapPeers: instance.bootstrap,
 	})
 	return instance, nil
-}
-
-
-func bootstrap(d *discovery.Discovery) {
-	logger.Info("Connecting to the network...")
-	peers := d.WaitForPeers(MIN_DISCOVERED_PEERS, 300)
-	if len(peers) == 0 {
-		logger.Error("Could not find any peers in 5 minutes. Something is wrong.")
-	}
 }
