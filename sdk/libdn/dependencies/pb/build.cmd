@@ -2,14 +2,14 @@
 echo Cleaning up.
 
 del /q "C++\*"
-del /q "golang\protocol"
-del /q "golang\reply"
 
 echo Compiling protocol buffers...
 
+copy /y "..\..\..\..\serve\pb\*.proto" ".\"
+
 for %%i in (*.proto) do tools\protoc --error_format=msvs --cpp_out=c++ %%i
 
-tools\protoc --error_format=msvs --descriptor_set_out=proto.desc common.proto
+del /q "*.proto"
 
 echo Generating message definition...
 

@@ -180,8 +180,8 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dependencies\pb\C++\common.pb.cc" />
     <ClCompile Include="..\dependencies\pb\C++\MessageDefinition.cpp" />
+    <ClCompile Include="..\dependencies\pb\C++\protocol.pb.cc" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="NPAsync.cpp" />
     <ClCompile Include="RPC.cpp" />

@@ -1,6 +1,7 @@
 // This file has been automatically generated.
 
 #pragma once
+using namespace pb;
 
 // RPC message base class
 class INPRPCMessage

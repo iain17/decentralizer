@@ -4,8 +4,6 @@ $script->read('messages.json');
 
 generate_file($script->data, 'cpp-h.tpl', 'c++/MessageDefinition.h');
 generate_file($script->data, 'cpp-c.tpl', 'c++/MessageDefinition.cpp');
-generate_file($script->data, 'go.tpl', 'golang/reply/reply.go');
-generate_file($script->data, 'gomap.tpl', 'golang/mapping.go');
 
 function generate_file($messages, $template, $output)
 {
