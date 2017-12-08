@@ -13,6 +13,19 @@ LIBDN_API bool LIBDN_CALL DN_Init(ConnectLogCB callback)
 	return true;
 }
 
+LIBDN_API bool LIBDN_CALL NP_Shutdown()
+{
+	//Friends_Shutdown();
+	RPC_Shutdown();
+	return true;
+}
+
+LIBDN_API bool LIBDN_CALL DN_RunFrame()
+{
+	Async_RunCallbacks();
+	return true;
+}
+
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved

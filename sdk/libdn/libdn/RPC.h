@@ -79,3 +79,6 @@ void Messaging_Init();
 
 // run RPC frame
 void RPC_RunFrame();
+
+const BYTE DELIMITER = BYTE(255);
+const uint32_t MAXMESSAGESIZE = 32768;

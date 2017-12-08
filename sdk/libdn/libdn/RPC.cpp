@@ -2,34 +2,20 @@
 #include <WS2tcpip.h>
 #include "RPCAsync.h"
 
-struct local_reply
-{
-	int id;
-	INPRPCMessage* message;
-	DWORD start;
-};
-
-// rpc state variables
 static struct rpc_state_s
 {
 	// client socket
 	SOCKET socket;
-
 	WSAEVENT hSocketEvent;
 
 	// message parsing
-	uint32_t totalBytes;
-	uint32_t readBytes;
 	uint32_t messageType;
 	uint32_t messageID;
-	uint8_t* messageBuffer;
 
 	// connected flag
-	bool initialized = false;
 	bool connected;
 	bool wasConnected;
 	bool reconnecting;
-	bool offline = false;
 
 	// message dispatching
 	std::vector<rpc_dispatch_handler_s> dispatchHandlers;
@@ -46,9 +32,6 @@ static struct rpc_state_s
 	LONG sendMessageID;
 } g_rpc;
 
-// code
-//void Authenticate_Reauthenticate();
-
 static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 {
 	while (!g_rpc.connected)
@@ -59,7 +42,6 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 
 		RPC_Shutdown();
 		RPC_Init();
-
 		if (DN_Connect(g_np.serverHost, g_np.serverPort))
 		{
 			//Authenticate_Reauthenticate();
@@ -73,9 +55,6 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 
 void RPC_Reconnect()
 {
-	if (g_rpc.offline)
-		return;
-
 	if (!g_rpc.wasConnected)
 	{
 		return;
@@ -97,7 +76,7 @@ int RPC_GenerateID()
 	return g_rpc.sendMessageID;
 }
 
-void RPC_DispatchMessage(INPRPCMessage* message)
+static void RPC_DispatchMessage(INPRPCMessage* message)
 {
 	uint32_t type = message->GetType();
 
@@ -105,9 +84,9 @@ void RPC_DispatchMessage(INPRPCMessage* message)
 
 	for (std::vector<rpc_dispatch_handler_s>::iterator i = g_rpc.dispatchHandlers.begin(); i != g_rpc.dispatchHandlers.end(); i++)
 	{
-		if (i->type == type)
+		if (i->type == type && g_rpc.messageID == 0)
 		{
-			Log_Print("Calling dispatch handler.\n");
+			Log_Print("Dispatching RPC message to dispatch handler.\n");
 			i->callback(message);
 		}
 	}
@@ -119,20 +98,18 @@ void RPC_DispatchMessage(INPRPCMessage* message)
 
 	if (g_rpc.asyncHandlers[g_rpc.messageID] != NULL)
 	{
-		Log_Print("Calling async dispatch handler %d and type %d.\n", g_rpc.messageID, type);
+		Log_Print("Dispatching RPC message to async handler.\n");
 
 		NPRPCAsync* async = g_rpc.asyncHandlers[g_rpc.messageID];
 		async->SetResult(message);
 		g_rpc.freeNext.push_back(async);
 	}
-
-	Log_Print("Finished.\n");
 }
 
-static void RPC_HandleMessage()
+static void RPC_HandleMessage(RPCMessage message)
 {
-	Log_Print("RPC_HandleMessage: type %d\n", g_rpc.messageType);
-
+	Log_Print("RPC_HandleMessage: type %d\n", message.msg_case());
+	/*
 	for (int i = 0; i < NUM_RPC_MESSAGE_TYPES; i++)
 	{
 		if (g_rpcMessageTypes[i].type == g_rpc.messageType)
@@ -143,116 +120,83 @@ static void RPC_HandleMessage()
 			message->Free();
 		}
 	}
-
-	delete[] g_rpc.messageBuffer;
+	*/
 }
 
-static uint32_t facefeed = 0xFACEFEED;
-static uint8_t backBuffer[16][2048];
-static uint32_t curBackBufferIdx;
+char buffer[2048];
+static char backBuffer[MAXMESSAGESIZE];
+static int backBufferRead = 0;
+static int read = 0;
+static int len = 0;
 
-bool RPC_ParseMessage(uint8_t* buffer, size_t len)
+void resetBackBuffer() {
+	memset(backBuffer, 0, sizeof(backBuffer));
+	backBufferRead = 0;
+}
+
+//Reads all of the bytes until delimiter
+int readBytes(SOCKET s, char* result, char delimiter) {
+	while (true) {
+		while (read < len) {
+			const char byte = buffer[read];
+			//Log_Print("reading %d of %d: %d.\n", read, len, byte);
+			if (byte == delimiter) {
+				//Log_Print("delimiter found: %d.\n", delimiter);
+				int len = backBufferRead;
+				memcpy(result, backBuffer, len);
+				resetBackBuffer();
+				read++;
+				return len;
+			}
+			//Log_Print("copying %d.\n", byte);
+			backBuffer[backBufferRead] = byte;
+			read++;
+			backBufferRead++;
+			//Overflow.
+			if (backBufferRead > MAXMESSAGESIZE) {
+				backBufferRead = 0;
+			}
+		}
+		//Log_Print("Receiving...\n", read, len);
+		len = recv(s, buffer, sizeof(buffer), 0);
+		read = 0;
+		if (len <= 0) {
+			return len;
+		}
+	}
+	return len;
+}
+
+bool RPC_ParseMessage(char* buffer, size_t len)
 {
-	uint8_t* origin = buffer;
-	uint32_t read = len;
-
-	memset(backBuffer[curBackBufferIdx], 0, 2048);
-	memcpy(backBuffer[curBackBufferIdx], buffer, len);
-	curBackBufferIdx = (curBackBufferIdx + 1) % 16;
-
-	if (*(DWORD*)buffer == 0xFACEFEED)
-	{
-		send(g_rpc.socket, (const char*)&facefeed, 4, 0);
+	RPCMessage message;
+ 	if (!message.ParseFromArray(buffer, len)) {
+		Log_Print("Failed to parse RPCMessage.\n");
+		return false;
+	}
+	Log_Print("Parsed RPCMessage with id: %d \n", message.id());
+	//Check version
+	if (message.version() != VERSION) {
+		Log_Print("Version mismatch v0x%x != v0x%x \n", message.version(), VERSION);
 		return false;
 	}
 
-	//Log_Print("[pd] got new buf of size %i\n", len);
-
-	while (read > 0)
-	{
-		// if we've not read any prior part of this packet before
-		if (g_rpc.readBytes == 0)
-		{
-			rpc_message_header_s* message = (rpc_message_header_s*)origin;
-
-			//Fix nullprt messages
-			while (&message == nullptr || &message->signature == nullptr) {
-				if (read <= 0)
-					return false;
-				origin += 4;
-				read -= 4;
-
-				message = (rpc_message_header_s*)origin;
-			}
-
-			if (message->signature == 0xFACEFEED)
-			{
-				send(g_rpc.socket, (const char*)&facefeed, 4, 0);
-				return false;
-			}
-
-			if (message->signature != 0xDEADC0DE)
-			{
-				Log_Print("Signature (0x%x) doesn't match\n", message->signature);
-				return false;
-			}
-
-			// set up size/buffer
-			g_rpc.totalBytes = message->length;
-			g_rpc.readBytes = 0;
-
-			g_rpc.messageBuffer = new uint8_t[message->length];
-			g_rpc.messageType = message->type;
-			g_rpc.messageID = message->id;
-
-			memset(g_rpc.messageBuffer, 0, message->length);
-
-			// skip the header
-			origin = &origin[sizeof(rpc_message_header_s)];
-			read -= sizeof(rpc_message_header_s);
-
-			//Log_Print("[pd] new msg: %i totalBytes, msg %i (origin %p)\n", g_rpc.totalBytes, g_rpc.messageID, (origin - buffer));
-		}
-
-		//Log_Print("[pd] %i read, %i readBytes, %i totalBytes, msg %i, start %08x, nigiro %p\n", read, g_rpc.readBytes, g_rpc.totalBytes, g_rpc.messageID, *(DWORD*)&origin[0], (origin - buffer));
-
-		int copyLen = min(read, (g_rpc.totalBytes - g_rpc.readBytes));
-		memcpy(&g_rpc.messageBuffer[g_rpc.readBytes], origin, copyLen);
-		g_rpc.readBytes += copyLen;
-		read -= copyLen; //
-		origin += copyLen;
-
-		if (g_rpc.readBytes >= g_rpc.totalBytes)
-		{
-			//Log_Print("[pd] full msg: %i totalBytes, msg %i\n", g_rpc.totalBytes, g_rpc.messageID);
-
-			g_rpc.readBytes = 0;
-
-			// handle the message here
-			RPC_HandleMessage();
-		}
-	}
-
-	return true;
+	g_rpc.messageType = message.msg_case();
+	g_rpc.messageID = message.id();
+	RPC_HandleMessage(message);
 }
 
 // reads a message from the RPC socket
 static int RPC_ReadMessage()
 {
-	if (!g_rpc.initialized)
-		return 0;
-
 	EnterCriticalSection(&g_rpc.recvCritSec);
-
-	uint8_t buffer[2048];
-	int len = recv(g_rpc.socket, (char*)buffer, sizeof(buffer), 0);
+	char buffer[MAXMESSAGESIZE];
+	int len = readBytes(g_rpc.socket, buffer, DELIMITER);
+	LeaveCriticalSection(&g_rpc.recvCritSec);
 
 	if (len > 0)
 	{
 		int retval = RPC_ParseMessage(buffer, len) ? FD_WRITE : 0;
-
-		LeaveCriticalSection(&g_rpc.recvCritSec);
-
 		return retval;
 	}
 
@@ -260,20 +204,40 @@ static int RPC_ReadMessage()
 	{
 		if (WSAGetLastError() != WSAEWOULDBLOCK)
 		{
-			LeaveCriticalSection(&g_rpc.recvCritSec);
 			return FD_CLOSE;
 		}
 	}
 
 	if (len == 0)
 	{
-		LeaveCriticalSection(&g_rpc.recvCritSec);
 		return FD_CLOSE;
 	}
-
-	LeaveCriticalSection(&g_rpc.recvCritSec);
 	return 0;
 }
+
+/*static void RPC_SendMessage(int type, IRPCMessage* message)
+{
+std::string str = message->Serialize();
+uint32_t datalen = str.length();
+uint32_t buflen = sizeof(rpc_message_header_s) + datalen;
+
+// allocate a response buffer and copy data to it
+uint8_t* buffer = new uint8_t[buflen];
+const char* data = str.c_str();
+memcpy(&buffer[sizeof(rpc_message_header_s)], data, datalen);
+
+// set the response header data
+rpc_message_header_s* header = (rpc_message_header_s*)buffer;
+header->signature = 0xDEADC0DE;
+header->length = datalen;
+header->type = type;
+
+// send to the socket
+send(g_rpc.socket, (const char*)buffer, buflen, 0);
+
+// free the buffer
+delete[] buffer;
+}*/
 
 #define RPC_EVENT_SHUTDOWN (WAIT_OBJECT_0)
 #define RPC_EVENT_SOCKET (WAIT_OBJECT_0 + 1)
@@ -308,17 +272,14 @@ static uint32_t RPC_DetermineEvent()
 
 static bool RPC_RunThread()
 {
-	if (g_rpc.offline)
-		return true;
 	int result = 0;
-
 	do
 	{
 		result = RPC_ReadMessage();
 
 		if (result == FD_READ)
 		{
-			RPC_HandleMessage();
+			//RPC_HandleMessage();
 		}
 	} while (result == FD_WRITE);
 
@@ -330,8 +291,24 @@ static bool RPC_RunThread()
 	return true;
 }
 
+/*
+static void RPC_HandleHello(INPRPCMessage* message)
+{
+	RPCHelloMessage* hello = (RPCHelloMessage*)message;
+	Log_Print("got %d %d %s %s\n", hello->GetBuffer()->number(), hello->GetBuffer()->number2(), hello->GetBuffer()->name().c_str(), hello->GetBuffer()->stuff().c_str());
+}
+
+static void RPC_HandleClose(INPRPCMessage* message)
+{
+	RPCCloseAppMessage* close = (RPCCloseAppMessage*)message;
+
+	ExitProcess(0x76767676);
+}
+*/
+void resetBackBuffer();
 bool RPC_Init()
 {
+	resetBackBuffer();
 	Log_Print("Initializing RPC\n");
 
 	// startup Winsock
@@ -344,9 +321,26 @@ bool RPC_Init()
 		return false;
 	}
 
+	// create RPC socket
+	g_rpc.socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	if (g_rpc.socket == INVALID_SOCKET)
+	{
+		Log_Print("Couldn't create RPC socket\n");
+		RPC_Shutdown();
+		return false;
+	}
+
+	// create RPC socket event
+	//g_rpc.hSocketEvent = WSACreateEvent();
+	g_rpc.hShutdownEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+
 	InitializeCriticalSection(&g_rpc.recvCritSec);
 
-	g_rpc.initialized = true;
+	// blah
+	//RPC_RegisterDispatch(RPCHelloMessage::Type, RPC_HandleHello);
+	//RPC_RegisterDispatch(RPCCloseAppMessage::Type, RPC_HandleClose);
+
 	return true;
 }
 
@@ -382,7 +376,6 @@ void RPC_Shutdown()
 		WSACloseEvent(g_rpc.hSocketEvent);
 		g_rpc.hSocketEvent = NULL;
 	}
-	g_rpc.initialized = false;
 
 	//g_rpc.dispatchHandlers.clear();
 
@@ -404,11 +397,6 @@ void RPC_SendMessage(INPRPCMessage* message, int id)
 	// serialize the message
 	size_t len;
 	uint8_t* data = message->Serialize(&len, id);
-
-	if (g_rpc.offline) {
-		Log_Print("Sending local RPC message with ID %d.\n", id);
-		return;
-	}
 
 	// send to the socket
 	send(g_rpc.socket, (const char*)data, len, 0);
@@ -441,81 +429,54 @@ NPAsync<INPRPCMessage>* RPC_SendMessageAsync(INPRPCMessage* message)
 	return async;
 }
 
-bool dispatching = false;
 void RPC_RunFrame()
 {
 	// poll the socket
 	RPC_RunThread();
 
-	// free to-free items
-	/*std::vector<int> removeIDs;
-
-	for (auto& i : g_rpc.asyncHandlers)
-	{
-	if (!i.second/* || i.second->HandleTimeout()* /)
-	{
-	if (i.second)
-	{
-	i.second->Free();
-	}
-
-	removeIDs.push_back(i.first);
-	}
-	}
-
-	for (auto& i : removeIDs)
-	{
-	g_rpc.asyncHandlers.erase(i);
-	}*/
-
-	/*for (auto i = g_rpc.freeNext.begin(); i != g_rpc.freeNext.end(); i++)
-	{
-	g_rpc.asyncHandlers.erase((*i)->GetAsyncID());
-
-	//(*i)->Free();
-	}*/
-
 	g_rpc.freeNext.clear();
 }
 
-LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port) {
-	if (g_rpc.connected || g_rpc.offline)
+LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port)
+{
+	if (g_rpc.connected)
 	{
 		return true;
 	}
 
-	Log_Print("Connecting to the network using background agent on %s:%d.\n", serverAddr, port);
-
-	if (!g_rpc.initialized)
-		return false;
+	// store server name and port
+	strncpy(g_np.serverHost, serverAddr, sizeof(g_np.serverHost));
+	g_np.serverPort = port;
 
 	// code to connect to some server
 	hostent* hostEntity = gethostbyname(serverAddr);
 
 	if (hostEntity == NULL)
 	{
-		Log_Print("Could not look up %s with error: %d.\n", serverAddr, WSAGetLastError());
+		Log_Print("Could not look up %s: %d.\n", serverAddr, WSAGetLastError());
 		return false;
 	}
-	
-	Log_Print("Resolved %s:%d.\n", serverAddr, port);
+
 	sockaddr_in server;
 	memset(&server, 0, sizeof(server));
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = *(ULONG*)hostEntity->h_addr_list[0];
 	server.sin_port = htons(port);
 
-	if (connect(g_rpc.socket, (sockaddr*)&server, sizeof(sockaddr))) {
-		u_long nonBlocking = TRUE;
-		ioctlsocket(g_rpc.socket, FIONBIO, &nonBlocking);
-
-		BOOL noDelay = TRUE;
-		setsockopt(g_rpc.socket, IPPROTO_TCP, TCP_NODELAY, (char*)&noDelay, sizeof(BOOL));
-
-		g_rpc.wasConnected = true;
-		g_rpc.connected = true;
-		Log_Print("Connected.\n");
-
-		return true;
+	if (connect(g_rpc.socket, (sockaddr*)&server, sizeof(sockaddr)))
+	{
+		Log_Print("Connecting failed: %d\n", WSAGetLastError());
+		return false;
 	}
+
+	u_long nonBlocking = TRUE;
+	ioctlsocket(g_rpc.socket, FIONBIO, &nonBlocking);
+
+	BOOL noDelay = TRUE;
+	setsockopt(g_rpc.socket, IPPROTO_TCP, TCP_NODELAY, (char*)&noDelay, sizeof(BOOL));
+
+	g_rpc.wasConnected = true;
+	g_rpc.connected = true;
+
+	return true;
 }

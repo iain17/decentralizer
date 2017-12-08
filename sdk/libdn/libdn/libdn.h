@@ -10,6 +10,7 @@
 #include "NPFriends.h"
 #include "NPServers.h"
 */
+const uint64_t VERSION = 1;
 
 // ----------------------------------------------------------
 // Initialization/shutdown functions
@@ -32,6 +33,7 @@ LIBDN_API bool LIBDN_CALL DN_Connect(const char* server, uint16_t port);
 // creates a string/string dictionary
 // use NPDictionary constructor instead!
 LIBDN_API NPDictionaryInternal* LIBDN_CALL DN_CreateDictionary();
+*/
 
 // ----------------
 
@@ -43,6 +45,7 @@ LIBDN_API NPDictionaryInternal* LIBDN_CALL DN_CreateDictionary();
 // must be called every frame since it now handles sockets
 LIBDN_API bool LIBDN_CALL DN_RunFrame();
 
+/*
 // ----------------------------------------------------------
 // Authentication service
 // ----------------------------------------------------------
