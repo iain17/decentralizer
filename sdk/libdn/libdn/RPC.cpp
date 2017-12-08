@@ -87,11 +87,11 @@ int RPC_GenerateID()
 
 static void RPC_DispatchMessage(RPCMessage* message)
 {
-	Log_Print("Dispatching RPC message with ID %d and type %d.\n", message->id(), message->type());
+	Log_Print("Dispatching RPC message with ID %d and type %d.\n", message->id(), message->msg_case());
 
 	for (std::vector<rpc_dispatch_handler_s>::iterator i = g_rpc.dispatchHandlers.begin(); i != g_rpc.dispatchHandlers.end(); i++)
 	{
-		if (i->type == message->type() && g_rpc.messageID == 0)
+		if (i->type == message->msg_case() && g_rpc.messageID == 0)
 		{
 			Log_Print("Dispatching RPC message to dispatch handler.\n");
 			i->callback(message);
