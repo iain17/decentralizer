@@ -1,16 +1,15 @@
 #pragma once
 #include "StdInc.h"
 #include "DNAsync.h"
-#include "MessageDefinition.h"
 
-class NPRPCAsync : public NPAsync<INPRPCMessage>
+class NPRPCAsync : public NPAsync<RPCMessage>
 {
 private:
-	void(__cdecl* _callback)(NPAsync<INPRPCMessage>*);
-	INPRPCMessage* _result;
+	void(__cdecl* _callback)(NPAsync<RPCMessage>*);
+	RPCMessage* _result;
 	void* _userData;
 
-	void(__cdecl* _timeoutCallback)(NPAsync<INPRPCMessage>*);
+	void(__cdecl* _timeoutCallback)(NPAsync<RPCMessage>*);
 	unsigned int _timeout;
 	DWORD _start;
 
@@ -26,12 +25,12 @@ public:
 	}
 
 	// implementations for base NPAsync
-	virtual INPRPCMessage* Wait()
+	virtual RPCMessage* Wait()
 	{
 		return Wait(-1);
 	}
 
-	virtual INPRPCMessage* Wait(unsigned int timeout)
+	virtual RPCMessage* Wait(unsigned int timeout)
 	{
 		DWORD start = GetTickCount();
 
@@ -57,19 +56,19 @@ public:
 		return (_result != NULL);
 	}
 
-	virtual INPRPCMessage* GetResult()
+	virtual RPCMessage* GetResult()
 	{
 		return _result;
 	}
 
-	virtual void SetCallback(void(__cdecl* callback)(NPAsync<INPRPCMessage>*), void* userData)
+	virtual void SetCallback(void(__cdecl* callback)(NPAsync<RPCMessage>*), void* userData)
 	{
 		_callback = callback;
 		_userData = userData;
 		_start = GetTickCount();
 	}
 
-	virtual void SetTimeoutCallback(void(__cdecl* callback)(NPAsync<INPRPCMessage>*), unsigned int timeout)
+	virtual void SetTimeoutCallback(void(__cdecl* callback)(NPAsync<RPCMessage>*), unsigned int timeout)
 	{
 		_timeout = timeout;
 		_start = GetTickCount();
@@ -103,7 +102,7 @@ public:
 		_asyncID = value;
 	}
 
-	void SetResult(INPRPCMessage* result)
+	void SetResult(RPCMessage* result)
 	{
 		_result = result;
 

@@ -2,7 +2,7 @@
 echo Cleaning up.
 SET PBLOCATION="..\..\..\..\serve\pb"
 
-del /q "C++\*"
+del /q "C++\pb.*"
 
 echo Compiling protocol buffers...
 

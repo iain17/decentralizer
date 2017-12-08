@@ -225,8 +225,8 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
   static const RPCMessage& default_instance();
 
   enum MsgCase {
-    kHealthRequest = 3,
-    kHealthReply = 4,
+    kHealthRequest = 4,
+    kHealthReply = 5,
     MSG_NOT_SET = 0,
   };
 
@@ -273,31 +273,37 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // optional int64 version = 1;
+  // optional int32 type = 1;
+  void clear_type();
+  static const int kTypeFieldNumber = 1;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
+  // optional int64 version = 2;
   void clear_version();
-  static const int kVersionFieldNumber = 1;
+  static const int kVersionFieldNumber = 2;
   ::google::protobuf::int64 version() const;
   void set_version(::google::protobuf::int64 value);
 
-  // optional int64 id = 2;
+  // optional int64 id = 3;
   void clear_id();
-  static const int kIdFieldNumber = 2;
+  static const int kIdFieldNumber = 3;
   ::google::protobuf::int64 id() const;
   void set_id(::google::protobuf::int64 value);
 
-  // optional .pb.HealthRequest healthRequest = 3;
+  // optional .pb.HealthRequest healthRequest = 4;
   bool has_healthrequest() const;
   void clear_healthrequest();
-  static const int kHealthRequestFieldNumber = 3;
+  static const int kHealthRequestFieldNumber = 4;
   const ::pb::HealthRequest& healthrequest() const;
   ::pb::HealthRequest* mutable_healthrequest();
   ::pb::HealthRequest* release_healthrequest();
   void set_allocated_healthrequest(::pb::HealthRequest* healthrequest);
 
-  // optional .pb.HealthReply HealthReply = 4;
+  // optional .pb.HealthReply HealthReply = 5;
   bool has_healthreply() const;
   void clear_healthreply();
-  static const int kHealthReplyFieldNumber = 4;
+  static const int kHealthReplyFieldNumber = 5;
   const ::pb::HealthReply& healthreply() const;
   ::pb::HealthReply* mutable_healthreply();
   ::pb::HealthReply* release_healthreply();
@@ -318,6 +324,7 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
 
   ::google::protobuf::int64 version_;
   ::google::protobuf::int64 id_;
+  ::google::protobuf::int32 type_;
   union MsgUnion {
     MsgUnion() {}
     ::pb::HealthRequest* healthrequest_;
@@ -415,7 +422,21 @@ inline const HealthReply* HealthReply::internal_default_instance() {
 
 // RPCMessage
 
-// optional int64 version = 1;
+// optional int32 type = 1;
+inline void RPCMessage::clear_type() {
+  type_ = 0;
+}
+inline ::google::protobuf::int32 RPCMessage::type() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.type)
+  return type_;
+}
+inline void RPCMessage::set_type(::google::protobuf::int32 value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCMessage.type)
+}
+
+// optional int64 version = 2;
 inline void RPCMessage::clear_version() {
   version_ = GOOGLE_LONGLONG(0);
 }
@@ -429,7 +450,7 @@ inline void RPCMessage::set_version(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:pb.RPCMessage.version)
 }
 
-// optional int64 id = 2;
+// optional int64 id = 3;
 inline void RPCMessage::clear_id() {
   id_ = GOOGLE_LONGLONG(0);
 }
@@ -443,7 +464,7 @@ inline void RPCMessage::set_id(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:pb.RPCMessage.id)
 }
 
-// optional .pb.HealthRequest healthRequest = 3;
+// optional .pb.HealthRequest healthRequest = 4;
 inline bool RPCMessage::has_healthrequest() const {
   return msg_case() == kHealthRequest;
 }
@@ -491,7 +512,7 @@ inline void RPCMessage::set_allocated_healthrequest(::pb::HealthRequest* healthr
   // @@protoc_insertion_point(field_set_allocated:pb.RPCMessage.healthRequest)
 }
 
-// optional .pb.HealthReply HealthReply = 4;
+// optional .pb.HealthReply HealthReply = 5;
 inline bool RPCMessage::has_healthreply() const {
   return msg_case() == kHealthReply;
 }

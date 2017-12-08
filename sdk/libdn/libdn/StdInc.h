@@ -9,6 +9,10 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+//Protobuf
+#include "protocol.pb.h"
+using namespace pb;
+
 // C/C++ headers
 #include <string>
 #include <vector>
@@ -19,10 +23,6 @@
 #include "Utils.h"
 #include "RPC.h"
 #include "DNAsyncImpl.h"
-
-// messages
-#include "protocol.pb.h"
-#include "MessageDefinition.h"
 
 // global state
 extern struct DN_state_s

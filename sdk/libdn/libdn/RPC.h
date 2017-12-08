@@ -1,49 +1,7 @@
 #pragma once
 
-// message class
-class IRPCBuffer
-{
-public:
-	virtual void Deserialize(const uint8_t* buffer, size_t length) = 0;
-	virtual std::string Serialize() = 0;
-};
-
-template <class T>
-class NPRPCBuffer : public IRPCBuffer
-{
-private:
-	T _buffer;
-public:
-	T* GetPayload()
-	{
-		return &_buffer;
-	}
-
-	virtual void Deserialize(const uint8_t* buffer, size_t length)
-	{
-		_buffer.ParseFromArray(buffer, length);
-	}
-
-	virtual std::string Serialize()
-	{
-		std::string str;
-		_buffer.SerializeToString(&str);
-		return str;
-	}
-};
-
-// message header
-struct rpc_message_header_s
-{
-	uint32_t signature;
-	uint32_t length;
-	uint32_t type;
-	uint32_t id;
-};
-
 // dispatch handler callback
-class INPRPCMessage;
-typedef void(*DispatchHandlerCB)(INPRPCMessage*);
+typedef void(*DispatchHandlerCB)(RPCMessage*);
 
 struct rpc_dispatch_handler_s
 {
@@ -62,8 +20,8 @@ void RPC_Shutdown();
 void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback);
 
 // send a message
-void RPC_SendMessage(INPRPCMessage* message);
-NPAsync<INPRPCMessage>* RPC_SendMessageAsync(INPRPCMessage* message);
+void RPC_SendMessage(RPCMessage* message);
+NPAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message);
 
 // increment and return a new sequence ID
 int RPC_GenerateID();

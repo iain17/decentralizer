@@ -9,7 +9,6 @@ static struct rpc_state_s
 	WSAEVENT hSocketEvent;
 
 	// message parsing
-	uint32_t messageType;
 	uint32_t messageID;
 
 	// connected flag
@@ -76,15 +75,13 @@ int RPC_GenerateID()
 	return g_rpc.sendMessageID;
 }
 
-static void RPC_DispatchMessage(INPRPCMessage* message)
+static void RPC_DispatchMessage(RPCMessage* message)
 {
-	uint32_t type = message->GetType();
-
-	Log_Print("Dispatching RPC message with ID %d and type %d.\n", g_rpc.messageID, type);
+	Log_Print("Dispatching RPC message with ID %d and type %d.\n", message->id(), message->type());
 
 	for (std::vector<rpc_dispatch_handler_s>::iterator i = g_rpc.dispatchHandlers.begin(); i != g_rpc.dispatchHandlers.end(); i++)
 	{
-		if (i->type == type && g_rpc.messageID == 0)
+		if (i->type == message->type() && g_rpc.messageID == 0)
 		{
 			Log_Print("Dispatching RPC message to dispatch handler.\n");
 			i->callback(message);
@@ -104,23 +101,6 @@ static void RPC_DispatchMessage(INPRPCMessage* message)
 		async->SetResult(message);
 		g_rpc.freeNext.push_back(async);
 	}
-}
-
-static void RPC_HandleMessage(RPCMessage message)
-{
-	Log_Print("RPC_HandleMessage: type %d\n", message.msg_case());
-	/*
-	for (int i = 0; i < NUM_RPC_MESSAGE_TYPES; i++)
-	{
-		if (g_rpcMessageTypes[i].type == g_rpc.messageType)
-		{
-			INPRPCMessage* message = g_rpcMessageTypes[i].handler();
-			message->Deserialize(g_rpc.messageBuffer, g_rpc.totalBytes);
-			RPC_DispatchMessage(message);
-			message->Free();
-		}
-	}
-	*/
 }
 
 char buffer[2048];
@@ -181,9 +161,8 @@ bool RPC_ParseMessage(char* buffer, size_t len)
 		return false;
 	}
 
-	g_rpc.messageType = message.msg_case();
 	g_rpc.messageID = message.id();
-	RPC_HandleMessage(message);
+	RPC_DispatchMessage(&message);
 }
 
 // reads a message from the RPC socket
@@ -214,30 +193,6 @@ static int RPC_ReadMessage()
 	}
 	return 0;
 }
-
-/*static void RPC_SendMessage(int type, IRPCMessage* message)
-{
-std::string str = message->Serialize();
-uint32_t datalen = str.length();
-uint32_t buflen = sizeof(rpc_message_header_s) + datalen;
-
-// allocate a response buffer and copy data to it
-uint8_t* buffer = new uint8_t[buflen];
-const char* data = str.c_str();
-memcpy(&buffer[sizeof(rpc_message_header_s)], data, datalen);
-
-// set the response header data
-rpc_message_header_s* header = (rpc_message_header_s*)buffer;
-header->signature = 0xDEADC0DE;
-header->length = datalen;
-header->type = type;
-
-// send to the socket
-send(g_rpc.socket, (const char*)buffer, buflen, 0);
-
-// free the buffer
-delete[] buffer;
-}*/
 
 #define RPC_EVENT_SHUTDOWN (WAIT_OBJECT_0)
 #define RPC_EVENT_SOCKET (WAIT_OBJECT_0 + 1)
@@ -392,28 +347,31 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback)
 	g_rpc.dispatchHandlers.push_back(handler);
 }
 
-void RPC_SendMessage(INPRPCMessage* message, int id)
+bool RPC_SendMessage(RPCMessage* message, int id)
 {
-	// serialize the message
-	size_t len;
-	uint8_t* data = message->Serialize(&len, id);
+	int size = message->ByteSize();
+	void *buffer = malloc(size);
+	bool res = message->SerializeToArray(buffer, size);
+	if (!res) {
+		return false;
+	}
 
 	// send to the socket
-	send(g_rpc.socket, (const char*)data, len, 0);
+	send(g_rpc.socket, (const char*)buffer, size, 0);
 
 	// free the data pointer
-	message->FreePayload();
+	message->Clear();
 
 	// log it
 	Log_Print("Sending RPC message with ID %d.\n", id);
 }
 
-void RPC_SendMessage(INPRPCMessage* message)
+void RPC_SendMessage(RPCMessage* message)
 {
 	RPC_SendMessage(message, 0);
 }
 
-NPAsync<INPRPCMessage>* RPC_SendMessageAsync(INPRPCMessage* message)
+NPAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
 {
 	int id = RPC_GenerateID();
 

@@ -167,7 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\dependencies\pb\C++\MessageDefinition.h" />
     <ClInclude Include="DNAsync.h" />
     <ClInclude Include="RPCAsync.h" />
     <ClInclude Include="DNAsyncImpl.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dependencies\pb\C++\MessageDefinition.cpp" />
     <ClCompile Include="..\dependencies\pb\C++\protocol.pb.cc" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="NPAsync.cpp" />

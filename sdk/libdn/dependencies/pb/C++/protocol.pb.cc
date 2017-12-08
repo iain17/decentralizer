@@ -516,6 +516,7 @@ inline const HealthReply* HealthReply::internal_default_instance() {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RPCMessage::kTypeFieldNumber;
 const int RPCMessage::kVersionFieldNumber;
 const int RPCMessage::kIdFieldNumber;
 const int RPCMessage::kHealthRequestFieldNumber;
@@ -541,8 +542,8 @@ RPCMessage::RPCMessage(const RPCMessage& from)
 }
 
 void RPCMessage::SharedCtor() {
-  ::memset(&version_, 0, reinterpret_cast<char*>(&id_) -
-    reinterpret_cast<char*>(&version_) + sizeof(id_));
+  ::memset(&version_, 0, reinterpret_cast<char*>(&type_) -
+    reinterpret_cast<char*>(&version_) + sizeof(type_));
   clear_has_msg();
   _cached_size_ = 0;
 }
@@ -615,7 +616,7 @@ void RPCMessage::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(version_, id_);
+  ZR_(version_, type_);
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -633,9 +634,24 @@ bool RPCMessage::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int64 version = 1;
+      // optional int32 type = 1;
       case 1: {
         if (tag == 8) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &type_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_version;
+        break;
+      }
+
+      // optional int64 version = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_version:
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -643,13 +659,13 @@ bool RPCMessage::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(16)) goto parse_id;
+        if (input->ExpectTag(24)) goto parse_id;
         break;
       }
 
-      // optional int64 id = 2;
-      case 2: {
-        if (tag == 16) {
+      // optional int64 id = 3;
+      case 3: {
+        if (tag == 24) {
          parse_id:
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -658,13 +674,13 @@ bool RPCMessage::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(26)) goto parse_healthRequest;
+        if (input->ExpectTag(34)) goto parse_healthRequest;
         break;
       }
 
-      // optional .pb.HealthRequest healthRequest = 3;
-      case 3: {
-        if (tag == 26) {
+      // optional .pb.HealthRequest healthRequest = 4;
+      case 4: {
+        if (tag == 34) {
          parse_healthRequest:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_healthrequest()));
@@ -675,9 +691,9 @@ bool RPCMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .pb.HealthReply HealthReply = 4;
-      case 4: {
-        if (tag == 34) {
+      // optional .pb.HealthReply HealthReply = 5;
+      case 5: {
+        if (tag == 42) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_healthreply()));
         } else {
@@ -712,26 +728,31 @@ failure:
 void RPCMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:pb.RPCMessage)
-  // optional int64 version = 1;
+  // optional int32 type = 1;
+  if (this->type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->type(), output);
+  }
+
+  // optional int64 version = 2;
   if (this->version() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->version(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->version(), output);
   }
 
-  // optional int64 id = 2;
+  // optional int64 id = 3;
   if (this->id() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->id(), output);
   }
 
-  // optional .pb.HealthRequest healthRequest = 3;
+  // optional .pb.HealthRequest healthRequest = 4;
   if (has_healthrequest()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      3, *msg_.healthrequest_, output);
+      4, *msg_.healthrequest_, output);
   }
 
-  // optional .pb.HealthReply HealthReply = 4;
+  // optional .pb.HealthReply HealthReply = 5;
   if (has_healthreply()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      4, *msg_.healthreply_, output);
+      5, *msg_.healthreply_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:pb.RPCMessage)
@@ -741,14 +762,21 @@ size_t RPCMessage::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCMessage)
   size_t total_size = 0;
 
-  // optional int64 version = 1;
+  // optional int32 type = 1;
+  if (this->type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->type());
+  }
+
+  // optional int64 version = 2;
   if (this->version() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->version());
   }
 
-  // optional int64 id = 2;
+  // optional int64 id = 3;
   if (this->id() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
@@ -756,14 +784,14 @@ size_t RPCMessage::ByteSizeLong() const {
   }
 
   switch (msg_case()) {
-    // optional .pb.HealthRequest healthRequest = 3;
+    // optional .pb.HealthRequest healthRequest = 4;
     case kHealthRequest: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *msg_.healthrequest_);
       break;
     }
-    // optional .pb.HealthReply HealthReply = 4;
+    // optional .pb.HealthReply HealthReply = 5;
     case kHealthReply: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -810,6 +838,9 @@ void RPCMessage::UnsafeMergeFrom(const RPCMessage& from) {
       break;
     }
   }
+  if (from.type() != 0) {
+    set_type(from.type());
+  }
   if (from.version() != 0) {
     set_version(from.version());
   }
@@ -835,6 +866,7 @@ void RPCMessage::Swap(RPCMessage* other) {
   InternalSwap(other);
 }
 void RPCMessage::InternalSwap(RPCMessage* other) {
+  std::swap(type_, other->type_);
   std::swap(version_, other->version_);
   std::swap(id_, other->id_);
   std::swap(msg_, other->msg_);
@@ -850,7 +882,21 @@ void RPCMessage::InternalSwap(RPCMessage* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // RPCMessage
 
-// optional int64 version = 1;
+// optional int32 type = 1;
+void RPCMessage::clear_type() {
+  type_ = 0;
+}
+::google::protobuf::int32 RPCMessage::type() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.type)
+  return type_;
+}
+void RPCMessage::set_type(::google::protobuf::int32 value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCMessage.type)
+}
+
+// optional int64 version = 2;
 void RPCMessage::clear_version() {
   version_ = GOOGLE_LONGLONG(0);
 }
@@ -864,7 +910,7 @@ void RPCMessage::set_version(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:pb.RPCMessage.version)
 }
 
-// optional int64 id = 2;
+// optional int64 id = 3;
 void RPCMessage::clear_id() {
   id_ = GOOGLE_LONGLONG(0);
 }
@@ -878,7 +924,7 @@ void RPCMessage::set_id(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:pb.RPCMessage.id)
 }
 
-// optional .pb.HealthRequest healthRequest = 3;
+// optional .pb.HealthRequest healthRequest = 4;
 bool RPCMessage::has_healthrequest() const {
   return msg_case() == kHealthRequest;
 }
@@ -926,7 +972,7 @@ void RPCMessage::set_allocated_healthrequest(::pb::HealthRequest* healthrequest)
   // @@protoc_insertion_point(field_set_allocated:pb.RPCMessage.healthRequest)
 }
 
-// optional .pb.HealthReply HealthReply = 4;
+// optional .pb.HealthReply HealthReply = 5;
 bool RPCMessage::has_healthreply() const {
   return msg_case() == kHealthReply;
 }
