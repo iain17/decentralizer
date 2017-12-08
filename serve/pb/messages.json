@@ -1,0 +1,8 @@
+[
+	{
+		"message": "HealthRequest"
+	},
+	{
+		"message": "HealthReply"
+	}
+]

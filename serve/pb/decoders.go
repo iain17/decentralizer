@@ -6,13 +6,25 @@ import (
 	"io"
 	"errors"
 	"github.com/gogo/protobuf/proto"
+	"github.com/iain17/logger"
+	"reflect"
 )
 
 var delimiter = byte(255)
 const VERSION = 1
 
+func debug(data []byte) {
+	logger.Info("writing")
+	for _, d := range data {
+		logger.Infof("%d", d)
+	}
+	logger.Info("end")
+}
+
+
 func write(w io.Writer, data []byte) error {
 	s, err := w.Write(data)
+	//debug(data)
 	if err != nil {
 		return err
 	}
@@ -20,6 +32,7 @@ func write(w io.Writer, data []byte) error {
 		return errors.New("Didn't write all of the data")
 	}
 	s, err = w.Write([]byte{delimiter})
+	//debug([]byte{delimiter})
 	if err != nil {
 		return err
 	}
@@ -45,6 +58,9 @@ func Decode(r io.Reader) (*RPCMessage, error) {
 }
 
 func Write(w io.Writer, msg *RPCMessage) error {
+	msg.Version = VERSION
+	msgType := reflect.TypeOf(msg.GetMsg())
+	msg.Type = int32(types[msgType])
 	data, err := proto.Marshal(msg)
 	if err != nil {
 		return err

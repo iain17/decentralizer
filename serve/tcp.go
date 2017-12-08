@@ -5,7 +5,6 @@ import (
 	"github.com/iain17/logger"
 	"fmt"
 	"github.com/iain17/decentralizer/serve/pb"
-	"reflect"
 )
 
 func (s *Serve) ListenTCP(port int) {
@@ -20,6 +19,7 @@ func (s *Serve) ListenTCP(port int) {
 
 	for {
 		conn, err := listener.Accept()
+		logger.Infof("New connection: %s", conn.RemoteAddr())
 		if err != nil {
 			logger.Warning(err)
 			continue
@@ -37,14 +37,17 @@ func (s *Serve) handleConnection(conn net.Conn) {
 		conn.Close()
 	}()
 
+	demo1(conn)
+	demo2(conn)
+
 	for {
 		packet, err := pb.Decode(conn)
 		if err != nil {
 			logger.Warning(err)
-			continue
+			break
 		}
 
-		handler := s.handlers[reflect.TypeOf(packet.GetMsg())]
+		handler := s.handlers[pb.MessageType(packet.Type)]
 		if handler != nil {
 			res, err := handler(packet)
 			if err != nil {
@@ -60,4 +63,30 @@ func (s *Serve) handleConnection(conn net.Conn) {
 			}
 		}
 	}
+}
+
+func demo1(conn net.Conn) {
+	pb.Write(conn, &pb.RPCMessage{
+		Id: 1337,
+		Msg: &pb.RPCMessage_HealthReply{
+			HealthReply: &pb.HealthReply{
+				Ready: true,
+				Message: "very nice...",
+			},
+		},
+	})
+	logger.Error("Sent a demo 1 message: ")
+}
+
+func demo2(conn net.Conn) {
+	pb.Write(conn, &pb.RPCMessage{
+		Id: 1338,
+		Msg: &pb.RPCMessage_HealthReply{
+			HealthReply: &pb.HealthReply{
+				Ready: true,
+				Message: "very nice...",
+			},
+		},
+	})
+	logger.Error("Sent a demo 2 message: ")
 }
