@@ -13,16 +13,16 @@ public:
 extern std::queue<DNAsyncCallback*> _asyncCallbacks;
 
 template <class T>
-class NPAsyncImpl : public NPAsync<T>, public DNAsyncCallback
+class NPAsyncImpl : public DNAsync<T>, public DNAsyncCallback
 {
 private:
-	void(__cdecl* _callback)(NPAsync<T>*);
+	void(__cdecl* _callback)(DNAsync<T>*);
 	T* _result;
 	void* _userData;
 	bool _freeResult;
 	bool _isReferencedByCB;
 
-	void(__cdecl* _timeoutCallback)(NPAsync<T>*);
+	void(__cdecl* _timeoutCallback)(DNAsync<T>*);
 	unsigned int _timeout;
 	DWORD _start;
 
@@ -36,7 +36,7 @@ public:
 		_isReferencedByCB = false;
 	}
 
-	// implementations for base NPAsync
+	// implementations for base DNAsync
 	virtual T* Wait()
 	{
 		return Wait(-1);
@@ -74,14 +74,14 @@ public:
 		return _result;
 	}
 
-	virtual void SetCallback(void(__cdecl* callback)(NPAsync<T>*), void* userData)
+	virtual void SetCallback(void(__cdecl* callback)(DNAsync<T>*), void* userData)
 	{
 		_callback = callback;
 		_userData = userData;
 		_isReferencedByCB = true;
 	}
 
-	virtual void SetTimeoutCallback(void(__cdecl* callback)(NPAsync<T>*), unsigned int timeout)
+	virtual void SetTimeoutCallback(void(__cdecl* callback)(DNAsync<T>*), unsigned int timeout)
 	{
 		_timeout = timeout;
 		_start = GetTickCount();

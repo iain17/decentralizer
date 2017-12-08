@@ -2,14 +2,14 @@
 #include "StdInc.h"
 #include "DNAsync.h"
 
-class NPRPCAsync : public NPAsync<RPCMessage>
+class NPRPCAsync : public DNAsync<RPCMessage>
 {
 private:
-	void(__cdecl* _callback)(NPAsync<RPCMessage>*);
+	void(__cdecl* _callback)(DNAsync<RPCMessage>*);
 	RPCMessage* _result;
 	void* _userData;
 
-	void(__cdecl* _timeoutCallback)(NPAsync<RPCMessage>*);
+	void(__cdecl* _timeoutCallback)(DNAsync<RPCMessage>*);
 	unsigned int _timeout;
 	DWORD _start;
 
@@ -24,7 +24,7 @@ public:
 		_start = 0;
 	}
 
-	// implementations for base NPAsync
+	// implementations for base DNAsync
 	virtual RPCMessage* Wait()
 	{
 		return Wait(-1);
@@ -61,14 +61,14 @@ public:
 		return _result;
 	}
 
-	virtual void SetCallback(void(__cdecl* callback)(NPAsync<RPCMessage>*), void* userData)
+	virtual void SetCallback(void(__cdecl* callback)(DNAsync<RPCMessage>*), void* userData)
 	{
 		_callback = callback;
 		_userData = userData;
 		_start = GetTickCount();
 	}
 
-	virtual void SetTimeoutCallback(void(__cdecl* callback)(NPAsync<RPCMessage>*), unsigned int timeout)
+	virtual void SetTimeoutCallback(void(__cdecl* callback)(DNAsync<RPCMessage>*), unsigned int timeout)
 	{
 		_timeout = timeout;
 		_start = GetTickCount();

@@ -21,7 +21,7 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback);
 
 // send a message
 void RPC_SendMessage(RPCMessage* message);
-NPAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message);
+DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message);
 
 // increment and return a new sequence ID
 int RPC_GenerateID();

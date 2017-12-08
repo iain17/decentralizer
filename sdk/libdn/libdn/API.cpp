@@ -13,7 +13,7 @@ LIBDN_API bool LIBDN_CALL DN_Init(ConnectLogCB callback)
 	return true;
 }
 
-LIBDN_API bool LIBDN_CALL NP_Shutdown()
+LIBDN_API bool LIBDN_CALL DN_Shutdown()
 {
 	//Friends_Shutdown();
 	RPC_Shutdown();

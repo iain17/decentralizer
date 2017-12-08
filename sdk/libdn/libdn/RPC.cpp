@@ -31,6 +31,16 @@ static struct rpc_state_s
 	LONG sendMessageID;
 } g_rpc;
 
+//Will hang until we are connected and DN is ready.
+LIBDN_API void LIBDN_CALL DN_WaitUntilReady()
+{
+	DNHealthResult* health;
+	while (!g_rpc.connected || health == nullptr || !health->ready) {
+		health = DN_Health();
+		Sleep(100);
+	}
+}
+
 static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 {
 	while (!g_rpc.connected)
@@ -156,8 +166,8 @@ bool RPC_ParseMessage(char* buffer, size_t len)
 	}
 	Log_Print("Parsed RPCMessage with id: %d \n", message.id());
 	//Check version
-	if (message.version() != VERSION) {
-		Log_Print("Version mismatch v0x%x != v0x%x \n", message.version(), VERSION);
+	if (message.version() != API_VERSION) {
+		Log_Print("Version mismatch v0x%x != v0x%x \n", message.version(), API_VERSION);
 		return false;
 	}
 
@@ -349,9 +359,15 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback)
 
 bool RPC_SendMessage(RPCMessage* message, int id)
 {
+	if (message->msg_case() != RPCMessage::MsgCase::kHealthRequest) {
+		DN_WaitUntilReady();
+	}
+	message->set_id(id);
+	message->set_version(API_VERSION);
+
 	int size = message->ByteSize();
-	void *buffer = malloc(size);
-	bool res = message->SerializeToArray(buffer, size);
+	char buffer[MAXMESSAGESIZE];
+	bool res = message->SerializeToArray((void *)buffer, size);
 	if (!res) {
 		return false;
 	}
@@ -359,11 +375,18 @@ bool RPC_SendMessage(RPCMessage* message, int id)
 	// send to the socket
 	send(g_rpc.socket, (const char*)buffer, size, 0);
 
-	// free the data pointer
+	//Send delimiter
+	char delimiter[1];
+	delimiter[0] = (const char)DELIMITER;
+	send(g_rpc.socket, (const char*)delimiter, 1, 0);
+
+	// cleanup
 	message->Clear();
+	//delete buffer;
 
 	// log it
 	Log_Print("Sending RPC message with ID %d.\n", id);
+	return true;
 }
 
 void RPC_SendMessage(RPCMessage* message)
@@ -371,7 +394,7 @@ void RPC_SendMessage(RPCMessage* message)
 	RPC_SendMessage(message, 0);
 }
 
-NPAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
+DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
 {
 	int id = RPC_GenerateID();
 
@@ -395,8 +418,7 @@ void RPC_RunFrame()
 	g_rpc.freeNext.clear();
 }
 
-LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port)
-{
+LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port) {
 	if (g_rpc.connected)
 	{
 		return true;
