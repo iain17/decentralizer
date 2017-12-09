@@ -31,6 +31,7 @@ static struct rpc_state_s
 LIBDN_API void LIBDN_CALL DN_WaitUntilReady()
 {
 	DNHealthResult* health;
+	health->ready = false;
 	while (!g_rpc.connected || health == nullptr || !health->ready) {
 		health = DN_Health();
 		Sleep(100);
@@ -271,10 +272,6 @@ bool RPC_Init()
 		RPC_Shutdown();
 		return false;
 	}
-
-	// blah
-	//RPC_RegisterDispatch(RPCHelloMessage::Type, RPC_HandleHello);
-	//RPC_RegisterDispatch(RPCCloseAppMessage::Type, RPC_HandleClose);
 
 	return true;
 }

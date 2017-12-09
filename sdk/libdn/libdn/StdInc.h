@@ -10,7 +10,8 @@
 #include <windows.h>
 
 //Protobuf
-#include "protocol.pb.h"
+#include "matchmaking.pb.h"
+#include "platform.pb.h"
 using namespace pb;
 
 // C/C++ headers
