@@ -5,6 +5,8 @@ import (
 	"github.com/iain17/logger"
 	"fmt"
 	"github.com/iain17/decentralizer/serve/pb"
+	"reflect"
+	"io"
 )
 
 func (s *Serve) ListenTCP(port int) {
@@ -28,6 +30,7 @@ func (s *Serve) ListenTCP(port int) {
 	}
 }
 
+
 func (s *Serve) handleConnection(conn net.Conn) {
 	defer func() {
 		if error := recover(); error != nil {
@@ -37,17 +40,18 @@ func (s *Serve) handleConnection(conn net.Conn) {
 		conn.Close()
 	}()
 
-	demo1(conn)
-	demo2(conn)
-
 	for {
 		packet, err := pb.Decode(conn)
 		if err != nil {
+			if err == io.EOF {
+				break
+			}
 			logger.Warning(err)
-			break
+			continue
 		}
+		logger.Infof("Received a packet with id %d and type %v", packet.Id, packet.GetMsg())
 
-		handler := s.handlers[pb.MessageType(packet.Type)]
+		handler := s.handlers[reflect.TypeOf(packet.GetMsg())]
 		if handler != nil {
 			res, err := handler(packet)
 			if err != nil {
@@ -55,12 +59,16 @@ func (s *Serve) handleConnection(conn net.Conn) {
 				continue
 			}
 			if res != nil {
+				res.Id = packet.Id
+				logger.Infof("Writing reply back a packet with id %d and type %v", res.Id, res.GetMsg())
 				err = pb.Write(conn, res)
 				if err != nil {
 					logger.Warning(err)
 					continue
 				}
 			}
+		} else {
+			logger.Infof("No handler found for type %v", packet.GetMsg())
 		}
 	}
 }

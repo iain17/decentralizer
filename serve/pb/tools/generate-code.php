@@ -4,7 +4,7 @@ $script->read('messages.json');
 
 //generate_file($script->data, 'cpp-h.tpl.php', '../../sdk/libdn/dependencies/pb/c++/MessageDefinition.h');
 //generate_file($script->data, 'cpp-c.tpl.php', '../../sdk/libdn/dependencies/pb/c++/MessageDefinition.cpp');
-generate_file($script->data, 'go.tpl.php', './types.go');
+//generate_file($script->data, 'go.tpl.php', './types.go');
 
 function generate_file($messages, $template, $output)
 {

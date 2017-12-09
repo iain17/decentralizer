@@ -7,7 +7,6 @@ import (
 	"errors"
 	"github.com/gogo/protobuf/proto"
 	"github.com/iain17/logger"
-	"reflect"
 )
 
 var delimiter = byte(255)
@@ -48,7 +47,8 @@ func Decode(r io.Reader) (*RPCMessage, error) {
 		return nil, err
 	}
 	var result RPCMessage
-	if err := proto.Unmarshal(data[:len(data)-1], &result); err != nil {
+	msg := data[:len(data)-1]
+	if err := proto.Unmarshal(msg, &result); err != nil {
 		return nil, err
 	}
 	if result.Version != VERSION {
@@ -59,8 +59,6 @@ func Decode(r io.Reader) (*RPCMessage, error) {
 
 func Write(w io.Writer, msg *RPCMessage) error {
 	msg.Version = VERSION
-	msgType := reflect.TypeOf(msg.GetMsg())
-	msg.Type = int32(types[msgType])
 	data, err := proto.Marshal(msg)
 	if err != nil {
 		return err
