@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"errors"
-	"github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"github.com/iain17/logger"
 )
 
@@ -47,8 +47,7 @@ func Decode(r io.Reader) (*RPCMessage, error) {
 		return nil, err
 	}
 	var result RPCMessage
-	msg := data[:len(data)-1]
-	if err := proto.Unmarshal(msg, &result); err != nil {
+	if err := proto.Unmarshal(data[:len(data)-1], &result); err != nil {
 		return nil, err
 	}
 	if result.Version != VERSION {

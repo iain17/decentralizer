@@ -39,6 +39,8 @@ func (s *Serve) handleConnection(conn net.Conn) {
 
 		conn.Close()
 	}()
+	go demo1(conn)
+	go demo2(conn)
 
 	for {
 		packet, err := pb.Decode(conn)
