@@ -33,7 +33,7 @@ LIBDN_API void LIBDN_CALL DN_WaitUntilReady()
 	health->ready = false;
 	while (!g_rpc.connected || health == nullptr || !health->ready) {
 		health = DN_Health();
-		if (health->ready) {
+		if (health != nullptr && health->ready) {
 			break;
 		}
 		Sleep(100);
@@ -52,6 +52,7 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 		RPC_Init();
 		if (DN_Connect(g_np.serverHost, g_np.serverPort))
 		{
+			Log_Print("Connected to RPC.\n");
 			g_rpc.sendMessageID = 0;
 			//Authenticate_Reauthenticate();
 		}
@@ -87,7 +88,7 @@ uint64_t RPC_GenerateID()
 
 static void RPC_DispatchMessage(RPCMessage* message)
 {
-	Log_Print("Dispatching RPC message with ID %d and type %d.\n", message->id(), message->msg_case());
+	Log_Print("Dispatching RPC message with ID %d.\n", message->id());
 
 	for (std::vector<rpc_dispatch_handler_s>::iterator i = g_rpc.dispatchHandlers.begin(); i != g_rpc.dispatchHandlers.end(); i++)
 	{
@@ -295,6 +296,11 @@ void RPC_Shutdown()
 	{
 		WSACloseEvent(g_rpc.hSocketEvent);
 		g_rpc.hSocketEvent = NULL;
+	}
+
+	for (auto const &ent1 : g_rpc.asyncHandlers) {
+		NPRPCAsync* async = ent1.second;
+		async->SetResult(NULL);
 	}
 
 	g_rpc.dispatchHandlers.clear();

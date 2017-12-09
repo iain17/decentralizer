@@ -33,17 +33,6 @@ DNSessionInfo* PBSessionToDNSession(SessionInfo * pbInfo) {
 	return result;
 }
 
-static void DN_UpsertSessionCB(DNAsync<RPCMessage>* async) {
-	NPAsyncImpl<DNUpsertSessionResult>* asyncResult = (NPAsyncImpl<DNUpsertSessionResult>*)async->GetUserData();
-	RPCMessage* message = async->GetResult();
-	const RPCUpsertSessionResponse& reply = message->upsertsessionresponse();
-
-	DNUpsertSessionResult* result = new DNUpsertSessionResult();
-	result->result = reply.result();
-	result->sessionId = (DNSID)reply.sessionid();
-	asyncResult->SetResult(result);
-}
-
 LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionInfo * info)
 {
 	//build request.
@@ -59,7 +48,16 @@ LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionI
 
 	//Set callback.
 	NPAsyncImpl<DNUpsertSessionResult>* result = new NPAsyncImpl<DNUpsertSessionResult>();
-	async->SetCallback(DN_UpsertSessionCB, result);
+	async->SetCallback([](DNAsync<RPCMessage>* async) {
+		NPAsyncImpl<DNUpsertSessionResult>* asyncResult = (NPAsyncImpl<DNUpsertSessionResult>*)async->GetUserData();
+		RPCMessage* message = async->GetResult();
+		const RPCUpsertSessionResponse& reply = message->upsertsessionresponse();
+
+		DNUpsertSessionResult* result = new DNUpsertSessionResult();
+		result->result = reply.result();
+		result->sessionId = (DNSID)reply.sessionid();
+		asyncResult->SetResult(result);
+	}, result);
 
 	return result;
 }

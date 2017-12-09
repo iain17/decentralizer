@@ -25,8 +25,5 @@ LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
 	async->SetCallback(GetHealthCB, result);
 	async->Wait();
 
-	//clear up
-	//request->Clear();
-
 	return result->GetResult();
 }

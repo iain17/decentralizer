@@ -12,6 +12,7 @@ private:
 	void(__cdecl* _timeoutCallback)(DNAsync<RPCMessage>*);
 	unsigned int _timeout;
 	DWORD _start;
+	bool _completed;
 
 public:
 	NPRPCAsync()
@@ -22,6 +23,7 @@ public:
 		_timeout = -1;
 		_timeoutCallback = nullptr;
 		_start = 0;
+		_completed = false;
 	}
 
 	// implementations for base DNAsync
@@ -52,6 +54,11 @@ public:
 	}
 
 	virtual bool HasCompleted()
+	{
+		return _completed;
+	}
+
+	virtual bool HasResult()
 	{
 		return (_result != NULL);
 	}
@@ -104,6 +111,7 @@ public:
 
 	void SetResult(RPCMessage* result)
 	{
+		_completed = true;
 		_result = result;
 
 		this->RunCallback();
@@ -132,7 +140,7 @@ public:
 
 	void RunCallback()
 	{
-		if (HasCompleted())
+		if (HasResult())
 		{
 			if (_callback)
 			{
