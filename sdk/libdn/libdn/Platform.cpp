@@ -3,6 +3,7 @@
 LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
 	//build request.
 	HealthRequest* request = new HealthRequest();
+	request->set_msg("hello");
 	pb::RPCMessage* msg = new pb::RPCMessage();
 	msg->set_allocated_healthrequest(request);
 	//Send request.

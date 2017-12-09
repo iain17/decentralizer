@@ -89,6 +89,13 @@ static void RPC_DispatchMessage(RPCMessage* message)
 {
 	Log_Print("Dispatching RPC message with ID %d and type %d.\n", message->id(), message->msg_case());
 
+	//Dev 
+	RPCMessage::MsgCase test = message->msg_case();
+	if (test == RPCMessage::MsgCase::kHealthReply) {
+		const HealthReply& reply = message->healthreply();
+		Log_Print("%s.\n", reply.message());
+	}
+
 	for (std::vector<rpc_dispatch_handler_s>::iterator i = g_rpc.dispatchHandlers.begin(); i != g_rpc.dispatchHandlers.end(); i++)
 	{
 		if (i->type == message->msg_case() && g_rpc.messageID == 0)
@@ -362,6 +369,11 @@ bool RPC_SendMessage(RPCMessage* message, int id)
 	if (message->msg_case() != RPCMessage::MsgCase::kHealthRequest) {
 		DN_WaitUntilReady();
 	}
+	else {
+		while (!g_rpc.connected) {
+			Sleep(100);
+		}
+	}
 	message->set_id(id);
 	message->set_version(API_VERSION);
 
@@ -369,6 +381,7 @@ bool RPC_SendMessage(RPCMessage* message, int id)
 	char buffer[MAXMESSAGESIZE];
 	bool res = message->SerializeToArray((void *)buffer, size);
 	if (!res) {
+		Log_Print("Failed to properly serialize protobuf message.\n");
 		return false;
 	}
 
@@ -389,9 +402,8 @@ bool RPC_SendMessage(RPCMessage* message, int id)
 	return true;
 }
 
-void RPC_SendMessage(RPCMessage* message)
-{
-	RPC_SendMessage(message, 0);
+bool RPC_SendMessage(RPCMessage* message) {
+	return RPC_SendMessage(message, 0);
 }
 
 DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
@@ -403,7 +415,10 @@ DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
 
 	g_rpc.asyncHandlers[id] = async;
 
-	RPC_SendMessage(message, id);
+	bool res = RPC_SendMessage(message, id);
+	if (!res) {
+		async->SetResult(nullptr);
+	}
 
 	Log_Print("Sending async RPC message with ID %d.\n", id);
 
