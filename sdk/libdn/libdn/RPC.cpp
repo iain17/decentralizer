@@ -4,12 +4,11 @@
 
 static struct rpc_state_s
 {
+	std::mutex mutex;
+
 	// client socket
 	SOCKET socket;
 	WSAEVENT hSocketEvent;
-
-	// message parsing
-	uint32_t messageID;
 
 	// connected flag
 	bool connected;
@@ -19,16 +18,13 @@ static struct rpc_state_s
 	// message dispatching
 	std::vector<rpc_dispatch_handler_s> dispatchHandlers;
 	std::vector<NPRPCAsync*> freeNext;
-	std::map<int, NPRPCAsync*> asyncHandlers;
+	std::map<uint64_t, NPRPCAsync*> asyncHandlers;
 
 	// thread management
 	HANDLE hThread;
-	HANDLE hShutdownEvent;
-
-	CRITICAL_SECTION recvCritSec;
-
+	
 	// global message id
-	LONG sendMessageID;
+	uint64_t sendMessageID;
 } g_rpc;
 
 //Will hang until we are connected and DN is ready.
@@ -53,6 +49,9 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 		RPC_Init();
 		if (DN_Connect(g_np.serverHost, g_np.serverPort))
 		{
+			g_rpc.mutex.lock();
+			g_rpc.sendMessageID = 0;
+			g_rpc.mutex.unlock();
 			//Authenticate_Reauthenticate();
 		}
 	}
@@ -79,46 +78,46 @@ void RPC_Reconnect()
 	CreateThread(NULL, 0, RPC_HandleReconnect, NULL, NULL, NULL);
 }
 
-int RPC_GenerateID()
+uint64_t RPC_GenerateID()
 {
-	InterlockedIncrement(&g_rpc.sendMessageID);
-	return g_rpc.sendMessageID;
+	uint64_t result;
+	g_rpc.mutex.lock();
+	g_rpc.sendMessageID++;
+	result = g_rpc.sendMessageID;
+	g_rpc.mutex.unlock();
+	return result;
 }
 
 static void RPC_DispatchMessage(RPCMessage* message)
 {
 	Log_Print("Dispatching RPC message with ID %d and type %d.\n", message->id(), message->msg_case());
 
-	//Dev 
-	RPCMessage::MsgCase test = message->msg_case();
-	if (test == RPCMessage::MsgCase::kHealthReply) {
-		const HealthReply& reply = message->healthreply();
-		Log_Print("%s.\n", reply.message());
-	}
-
 	for (std::vector<rpc_dispatch_handler_s>::iterator i = g_rpc.dispatchHandlers.begin(); i != g_rpc.dispatchHandlers.end(); i++)
 	{
-		if (i->type == message->msg_case() && g_rpc.messageID == 0)
+		if (i->type == message->msg_case() && message->id() == 0)
 		{
 			Log_Print("Dispatching RPC message to dispatch handler.\n");
 			i->callback(message);
 		}
 	}
 
-	if (g_rpc.messageID > 0 && g_rpc.asyncHandlers[g_rpc.messageID] == NULL)
+	if (message->id() > 0 && g_rpc.asyncHandlers[message->id()] == NULL)
 	{
 		Sleep(100);
 	}
 
-	if (g_rpc.asyncHandlers[g_rpc.messageID] != NULL)
+	if (g_rpc.asyncHandlers[message->id()] != NULL)
 	{
 		Log_Print("Dispatching RPC message to async handler.\n");
 
-		NPRPCAsync* async = g_rpc.asyncHandlers[g_rpc.messageID];
+		NPRPCAsync* async = g_rpc.asyncHandlers[message->id()];
 		async->SetResult(message);
 		g_rpc.freeNext.push_back(async);
 	}
 }
+
+BYTE DELIMITER[3] = { '\n', '\r', '\n' };
+const uint32_t MAXMESSAGESIZE = 32768;
 
 char buffer[2048];
 static char backBuffer[MAXMESSAGESIZE];
@@ -132,17 +131,17 @@ void resetBackBuffer() {
 }
 
 //Reads all of the bytes until delimiter
-int readBytes(SOCKET s, char* result, char delimiter) {
+int readBytes(SOCKET s, char* result, char* delimiter) {
 	while (true) {
 		while (read < len) {
 			const char byte = buffer[read];
 			//Log_Print("reading %d of %d: %d.\n", read, len, byte);
-			if (byte == delimiter) {
+			if (read + 2 < len && buffer[read] == delimiter[0] && buffer[read + 1] == delimiter[1] && buffer[read + 2] == delimiter[2]) {
 				//Log_Print("delimiter found: %d.\n", delimiter);
 				int len = backBufferRead;
 				memcpy(result, backBuffer, len);
 				resetBackBuffer();
-				read++;
+				read += 3;
 				return len;
 			}
 			//Log_Print("copying %d.\n", byte);
@@ -171,24 +170,23 @@ bool RPC_ParseMessage(char* buffer, size_t len)
 		Log_Print("Failed to parse RPCMessage.\n");
 		return false;
 	}
-	Log_Print("Parsed RPCMessage with id: %d \n", message.id());
+	Log_Print("Received reply to RPCMessage with id: %d \n", message.id());
 	//Check version
 	if (message.version() != API_VERSION) {
 		Log_Print("Version mismatch v0x%x != v0x%x \n", message.version(), API_VERSION);
 		return false;
 	}
 
-	g_rpc.messageID = message.id();
 	RPC_DispatchMessage(&message);
 }
 
 // reads a message from the RPC socket
 static int RPC_ReadMessage()
 {
-	EnterCriticalSection(&g_rpc.recvCritSec);
+	g_rpc.mutex.lock();
 	char buffer[MAXMESSAGESIZE];
-	int len = readBytes(g_rpc.socket, buffer, DELIMITER);
-	LeaveCriticalSection(&g_rpc.recvCritSec);
+	int len = readBytes(g_rpc.socket, buffer, (char*)DELIMITER);
+	g_rpc.mutex.unlock();
 
 	if (len > 0)
 	{
@@ -209,20 +207,6 @@ static int RPC_ReadMessage()
 		return FD_CLOSE;
 	}
 	return 0;
-}
-
-#define RPC_EVENT_SHUTDOWN (WAIT_OBJECT_0)
-#define RPC_EVENT_SOCKET (WAIT_OBJECT_0 + 1)
-
-static uint32_t RPC_WaitForEvent()
-{
-	HANDLE waitHandles[] =
-	{
-		g_rpc.hShutdownEvent, // shutdown event should be first, should other events be signaled at the same time a shutdown occurs
-		g_rpc.hSocketEvent
-	};
-
-	return WaitForMultipleObjects(2, waitHandles, FALSE, 0);
 }
 
 static uint32_t RPC_DetermineEvent()
@@ -263,20 +247,6 @@ static bool RPC_RunThread()
 	return true;
 }
 
-/*
-static void RPC_HandleHello(INPRPCMessage* message)
-{
-	RPCHelloMessage* hello = (RPCHelloMessage*)message;
-	Log_Print("got %d %d %s %s\n", hello->GetBuffer()->number(), hello->GetBuffer()->number2(), hello->GetBuffer()->name().c_str(), hello->GetBuffer()->stuff().c_str());
-}
-
-static void RPC_HandleClose(INPRPCMessage* message)
-{
-	RPCCloseAppMessage* close = (RPCCloseAppMessage*)message;
-
-	ExitProcess(0x76767676);
-}
-*/
 void resetBackBuffer();
 bool RPC_Init()
 {
@@ -292,7 +262,6 @@ bool RPC_Init()
 		Log_Print("Couldn't initialize Winsock (0x%x)\n", result);
 		return false;
 	}
-
 	// create RPC socket
 	g_rpc.socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -302,12 +271,6 @@ bool RPC_Init()
 		RPC_Shutdown();
 		return false;
 	}
-
-	// create RPC socket event
-	//g_rpc.hSocketEvent = WSACreateEvent();
-	g_rpc.hShutdownEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-
-	InitializeCriticalSection(&g_rpc.recvCritSec);
 
 	// blah
 	//RPC_RegisterDispatch(RPCHelloMessage::Type, RPC_HandleHello);
@@ -322,19 +285,9 @@ void RPC_Shutdown()
 
 	if (g_rpc.hThread)
 	{
-		if (g_rpc.hShutdownEvent)
-		{
-			SetEvent(g_rpc.hShutdownEvent);
-			WaitForSingleObject(g_rpc.hThread, INFINITE);
-		}
-
 		TerminateThread(g_rpc.hThread, 1);
-
 		CloseHandle(g_rpc.hThread);
-		CloseHandle(g_rpc.hShutdownEvent);
-
 		g_rpc.hThread = NULL;
-		g_rpc.hShutdownEvent = NULL;
 	}
 
 	if (g_rpc.socket)
@@ -349,7 +302,7 @@ void RPC_Shutdown()
 		g_rpc.hSocketEvent = NULL;
 	}
 
-	//g_rpc.dispatchHandlers.clear();
+	g_rpc.dispatchHandlers.clear();
 
 	WSACleanup();
 }
@@ -364,8 +317,9 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback)
 	g_rpc.dispatchHandlers.push_back(handler);
 }
 
-bool RPC_SendMessage(RPCMessage* message, int id)
-{
+//todo: memory leak?
+bool RPC_SendMessage(RPCMessage* message, int id) {
+	Log_Print("Check if connected.\n");
 	if (message->msg_case() != RPCMessage::MsgCase::kHealthRequest) {
 		DN_WaitUntilReady();
 	}
@@ -374,6 +328,7 @@ bool RPC_SendMessage(RPCMessage* message, int id)
 			Sleep(100);
 		}
 	}
+	Log_Print("We are connected.\n");
 	message->set_id(id);
 	message->set_version(API_VERSION);
 
@@ -386,12 +341,11 @@ bool RPC_SendMessage(RPCMessage* message, int id)
 	}
 
 	// send to the socket
+	Log_Print("Sending to socket.\n");
 	send(g_rpc.socket, (const char*)buffer, size, 0);
 
 	//Send delimiter
-	char delimiter[1];
-	delimiter[0] = (const char)DELIMITER;
-	send(g_rpc.socket, (const char*)delimiter, 1, 0);
+	send(g_rpc.socket, (const char*)DELIMITER, 3, 0);
 
 	// cleanup
 	message->Clear();
@@ -406,9 +360,8 @@ bool RPC_SendMessage(RPCMessage* message) {
 	return RPC_SendMessage(message, 0);
 }
 
-DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
-{
-	int id = RPC_GenerateID();
+DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
+	uint64_t id = RPC_GenerateID();
 
 	NPRPCAsync* async = new NPRPCAsync();
 	async->SetAsyncID(id);
@@ -417,12 +370,24 @@ DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message)
 
 	bool res = RPC_SendMessage(message, id);
 	if (!res) {
-		async->SetResult(nullptr);
+		async->SetResult(NULL);
 	}
 
 	Log_Print("Sending async RPC message with ID %d.\n", id);
 
 	return async;
+}
+
+DNAsync<RPCMessage>* RPC_SendMessageAsyncCache(std::string key, RPCMessage* message) {
+	/*
+	if (g_rpc.cache->contains(key)) {
+		Log_Print("Calling back Async RPC call from cache using key %s.\n", key.c_str());
+		NPRPCAsync* async = new NPRPCAsync();
+		async->SetResult(g_rpc.cache->lookup(key));
+		return async;
+	}
+	*/
+	return RPC_SendMessageAsync(message);
 }
 
 void RPC_RunFrame()

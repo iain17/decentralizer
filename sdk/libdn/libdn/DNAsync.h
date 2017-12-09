@@ -3,8 +3,6 @@
 template <class T>
 class DNAsync
 {
-	//private:
-	//DNAsync() {}
 public:
 	// waits (synchronously, blocking) for the operation to complete
 	virtual T* Wait() = 0;

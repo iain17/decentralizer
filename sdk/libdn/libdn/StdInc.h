@@ -17,6 +17,7 @@ using namespace pb;
 #include <string>
 #include <vector>
 #include <queue>
+#include <mutex>
 
 // code headers
 #include "libdn.h"
