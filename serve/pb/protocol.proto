@@ -2,9 +2,7 @@ syntax = "proto3";
 package pb;
 option optimize_for = LITE_RUNTIME;
 
-message HealthRequest {
-	string msg = 1;
-}
+message HealthRequest {}
 
 // The response message containing the greetings
 message HealthReply {
