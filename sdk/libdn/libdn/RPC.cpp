@@ -4,8 +4,6 @@
 
 static struct rpc_state_s
 {
-	std::mutex mutex;
-
 	// client socket
 	SOCKET socket;
 	WSAEVENT hSocketEvent;
@@ -22,6 +20,7 @@ static struct rpc_state_s
 
 	// thread management
 	HANDLE hThread;
+	CRITICAL_SECTION recvCritSec;
 	
 	// global message id
 	uint64_t sendMessageID;
@@ -34,6 +33,9 @@ LIBDN_API void LIBDN_CALL DN_WaitUntilReady()
 	health->ready = false;
 	while (!g_rpc.connected || health == nullptr || !health->ready) {
 		health = DN_Health();
+		if (health->ready) {
+			break;
+		}
 		Sleep(100);
 	}
 }
@@ -50,9 +52,7 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 		RPC_Init();
 		if (DN_Connect(g_np.serverHost, g_np.serverPort))
 		{
-			g_rpc.mutex.lock();
 			g_rpc.sendMessageID = 0;
-			g_rpc.mutex.unlock();
 			//Authenticate_Reauthenticate();
 		}
 	}
@@ -81,12 +81,8 @@ void RPC_Reconnect()
 
 uint64_t RPC_GenerateID()
 {
-	uint64_t result;
-	g_rpc.mutex.lock();
-	g_rpc.sendMessageID++;
-	result = g_rpc.sendMessageID;
-	g_rpc.mutex.unlock();
-	return result;
+	InterlockedIncrement(&g_rpc.sendMessageID);
+	return g_rpc.sendMessageID;
 }
 
 static void RPC_DispatchMessage(RPCMessage* message)
@@ -184,16 +180,17 @@ bool RPC_ParseMessage(char* buffer, size_t len)
 // reads a message from the RPC socket
 static int RPC_ReadMessage()
 {
-	g_rpc.mutex.lock();
+	EnterCriticalSection(&g_rpc.recvCritSec);
 	char buffer[MAXMESSAGESIZE];
 	int len = readBytes(g_rpc.socket, buffer, (char*)DELIMITER);
-	g_rpc.mutex.unlock();
 
 	if (len > 0)
 	{
 		int retval = RPC_ParseMessage(buffer, len) ? FD_WRITE : 0;
+		LeaveCriticalSection(&g_rpc.recvCritSec);
 		return retval;
 	}
+	LeaveCriticalSection(&g_rpc.recvCritSec);
 
 	if (len == SOCKET_ERROR)
 	{
@@ -272,6 +269,7 @@ bool RPC_Init()
 		RPC_Shutdown();
 		return false;
 	}
+	InitializeCriticalSection(&g_rpc.recvCritSec);
 
 	return true;
 }
@@ -315,8 +313,45 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback)
 }
 
 //todo: memory leak?
-bool RPC_SendMessage(RPCMessage* message, int id) {
-	Log_Print("Check if connected.\n");
+bool RPC_SendMessage(RPCMessage message, int id) {
+	EnterCriticalSection(&g_rpc.recvCritSec);
+	message.set_id(id);
+	message.set_version(API_VERSION);
+	try {
+		char buffer[MAXMESSAGESIZE];
+		int size = message.ByteSizeLong();
+		bool res = message.SerializeToArray((void *)buffer, size);
+		if (!res) {
+			Log_Print("Failed to properly serialize protobuf message.\n");
+			LeaveCriticalSection(&g_rpc.recvCritSec);
+			return false;
+		}
+
+		// send to the socket
+		send(g_rpc.socket, (const char*)buffer, size, 0);
+
+		//Send delimiter
+		send(g_rpc.socket, (const char*)DELIMITER, 3, 0);
+
+		// cleanup
+		//message->Clear();
+		//delete buffer;
+	}
+	catch (...) {
+		return false;
+	}
+
+	// log it
+	Log_Print("Sending RPC message with ID %d.\n", id);
+	LeaveCriticalSection(&g_rpc.recvCritSec);
+	return true;
+}
+
+bool RPC_SendMessage(RPCMessage* message) {
+	return RPC_SendMessage(*message, 0);
+}
+
+DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 	if (message->msg_case() != RPCMessage::MsgCase::kHealthRequest) {
 		DN_WaitUntilReady();
 	}
@@ -325,39 +360,7 @@ bool RPC_SendMessage(RPCMessage* message, int id) {
 			Sleep(100);
 		}
 	}
-	Log_Print("We are connected.\n");
-	message->set_id(id);
-	message->set_version(API_VERSION);
 
-	int size = message->ByteSize();
-	char buffer[MAXMESSAGESIZE];
-	bool res = message->SerializeToArray((void *)buffer, size);
-	if (!res) {
-		Log_Print("Failed to properly serialize protobuf message.\n");
-		return false;
-	}
-
-	// send to the socket
-	Log_Print("Sending to socket.\n");
-	send(g_rpc.socket, (const char*)buffer, size, 0);
-
-	//Send delimiter
-	send(g_rpc.socket, (const char*)DELIMITER, 3, 0);
-
-	// cleanup
-	message->Clear();
-	//delete buffer;
-
-	// log it
-	Log_Print("Sending RPC message with ID %d.\n", id);
-	return true;
-}
-
-bool RPC_SendMessage(RPCMessage* message) {
-	return RPC_SendMessage(message, 0);
-}
-
-DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 	uint64_t id = RPC_GenerateID();
 
 	NPRPCAsync* async = new NPRPCAsync();
@@ -365,7 +368,7 @@ DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 
 	g_rpc.asyncHandlers[id] = async;
 
-	bool res = RPC_SendMessage(message, id);
+	bool res = RPC_SendMessage(*message, id);
 	if (!res) {
 		async->SetResult(NULL);
 	}
