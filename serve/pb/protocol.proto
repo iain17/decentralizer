@@ -11,11 +11,10 @@ message HealthReply {
 }
 
 message RPCMessage {
-    int32 type = 1;
-    int64 version = 2;
-	int64 id = 3;
+    int64 version = 1;
+	int64 id = 2;
 	oneof msg {
-		HealthRequest healthRequest = 4;
-		HealthReply HealthReply = 5;
+		HealthRequest healthRequest = 3;
+		HealthReply HealthReply = 4;
 	}
 }
