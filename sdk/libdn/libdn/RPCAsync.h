@@ -89,15 +89,15 @@ public:
 	// set the result
 private:
 
-	int _asyncID;
+	uint64_t _asyncID;
 
 public:
-	int GetAsyncID()
+	uint64_t GetAsyncID()
 	{
 		return _asyncID;
 	}
 
-	void SetAsyncID(int value)
+	void SetAsyncID(uint64_t value)
 	{
 		_asyncID = value;
 	}

@@ -147,25 +147,10 @@ class HealthRequest : public ::google::protobuf::MessageLite /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // string msg = 1;
-  void clear_msg();
-  static const int kMsgFieldNumber = 1;
-  const ::std::string& msg() const;
-  void set_msg(const ::std::string& value);
-  #if LANG_CXX11
-  void set_msg(::std::string&& value);
-  #endif
-  void set_msg(const char* value);
-  void set_msg(const char* value, size_t size);
-  ::std::string* mutable_msg();
-  ::std::string* release_msg();
-  void set_allocated_msg(::std::string* msg);
-
   // @@protoc_insertion_point(class_scope:pb.HealthRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr msg_;
   mutable int _cached_size_;
   friend struct ::protobuf_protocol_2eproto::TableStruct;
   friend void ::protobuf_protocol_2eproto::InitDefaultsHealthRequestImpl();
@@ -434,59 +419,6 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
 // HealthRequest
-
-// string msg = 1;
-inline void HealthRequest::clear_msg() {
-  msg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& HealthRequest::msg() const {
-  // @@protoc_insertion_point(field_get:pb.HealthRequest.msg)
-  return msg_.GetNoArena();
-}
-inline void HealthRequest::set_msg(const ::std::string& value) {
-  
-  msg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.HealthRequest.msg)
-}
-#if LANG_CXX11
-inline void HealthRequest::set_msg(::std::string&& value) {
-  
-  msg_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.HealthRequest.msg)
-}
-#endif
-inline void HealthRequest::set_msg(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  msg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.HealthRequest.msg)
-}
-inline void HealthRequest::set_msg(const char* value, size_t size) {
-  
-  msg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.HealthRequest.msg)
-}
-inline ::std::string* HealthRequest::mutable_msg() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.HealthRequest.msg)
-  return msg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* HealthRequest::release_msg() {
-  // @@protoc_insertion_point(field_release:pb.HealthRequest.msg)
-  
-  return msg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void HealthRequest::set_allocated_msg(::std::string* msg) {
-  if (msg != NULL) {
-    
-  } else {
-    
-  }
-  msg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), msg);
-  // @@protoc_insertion_point(field_set_allocated:pb.HealthRequest.msg)
-}
 
 // -------------------------------------------------------------------
 

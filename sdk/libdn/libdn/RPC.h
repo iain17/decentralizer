@@ -22,9 +22,10 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback);
 // send a message
 bool RPC_SendMessage(RPCMessage* message);
 DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message);
+DNAsync<RPCMessage>* RPC_SendMessageAsyncCache(std::string key, RPCMessage* message);
 
 // increment and return a new sequence ID
-int RPC_GenerateID();
+uint64_t RPC_GenerateID();
 
 // initialize authenticate service RPC components
 void Authenticate_Init();
@@ -37,6 +38,3 @@ void Messaging_Init();
 
 // run RPC frame
 void RPC_RunFrame();
-
-const BYTE DELIMITER = BYTE(255);
-const uint32_t MAXMESSAGESIZE = 32768;
