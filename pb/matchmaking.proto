@@ -43,15 +43,6 @@ message RPCDeleteSessionResponse {
     bool result = 1;
 }
 
-//Refresh
-message RPCRefreshSessionsRequest {
-    uint64 type = 1;
-}
-
-message RPCRefreshSessionsResponse {
-    bool result = 1;
-}
-
 //Fetch session ids
 message RPCSessionIdsRequest {
     uint64 type = 1;

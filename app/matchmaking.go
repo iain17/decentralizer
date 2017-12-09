@@ -39,7 +39,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 	sessions := d.getSessionStorage(sessionType)
 	pId, dId := PeerToDnId(d.i.Identity)
 	info := &pb.SessionInfo{
-		DId: dId,
+		DnId: dId,
 		PId: pId,
 		Type: sessionType,
 		Name: name,

@@ -22,11 +22,11 @@ func New(app *app.Decentralizer) *Serve {
 	i.registerHandler((*pb.RPCMessage_HealthRequest)(nil), i.handleHealthRequest)
 
 	//Sessions
-	i.registerHandler((*pb.RPCUpsertSessionRequest)(nil), i.handleUpsertSessionRequest)
-	i.registerHandler((*pb.RPCDeleteSessionRequest)(nil), i.handleDeleteSessionRequest)
-	i.registerHandler((*pb.RPCRefreshSessionsRequest)(nil), i.handleRefreshSessionsRequest)
-	i.registerHandler((*pb.RPCSessionIdsRequest)(nil), i.handleSessionIdsRequest)
-	i.registerHandler((*pb.RPCGetSessionRequest)(nil), i.handleGetSessionRequest)
+	i.registerHandler((*pb.RPCMessage_UpsertSessionRequest)(nil), i.handleUpsertSessionRequest)
+	i.registerHandler((*pb.RPCMessage_DeleteSessionRequest)(nil), i.handleDeleteSessionRequest)
+	i.registerHandler((*pb.RPCMessage_RefreshSessionsRequest)(nil), i.handleRefreshSessionsRequest)
+	i.registerHandler((*pb.RPCMessage_SessionIdsRequest)(nil), i.handleSessionIdsRequest)
+	i.registerHandler((*pb.RPCMessage_GetSessionRequest)(nil), i.handleGetSessionRequest)
 	return i
 }
 
