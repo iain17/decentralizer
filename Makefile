@@ -8,6 +8,5 @@ build:
 #https://github.com/jteeuwen/go-bindata
 generate:
 	protoc --go_out=. discovery/pb/protocol.proto
-	protoc --go_out=. app/pb/protocol.proto
-	protoc --go_out=. serve/pb/protocol.proto
+	protoc --go_out=. pb/*.proto
 	go-bindata -pkg static -o static/data.go static/

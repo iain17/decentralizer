@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"github.com/iain17/decentralizer/app/pb"
+	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/utils"
 	"errors"
 	"time"
@@ -37,7 +37,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	sessions := d.getSessionStorage(sessionType)
-	pId, dId := pb.PeerToDnId(d.i.Identity)
+	pId, dId := PeerToDnId(d.i.Identity)
 	info := &pb.SessionInfo{
 		DId: dId,
 		PId: pId,
@@ -119,12 +119,12 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 }
 
 func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
-	reqData, err := pb.Read(stream)
+	reqData, err := Read(stream)
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-	var request pb.SessionRequest
+	var request pb.DNSessionRequest
 	err = proto.Unmarshal(reqData, &request)
 	if err != nil {
 		logger.Error(err)
@@ -138,14 +138,14 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
 	}
 
 	//Response
-	response, err := proto.Marshal(&pb.SessionResponse{
+	response, err := proto.Marshal(&pb.DNSessionResponse{
 		Results: sessions,
 	})
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-	err = pb.Write(stream, response)
+	err = Write(stream, response)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -158,23 +158,23 @@ func (d *Decentralizer) getSessions(peer peer.ID, sessionType uint64) ([]*pb.Ses
 		return nil, err
 	}
 	//Request
-	reqData, err := proto.Marshal(&pb.SessionRequest{
+	reqData, err := proto.Marshal(&pb.DNSessionRequest{
 		Type: sessionType,
 	})
 	if err != nil {
 		return nil, err
 	}
-	err = pb.Write(stream, reqData)
+	err = Write(stream, reqData)
 	if err != nil {
 		return nil, err
 	}
 
 	//Response
-	resData, err := pb.Read(stream)
+	resData, err := Read(stream)
 	if err != nil {
 		return nil, err
 	}
-	var response pb.SessionResponse
+	var response pb.DNSessionResponse
 	err = proto.Unmarshal(resData, &response)
 	if err != nil {
 		return nil, err

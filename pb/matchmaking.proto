@@ -1,0 +1,50 @@
+syntax = "proto3";
+package pb;
+option optimize_for = LITE_RUNTIME;
+
+message SessionInfo {
+    uint64 dId = 1;//DecentralizerId
+    string pId = 2;//peerId
+
+    uint64 sessionId = 3;
+    uint64 type = 4;
+    string name = 5;
+    uint64 address = 6;
+    uint32 port = 7;
+    map<string, string> details = 8;
+}
+
+//DN messages
+message DNSessionResponse {
+    repeated SessionInfo results = 1;
+}
+
+message DNSessionRequest {
+    uint64 type = 1;
+}
+
+//RPC messages
+message RPCUpsertSessionRequest {
+    SessionInfo info = 1;
+}
+
+message RPCUpsertSessionResponse {
+    bool result = 1;
+    uint64 sessionId = 2;
+}
+
+message RPCGetSessionsRequest {
+    map<string, string> details = 1;
+}
+
+message RPCGetSessionsResponse {
+    repeated SessionInfo sessions = 1;
+}
+
+message RPCDeleteSessionRequest {
+    uint64 sessionId = 1;
+}
+
+message RPCDeleteSessionResponse {
+    bool result = 1;
+}

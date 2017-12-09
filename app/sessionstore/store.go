@@ -2,7 +2,7 @@ package sessionstore
 
 import (
 	"github.com/hashicorp/go-memdb"
-	"github.com/iain17/decentralizer/app/pb"
+	"github.com/iain17/decentralizer/pb"
 	"strconv"
 	"github.com/ChrisLundquist/golang-lru"
 	"time"

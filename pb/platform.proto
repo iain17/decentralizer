@@ -1,0 +1,35 @@
+syntax = "proto3";
+package pb;
+option optimize_for = LITE_RUNTIME;
+import "pb/matchmaking.proto";
+
+message RPCHealthRequest {}
+
+message RPCHealthReply {
+	bool ready = 1;
+	string message = 2;
+}
+
+message RPCMessage {
+    int64 version = 1;
+	int64 id = 2;
+	oneof msg {
+		//Platform
+		RPCHealthRequest healthRequest = 3;
+		RPCHealthReply HealthReply = 4;
+
+		//Matchmaking
+		RPCUpsertSessionRequest UpsertSessionRequest = 5;
+		RPCUpsertSessionResponse UpsertSessionResponse = 6;
+
+		RPCGetSessionsRequest GetSessionsRequest = 7;
+		RPCGetSessionsResponse GetSessionsResponse = 8;
+
+		RPCDeleteSessionRequest DeleteSessionRequest = 9;
+		RPCDeleteSessionResponse DeleteSessionResponse = 10;
+
+		//Storage
+
+		//Friends
+	}
+}

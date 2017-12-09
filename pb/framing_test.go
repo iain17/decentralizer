@@ -25,7 +25,7 @@ func TestWrite(t *testing.T) {
 	err := Write(w, &RPCMessage{
 		Id: 1338,
 		Msg: &RPCMessage_HealthReply{
-			HealthReply: &HealthReply{
+			HealthReply: &RPCHealthReply{
 				Ready: true,
 				Message: "very nice...",
 			},

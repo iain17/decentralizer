@@ -6,7 +6,6 @@ import (
 	"github.com/ipfs/go-ipfs/core"
 	"time"
 	"github.com/iain17/decentralizer/app/ipfs"
-	"github.com/iain17/decentralizer/app/pb"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
 	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
@@ -66,7 +65,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
 	instance.initMatchmaking()
-	_, dnID := pb.PeerToDnId(i.Identity)
+	_, dnID := PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
 	go instance.i.Bootstrap(core.BootstrapConfig{
 		MinPeerThreshold:  4,

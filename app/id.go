@@ -1,4 +1,4 @@
-package pb
+package app
 
 import (
 	"hash/fnv"

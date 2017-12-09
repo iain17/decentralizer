@@ -4,7 +4,7 @@ import (
 	"net"
 	"github.com/iain17/logger"
 	"fmt"
-	"github.com/iain17/decentralizer/serve/pb"
+	"github.com/iain17/decentralizer/pb"
 	"reflect"
 	"io"
 )
@@ -86,7 +86,7 @@ func demo1(conn net.Conn) {
 	pb.Write(conn, &pb.RPCMessage{
 		Id: 1337,
 		Msg: &pb.RPCMessage_HealthReply{
-			HealthReply: &pb.HealthReply{
+			HealthReply: &pb.RPCHealthReply{
 				Ready: true,
 				Message: "very nice...",
 			},
@@ -99,7 +99,7 @@ func demo2(conn net.Conn) {
 	pb.Write(conn, &pb.RPCMessage{
 		Id: 1338,
 		Msg: &pb.RPCMessage_HealthReply{
-			HealthReply: &pb.HealthReply{
+			HealthReply: &pb.RPCHealthReply{
 				Ready: true,
 				Message: "very nice...",
 			},

@@ -2,7 +2,7 @@ package serve
 
 import (
 	"github.com/iain17/decentralizer/app"
-	"github.com/iain17/decentralizer/serve/pb"
+	"github.com/iain17/decentralizer/pb"
 	"reflect"
 )
 
