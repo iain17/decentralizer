@@ -3,7 +3,7 @@
 static void GetHealthCB(DNAsync<RPCMessage>* async) {
 	NPAsyncImpl<DNHealthResult>* asyncResult = (NPAsyncImpl<DNHealthResult>*)async->GetUserData();
 	RPCMessage* message = async->GetResult();
-	const HealthReply& reply = message->healthreply();
+	const RPCHealthReply& reply = message->healthreply();
 
 	DNHealthResult* result = new DNHealthResult();
 	result->message = reply.message();
@@ -13,7 +13,7 @@ static void GetHealthCB(DNAsync<RPCMessage>* async) {
 
 LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
 	//build request.
-	HealthRequest* request = new HealthRequest();
+	RPCHealthRequest* request = new RPCHealthRequest();
 	pb::RPCMessage* msg = new pb::RPCMessage();
 	msg->set_allocated_healthrequest(request);
 
@@ -24,9 +24,6 @@ LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
 	NPAsyncImpl<DNHealthResult>* result = new NPAsyncImpl<DNHealthResult>();
 	async->SetCallback(GetHealthCB, result);
 	async->Wait();
-
-	//clear up
-	//request->Clear();
 
 	return result->GetResult();
 }

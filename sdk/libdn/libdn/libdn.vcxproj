@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>LIBCONNECT_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\pb\C++</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\include\pb\</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCONNECT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\pb\C++</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\include\pb\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -170,6 +170,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DNAsync.h" />
+    <ClInclude Include="DNMatchmaking.h" />
     <ClInclude Include="DNPlatform.h" />
     <ClInclude Include="RPCAsync.h" />
     <ClInclude Include="DNAsyncImpl.h" />
@@ -182,9 +183,11 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dependencies\pb\C++\protocol.pb.cc" />
+    <ClCompile Include="..\dependencies\include\pb\matchmaking.pb.cc" />
+    <ClCompile Include="..\dependencies\include\pb\platform.pb.cc" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="Async.cpp" />
+    <ClCompile Include="Matchmaking.cpp" />
     <ClCompile Include="RPC.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Utils.cpp" />

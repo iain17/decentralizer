@@ -25,6 +25,7 @@ private:
 	void(__cdecl* _timeoutCallback)(DNAsync<T>*);
 	unsigned int _timeout;
 	DWORD _start;
+	bool _completed;
 
 public:
 	NPAsyncImpl()
@@ -34,6 +35,7 @@ public:
 		_userData = NULL;
 		_freeResult = true;
 		_isReferencedByCB = false;
+		_completed = false;
 	}
 
 	// implementations for base DNAsync
@@ -64,8 +66,11 @@ public:
 		return GetResult();
 	}
 
-	virtual bool HasCompleted()
-	{
+	virtual bool HasCompleted() {
+		return _completed;
+	}
+
+	virtual bool HasResult() {
 		return (_result != NULL);
 	}
 
@@ -112,6 +117,7 @@ public:
 	void SetResult(T* result)
 	{
 		_result = result;
+		_completed = true;
 
 		if (_callback != NULL)
 		{
@@ -149,15 +155,19 @@ public:
 
 	bool RunCallback()
 	{
-		if (HasCompleted())
+		if (HasResult())
 		{
 			if (_callback)
 			{
 				_callback(this);
+			} else {
+				Log_Print("Not running callback. No callback set?\n");
 			}
 
 			_isReferencedByCB = false;
 			return true;
+		} else {
+			Log_Print("Not running callback. No result set?\n");
 		}
 
 		return false;

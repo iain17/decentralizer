@@ -1,10 +1,9 @@
 #pragma once
 
 #include "DNTypeDefs.h"
-
 #include "DNAsync.h"
-
 #include "DNPlatform.h"
+#include "DNMatchMaking.h"
 
 // ----------------------------------------------------------
 // Initialization/shutdown functions
@@ -37,50 +36,25 @@ LIBDN_API void LIBDN_CALL DN_WaitUntilReady();
 // Fetch the health of the DN server.
 LIBDN_API DNHealthResult* LIBDN_CALL DN_Health();
 
+/// ---------------------------------------------------------
+// Matchmaking service
+// ----------------------------------------------------------
+// creates/updates a session
+LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionInfo* data);
+
+// deletes a session
+LIBDN_API DNAsync<bool>* LIBDN_CALL DN_DeleteSession(DNSID sessionId);
+
+// refreshes the session list
+LIBDN_API DNAsync<bool>* LIBDN_CALL DN_RefreshSessions(uint32_t type);
+
+// gets the number of sessions
+LIBDN_API DNAsync<DNSID[]>* LIBDN_CALL DN_GetNumSessions(uint32_t type, std::map<std::string, std::string> details);
+
+// gets a single session's info
+LIBDN_API void LIBDN_CALL DN_GetSessionData(DNSID sessionId, DNSessionInfo* out);
+
 /*
-// ----------------------------------------------------------
-// Authentication service
-// ----------------------------------------------------------
-
-// authenticates using an external auth token
-LIBDN_API DNAsync<NPAuthenticateResult>* LIBDN_CALL DN_AuthenticateWithToken(const char* authToken);
-
-// authenticates using a username/password
-LIBDN_API DNAsync<NPAuthenticateResult>* LIBDN_CALL DN_AuthenticateWithDetails(const char* username, const char* password);
-
-// authenticates using a license key
-LIBDN_API DNAsync<NPAuthenticateResult>* LIBDN_CALL DN_AuthenticateWithLicenseKey(const char* licenseKey);
-
-// Returns the license key the client is using
-LIBDN_API char* LIBDN_CALL DN_ReturnLicenseKey();
-
-// registers a game server license key
-LIBDN_API DNAsync<NPRegisterServerResult>* LIBDN_CALL DN_RegisterServer(const char* configPath);
-
-// validates a user ticket
-LIBDN_API DNAsync<NPValidateUserTicketResult>* LIBDN_CALL DN_ValidateUserTicket(const void* ticket, size_t ticketSize, uint32_t clientIP, NPID clientID, const char* name);
-
-// obtains a user ticket for server authentication
-LIBDN_API bool LIBDN_CALL DN_GetUserTicket(void* buffer, size_t bufferSize, NPID targetServer);
-
-// gets the NPID for the current client. returns false (and does not change the output buffer) if not yet authenticated
-LIBDN_API bool LIBDN_CALL DN_GetNPID(NPID* pID);
-
-// gets the user group for the current client, returns 0 if not authenticated
-LIBDN_API int LIBDN_CALL DN_GetUserGroup();
-
-// function to register a callback to kick a client by NPID
-LIBDN_API void LIBDN_CALL DN_RegisterKickCallback(void(__cdecl * callback)(NPID, const char*));
-
-// function to register a callback to kick a client by NPID
-LIBDN_API void LIBDN_CALL DN_RegisterRemoteConsoleCallback(void(__cdecl * callback)(const char*));
-
-// function to register a callback when external authentication status changes
-LIBDN_API void LIBDN_CALL DN_RegisterEACallback(void(__cdecl * callback)(EExternalAuthState));
-
-// loads the game DLL for the specified version number
-LIBDN_API void* LIBDN_CALL DN_LoadGameModule(int version);
-
 // ----------------------------------------------------------
 // Storage service
 // ----------------------------------------------------------
@@ -156,28 +130,6 @@ LIBDN_API DNAsync<NPGetExtProfileDataResult>* LIBDN_CALL DN_GetExtProfileData(ui
 // gets an avatar for any client
 LIBDN_API DNAsync<NPGetUserAvatarResult>* LIBDN_CALL DN_GetUserAvatar(int id, uint8_t* buffer, size_t bufferLength);
 
-/// ---------------------------------------------------------
-// Server list service
-// ----------------------------------------------------------
-
-// creates a remote session
-LIBDN_API DNAsync<NPCreateSessionResult>* LIBDN_CALL DN_CreateSession(NPSessionInfo* data);
-
-// updates a session
-LIBDN_API DNAsync<EServersResult>* LIBDN_CALL DN_UpdateSession(NPSID sid, NPSessionInfo* data);
-
-// deletes a session
-LIBDN_API DNAsync<EServersResult>* LIBDN_CALL DN_DeleteSession(NPSID sid);
-
-// refreshes the session list - tags are separated by single spaces
-LIBDN_API DNAsync<bool>* LIBDN_CALL DN_RefreshSessions(NPDictionary& infos);
-
-// gets the number of sessions
-LIBDN_API int32_t LIBDN_CALL DN_GetNumSessions();
-
-// gets a single session's info
-LIBDN_API void LIBDN_CALL DN_GetSessionData(int32_t index, NPSessionInfo* out);
-
 // ----------------------------------------------------------
 // Messaging service
 // ----------------------------------------------------------
@@ -188,18 +140,4 @@ LIBDN_API void LIBDN_CALL DN_SendMessage(NPID npid, const uint8_t* data, uint32_
 // function to register a callback when a message is received
 // arguments: source NPID, data, length
 LIBDN_API void LIBDN_CALL DN_RegisterMessageCallback(void(__cdecl * callback)(NPID, const uint8_t*, uint32_t));
-
-// ----------------------------------------------------------
-// Offline service
-// ----------------------------------------------------------
-
-// Enables offline mode
-LIBDN_API void LIBDN_CALL DN_GoOffline();
-
-// ----------------------------------------------------------
-// API service. For for example C#
-// ----------------------------------------------------------
-
-// Enables offline mode
-LIBDN_API NPAuthenticateResult* LIBDN_CALL Proxy_DN_AuthenticateWithDetails(const char * username, const char* password);
 */
