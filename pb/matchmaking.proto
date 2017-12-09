@@ -3,7 +3,7 @@ package pb;
 option optimize_for = LITE_RUNTIME;
 
 message SessionInfo {
-    uint64 dId = 1;//DecentralizerId
+    uint64 dnId = 1;//DecentralizerId
     string pId = 2;//peerId
 
     uint64 sessionId = 3;
@@ -24,6 +24,7 @@ message DNSessionRequest {
 }
 
 //RPC messages
+//Create/update
 message RPCUpsertSessionRequest {
     SessionInfo info = 1;
 }
@@ -33,18 +34,40 @@ message RPCUpsertSessionResponse {
     uint64 sessionId = 2;
 }
 
-message RPCGetSessionsRequest {
-    map<string, string> details = 1;
-}
-
-message RPCGetSessionsResponse {
-    repeated SessionInfo sessions = 1;
-}
-
+//Delete
 message RPCDeleteSessionRequest {
     uint64 sessionId = 1;
 }
 
 message RPCDeleteSessionResponse {
     bool result = 1;
+}
+
+//Refresh
+message RPCRefreshSessionsRequest {
+    uint64 type = 1;
+}
+
+message RPCRefreshSessionsResponse {
+    bool result = 1;
+}
+
+//Fetch session ids
+message RPCSessionIdsRequest {
+    uint64 type = 1;
+    map<string, string> details = 2;//search parameters
+}
+
+message RPCSessionIdsResponse {
+    repeated uint64 sessionId = 1;//Available sessions
+}
+
+//Fetch an individual session
+message RPCGetSessionRequest {
+    repeated uint64 sessionId = 1;
+}
+
+message RPCGetSessionResponse {
+    bool found = 1;
+    SessionInfo result = 2;
 }

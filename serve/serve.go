@@ -18,7 +18,15 @@ func New(app *app.Decentralizer) *Serve {
 		app: app,
 		handlers: make(map[reflect.Type]Handler),
 	}
+	//Platform
 	i.registerHandler((*pb.RPCMessage_HealthRequest)(nil), i.handleHealthRequest)
+
+	//Sessions
+	i.registerHandler((*pb.RPCUpsertSessionRequest)(nil), i.handleUpsertSessionRequest)
+	i.registerHandler((*pb.RPCDeleteSessionRequest)(nil), i.handleDeleteSessionRequest)
+	i.registerHandler((*pb.RPCRefreshSessionsRequest)(nil), i.handleRefreshSessionsRequest)
+	i.registerHandler((*pb.RPCSessionIdsRequest)(nil), i.handleSessionIdsRequest)
+	i.registerHandler((*pb.RPCGetSessionRequest)(nil), i.handleGetSessionRequest)
 	return i
 }
 

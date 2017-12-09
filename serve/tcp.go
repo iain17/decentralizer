@@ -39,8 +39,6 @@ func (s *Serve) handleConnection(conn net.Conn) {
 
 		conn.Close()
 	}()
-	//go demo1(conn)
-	//go demo2(conn)
 
 	for {
 		packets := make(chan *pb.RPCMessage)
@@ -80,30 +78,4 @@ func (s *Serve) handlePackets(conn net.Conn, packets chan *pb.RPCMessage) {
 			logger.Infof("No handler found for type %v", packet.GetMsg())
 		}
 	}
-}
-
-func demo1(conn net.Conn) {
-	pb.Write(conn, &pb.RPCMessage{
-		Id: 1337,
-		Msg: &pb.RPCMessage_HealthReply{
-			HealthReply: &pb.RPCHealthReply{
-				Ready: true,
-				Message: "very nice...",
-			},
-		},
-	})
-	logger.Error("Sent a demo 1 message: ")
-}
-
-func demo2(conn net.Conn) {
-	pb.Write(conn, &pb.RPCMessage{
-		Id: 1338,
-		Msg: &pb.RPCMessage_HealthReply{
-			HealthReply: &pb.RPCHealthReply{
-				Ready: true,
-				Message: "very nice...",
-			},
-		},
-	})
-	logger.Error("Sent a demo 2 message: ")
 }

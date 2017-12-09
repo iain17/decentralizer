@@ -303,10 +303,14 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
     kHealthReply = 4,
     kUpsertSessionRequest = 5,
     kUpsertSessionResponse = 6,
-    kGetSessionsRequest = 7,
-    kGetSessionsResponse = 8,
-    kDeleteSessionRequest = 9,
-    kDeleteSessionResponse = 10,
+    kDeleteSessionRequest = 7,
+    kDeleteSessionResponse = 8,
+    kRefreshSessionsRequest = 9,
+    kRefreshSessionsResponse = 10,
+    kSessionIdsRequest = 11,
+    kSessionIdsResponse = 12,
+    kGetSessionRequest = 13,
+    kGetSessionResponse = 14,
     MSG_NOT_SET = 0,
   };
 
@@ -410,41 +414,77 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
   ::pb::RPCUpsertSessionResponse* mutable_upsertsessionresponse();
   void set_allocated_upsertsessionresponse(::pb::RPCUpsertSessionResponse* upsertsessionresponse);
 
-  // .pb.RPCGetSessionsRequest GetSessionsRequest = 7;
-  bool has_getsessionsrequest() const;
-  void clear_getsessionsrequest();
-  static const int kGetSessionsRequestFieldNumber = 7;
-  const ::pb::RPCGetSessionsRequest& getsessionsrequest() const;
-  ::pb::RPCGetSessionsRequest* release_getsessionsrequest();
-  ::pb::RPCGetSessionsRequest* mutable_getsessionsrequest();
-  void set_allocated_getsessionsrequest(::pb::RPCGetSessionsRequest* getsessionsrequest);
-
-  // .pb.RPCGetSessionsResponse GetSessionsResponse = 8;
-  bool has_getsessionsresponse() const;
-  void clear_getsessionsresponse();
-  static const int kGetSessionsResponseFieldNumber = 8;
-  const ::pb::RPCGetSessionsResponse& getsessionsresponse() const;
-  ::pb::RPCGetSessionsResponse* release_getsessionsresponse();
-  ::pb::RPCGetSessionsResponse* mutable_getsessionsresponse();
-  void set_allocated_getsessionsresponse(::pb::RPCGetSessionsResponse* getsessionsresponse);
-
-  // .pb.RPCDeleteSessionRequest DeleteSessionRequest = 9;
+  // .pb.RPCDeleteSessionRequest DeleteSessionRequest = 7;
   bool has_deletesessionrequest() const;
   void clear_deletesessionrequest();
-  static const int kDeleteSessionRequestFieldNumber = 9;
+  static const int kDeleteSessionRequestFieldNumber = 7;
   const ::pb::RPCDeleteSessionRequest& deletesessionrequest() const;
   ::pb::RPCDeleteSessionRequest* release_deletesessionrequest();
   ::pb::RPCDeleteSessionRequest* mutable_deletesessionrequest();
   void set_allocated_deletesessionrequest(::pb::RPCDeleteSessionRequest* deletesessionrequest);
 
-  // .pb.RPCDeleteSessionResponse DeleteSessionResponse = 10;
+  // .pb.RPCDeleteSessionResponse DeleteSessionResponse = 8;
   bool has_deletesessionresponse() const;
   void clear_deletesessionresponse();
-  static const int kDeleteSessionResponseFieldNumber = 10;
+  static const int kDeleteSessionResponseFieldNumber = 8;
   const ::pb::RPCDeleteSessionResponse& deletesessionresponse() const;
   ::pb::RPCDeleteSessionResponse* release_deletesessionresponse();
   ::pb::RPCDeleteSessionResponse* mutable_deletesessionresponse();
   void set_allocated_deletesessionresponse(::pb::RPCDeleteSessionResponse* deletesessionresponse);
+
+  // .pb.RPCRefreshSessionsRequest RefreshSessionsRequest = 9;
+  bool has_refreshsessionsrequest() const;
+  void clear_refreshsessionsrequest();
+  static const int kRefreshSessionsRequestFieldNumber = 9;
+  const ::pb::RPCRefreshSessionsRequest& refreshsessionsrequest() const;
+  ::pb::RPCRefreshSessionsRequest* release_refreshsessionsrequest();
+  ::pb::RPCRefreshSessionsRequest* mutable_refreshsessionsrequest();
+  void set_allocated_refreshsessionsrequest(::pb::RPCRefreshSessionsRequest* refreshsessionsrequest);
+
+  // .pb.RPCRefreshSessionsResponse RefreshSessionsResponse = 10;
+  bool has_refreshsessionsresponse() const;
+  void clear_refreshsessionsresponse();
+  static const int kRefreshSessionsResponseFieldNumber = 10;
+  const ::pb::RPCRefreshSessionsResponse& refreshsessionsresponse() const;
+  ::pb::RPCRefreshSessionsResponse* release_refreshsessionsresponse();
+  ::pb::RPCRefreshSessionsResponse* mutable_refreshsessionsresponse();
+  void set_allocated_refreshsessionsresponse(::pb::RPCRefreshSessionsResponse* refreshsessionsresponse);
+
+  // .pb.RPCSessionIdsRequest SessionIdsRequest = 11;
+  bool has_sessionidsrequest() const;
+  void clear_sessionidsrequest();
+  static const int kSessionIdsRequestFieldNumber = 11;
+  const ::pb::RPCSessionIdsRequest& sessionidsrequest() const;
+  ::pb::RPCSessionIdsRequest* release_sessionidsrequest();
+  ::pb::RPCSessionIdsRequest* mutable_sessionidsrequest();
+  void set_allocated_sessionidsrequest(::pb::RPCSessionIdsRequest* sessionidsrequest);
+
+  // .pb.RPCSessionIdsResponse SessionIdsResponse = 12;
+  bool has_sessionidsresponse() const;
+  void clear_sessionidsresponse();
+  static const int kSessionIdsResponseFieldNumber = 12;
+  const ::pb::RPCSessionIdsResponse& sessionidsresponse() const;
+  ::pb::RPCSessionIdsResponse* release_sessionidsresponse();
+  ::pb::RPCSessionIdsResponse* mutable_sessionidsresponse();
+  void set_allocated_sessionidsresponse(::pb::RPCSessionIdsResponse* sessionidsresponse);
+
+  // .pb.RPCGetSessionRequest GetSessionRequest = 13;
+  bool has_getsessionrequest() const;
+  void clear_getsessionrequest();
+  static const int kGetSessionRequestFieldNumber = 13;
+  const ::pb::RPCGetSessionRequest& getsessionrequest() const;
+  ::pb::RPCGetSessionRequest* release_getsessionrequest();
+  ::pb::RPCGetSessionRequest* mutable_getsessionrequest();
+  void set_allocated_getsessionrequest(::pb::RPCGetSessionRequest* getsessionrequest);
+
+  // .pb.RPCGetSessionResponse GetSessionResponse = 14;
+  bool has_getsessionresponse() const;
+  void clear_getsessionresponse();
+  static const int kGetSessionResponseFieldNumber = 14;
+  const ::pb::RPCGetSessionResponse& getsessionresponse() const;
+  ::pb::RPCGetSessionResponse* release_getsessionresponse();
+  ::pb::RPCGetSessionResponse* mutable_getsessionresponse();
+  void set_allocated_getsessionresponse(::pb::RPCGetSessionResponse* getsessionresponse);
 
   MsgCase msg_case() const;
   // @@protoc_insertion_point(class_scope:pb.RPCMessage)
@@ -453,10 +493,14 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
   void set_has_healthreply();
   void set_has_upsertsessionrequest();
   void set_has_upsertsessionresponse();
-  void set_has_getsessionsrequest();
-  void set_has_getsessionsresponse();
   void set_has_deletesessionrequest();
   void set_has_deletesessionresponse();
+  void set_has_refreshsessionsrequest();
+  void set_has_refreshsessionsresponse();
+  void set_has_sessionidsrequest();
+  void set_has_sessionidsresponse();
+  void set_has_getsessionrequest();
+  void set_has_getsessionresponse();
 
   inline bool has_msg() const;
   void clear_msg();
@@ -471,10 +515,14 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
     ::pb::RPCHealthReply* healthreply_;
     ::pb::RPCUpsertSessionRequest* upsertsessionrequest_;
     ::pb::RPCUpsertSessionResponse* upsertsessionresponse_;
-    ::pb::RPCGetSessionsRequest* getsessionsrequest_;
-    ::pb::RPCGetSessionsResponse* getsessionsresponse_;
     ::pb::RPCDeleteSessionRequest* deletesessionrequest_;
     ::pb::RPCDeleteSessionResponse* deletesessionresponse_;
+    ::pb::RPCRefreshSessionsRequest* refreshsessionsrequest_;
+    ::pb::RPCRefreshSessionsResponse* refreshsessionsresponse_;
+    ::pb::RPCSessionIdsRequest* sessionidsrequest_;
+    ::pb::RPCSessionIdsResponse* sessionidsresponse_;
+    ::pb::RPCGetSessionRequest* getsessionrequest_;
+    ::pb::RPCGetSessionResponse* getsessionresponse_;
   } msg_;
   mutable int _cached_size_;
   ::google::protobuf::uint32 _oneof_case_[1];
@@ -744,75 +792,7 @@ inline ::pb::RPCUpsertSessionResponse* RPCMessage::mutable_upsertsessionresponse
   return msg_.upsertsessionresponse_;
 }
 
-// .pb.RPCGetSessionsRequest GetSessionsRequest = 7;
-inline bool RPCMessage::has_getsessionsrequest() const {
-  return msg_case() == kGetSessionsRequest;
-}
-inline void RPCMessage::set_has_getsessionsrequest() {
-  _oneof_case_[0] = kGetSessionsRequest;
-}
-inline ::pb::RPCGetSessionsRequest* RPCMessage::release_getsessionsrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.GetSessionsRequest)
-  if (has_getsessionsrequest()) {
-    clear_has_msg();
-      ::pb::RPCGetSessionsRequest* temp = msg_.getsessionsrequest_;
-    msg_.getsessionsrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCGetSessionsRequest& RPCMessage::getsessionsrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.GetSessionsRequest)
-  return has_getsessionsrequest()
-      ? *msg_.getsessionsrequest_
-      : *reinterpret_cast< ::pb::RPCGetSessionsRequest*>(&::pb::_RPCGetSessionsRequest_default_instance_);
-}
-inline ::pb::RPCGetSessionsRequest* RPCMessage::mutable_getsessionsrequest() {
-  if (!has_getsessionsrequest()) {
-    clear_msg();
-    set_has_getsessionsrequest();
-    msg_.getsessionsrequest_ = new ::pb::RPCGetSessionsRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.GetSessionsRequest)
-  return msg_.getsessionsrequest_;
-}
-
-// .pb.RPCGetSessionsResponse GetSessionsResponse = 8;
-inline bool RPCMessage::has_getsessionsresponse() const {
-  return msg_case() == kGetSessionsResponse;
-}
-inline void RPCMessage::set_has_getsessionsresponse() {
-  _oneof_case_[0] = kGetSessionsResponse;
-}
-inline ::pb::RPCGetSessionsResponse* RPCMessage::release_getsessionsresponse() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.GetSessionsResponse)
-  if (has_getsessionsresponse()) {
-    clear_has_msg();
-      ::pb::RPCGetSessionsResponse* temp = msg_.getsessionsresponse_;
-    msg_.getsessionsresponse_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCGetSessionsResponse& RPCMessage::getsessionsresponse() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.GetSessionsResponse)
-  return has_getsessionsresponse()
-      ? *msg_.getsessionsresponse_
-      : *reinterpret_cast< ::pb::RPCGetSessionsResponse*>(&::pb::_RPCGetSessionsResponse_default_instance_);
-}
-inline ::pb::RPCGetSessionsResponse* RPCMessage::mutable_getsessionsresponse() {
-  if (!has_getsessionsresponse()) {
-    clear_msg();
-    set_has_getsessionsresponse();
-    msg_.getsessionsresponse_ = new ::pb::RPCGetSessionsResponse;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.GetSessionsResponse)
-  return msg_.getsessionsresponse_;
-}
-
-// .pb.RPCDeleteSessionRequest DeleteSessionRequest = 9;
+// .pb.RPCDeleteSessionRequest DeleteSessionRequest = 7;
 inline bool RPCMessage::has_deletesessionrequest() const {
   return msg_case() == kDeleteSessionRequest;
 }
@@ -846,7 +826,7 @@ inline ::pb::RPCDeleteSessionRequest* RPCMessage::mutable_deletesessionrequest()
   return msg_.deletesessionrequest_;
 }
 
-// .pb.RPCDeleteSessionResponse DeleteSessionResponse = 10;
+// .pb.RPCDeleteSessionResponse DeleteSessionResponse = 8;
 inline bool RPCMessage::has_deletesessionresponse() const {
   return msg_case() == kDeleteSessionResponse;
 }
@@ -878,6 +858,210 @@ inline ::pb::RPCDeleteSessionResponse* RPCMessage::mutable_deletesessionresponse
   }
   // @@protoc_insertion_point(field_mutable:pb.RPCMessage.DeleteSessionResponse)
   return msg_.deletesessionresponse_;
+}
+
+// .pb.RPCRefreshSessionsRequest RefreshSessionsRequest = 9;
+inline bool RPCMessage::has_refreshsessionsrequest() const {
+  return msg_case() == kRefreshSessionsRequest;
+}
+inline void RPCMessage::set_has_refreshsessionsrequest() {
+  _oneof_case_[0] = kRefreshSessionsRequest;
+}
+inline ::pb::RPCRefreshSessionsRequest* RPCMessage::release_refreshsessionsrequest() {
+  // @@protoc_insertion_point(field_release:pb.RPCMessage.RefreshSessionsRequest)
+  if (has_refreshsessionsrequest()) {
+    clear_has_msg();
+      ::pb::RPCRefreshSessionsRequest* temp = msg_.refreshsessionsrequest_;
+    msg_.refreshsessionsrequest_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline const ::pb::RPCRefreshSessionsRequest& RPCMessage::refreshsessionsrequest() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.RefreshSessionsRequest)
+  return has_refreshsessionsrequest()
+      ? *msg_.refreshsessionsrequest_
+      : *reinterpret_cast< ::pb::RPCRefreshSessionsRequest*>(&::pb::_RPCRefreshSessionsRequest_default_instance_);
+}
+inline ::pb::RPCRefreshSessionsRequest* RPCMessage::mutable_refreshsessionsrequest() {
+  if (!has_refreshsessionsrequest()) {
+    clear_msg();
+    set_has_refreshsessionsrequest();
+    msg_.refreshsessionsrequest_ = new ::pb::RPCRefreshSessionsRequest;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.RefreshSessionsRequest)
+  return msg_.refreshsessionsrequest_;
+}
+
+// .pb.RPCRefreshSessionsResponse RefreshSessionsResponse = 10;
+inline bool RPCMessage::has_refreshsessionsresponse() const {
+  return msg_case() == kRefreshSessionsResponse;
+}
+inline void RPCMessage::set_has_refreshsessionsresponse() {
+  _oneof_case_[0] = kRefreshSessionsResponse;
+}
+inline ::pb::RPCRefreshSessionsResponse* RPCMessage::release_refreshsessionsresponse() {
+  // @@protoc_insertion_point(field_release:pb.RPCMessage.RefreshSessionsResponse)
+  if (has_refreshsessionsresponse()) {
+    clear_has_msg();
+      ::pb::RPCRefreshSessionsResponse* temp = msg_.refreshsessionsresponse_;
+    msg_.refreshsessionsresponse_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline const ::pb::RPCRefreshSessionsResponse& RPCMessage::refreshsessionsresponse() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.RefreshSessionsResponse)
+  return has_refreshsessionsresponse()
+      ? *msg_.refreshsessionsresponse_
+      : *reinterpret_cast< ::pb::RPCRefreshSessionsResponse*>(&::pb::_RPCRefreshSessionsResponse_default_instance_);
+}
+inline ::pb::RPCRefreshSessionsResponse* RPCMessage::mutable_refreshsessionsresponse() {
+  if (!has_refreshsessionsresponse()) {
+    clear_msg();
+    set_has_refreshsessionsresponse();
+    msg_.refreshsessionsresponse_ = new ::pb::RPCRefreshSessionsResponse;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.RefreshSessionsResponse)
+  return msg_.refreshsessionsresponse_;
+}
+
+// .pb.RPCSessionIdsRequest SessionIdsRequest = 11;
+inline bool RPCMessage::has_sessionidsrequest() const {
+  return msg_case() == kSessionIdsRequest;
+}
+inline void RPCMessage::set_has_sessionidsrequest() {
+  _oneof_case_[0] = kSessionIdsRequest;
+}
+inline ::pb::RPCSessionIdsRequest* RPCMessage::release_sessionidsrequest() {
+  // @@protoc_insertion_point(field_release:pb.RPCMessage.SessionIdsRequest)
+  if (has_sessionidsrequest()) {
+    clear_has_msg();
+      ::pb::RPCSessionIdsRequest* temp = msg_.sessionidsrequest_;
+    msg_.sessionidsrequest_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline const ::pb::RPCSessionIdsRequest& RPCMessage::sessionidsrequest() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.SessionIdsRequest)
+  return has_sessionidsrequest()
+      ? *msg_.sessionidsrequest_
+      : *reinterpret_cast< ::pb::RPCSessionIdsRequest*>(&::pb::_RPCSessionIdsRequest_default_instance_);
+}
+inline ::pb::RPCSessionIdsRequest* RPCMessage::mutable_sessionidsrequest() {
+  if (!has_sessionidsrequest()) {
+    clear_msg();
+    set_has_sessionidsrequest();
+    msg_.sessionidsrequest_ = new ::pb::RPCSessionIdsRequest;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.SessionIdsRequest)
+  return msg_.sessionidsrequest_;
+}
+
+// .pb.RPCSessionIdsResponse SessionIdsResponse = 12;
+inline bool RPCMessage::has_sessionidsresponse() const {
+  return msg_case() == kSessionIdsResponse;
+}
+inline void RPCMessage::set_has_sessionidsresponse() {
+  _oneof_case_[0] = kSessionIdsResponse;
+}
+inline ::pb::RPCSessionIdsResponse* RPCMessage::release_sessionidsresponse() {
+  // @@protoc_insertion_point(field_release:pb.RPCMessage.SessionIdsResponse)
+  if (has_sessionidsresponse()) {
+    clear_has_msg();
+      ::pb::RPCSessionIdsResponse* temp = msg_.sessionidsresponse_;
+    msg_.sessionidsresponse_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline const ::pb::RPCSessionIdsResponse& RPCMessage::sessionidsresponse() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.SessionIdsResponse)
+  return has_sessionidsresponse()
+      ? *msg_.sessionidsresponse_
+      : *reinterpret_cast< ::pb::RPCSessionIdsResponse*>(&::pb::_RPCSessionIdsResponse_default_instance_);
+}
+inline ::pb::RPCSessionIdsResponse* RPCMessage::mutable_sessionidsresponse() {
+  if (!has_sessionidsresponse()) {
+    clear_msg();
+    set_has_sessionidsresponse();
+    msg_.sessionidsresponse_ = new ::pb::RPCSessionIdsResponse;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.SessionIdsResponse)
+  return msg_.sessionidsresponse_;
+}
+
+// .pb.RPCGetSessionRequest GetSessionRequest = 13;
+inline bool RPCMessage::has_getsessionrequest() const {
+  return msg_case() == kGetSessionRequest;
+}
+inline void RPCMessage::set_has_getsessionrequest() {
+  _oneof_case_[0] = kGetSessionRequest;
+}
+inline ::pb::RPCGetSessionRequest* RPCMessage::release_getsessionrequest() {
+  // @@protoc_insertion_point(field_release:pb.RPCMessage.GetSessionRequest)
+  if (has_getsessionrequest()) {
+    clear_has_msg();
+      ::pb::RPCGetSessionRequest* temp = msg_.getsessionrequest_;
+    msg_.getsessionrequest_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline const ::pb::RPCGetSessionRequest& RPCMessage::getsessionrequest() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.GetSessionRequest)
+  return has_getsessionrequest()
+      ? *msg_.getsessionrequest_
+      : *reinterpret_cast< ::pb::RPCGetSessionRequest*>(&::pb::_RPCGetSessionRequest_default_instance_);
+}
+inline ::pb::RPCGetSessionRequest* RPCMessage::mutable_getsessionrequest() {
+  if (!has_getsessionrequest()) {
+    clear_msg();
+    set_has_getsessionrequest();
+    msg_.getsessionrequest_ = new ::pb::RPCGetSessionRequest;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.GetSessionRequest)
+  return msg_.getsessionrequest_;
+}
+
+// .pb.RPCGetSessionResponse GetSessionResponse = 14;
+inline bool RPCMessage::has_getsessionresponse() const {
+  return msg_case() == kGetSessionResponse;
+}
+inline void RPCMessage::set_has_getsessionresponse() {
+  _oneof_case_[0] = kGetSessionResponse;
+}
+inline ::pb::RPCGetSessionResponse* RPCMessage::release_getsessionresponse() {
+  // @@protoc_insertion_point(field_release:pb.RPCMessage.GetSessionResponse)
+  if (has_getsessionresponse()) {
+    clear_has_msg();
+      ::pb::RPCGetSessionResponse* temp = msg_.getsessionresponse_;
+    msg_.getsessionresponse_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline const ::pb::RPCGetSessionResponse& RPCMessage::getsessionresponse() const {
+  // @@protoc_insertion_point(field_get:pb.RPCMessage.GetSessionResponse)
+  return has_getsessionresponse()
+      ? *msg_.getsessionresponse_
+      : *reinterpret_cast< ::pb::RPCGetSessionResponse*>(&::pb::_RPCGetSessionResponse_default_instance_);
+}
+inline ::pb::RPCGetSessionResponse* RPCMessage::mutable_getsessionresponse() {
+  if (!has_getsessionresponse()) {
+    clear_msg();
+    set_has_getsessionresponse();
+    msg_.getsessionresponse_ = new ::pb::RPCGetSessionResponse;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.GetSessionResponse)
+  return msg_.getsessionresponse_;
 }
 
 inline bool RPCMessage::has_msg() const {

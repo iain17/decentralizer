@@ -22,11 +22,17 @@ message RPCMessage {
 		RPCUpsertSessionRequest UpsertSessionRequest = 5;
 		RPCUpsertSessionResponse UpsertSessionResponse = 6;
 
-		RPCGetSessionsRequest GetSessionsRequest = 7;
-		RPCGetSessionsResponse GetSessionsResponse = 8;
+		RPCDeleteSessionRequest DeleteSessionRequest = 7;
+		RPCDeleteSessionResponse DeleteSessionResponse = 8;
 
-		RPCDeleteSessionRequest DeleteSessionRequest = 9;
-		RPCDeleteSessionResponse DeleteSessionResponse = 10;
+		RPCRefreshSessionsRequest RefreshSessionsRequest = 9;
+		RPCRefreshSessionsResponse RefreshSessionsResponse = 10;
+
+		RPCSessionIdsRequest SessionIdsRequest = 11;
+		RPCSessionIdsResponse SessionIdsResponse = 12;
+
+		RPCGetSessionRequest GetSessionRequest = 13;
+		RPCGetSessionResponse GetSessionResponse = 14;
 
 		//Storage
 
