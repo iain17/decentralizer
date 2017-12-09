@@ -7,7 +7,6 @@ import (
 	"errors"
 	"time"
 	"github.com/iain17/decentralizer/app/sessionstore"
-	"github.com/giantswarm/retry-go"
 	inet "gx/ipfs/QmahYsGWry85Y7WUe2SX5G4JkH2zifEQAUtJVLZ24aC9DF/go-libp2p-net"
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"sync"
@@ -71,11 +70,10 @@ func (d *Decentralizer) DeleteSession(sessionId uint64) error {
 }
 
 func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, error) {
-	retry.Do(func() error {
-		d.refreshSessions(sessionType)
-		return nil
-	}, retry.Timeout(10 * time.Second))
 	sessions := d.getSessionStorage(sessionType)
+	timeout.Do(func(ctx context.Context) {
+		d.refreshSessions(sessionType)
+	}, 10 * time.Second)
 	return sessions.FindAll()
 }
 

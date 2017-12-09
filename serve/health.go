@@ -8,6 +8,7 @@ import (
 func (s *Serve) handleHealthRequest(msg *pb.RPCMessage) (*pb.RPCMessage, error) {
 	logger.Info("handleHealthRequest")
 	ready, err := s.app.Health()
+	logger.Info("handleHealthRequest done")
 	return &pb.RPCMessage{
 		Msg: &pb.RPCMessage_HealthReply{
 			HealthReply: &pb.HealthReply{

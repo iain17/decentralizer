@@ -5,6 +5,7 @@ import (
 	"github.com/iain17/decentralizer/network"
 	"time"
 	"net"
+	"github.com/iain17/timeout"
 )
 
 type Discovery struct {
@@ -36,15 +37,12 @@ func (d *Discovery) Stop() {
 	d.cancel()
 }
 
-func (d *Discovery) WaitForPeers(num int, timeout float64) []*RemoteNode {
-	started := time.Now()
-	for d.LocalNode.netTableService.peers.Len() < num {
-		//we have timed out and have at least one peer
-		if time.Since(started).Seconds() >= timeout && d.LocalNode.netTableService.peers.Len() >= 1 {
-			break
+func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {
+	timeout.Do(func(ctx context.Context) {
+		for d.LocalNode.netTableService.peers.Len() < num {
+			time.Sleep(100 * time.Millisecond)
 		}
-		time.Sleep(1 * time.Second)
-	}
+	}, expire)
 	return d.LocalNode.netTableService.GetPeers()
 }
 

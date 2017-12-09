@@ -39,11 +39,13 @@ func (s *Serve) handleConnection(conn net.Conn) {
 
 		conn.Close()
 	}()
-	go demo1(conn)
-	go demo2(conn)
+	//go demo1(conn)
+	//go demo2(conn)
 
 	for {
-		packet, err := pb.Decode(conn)
+		packets := make(chan *pb.RPCMessage)
+		go s.handlePackets(conn, packets)
+		err := pb.Decode(conn, packets)
 		if err != nil {
 			if err == io.EOF {
 				break
@@ -51,6 +53,11 @@ func (s *Serve) handleConnection(conn net.Conn) {
 			logger.Warning(err)
 			continue
 		}
+	}
+}
+
+func (s *Serve) handlePackets(conn net.Conn, packets chan *pb.RPCMessage) {
+	for packet := range packets {
 		logger.Infof("Received a packet with id %d and type %v", packet.Id, packet.GetMsg())
 
 		handler := s.handlers[reflect.TypeOf(packet.GetMsg())]

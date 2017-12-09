@@ -27,7 +27,7 @@ func (d *Decentralizer) bootstrap() []pstore.PeerInfo {
 	logger.Info("Bootstrapping")
 	d.setInfo()
 	var peers []pstore.PeerInfo
-	for _, peer := range d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 300) {
+	for _, peer := range d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 5 * time.Minute) {
 		peerInfo, err := getInfo(peer)
 		if err != nil {
 			logger.Warning(err)
