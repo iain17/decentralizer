@@ -1234,24 +1234,17 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // repeated uint64 sessionId = 1;
-  int sessionid_size() const;
+  // uint64 sessionId = 1;
   void clear_sessionid();
   static const int kSessionIdFieldNumber = 1;
-  ::google::protobuf::uint64 sessionid(int index) const;
-  void set_sessionid(int index, ::google::protobuf::uint64 value);
-  void add_sessionid(::google::protobuf::uint64 value);
-  const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-      sessionid() const;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-      mutable_sessionid();
+  ::google::protobuf::uint64 sessionid() const;
+  void set_sessionid(::google::protobuf::uint64 value);
 
   // @@protoc_insertion_point(class_scope:pb.RPCGetSessionRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint64 > sessionid_;
-  mutable int _sessionid_cached_byte_size_;
+  ::google::protobuf::uint64 sessionid_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
   friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionRequestImpl();
@@ -1820,34 +1813,18 @@ RPCSessionIdsResponse::mutable_sessionid() {
 
 // RPCGetSessionRequest
 
-// repeated uint64 sessionId = 1;
-inline int RPCGetSessionRequest::sessionid_size() const {
-  return sessionid_.size();
-}
+// uint64 sessionId = 1;
 inline void RPCGetSessionRequest::clear_sessionid() {
-  sessionid_.Clear();
+  sessionid_ = GOOGLE_ULONGLONG(0);
 }
-inline ::google::protobuf::uint64 RPCGetSessionRequest::sessionid(int index) const {
+inline ::google::protobuf::uint64 RPCGetSessionRequest::sessionid() const {
   // @@protoc_insertion_point(field_get:pb.RPCGetSessionRequest.sessionId)
-  return sessionid_.Get(index);
-}
-inline void RPCGetSessionRequest::set_sessionid(int index, ::google::protobuf::uint64 value) {
-  sessionid_.Set(index, value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetSessionRequest.sessionId)
-}
-inline void RPCGetSessionRequest::add_sessionid(::google::protobuf::uint64 value) {
-  sessionid_.Add(value);
-  // @@protoc_insertion_point(field_add:pb.RPCGetSessionRequest.sessionId)
-}
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-RPCGetSessionRequest::sessionid() const {
-  // @@protoc_insertion_point(field_list:pb.RPCGetSessionRequest.sessionId)
   return sessionid_;
 }
-inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-RPCGetSessionRequest::mutable_sessionid() {
-  // @@protoc_insertion_point(field_mutable_list:pb.RPCGetSessionRequest.sessionId)
-  return &sessionid_;
+inline void RPCGetSessionRequest::set_sessionid(::google::protobuf::uint64 value) {
+  
+  sessionid_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCGetSessionRequest.sessionId)
 }
 
 // -------------------------------------------------------------------
