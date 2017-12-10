@@ -9,7 +9,7 @@ message SessionInfo {
     uint64 sessionId = 3;
     uint64 type = 4;
     string name = 5;
-    uint64 address = 6;
+    uint32 address = 6;
     uint32 port = 7;
     map<string, string> details = 8;
 }

@@ -3,9 +3,9 @@ package sessionstore
 import (
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
-	"strconv"
 	"github.com/ChrisLundquist/golang-lru"
 	"time"
+	"errors"
 )
 
 type Store struct {
@@ -68,7 +68,7 @@ func (s *Store) Insert(info *pb.SessionInfo) (uint64, error) {
 func (s *Store) Remove(sessionId uint64) error {
 	txn := s.db.Txn(true)
 	defer txn.Commit()
-	_, err := txn.DeleteAll(TABLE, "SessionId", strconv.FormatInt(int64(sessionId), 16))//Because memdb wants a string
+	_, err := txn.DeleteAll(TABLE, "id", sessionId)
 	s.sessionIds.Remove(sessionId)
 	return err
 }
@@ -77,6 +77,9 @@ func (s *Store) FindAll() (result []*pb.SessionInfo, err error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "details")
+	if err != nil {
+		return nil, err
+	}
 	for {
 		if session, ok := p.Next().(*pb.SessionInfo); ok {
 			result = append(result, session)
@@ -91,6 +94,9 @@ func (s *Store) FindByDetails(key, value string) (result []*pb.SessionInfo, err 
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "details", key, value)
+	if err != nil {
+		return nil, err
+	}
 	for {
 		if session, ok := p.Next().(*pb.SessionInfo); ok {
 			result = append(result, session)
@@ -105,6 +111,9 @@ func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "peerId", peerId)
+	if err != nil {
+		return nil, err
+	}
 	for {
 		if session, ok := p.Next().(*pb.SessionInfo); ok {
 			result = append(result, session)
@@ -118,8 +127,15 @@ func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error
 func (s *Store) FindSessionId(sessionId uint64) (*pb.SessionInfo, error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
-	p, err := txn.Get(TABLE, "SessionId", strconv.FormatInt(int64(sessionId), 16))
-	if session, ok := p.Next().(*pb.SessionInfo); ok {
+	p, err := txn.Get(TABLE, "id", sessionId)
+	if err != nil {
+		return nil, err
+	}
+	record := p.Next()
+	if record == nil {
+		return nil, errors.New("Could not find session.")
+	}
+	if session, ok := record.(*pb.SessionInfo); ok {
 		return session, nil
 	}
 	return nil, err

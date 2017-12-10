@@ -530,13 +530,13 @@ bool SessionInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // uint64 address = 6;
+      // uint32 address = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &address_)));
         } else {
           goto handle_unusual;
@@ -646,9 +646,9 @@ void SessionInfo::SerializeWithCachedSizes(
       5, this->name(), output);
   }
 
-  // uint64 address = 6;
+  // uint32 address = 6;
   if (this->address() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(6, this->address(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->address(), output);
   }
 
   // uint32 port = 7;
@@ -769,10 +769,10 @@ size_t SessionInfo::ByteSizeLong() const {
         this->type());
   }
 
-  // uint64 address = 6;
+  // uint32 address = 6;
   if (this->address() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->address());
   }
 

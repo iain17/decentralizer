@@ -1,0 +1,21 @@
+image: golang:1.9
+stages:
+#  - test
+  - build
+
+before_script:
+  - go get github.com/tools/godep
+  - cp -r /builds/user /go/src/github.com/user/
+  - cd /go/src/github.com/user/repo
+
+build-my-project:
+  stage: build
+  script:
+    - godep restore
+    - godep go build
+
+test-my-project:
+  stage: test
+  script:
+    - godep restore
+    - godep go test -v -cover ./...

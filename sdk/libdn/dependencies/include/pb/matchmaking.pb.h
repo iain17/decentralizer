@@ -279,11 +279,11 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   ::google::protobuf::uint64 type() const;
   void set_type(::google::protobuf::uint64 value);
 
-  // uint64 address = 6;
+  // uint32 address = 6;
   void clear_address();
   static const int kAddressFieldNumber = 6;
-  ::google::protobuf::uint64 address() const;
-  void set_address(::google::protobuf::uint64 value);
+  ::google::protobuf::uint32 address() const;
+  void set_address(::google::protobuf::uint32 value);
 
   // uint32 port = 7;
   void clear_port();
@@ -306,7 +306,7 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   ::google::protobuf::uint64 dnid_;
   ::google::protobuf::uint64 sessionid_;
   ::google::protobuf::uint64 type_;
-  ::google::protobuf::uint64 address_;
+  ::google::protobuf::uint32 address_;
   ::google::protobuf::uint32 port_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
@@ -1506,15 +1506,15 @@ inline void SessionInfo::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:pb.SessionInfo.name)
 }
 
-// uint64 address = 6;
+// uint32 address = 6;
 inline void SessionInfo::clear_address() {
-  address_ = GOOGLE_ULONGLONG(0);
+  address_ = 0u;
 }
-inline ::google::protobuf::uint64 SessionInfo::address() const {
+inline ::google::protobuf::uint32 SessionInfo::address() const {
   // @@protoc_insertion_point(field_get:pb.SessionInfo.address)
   return address_;
 }
-inline void SessionInfo::set_address(::google::protobuf::uint64 value) {
+inline void SessionInfo::set_address(::google::protobuf::uint32 value) {
   
   address_ = value;
   // @@protoc_insertion_point(field_set:pb.SessionInfo.address)
