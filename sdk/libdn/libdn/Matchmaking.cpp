@@ -1,5 +1,6 @@
 #include "StdInc.h"
 
+
 pb::SessionInfo* DNSessionToPBSession(DNSessionInfo * dnInfo) {
 	pb::SessionInfo* result = new pb::SessionInfo();
 	result->set_dnid(dnInfo->dnId);
