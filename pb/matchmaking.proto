@@ -55,7 +55,7 @@ message RPCSessionIdsResponse {
 
 //Fetch an individual session
 message RPCGetSessionRequest {
-    repeated uint64 sessionId = 1;
+    uint64 sessionId = 1;
 }
 
 message RPCGetSessionResponse {
