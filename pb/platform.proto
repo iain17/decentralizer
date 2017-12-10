@@ -2,10 +2,16 @@ syntax = "proto3";
 package pb;
 option optimize_for = LITE_RUNTIME;
 import "pb/matchmaking.proto";
+import "pb/addressbook.proto";
 
 message RPCHealthRequest {}
 
 message RPCHealthReply {
+	bool ready = 1;
+	string message = 2;
+}
+
+message RPCGetPeerReply {
 	bool ready = 1;
 	string message = 2;
 }
@@ -18,18 +24,22 @@ message RPCMessage {
 		RPCHealthRequest healthRequest = 3;
 		RPCHealthReply HealthReply = 4;
 
+		//Address Book
+		RPCAddressBookPeerRequest AddressBookPeerRequest = 5;
+		RPCAddressBookPeerResponse AddressBookPeerResponse = 6;
+
 		//Matchmaking
-		RPCUpsertSessionRequest UpsertSessionRequest = 5;
-		RPCUpsertSessionResponse UpsertSessionResponse = 6;
+		RPCUpsertSessionRequest UpsertSessionRequest = 7;
+		RPCUpsertSessionResponse UpsertSessionResponse = 8;
 
-		RPCDeleteSessionRequest DeleteSessionRequest = 7;
-		RPCDeleteSessionResponse DeleteSessionResponse = 8;
+		RPCDeleteSessionRequest DeleteSessionRequest = 9;
+		RPCDeleteSessionResponse DeleteSessionResponse = 10;
 
-		RPCSessionIdsRequest SessionIdsRequest = 9;
-		RPCSessionIdsResponse SessionIdsResponse = 10;
+		RPCSessionIdsRequest SessionIdsRequest = 11;
+		RPCSessionIdsResponse SessionIdsResponse = 12;
 
-		RPCGetSessionRequest GetSessionRequest = 11;
-		RPCGetSessionResponse GetSessionResponse = 12;
+		RPCGetSessionRequest GetSessionRequest = 13;
+		RPCGetSessionResponse GetSessionResponse = 14;
 
 		//Storage
 

@@ -24,7 +24,6 @@ func New(app *app.Decentralizer) *Serve {
 	//Sessions
 	i.registerHandler((*pb.RPCMessage_UpsertSessionRequest)(nil), i.handleUpsertSessionRequest)
 	i.registerHandler((*pb.RPCMessage_DeleteSessionRequest)(nil), i.handleDeleteSessionRequest)
-	i.registerHandler((*pb.RPCMessage_RefreshSessionsRequest)(nil), i.handleRefreshSessionsRequest)
 	i.registerHandler((*pb.RPCMessage_SessionIdsRequest)(nil), i.handleSessionIdsRequest)
 	i.registerHandler((*pb.RPCMessage_GetSessionRequest)(nil), i.handleGetSessionRequest)
 	return i

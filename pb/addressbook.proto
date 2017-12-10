@@ -1,0 +1,17 @@
+syntax = "proto3";
+package pb;
+option optimize_for = LITE_RUNTIME;
+
+message DNPeer {
+    uint64 dnId = 1;//DecentralizerId
+    string pId = 2;//peerId
+}
+
+message RPCAddressBookPeerRequest {
+    uint64 dnId = 1;
+    string pId = 2;
+}
+
+message RPCAddressBookPeerResponse {
+    DNPeer info = 1;
+}

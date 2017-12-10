@@ -114,3 +114,13 @@ func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error
 	}
 	return
 }
+
+func (s *Store) FindSessionId(sessionId uint64) (*pb.SessionInfo, error) {
+	txn := s.db.Txn(false)
+	defer txn.Abort()
+	p, err := txn.Get(TABLE, "SessionId", strconv.FormatInt(int64(sessionId), 16))
+	if session, ok := p.Next().(*pb.SessionInfo); ok {
+		return session, nil
+	}
+	return nil, err
+}

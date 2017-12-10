@@ -2,7 +2,6 @@ package serve
 
 import (
 	"github.com/iain17/decentralizer/pb"
-	"github.com/iain17/logger"
 	"time"
 )
 
@@ -35,17 +34,37 @@ func (s *Serve) handleDeleteSessionRequest(msg *pb.RPCMessage) (*pb.RPCMessage, 
 	}, err
 }
 
-func (s *Serve) handleRefreshSessionsRequest(msg *pb.RPCMessage) (*pb.RPCMessage, error) {
-	logger.Info("handleRefreshSessionsRequest")
-	return nil, nil
-}
-
 func (s *Serve) handleSessionIdsRequest(msg *pb.RPCMessage) (*pb.RPCMessage, error) {
-	logger.Info("handleSessionIdsRequest")
-	return nil, nil
+	request := msg.GetSessionIdsRequest()
+	var sessions []*pb.SessionInfo
+	var err error
+	if request.Key == "" && request.Value == "" {
+		sessions, err = s.app.GetSessions(request.Type)
+	} else {
+		sessions, err = s.app.GetSessionsByDetails(request.Type, request.Key, request.Value)
+	}
+	var sessionIds []uint64
+	for _, session := range sessions {
+		sessionIds = append(sessionIds, session.SessionId)
+	}
+	return &pb.RPCMessage{
+		Msg: &pb.RPCMessage_SessionIdsResponse{
+			SessionIdsResponse: &pb.RPCSessionIdsResponse{
+				SessionIds: sessionIds,
+			},
+		},
+	}, err
 }
 
 func (s *Serve) handleGetSessionRequest(msg *pb.RPCMessage) (*pb.RPCMessage, error) {
-	logger.Info("handleGetSessionRequest")
-	return nil, nil
+	request := msg.GetGetSessionRequest()
+	session, err := s.app.GetSession(request.SessionId)
+	return &pb.RPCMessage{
+		Msg: &pb.RPCMessage_GetSessionResponse{
+			GetSessionResponse: &pb.RPCGetSessionResponse{
+				Found: err != nil,
+				Result: session,
+			},
+		},
+	}, err
 }

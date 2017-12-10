@@ -46,11 +46,12 @@ message RPCDeleteSessionResponse {
 //Fetch session ids
 message RPCSessionIdsRequest {
     uint64 type = 1;
-    map<string, string> details = 2;//search parameters
+    string key = 2;
+    string value = 3;
 }
 
 message RPCSessionIdsResponse {
-    repeated uint64 sessionId = 1;//Available sessions
+    repeated uint64 sessionIds = 1;//Available sessions
 }
 
 //Fetch an individual session

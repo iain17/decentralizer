@@ -57,11 +57,6 @@ class RPCDeleteSessionResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<RPCDeleteSessionResponse>
       _instance;
 } _RPCDeleteSessionResponse_default_instance_;
-class RPCSessionIdsRequest_DetailsEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCSessionIdsRequest_DetailsEntry_DoNotUse>
-      _instance;
-} _RPCSessionIdsRequest_DetailsEntry_DoNotUse_default_instance_;
 class RPCSessionIdsRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<RPCSessionIdsRequest>
@@ -254,26 +249,6 @@ void InitDefaultsRPCDeleteSessionResponse() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCDeleteSessionResponseImpl);
 }
 
-void InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUseImpl() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
-#else
-  ::google::protobuf::internal::InitProtobufDefaults();
-#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  {
-    void* ptr = &::pb::_RPCSessionIdsRequest_DetailsEntry_DoNotUse_default_instance_;
-    new (ptr) ::pb::RPCSessionIdsRequest_DetailsEntry_DoNotUse();
-  }
-  ::pb::RPCSessionIdsRequest_DetailsEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-void InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUse() {
-  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUseImpl);
-}
-
 void InitDefaultsRPCSessionIdsRequestImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -282,7 +257,6 @@ void InitDefaultsRPCSessionIdsRequestImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUse();
   {
     void* ptr = &::pb::_RPCSessionIdsRequest_default_instance_;
     new (ptr) ::pb::RPCSessionIdsRequest();
@@ -2108,19 +2082,12 @@ void RPCDeleteSessionResponse::InternalSwap(RPCDeleteSessionResponse* other) {
 
 // ===================================================================
 
-RPCSessionIdsRequest_DetailsEntry_DoNotUse::RPCSessionIdsRequest_DetailsEntry_DoNotUse() {}
-RPCSessionIdsRequest_DetailsEntry_DoNotUse::RPCSessionIdsRequest_DetailsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
-void RPCSessionIdsRequest_DetailsEntry_DoNotUse::MergeFrom(const RPCSessionIdsRequest_DetailsEntry_DoNotUse& other) {
-  MergeFromInternal(other);
-}
-
-// ===================================================================
-
 void RPCSessionIdsRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RPCSessionIdsRequest::kTypeFieldNumber;
-const int RPCSessionIdsRequest::kDetailsFieldNumber;
+const int RPCSessionIdsRequest::kKeyFieldNumber;
+const int RPCSessionIdsRequest::kValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCSessionIdsRequest::RPCSessionIdsRequest()
@@ -2136,12 +2103,21 @@ RPCSessionIdsRequest::RPCSessionIdsRequest(const RPCSessionIdsRequest& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  details_.MergeFrom(from.details_);
+  key_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.key().size() > 0) {
+    key_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.key_);
+  }
+  value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.value().size() > 0) {
+    value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
+  }
   type_ = from.type_;
   // @@protoc_insertion_point(copy_constructor:pb.RPCSessionIdsRequest)
 }
 
 void RPCSessionIdsRequest::SharedCtor() {
+  key_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   type_ = GOOGLE_ULONGLONG(0);
   _cached_size_ = 0;
 }
@@ -2152,6 +2128,8 @@ RPCSessionIdsRequest::~RPCSessionIdsRequest() {
 }
 
 void RPCSessionIdsRequest::SharedDtor() {
+  key_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  value_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void RPCSessionIdsRequest::SetCachedSize(int size) const {
@@ -2178,7 +2156,8 @@ void RPCSessionIdsRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  details_.Clear();
+  key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   type_ = GOOGLE_ULONGLONG(0);
   _internal_metadata_.Clear();
 }
@@ -2213,27 +2192,32 @@ bool RPCSessionIdsRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // map<string, string> details = 2;
+      // string key = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          RPCSessionIdsRequest_DetailsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapFieldLite<
-              RPCSessionIdsRequest_DetailsEntry_DoNotUse,
-              ::std::string, ::std::string,
-              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-              0 >,
-            ::google::protobuf::Map< ::std::string, ::std::string > > parser(&details_);
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-              input, &parser));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_key()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            parser.key().data(), static_cast<int>(parser.key().length()),
+            this->key().data(), static_cast<int>(this->key().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCSessionIdsRequest.DetailsEntry.key"));
+            "pb.RPCSessionIdsRequest.key"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string value = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_value()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            parser.value().data(), static_cast<int>(parser.value().length()),
+            this->value().data(), static_cast<int>(this->value().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCSessionIdsRequest.DetailsEntry.value"));
+            "pb.RPCSessionIdsRequest.value"));
         } else {
           goto handle_unusual;
         }
@@ -2271,57 +2255,24 @@ void RPCSessionIdsRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->type(), output);
   }
 
-  // map<string, string> details = 2;
-  if (!this->details().empty()) {
-    typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
-        ConstPtr;
-    typedef ConstPtr SortItem;
-    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
-    struct Utf8Check {
-      static void Check(ConstPtr p) {
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          p->first.data(), static_cast<int>(p->first.length()),
-          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.RPCSessionIdsRequest.DetailsEntry.key");
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          p->second.data(), static_cast<int>(p->second.length()),
-          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.RPCSessionIdsRequest.DetailsEntry.value");
-      }
-    };
+  // string key = 2;
+  if (this->key().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->key().data(), static_cast<int>(this->key().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCSessionIdsRequest.key");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->key(), output);
+  }
 
-    if (output->IsSerializationDeterministic() &&
-        this->details().size() > 1) {
-      ::google::protobuf::scoped_array<SortItem> items(
-          new SortItem[this->details().size()]);
-      typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
-      size_type n = 0;
-      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-          it = this->details().begin();
-          it != this->details().end(); ++it, ++n) {
-        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
-      }
-      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
-      ::google::protobuf::scoped_ptr<RPCSessionIdsRequest_DetailsEntry_DoNotUse> entry;
-      for (size_type i = 0; i < n; i++) {
-        entry.reset(details_.NewEntryWrapper(
-            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
-        ::google::protobuf::internal::WireFormatLite::WriteMessage(
-            2, *entry, output);
-        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
-      }
-    } else {
-      ::google::protobuf::scoped_ptr<RPCSessionIdsRequest_DetailsEntry_DoNotUse> entry;
-      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-          it = this->details().begin();
-          it != this->details().end(); ++it) {
-        entry.reset(details_.NewEntryWrapper(
-            it->first, it->second));
-        ::google::protobuf::internal::WireFormatLite::WriteMessage(
-            2, *entry, output);
-        Utf8Check::Check(&*it);
-      }
-    }
+  // string value = 3;
+  if (this->value().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->value().data(), static_cast<int>(this->value().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCSessionIdsRequest.value");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->value(), output);
   }
 
   output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
@@ -2335,18 +2286,18 @@ size_t RPCSessionIdsRequest::ByteSizeLong() const {
 
   total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
 
-  // map<string, string> details = 2;
-  total_size += 1 *
-      ::google::protobuf::internal::FromIntSize(this->details_size());
-  {
-    ::google::protobuf::scoped_ptr<RPCSessionIdsRequest_DetailsEntry_DoNotUse> entry;
-    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-        it = this->details().begin();
-        it != this->details().end(); ++it) {
-      entry.reset(details_.NewEntryWrapper(it->first, it->second));
-      total_size += ::google::protobuf::internal::WireFormatLite::
-          MessageSizeNoVirtual(*entry);
-    }
+  // string key = 2;
+  if (this->key().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->key());
+  }
+
+  // string value = 3;
+  if (this->value().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->value());
   }
 
   // uint64 type = 1;
@@ -2375,7 +2326,14 @@ void RPCSessionIdsRequest::MergeFrom(const RPCSessionIdsRequest& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  details_.MergeFrom(from.details_);
+  if (from.key().size() > 0) {
+
+    key_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.key_);
+  }
+  if (from.value().size() > 0) {
+
+    value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
+  }
   if (from.type() != 0) {
     set_type(from.type());
   }
@@ -2398,7 +2356,8 @@ void RPCSessionIdsRequest::Swap(RPCSessionIdsRequest* other) {
 }
 void RPCSessionIdsRequest::InternalSwap(RPCSessionIdsRequest* other) {
   using std::swap;
-  details_.Swap(&other->details_);
+  key_.Swap(&other->key_);
+  value_.Swap(&other->value_);
   swap(type_, other->type_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
@@ -2414,7 +2373,7 @@ void RPCSessionIdsRequest::InternalSwap(RPCSessionIdsRequest* other) {
 void RPCSessionIdsResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCSessionIdsResponse::kSessionIdFieldNumber;
+const int RPCSessionIdsResponse::kSessionIdsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCSessionIdsResponse::RPCSessionIdsResponse()
@@ -2428,7 +2387,7 @@ RPCSessionIdsResponse::RPCSessionIdsResponse()
 RPCSessionIdsResponse::RPCSessionIdsResponse(const RPCSessionIdsResponse& from)
   : ::google::protobuf::MessageLite(),
       _internal_metadata_(NULL),
-      sessionid_(from.sessionid_),
+      sessionids_(from.sessionids_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:pb.RPCSessionIdsResponse)
@@ -2470,7 +2429,7 @@ void RPCSessionIdsResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  sessionid_.Clear();
+  sessionids_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -2490,19 +2449,19 @@ bool RPCSessionIdsResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated uint64 sessionId = 1;
+      // repeated uint64 sessionIds = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, this->mutable_sessionid())));
+                 input, this->mutable_sessionids())));
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 1, 10u, input, this->mutable_sessionid())));
+                 1, 10u, input, this->mutable_sessionids())));
         } else {
           goto handle_unusual;
         }
@@ -2535,15 +2494,15 @@ void RPCSessionIdsResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated uint64 sessionId = 1;
-  if (this->sessionid_size() > 0) {
+  // repeated uint64 sessionIds = 1;
+  if (this->sessionids_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(1, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
-        _sessionid_cached_byte_size_));
+        _sessionids_cached_byte_size_));
   }
-  for (int i = 0, n = this->sessionid_size(); i < n; i++) {
+  for (int i = 0, n = this->sessionids_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64NoTag(
-      this->sessionid(i), output);
+      this->sessionids(i), output);
   }
 
   output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
@@ -2557,10 +2516,10 @@ size_t RPCSessionIdsResponse::ByteSizeLong() const {
 
   total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
 
-  // repeated uint64 sessionId = 1;
+  // repeated uint64 sessionIds = 1;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      UInt64Size(this->sessionid_);
+      UInt64Size(this->sessionids_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -2568,7 +2527,7 @@ size_t RPCSessionIdsResponse::ByteSizeLong() const {
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-    _sessionid_cached_byte_size_ = cached_size;
+    _sessionids_cached_byte_size_ = cached_size;
     GOOGLE_SAFE_CONCURRENT_WRITES_END();
     total_size += data_size;
   }
@@ -2592,7 +2551,7 @@ void RPCSessionIdsResponse::MergeFrom(const RPCSessionIdsResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  sessionid_.MergeFrom(from.sessionid_);
+  sessionids_.MergeFrom(from.sessionids_);
 }
 
 void RPCSessionIdsResponse::CopyFrom(const RPCSessionIdsResponse& from) {
@@ -2612,7 +2571,7 @@ void RPCSessionIdsResponse::Swap(RPCSessionIdsResponse* other) {
 }
 void RPCSessionIdsResponse::InternalSwap(RPCSessionIdsResponse* other) {
   using std::swap;
-  sessionid_.InternalSwap(&other->sessionid_);
+  sessionids_.InternalSwap(&other->sessionids_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

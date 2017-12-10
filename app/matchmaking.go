@@ -69,6 +69,15 @@ func (d *Decentralizer) DeleteSession(sessionId uint64) error {
 	return sessions.Remove(sessionId)
 }
 
+func (d *Decentralizer) GetSession(sessionId uint64) (*pb.SessionInfo, error) {
+	if d.sessionIdToSessionType[sessionId] == 0 {
+		return nil, errors.New("no such session exists")
+	}
+	sessionType := d.sessionIdToSessionType[sessionId]
+	sessions := d.getSessionStorage(sessionType)
+	return sessions.FindSessionId(sessionId)
+}
+
 func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, error) {
 	sessions := d.getSessionStorage(sessionType)
 	timeout.Do(func(ctx context.Context) {
