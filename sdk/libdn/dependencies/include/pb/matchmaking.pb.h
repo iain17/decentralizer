@@ -38,7 +38,7 @@ namespace protobuf_pb_2fmatchmaking_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[15];
+  static const ::google::protobuf::internal::ParseTable schema[13];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -59,10 +59,6 @@ void InitDefaultsRPCDeleteSessionRequestImpl();
 void InitDefaultsRPCDeleteSessionRequest();
 void InitDefaultsRPCDeleteSessionResponseImpl();
 void InitDefaultsRPCDeleteSessionResponse();
-void InitDefaultsRPCRefreshSessionsRequestImpl();
-void InitDefaultsRPCRefreshSessionsRequest();
-void InitDefaultsRPCRefreshSessionsResponseImpl();
-void InitDefaultsRPCRefreshSessionsResponse();
 void InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUseImpl();
 void InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUse();
 void InitDefaultsRPCSessionIdsRequestImpl();
@@ -82,8 +78,6 @@ inline void InitDefaults() {
   InitDefaultsRPCUpsertSessionResponse();
   InitDefaultsRPCDeleteSessionRequest();
   InitDefaultsRPCDeleteSessionResponse();
-  InitDefaultsRPCRefreshSessionsRequest();
-  InitDefaultsRPCRefreshSessionsResponse();
   InitDefaultsRPCSessionIdsRequest_DetailsEntry_DoNotUse();
   InitDefaultsRPCSessionIdsRequest();
   InitDefaultsRPCSessionIdsResponse();
@@ -110,12 +104,6 @@ extern RPCGetSessionRequestDefaultTypeInternal _RPCGetSessionRequest_default_ins
 class RPCGetSessionResponse;
 class RPCGetSessionResponseDefaultTypeInternal;
 extern RPCGetSessionResponseDefaultTypeInternal _RPCGetSessionResponse_default_instance_;
-class RPCRefreshSessionsRequest;
-class RPCRefreshSessionsRequestDefaultTypeInternal;
-extern RPCRefreshSessionsRequestDefaultTypeInternal _RPCRefreshSessionsRequest_default_instance_;
-class RPCRefreshSessionsResponse;
-class RPCRefreshSessionsResponseDefaultTypeInternal;
-extern RPCRefreshSessionsResponseDefaultTypeInternal _RPCRefreshSessionsResponse_default_instance_;
 class RPCSessionIdsRequest;
 class RPCSessionIdsRequestDefaultTypeInternal;
 extern RPCSessionIdsRequestDefaultTypeInternal _RPCSessionIdsRequest_default_instance_;
@@ -930,200 +918,6 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
 };
 // -------------------------------------------------------------------
 
-class RPCRefreshSessionsRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCRefreshSessionsRequest) */ {
- public:
-  RPCRefreshSessionsRequest();
-  virtual ~RPCRefreshSessionsRequest();
-
-  RPCRefreshSessionsRequest(const RPCRefreshSessionsRequest& from);
-
-  inline RPCRefreshSessionsRequest& operator=(const RPCRefreshSessionsRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCRefreshSessionsRequest(RPCRefreshSessionsRequest&& from) noexcept
-    : RPCRefreshSessionsRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCRefreshSessionsRequest& operator=(RPCRefreshSessionsRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const RPCRefreshSessionsRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCRefreshSessionsRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCRefreshSessionsRequest*>(
-               &_RPCRefreshSessionsRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
-
-  void Swap(RPCRefreshSessionsRequest* other);
-  friend void swap(RPCRefreshSessionsRequest& a, RPCRefreshSessionsRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCRefreshSessionsRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCRefreshSessionsRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCRefreshSessionsRequest& from);
-  void MergeFrom(const RPCRefreshSessionsRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCRefreshSessionsRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // uint64 type = 1;
-  void clear_type();
-  static const int kTypeFieldNumber = 1;
-  ::google::protobuf::uint64 type() const;
-  void set_type(::google::protobuf::uint64 value);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCRefreshSessionsRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::uint64 type_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCRefreshSessionsRequestImpl();
-};
-// -------------------------------------------------------------------
-
-class RPCRefreshSessionsResponse : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCRefreshSessionsResponse) */ {
- public:
-  RPCRefreshSessionsResponse();
-  virtual ~RPCRefreshSessionsResponse();
-
-  RPCRefreshSessionsResponse(const RPCRefreshSessionsResponse& from);
-
-  inline RPCRefreshSessionsResponse& operator=(const RPCRefreshSessionsResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCRefreshSessionsResponse(RPCRefreshSessionsResponse&& from) noexcept
-    : RPCRefreshSessionsResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCRefreshSessionsResponse& operator=(RPCRefreshSessionsResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const RPCRefreshSessionsResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCRefreshSessionsResponse* internal_default_instance() {
-    return reinterpret_cast<const RPCRefreshSessionsResponse*>(
-               &_RPCRefreshSessionsResponse_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
-
-  void Swap(RPCRefreshSessionsResponse* other);
-  friend void swap(RPCRefreshSessionsResponse& a, RPCRefreshSessionsResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCRefreshSessionsResponse* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCRefreshSessionsResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCRefreshSessionsResponse& from);
-  void MergeFrom(const RPCRefreshSessionsResponse& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCRefreshSessionsResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // bool result = 1;
-  void clear_result();
-  static const int kResultFieldNumber = 1;
-  bool result() const;
-  void set_result(bool value);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCRefreshSessionsResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  bool result_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCRefreshSessionsResponseImpl();
-};
-// -------------------------------------------------------------------
-
 class RPCSessionIdsRequest_DetailsEntry_DoNotUse : public ::google::protobuf::internal::MapEntryLite<RPCSessionIdsRequest_DetailsEntry_DoNotUse, 
     ::std::string, ::std::string,
     ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
@@ -1177,7 +971,7 @@ class RPCSessionIdsRequest : public ::google::protobuf::MessageLite /* @@protoc_
                &_RPCSessionIdsRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    11;
+    9;
 
   void Swap(RPCSessionIdsRequest* other);
   friend void swap(RPCSessionIdsRequest& a, RPCSessionIdsRequest& b) {
@@ -1290,7 +1084,7 @@ class RPCSessionIdsResponse : public ::google::protobuf::MessageLite /* @@protoc
                &_RPCSessionIdsResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    12;
+    10;
 
   void Swap(RPCSessionIdsResponse* other);
   friend void swap(RPCSessionIdsResponse& a, RPCSessionIdsResponse& b) {
@@ -1394,7 +1188,7 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
                &_RPCGetSessionRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    13;
+    11;
 
   void Swap(RPCGetSessionRequest* other);
   friend void swap(RPCGetSessionRequest& a, RPCGetSessionRequest& b) {
@@ -1498,7 +1292,7 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
                &_RPCGetSessionResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    14;
+    12;
 
   void Swap(RPCGetSessionResponse* other);
   friend void swap(RPCGetSessionResponse& a, RPCGetSessionResponse& b) {
@@ -1952,42 +1746,6 @@ inline void RPCDeleteSessionResponse::set_result(bool value) {
 
 // -------------------------------------------------------------------
 
-// RPCRefreshSessionsRequest
-
-// uint64 type = 1;
-inline void RPCRefreshSessionsRequest::clear_type() {
-  type_ = GOOGLE_ULONGLONG(0);
-}
-inline ::google::protobuf::uint64 RPCRefreshSessionsRequest::type() const {
-  // @@protoc_insertion_point(field_get:pb.RPCRefreshSessionsRequest.type)
-  return type_;
-}
-inline void RPCRefreshSessionsRequest::set_type(::google::protobuf::uint64 value) {
-  
-  type_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCRefreshSessionsRequest.type)
-}
-
-// -------------------------------------------------------------------
-
-// RPCRefreshSessionsResponse
-
-// bool result = 1;
-inline void RPCRefreshSessionsResponse::clear_result() {
-  result_ = false;
-}
-inline bool RPCRefreshSessionsResponse::result() const {
-  // @@protoc_insertion_point(field_get:pb.RPCRefreshSessionsResponse.result)
-  return result_;
-}
-inline void RPCRefreshSessionsResponse::set_result(bool value) {
-  
-  result_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCRefreshSessionsResponse.result)
-}
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // RPCSessionIdsRequest
@@ -2163,10 +1921,6 @@ inline void RPCGetSessionResponse::set_allocated_result(::pb::SessionInfo* resul
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

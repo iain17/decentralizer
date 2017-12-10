@@ -25,14 +25,11 @@ message RPCMessage {
 		RPCDeleteSessionRequest DeleteSessionRequest = 7;
 		RPCDeleteSessionResponse DeleteSessionResponse = 8;
 
-		RPCRefreshSessionsRequest RefreshSessionsRequest = 9;
-		RPCRefreshSessionsResponse RefreshSessionsResponse = 10;
+		RPCSessionIdsRequest SessionIdsRequest = 9;
+		RPCSessionIdsResponse SessionIdsResponse = 10;
 
-		RPCSessionIdsRequest SessionIdsRequest = 11;
-		RPCSessionIdsResponse SessionIdsResponse = 12;
-
-		RPCGetSessionRequest GetSessionRequest = 13;
-		RPCGetSessionResponse GetSessionResponse = 14;
+		RPCGetSessionRequest GetSessionRequest = 11;
+		RPCGetSessionResponse GetSessionResponse = 12;
 
 		//Storage
 
