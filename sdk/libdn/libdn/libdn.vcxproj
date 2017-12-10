@@ -183,6 +183,7 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dependencies\include\pb\addressbook.pb.cc" />
     <ClCompile Include="..\dependencies\include\pb\matchmaking.pb.cc" />
     <ClCompile Include="..\dependencies\include\pb\platform.pb.cc" />
     <ClCompile Include="API.cpp" />

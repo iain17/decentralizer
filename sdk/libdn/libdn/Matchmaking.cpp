@@ -85,15 +85,13 @@ LIBDN_API DNAsync<bool>*LIBDN_CALL DN_DeleteSession(DNSID sid) {
 	return result;
 }
 
-LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, std::map<std::string, std::string> details)
+LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, const char* key, const char* value)
 {
 	//build request.
 	RPCSessionIdsRequest* request = new RPCSessionIdsRequest();
 	request->set_type(type);
-	::google::protobuf::Map< ::std::string, ::std::string > pbDetails = request->details();
-	for (auto const &ent1 : details) {
-		pbDetails[ent1.first] = ent1.second;
-	}
+	request->set_key(key);
+	request->set_value(value);
 
 	pb::RPCMessage* msg = new pb::RPCMessage();
 	msg->set_allocated_sessionidsrequest(request);
@@ -108,7 +106,7 @@ LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type
 		RPCMessage* message = async->GetResult();
 		auto reply = message->sessionidsresponse();
 		std::vector<DNSID>* result = new std::vector<DNSID>();
-		for (::google::protobuf::uint64 sessionId : reply.sessionid()) {
+		for (::google::protobuf::uint64 sessionId : reply.sessionids()) {
 			result->push_back((DNSID)sessionId);
 		}
 		asyncResult->SetResult(result);

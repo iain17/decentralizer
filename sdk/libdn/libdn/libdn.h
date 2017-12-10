@@ -47,7 +47,7 @@ LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionI
 LIBDN_API DNAsync<bool>* LIBDN_CALL DN_DeleteSession(DNSID sessionId);
 
 // gets the number of sessions
-LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, std::map<std::string, std::string> details);
+LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, const char* key, const char* value);
 
 // gets a single session's info
 LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSession(DNSID sessionId);

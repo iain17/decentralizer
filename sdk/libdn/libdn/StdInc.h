@@ -12,6 +12,7 @@
 //Protobuf
 #include "matchmaking.pb.h"
 #include "platform.pb.h"
+#include "addressbook.pb.h"
 using namespace pb;
 
 // C/C++ headers
@@ -27,8 +28,7 @@ using namespace pb;
 #include "DNAsyncImpl.h"
 
 // global state
-extern struct DN_state_s
-{
+extern struct DN_state_s {
 	DNID DuID;
 	char serverHost[1024];
 	uint16_t serverPort;
