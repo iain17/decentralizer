@@ -1,15 +1,5 @@
 #include "StdInc.h"
 
-static void GetHealthCB(DNAsync<RPCMessage>* async) {
-	NPAsyncImpl<DNHealthResult>* asyncResult = (NPAsyncImpl<DNHealthResult>*)async->GetUserData();
-	RPCMessage* message = async->GetResult();
-	const RPCHealthReply& reply = message->healthreply();
-
-	DNHealthResult* result = new DNHealthResult();
-	result->message = reply.message();
-	result->ready = reply.ready();
-	asyncResult->SetResult(result);
-}
 
 LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
 	//build request.
@@ -22,7 +12,16 @@ LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
 
 	//Set callback.
 	NPAsyncImpl<DNHealthResult>* result = new NPAsyncImpl<DNHealthResult>();
-	async->SetCallback(GetHealthCB, result);
+	async->SetCallback([](DNAsync<RPCMessage>* async) {
+		NPAsyncImpl<DNHealthResult>* asyncResult = (NPAsyncImpl<DNHealthResult>*)async->GetUserData();
+		RPCMessage* message = async->GetResult();
+		const RPCHealthReply& reply = message->healthreply();
+
+		DNHealthResult* result = new DNHealthResult();
+		result->message = reply.message();
+		result->ready = reply.ready();
+		asyncResult->SetResult(result);
+	}, result);
 	async->Wait();
 
 	return result->GetResult();

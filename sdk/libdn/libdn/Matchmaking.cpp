@@ -33,8 +33,7 @@ DNSessionInfo* PBSessionToDNSession(SessionInfo * pbInfo) {
 	return result;
 }
 
-LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionInfo * info)
-{
+LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionInfo * info) {
 	//build request.
 	pb::SessionInfo* sessInfo = DNSessionToPBSession(info);
 	RPCUpsertSessionRequest* request = new RPCUpsertSessionRequest();
@@ -62,22 +61,83 @@ LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionI
 	return result;
 }
 
-LIBDN_API DNAsync<bool>*LIBDN_CALL DN_DeleteSession(DNSID sid)
-{
-	return NULL;
+LIBDN_API DNAsync<bool>*LIBDN_CALL DN_DeleteSession(DNSID sid) {
+	//build request.
+	RPCDeleteSessionRequest* request = new RPCDeleteSessionRequest();
+	request->set_sessionid(sid);
+
+	pb::RPCMessage* msg = new pb::RPCMessage();
+	msg->set_allocated_deletesessionrequest(request);
+
+	//Send request.
+	DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
+
+	//Set callback.
+	NPAsyncImpl<bool>* result = new NPAsyncImpl<bool>();
+	async->SetCallback([](DNAsync<RPCMessage>* async) {
+		NPAsyncImpl<bool>* asyncResult = (NPAsyncImpl<bool>*)async->GetUserData();
+		RPCMessage* message = async->GetResult();
+		auto reply = message->deletesessionresponse();
+		bool result = reply.result();
+		asyncResult->SetResult(&result);
+	}, result);
+
+	return result;
 }
 
-LIBDN_API DNAsync<bool>* LIBDN_CALL DN_RefreshSessions(uint32_t type)
+LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, std::map<std::string, std::string> details)
 {
-	return NULL;
+	//build request.
+	RPCSessionIdsRequest* request = new RPCSessionIdsRequest();
+	request->set_type(type);
+	::google::protobuf::Map< ::std::string, ::std::string > pbDetails = request->details();
+	for (auto const &ent1 : details) {
+		pbDetails[ent1.first] = ent1.second;
+	}
+
+	pb::RPCMessage* msg = new pb::RPCMessage();
+	msg->set_allocated_sessionidsrequest(request);
+
+	//Send request.
+	DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
+
+	//Set callback.
+	auto result = new NPAsyncImpl<std::vector<DNSID>>();
+	async->SetCallback([](DNAsync<RPCMessage>* async) {
+		auto asyncResult = (NPAsyncImpl<std::vector<DNSID>>*)async->GetUserData();
+		RPCMessage* message = async->GetResult();
+		auto reply = message->sessionidsresponse();
+		std::vector<DNSID>* result = new std::vector<DNSID>();
+		for (::google::protobuf::uint64 sessionId : reply.sessionid()) {
+			result->push_back((DNSID)sessionId);
+		}
+		asyncResult->SetResult(result);
+	}, result);
+
+	return result;
 }
 
-LIBDN_API DNAsync<DNSID[]>* LIBDN_CALL DN_GetNumSessions(uint32_t type, std::map<std::string, std::string> details)
-{
-	return NULL;
-}
+LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSession(DNSID sessionId) {
+	//build request.
+	RPCGetSessionRequest* request = new RPCGetSessionRequest();
+	request->set_sessionid(sessionId);
 
-LIBDN_API void LIBDN_CALL DN_GetSessionData(DNSID sessionId, DNSessionInfo* out)
-{
-	return;
+	pb::RPCMessage* msg = new pb::RPCMessage();
+	msg->set_allocated_getsessionrequest(request);
+
+	//Send request.
+	DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
+
+	//Set callback.
+	auto result = new NPAsyncImpl<DNSessionInfo>();
+	async->SetCallback([](DNAsync<RPCMessage>* async) {
+		auto asyncResult = (NPAsyncImpl<DNSessionInfo>*)async->GetUserData();
+		RPCMessage* message = async->GetResult();
+		auto reply = message->getsessionresponse();
+		pb::SessionInfo info = reply.result();
+		auto session = PBSessionToDNSession(&info);
+		asyncResult->SetResult(session);
+	}, result);
+
+	return result;
 }

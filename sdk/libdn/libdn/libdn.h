@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DNTypeDefs.h"
+#include <vector>
 #include "DNAsync.h"
 #include "DNPlatform.h"
 #include "DNMatchMaking.h"
@@ -45,14 +46,11 @@ LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionI
 // deletes a session
 LIBDN_API DNAsync<bool>* LIBDN_CALL DN_DeleteSession(DNSID sessionId);
 
-// refreshes the session list
-LIBDN_API DNAsync<bool>* LIBDN_CALL DN_RefreshSessions(uint32_t type);
-
 // gets the number of sessions
-LIBDN_API DNAsync<DNSID[]>* LIBDN_CALL DN_GetNumSessions(uint32_t type, std::map<std::string, std::string> details);
+LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, std::map<std::string, std::string> details);
 
 // gets a single session's info
-LIBDN_API void LIBDN_CALL DN_GetSessionData(DNSID sessionId, DNSessionInfo* out);
+LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSession(DNSID sessionId);
 
 /*
 // ----------------------------------------------------------
