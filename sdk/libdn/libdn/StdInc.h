@@ -27,12 +27,15 @@ using namespace pb;
 #include "RPC.h"
 #include "DNAsyncImpl.h"
 
+const int MAX_SESSIONS = 1024;
 // global state
 extern struct DN_state_s {
 	DNID DuID;
 	char serverHost[1024];
 	uint16_t serverPort;
 	ConnectLogCB g_logCB;
-} g_np;
+
+	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
+} g_dn;
 
 #endif

@@ -13,9 +13,9 @@ void Log_Print(const char* message, ...)
 
 	OutputDebugStringA(msgBuffer);
 
-	if (g_np.g_logCB)
+	if (g_dn.g_logCB)
 	{
-		g_np.g_logCB(msgBuffer);
+		g_dn.g_logCB(msgBuffer);
 	}
 	else {
 		printf(msgBuffer);

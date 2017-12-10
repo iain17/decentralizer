@@ -2,7 +2,7 @@
 #include "StdInc.h"
 #include "libdn.h"
 
-DN_state_s g_np;
+DN_state_s g_dn;
 LIBDN_API bool LIBDN_CALL DN_Init(ConnectLogCB callback)
 {
 	if (!RPC_Init())

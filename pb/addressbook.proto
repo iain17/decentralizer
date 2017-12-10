@@ -5,13 +5,51 @@ option optimize_for = LITE_RUNTIME;
 message DNPeer {
     uint64 dnId = 1;//DecentralizerId
     string pId = 2;//peerId
+    string nickname = 3;
+    string presence = 4;
+    bytes avatar = 5;
+    bool friend = 6;
+    map<string, string> details = 7;
 }
 
-message RPCAddressBookPeerRequest {
+//DN messages
+message DNPeerInfoResponse {
+    DNPeer info = 1;
+}
+
+message DNPeerInfoRequest {}
+
+//RPC messages
+message RPCGetAddressBookPeerRequest {
+    //If both are set to 0 or "" we'll assume we mean self.
     uint64 dnId = 1;
     string pId = 2;
 }
 
-message RPCAddressBookPeerResponse {
+message RPCGetAddressBookPeerResponse {
     DNPeer info = 1;
 }
+
+message RPCUpdateAddressBookPeerRequest {
+    //If both are set to 0 or "" we'll assume we mean self.
+    uint64 dnId = 1;
+    string pId = 2;
+    DNPeer info = 3;
+}
+
+message RPCUpdateAddressBookPeerResponse {
+    bool result = 1;
+}
+
+/*
+1. Fetch self.
+RPCAddressBookPeerRequest(0, "")
+2. Fetch a friend or other peer
+RPCAddressBookPeerRequest(steamId, "peerId")
+//Have addresses expire after some time.
+3. if(!isset(addressbook[peerId])) {
+    DNPeerInfoRequest to peerId.
+    add it to addressbook.
+}
+4. return friend info.
+*/

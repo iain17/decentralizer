@@ -9,9 +9,9 @@ public:
 	std::string pId;//PeerId
 	
 	DNSID sessionId;
-	uint32_t type;
+	uint64_t type;
 	std::string name;
-	uint64_t address;
+	uint32_t address;
 	uint16_t port;
 	std::map<std::string, std::string> details;
 };

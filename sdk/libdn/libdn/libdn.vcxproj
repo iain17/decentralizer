@@ -186,6 +186,7 @@
     <ClCompile Include="..\dependencies\include\pb\addressbook.pb.cc" />
     <ClCompile Include="..\dependencies\include\pb\matchmaking.pb.cc" />
     <ClCompile Include="..\dependencies\include\pb\platform.pb.cc" />
+    <ClCompile Include="Addressbook.cpp" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="Async.cpp" />
     <ClCompile Include="Matchmaking.cpp" />

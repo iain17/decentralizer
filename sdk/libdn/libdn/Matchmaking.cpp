@@ -11,9 +11,12 @@ pb::SessionInfo* DNSessionToPBSession(DNSessionInfo * dnInfo) {
 	result->set_name(dnInfo->name);
 	result->set_address(dnInfo->address);
 	result->set_port(dnInfo->port);
-	::google::protobuf::Map< ::std::string, ::std::string > pbDetails = result->details();
+	auto pbDetails = result->mutable_details();
+
 	for (auto const &ent1 : dnInfo->details) {
-		pbDetails[ent1.first] = ent1.second;
+		pbDetails->insert(google::protobuf::MapPair<std::string, std::string>(ent1.first, ent1.second));
+		
+		//->insert(ent1.first.c_str(), ent1.second.c_str());
 	}
 	return result;
 }
@@ -86,7 +89,7 @@ LIBDN_API DNAsync<bool>*LIBDN_CALL DN_DeleteSession(DNSID sid) {
 	return result;
 }
 
-LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type, const char* key, const char* value)
+LIBDN_API DNAsync<int>* LIBDN_CALL DN_GetNumSessions(uint32_t type, const char* key, const char* value)
 {
 	//build request.
 	RPCSessionIdsRequest* request = new RPCSessionIdsRequest();
@@ -101,22 +104,20 @@ LIBDN_API DNAsync<std::vector<DNSID>>* LIBDN_CALL DN_GetSessionIds(uint32_t type
 	DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
 
 	//Set callback.
-	auto result = new NPAsyncImpl<std::vector<DNSID>>();
+	auto result = new NPAsyncImpl<int>();
 	async->SetCallback([](DNAsync<RPCMessage>* async) {
-		auto asyncResult = (NPAsyncImpl<std::vector<DNSID>>*)async->GetUserData();
+		auto asyncResult = (NPAsyncImpl<int>*)async->GetUserData();
 		RPCMessage* message = async->GetResult();
 		auto reply = message->sessionidsresponse();
-		std::vector<DNSID>* result = new std::vector<DNSID>();
-		for (::google::protobuf::uint64 sessionId : reply.sessionids()) {
-			result->push_back((DNSID)sessionId);
-		}
-		asyncResult->SetResult(result);
+		g_dn.sessions = reply.sessionids();
+		int size = g_dn.sessions.size() - 1;
+		asyncResult->SetResult(&size);
 	}, result);
 
 	return result;
 }
 
-LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSession(DNSID sessionId) {
+LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSessionBySessionId(DNSID sessionId) {
 	//build request.
 	RPCGetSessionRequest* request = new RPCGetSessionRequest();
 	request->set_sessionid(sessionId);
@@ -139,4 +140,16 @@ LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSession(DNSID sessionId) {
 	}, result);
 
 	return result;
+}
+
+
+LIBDN_API DNSessionInfo* LIBDN_CALL DN_GetSessionByIndex(int index) {
+	if (index > MAX_SESSIONS || index > g_dn.sessions.size() -1) {
+		return NULL;
+	}
+	auto sessionRequest = DN_GetSessionBySessionId(g_dn.sessions.Get(index));
+	if (sessionRequest->Wait(7500) != nullptr) {
+		return sessionRequest->GetResult();
+	}
+	return NULL;
 }

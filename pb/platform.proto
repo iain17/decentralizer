@@ -24,22 +24,25 @@ message RPCMessage {
 		RPCHealthRequest healthRequest = 3;
 		RPCHealthReply HealthReply = 4;
 
-		//Address Book
-		RPCAddressBookPeerRequest AddressBookPeerRequest = 5;
-		RPCAddressBookPeerResponse AddressBookPeerResponse = 6;
-
 		//Matchmaking
-		RPCUpsertSessionRequest UpsertSessionRequest = 7;
-		RPCUpsertSessionResponse UpsertSessionResponse = 8;
+		RPCUpsertSessionRequest UpsertSessionRequest = 5;
+		RPCUpsertSessionResponse UpsertSessionResponse = 6;
 
-		RPCDeleteSessionRequest DeleteSessionRequest = 9;
-		RPCDeleteSessionResponse DeleteSessionResponse = 10;
+		RPCDeleteSessionRequest DeleteSessionRequest = 7;
+		RPCDeleteSessionResponse DeleteSessionResponse = 8;
 
-		RPCSessionIdsRequest SessionIdsRequest = 11;
-		RPCSessionIdsResponse SessionIdsResponse = 12;
+		RPCSessionIdsRequest SessionIdsRequest = 9;
+		RPCSessionIdsResponse SessionIdsResponse = 10;
 
-		RPCGetSessionRequest GetSessionRequest = 13;
-		RPCGetSessionResponse GetSessionResponse = 14;
+		RPCGetSessionRequest GetSessionRequest = 11;
+		RPCGetSessionResponse GetSessionResponse = 12;
+
+		//Address Book
+		RPCGetAddressBookPeerRequest GetAddressBookPeerRequest = 13;
+		RPCGetAddressBookPeerResponse GetAddressBookPeerResponse = 14;
+
+		RPCUpdateAddressBookPeerRequest UpdateAddressBookPeerRequest = 15;
+		RPCUpdateAddressBookPeerResponse UpdateAddressBookPeerResponse = 16;
 
 		//Storage
 

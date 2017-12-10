@@ -50,7 +50,7 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 
 		RPC_Shutdown();
 		RPC_Init();
-		if (DN_Connect(g_np.serverHost, g_np.serverPort))
+		if (DN_Connect(g_dn.serverHost, g_dn.serverPort))
 		{
 			Log_Print("Connected to RPC.\n");
 			g_rpc.sendMessageID = 0;
@@ -411,8 +411,8 @@ LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port) {
 	}
 
 	// store server name and port
-	strncpy(g_np.serverHost, serverAddr, sizeof(g_np.serverHost));
-	g_np.serverPort = port;
+	strncpy(g_dn.serverHost, serverAddr, sizeof(g_dn.serverHost));
+	g_dn.serverPort = port;
 
 	// code to connect to some server
 	hostent* hostEntity = gethostbyname(serverAddr);
