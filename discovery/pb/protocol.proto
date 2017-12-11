@@ -6,7 +6,7 @@ message Hearbeat {
     string message = 1;
 }
 
-message PeerInfo {
+message DPeerInfo {
     string network = 1;
     string id = 2;
     map<string, string> info = 3;
@@ -16,20 +16,20 @@ message Transfer {
     string data = 1;
 }
 
-message Peer {
+message DPeer {
     string ip = 1;
     int32 port = 2;
 }
 
 message Peers {
-    repeated Peer peers = 1;
+    repeated DPeer peers = 1;
 }
 
 message Message {
     int64 version = 1;
     oneof msg {
         Hearbeat heartbeat = 2;
-        PeerInfo peerInfo = 3;
+        DPeerInfo peerInfo = 3;
         Transfer transfer = 4;
         Peers peers = 5;
     }

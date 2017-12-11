@@ -56,7 +56,7 @@ func DecodeHeartBeat(r io.Reader) error {
 	return nil
 }
 
-func DecodePeerInfo(r io.Reader, network string) (*PeerInfo, error) {
+func DecodePeerInfo(r io.Reader, network string) (*DPeerInfo, error) {
 	message, err := Decode(r)
 	if err != nil {
 		return nil, err

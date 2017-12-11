@@ -26,42 +26,191 @@ class ServerContext;
 
 namespace pb {
 
-class Greeter final {
+class Decentralizer final {
  public:
   static constexpr char const* service_full_name() {
-    return "pb.Greeter";
+    return "pb.Decentralizer";
   }
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // Sends a greeting
-    virtual ::grpc::Status SayHello(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::pb::HelloReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::HelloReply>> AsyncSayHello(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::HelloReply>>(AsyncSayHelloRaw(context, request, cq));
+    //
+    // Platform
+    //
+    // Get health of decentralizer.
+    virtual ::grpc::Status GetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::pb::RPCHealthReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>> AsyncGetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>>(AsyncGetHealthRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::HelloReply>> PrepareAsyncSayHello(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::HelloReply>>(PrepareAsyncSayHelloRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>> PrepareAsyncGetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>>(PrepareAsyncGetHealthRaw(context, request, cq));
+    }
+    //
+    // Matchmaking
+    //
+    // Create or update a session. Takes session info, returns session id.
+    virtual ::grpc::Status UpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::pb::RPCUpsertSessionResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>> AsyncUpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>>(AsyncUpsertSessionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>> PrepareAsyncUpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>>(PrepareAsyncUpsertSessionRaw(context, request, cq));
+    }
+    // Delete a session. Takes session id, returns bool informing if the deletion was a success
+    virtual ::grpc::Status DeleteSession(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::pb::RPCDeleteSessionResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>> AsyncDeleteSession(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>>(AsyncDeleteSessionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>> PrepareAsyncDeleteSession(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>>(PrepareAsyncDeleteSessionRaw(context, request, cq));
+    }
+    // Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
+    virtual ::grpc::Status GetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::pb::RPCGetSessionIdsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionIdsResponse>> AsyncGetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionIdsResponse>>(AsyncGetSessionIdsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionIdsResponse>> PrepareAsyncGetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionIdsResponse>>(PrepareAsyncGetSessionIdsRaw(context, request, cq));
+    }
+    // Get an individual session. Takes session id and returns session info.
+    virtual ::grpc::Status GetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::pb::RPCGetSessionResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionResponse>> AsyncGetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionResponse>>(AsyncGetSessionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionResponse>> PrepareAsyncGetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionResponse>>(PrepareAsyncGetSessionRaw(context, request, cq));
+    }
+    //
+    // Address book
+    //
+    // Create or update a peer. Takes peer info, returns if it was a success.
+    virtual ::grpc::Status UpsertPeer(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::pb::RPCUpsertPeerResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertPeerResponse>> AsyncUpsertPeer(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertPeerResponse>>(AsyncUpsertPeerRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertPeerResponse>> PrepareAsyncUpsertPeer(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertPeerResponse>>(PrepareAsyncUpsertPeerRaw(context, request, cq));
+    }
+    // Get peer ids. takes a key and value to filter the peers by details. If left empty this filter will not apply and all will be fetched.
+    virtual ::grpc::Status GetPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::pb::RPCGetPeerIdsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerIdsResponse>> AsyncGetPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerIdsResponse>>(AsyncGetPeerIdsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerIdsResponse>> PrepareAsyncGetPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerIdsResponse>>(PrepareAsyncGetPeerIdsRaw(context, request, cq));
+    }
+    // Get an individual peer. Takes either a peer id or decentralizer id and returns the peer info.
+    virtual ::grpc::Status GetPeer(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::pb::RPCGetPeerResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerResponse>> AsyncGetPeer(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerResponse>>(AsyncGetPeerRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerResponse>> PrepareAsyncGetPeer(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerResponse>>(PrepareAsyncGetPeerRaw(context, request, cq));
     }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::HelloReply>* AsyncSayHelloRaw(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::HelloReply>* PrepareAsyncSayHelloRaw(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>* AsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>* PrepareAsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>* AsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>* PrepareAsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>* AsyncDeleteSessionRaw(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>* PrepareAsyncDeleteSessionRaw(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionIdsResponse>* AsyncGetSessionIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionIdsResponse>* PrepareAsyncGetSessionIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionResponse>* AsyncGetSessionRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetSessionResponse>* PrepareAsyncGetSessionRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertPeerResponse>* AsyncUpsertPeerRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertPeerResponse>* PrepareAsyncUpsertPeerRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerIdsResponse>* AsyncGetPeerIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerIdsResponse>* PrepareAsyncGetPeerIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerResponse>* AsyncGetPeerRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerResponse>* PrepareAsyncGetPeerRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status SayHello(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::pb::HelloReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::HelloReply>> AsyncSayHello(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::HelloReply>>(AsyncSayHelloRaw(context, request, cq));
+    ::grpc::Status GetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::pb::RPCHealthReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>> AsyncGetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>>(AsyncGetHealthRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::HelloReply>> PrepareAsyncSayHello(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::HelloReply>>(PrepareAsyncSayHelloRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>> PrepareAsyncGetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>>(PrepareAsyncGetHealthRaw(context, request, cq));
+    }
+    ::grpc::Status UpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::pb::RPCUpsertSessionResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>> AsyncUpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>>(AsyncUpsertSessionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>> PrepareAsyncUpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>>(PrepareAsyncUpsertSessionRaw(context, request, cq));
+    }
+    ::grpc::Status DeleteSession(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::pb::RPCDeleteSessionResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>> AsyncDeleteSession(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>>(AsyncDeleteSessionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>> PrepareAsyncDeleteSession(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>>(PrepareAsyncDeleteSessionRaw(context, request, cq));
+    }
+    ::grpc::Status GetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::pb::RPCGetSessionIdsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>> AsyncGetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>>(AsyncGetSessionIdsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>> PrepareAsyncGetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>>(PrepareAsyncGetSessionIdsRaw(context, request, cq));
+    }
+    ::grpc::Status GetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::pb::RPCGetSessionResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionResponse>> AsyncGetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionResponse>>(AsyncGetSessionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionResponse>> PrepareAsyncGetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionResponse>>(PrepareAsyncGetSessionRaw(context, request, cq));
+    }
+    ::grpc::Status UpsertPeer(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::pb::RPCUpsertPeerResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertPeerResponse>> AsyncUpsertPeer(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertPeerResponse>>(AsyncUpsertPeerRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertPeerResponse>> PrepareAsyncUpsertPeer(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertPeerResponse>>(PrepareAsyncUpsertPeerRaw(context, request, cq));
+    }
+    ::grpc::Status GetPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::pb::RPCGetPeerIdsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerIdsResponse>> AsyncGetPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerIdsResponse>>(AsyncGetPeerIdsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerIdsResponse>> PrepareAsyncGetPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerIdsResponse>>(PrepareAsyncGetPeerIdsRaw(context, request, cq));
+    }
+    ::grpc::Status GetPeer(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::pb::RPCGetPeerResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>> AsyncGetPeer(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>>(AsyncGetPeerRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>> PrepareAsyncGetPeer(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>>(PrepareAsyncGetPeerRaw(context, request, cq));
     }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    ::grpc::ClientAsyncResponseReader< ::pb::HelloReply>* AsyncSayHelloRaw(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::pb::HelloReply>* PrepareAsyncSayHelloRaw(::grpc::ClientContext* context, const ::pb::HelloRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::RpcMethod rpcmethod_SayHello_;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>* AsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>* PrepareAsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>* AsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>* PrepareAsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>* AsyncDeleteSessionRaw(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>* PrepareAsyncDeleteSessionRaw(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* AsyncGetSessionIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* PrepareAsyncGetSessionIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionResponse>* AsyncGetSessionRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionResponse>* PrepareAsyncGetSessionRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertPeerResponse>* AsyncUpsertPeerRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertPeerResponse>* PrepareAsyncUpsertPeerRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertPeerRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerIdsResponse>* AsyncGetPeerIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerIdsResponse>* PrepareAsyncGetPeerIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerIdsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>* AsyncGetPeerRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>* PrepareAsyncGetPeerRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::RpcMethod rpcmethod_GetHealth_;
+    const ::grpc::RpcMethod rpcmethod_UpsertSession_;
+    const ::grpc::RpcMethod rpcmethod_DeleteSession_;
+    const ::grpc::RpcMethod rpcmethod_GetSessionIds_;
+    const ::grpc::RpcMethod rpcmethod_GetSession_;
+    const ::grpc::RpcMethod rpcmethod_UpsertPeer_;
+    const ::grpc::RpcMethod rpcmethod_GetPeerIds_;
+    const ::grpc::RpcMethod rpcmethod_GetPeer_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -69,70 +218,492 @@ class Greeter final {
    public:
     Service();
     virtual ~Service();
-    // Sends a greeting
-    virtual ::grpc::Status SayHello(::grpc::ServerContext* context, const ::pb::HelloRequest* request, ::pb::HelloReply* response);
+    //
+    // Platform
+    //
+    // Get health of decentralizer.
+    virtual ::grpc::Status GetHealth(::grpc::ServerContext* context, const ::pb::RPCHealthRequest* request, ::pb::RPCHealthReply* response);
+    //
+    // Matchmaking
+    //
+    // Create or update a session. Takes session info, returns session id.
+    virtual ::grpc::Status UpsertSession(::grpc::ServerContext* context, const ::pb::RPCUpsertSessionRequest* request, ::pb::RPCUpsertSessionResponse* response);
+    // Delete a session. Takes session id, returns bool informing if the deletion was a success
+    virtual ::grpc::Status DeleteSession(::grpc::ServerContext* context, const ::pb::RPCDeleteSessionRequest* request, ::pb::RPCDeleteSessionResponse* response);
+    // Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
+    virtual ::grpc::Status GetSessionIds(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsRequest* request, ::pb::RPCGetSessionIdsResponse* response);
+    // Get an individual session. Takes session id and returns session info.
+    virtual ::grpc::Status GetSession(::grpc::ServerContext* context, const ::pb::RPCGetSessionRequest* request, ::pb::RPCGetSessionResponse* response);
+    //
+    // Address book
+    //
+    // Create or update a peer. Takes peer info, returns if it was a success.
+    virtual ::grpc::Status UpsertPeer(::grpc::ServerContext* context, const ::pb::RPCUpsertPeerRequest* request, ::pb::RPCUpsertPeerResponse* response);
+    // Get peer ids. takes a key and value to filter the peers by details. If left empty this filter will not apply and all will be fetched.
+    virtual ::grpc::Status GetPeerIds(::grpc::ServerContext* context, const ::pb::RPCGetPeerIdsRequest* request, ::pb::RPCGetPeerIdsResponse* response);
+    // Get an individual peer. Takes either a peer id or decentralizer id and returns the peer info.
+    virtual ::grpc::Status GetPeer(::grpc::ServerContext* context, const ::pb::RPCGetPeerRequest* request, ::pb::RPCGetPeerResponse* response);
   };
   template <class BaseClass>
-  class WithAsyncMethod_SayHello : public BaseClass {
+  class WithAsyncMethod_GetHealth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_SayHello() {
+    WithAsyncMethod_GetHealth() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_SayHello() override {
+    ~WithAsyncMethod_GetHealth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SayHello(::grpc::ServerContext* context, const ::pb::HelloRequest* request, ::pb::HelloReply* response) final override {
+    ::grpc::Status GetHealth(::grpc::ServerContext* context, const ::pb::RPCHealthRequest* request, ::pb::RPCHealthReply* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSayHello(::grpc::ServerContext* context, ::pb::HelloRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::HelloReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetHealth(::grpc::ServerContext* context, ::pb::RPCHealthRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCHealthReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SayHello<Service > AsyncService;
   template <class BaseClass>
-  class WithGenericMethod_SayHello : public BaseClass {
+  class WithAsyncMethod_UpsertSession : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_SayHello() {
-      ::grpc::Service::MarkMethodGeneric(0);
+    WithAsyncMethod_UpsertSession() {
+      ::grpc::Service::MarkMethodAsync(1);
     }
-    ~WithGenericMethod_SayHello() override {
+    ~WithAsyncMethod_UpsertSession() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SayHello(::grpc::ServerContext* context, const ::pb::HelloRequest* request, ::pb::HelloReply* response) final override {
+    ::grpc::Status UpsertSession(::grpc::ServerContext* context, const ::pb::RPCUpsertSessionRequest* request, ::pb::RPCUpsertSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpsertSession(::grpc::ServerContext* context, ::pb::RPCUpsertSessionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCUpsertSessionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_DeleteSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_DeleteSession() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_DeleteSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeleteSession(::grpc::ServerContext* context, const ::pb::RPCDeleteSessionRequest* request, ::pb::RPCDeleteSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDeleteSession(::grpc::ServerContext* context, ::pb::RPCDeleteSessionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCDeleteSessionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetSessionIds : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetSessionIds() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_GetSessionIds() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSessionIds(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsRequest* request, ::pb::RPCGetSessionIdsResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetSessionIds(::grpc::ServerContext* context, ::pb::RPCGetSessionIdsRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetSessionIdsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetSession() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_GetSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSession(::grpc::ServerContext* context, const ::pb::RPCGetSessionRequest* request, ::pb::RPCGetSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetSession(::grpc::ServerContext* context, ::pb::RPCGetSessionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetSessionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_UpsertPeer : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_UpsertPeer() {
+      ::grpc::Service::MarkMethodAsync(5);
+    }
+    ~WithAsyncMethod_UpsertPeer() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpsertPeer(::grpc::ServerContext* context, const ::pb::RPCUpsertPeerRequest* request, ::pb::RPCUpsertPeerResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpsertPeer(::grpc::ServerContext* context, ::pb::RPCUpsertPeerRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCUpsertPeerResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetPeerIds : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetPeerIds() {
+      ::grpc::Service::MarkMethodAsync(6);
+    }
+    ~WithAsyncMethod_GetPeerIds() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPeerIds(::grpc::ServerContext* context, const ::pb::RPCGetPeerIdsRequest* request, ::pb::RPCGetPeerIdsResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetPeerIds(::grpc::ServerContext* context, ::pb::RPCGetPeerIdsRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPeerIdsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetPeer : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetPeer() {
+      ::grpc::Service::MarkMethodAsync(7);
+    }
+    ~WithAsyncMethod_GetPeer() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPeer(::grpc::ServerContext* context, const ::pb::RPCGetPeerRequest* request, ::pb::RPCGetPeerResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetPeer(::grpc::ServerContext* context, ::pb::RPCGetPeerRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPeerResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetHealth<WithAsyncMethod_UpsertSession<WithAsyncMethod_DeleteSession<WithAsyncMethod_GetSessionIds<WithAsyncMethod_GetSession<WithAsyncMethod_UpsertPeer<WithAsyncMethod_GetPeerIds<WithAsyncMethod_GetPeer<Service > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithGenericMethod_GetHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetHealth() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_GetHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetHealth(::grpc::ServerContext* context, const ::pb::RPCHealthRequest* request, ::pb::RPCHealthReply* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SayHello : public BaseClass {
+  class WithGenericMethod_UpsertSession : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_SayHello() {
-      ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::StreamedUnaryHandler< ::pb::HelloRequest, ::pb::HelloReply>(std::bind(&WithStreamedUnaryMethod_SayHello<BaseClass>::StreamedSayHello, this, std::placeholders::_1, std::placeholders::_2)));
+    WithGenericMethod_UpsertSession() {
+      ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithStreamedUnaryMethod_SayHello() override {
+    ~WithGenericMethod_UpsertSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpsertSession(::grpc::ServerContext* context, const ::pb::RPCUpsertSessionRequest* request, ::pb::RPCUpsertSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_DeleteSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_DeleteSession() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_DeleteSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeleteSession(::grpc::ServerContext* context, const ::pb::RPCDeleteSessionRequest* request, ::pb::RPCDeleteSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetSessionIds : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetSessionIds() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_GetSessionIds() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSessionIds(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsRequest* request, ::pb::RPCGetSessionIdsResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetSession() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_GetSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSession(::grpc::ServerContext* context, const ::pb::RPCGetSessionRequest* request, ::pb::RPCGetSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_UpsertPeer : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_UpsertPeer() {
+      ::grpc::Service::MarkMethodGeneric(5);
+    }
+    ~WithGenericMethod_UpsertPeer() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpsertPeer(::grpc::ServerContext* context, const ::pb::RPCUpsertPeerRequest* request, ::pb::RPCUpsertPeerResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetPeerIds : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetPeerIds() {
+      ::grpc::Service::MarkMethodGeneric(6);
+    }
+    ~WithGenericMethod_GetPeerIds() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPeerIds(::grpc::ServerContext* context, const ::pb::RPCGetPeerIdsRequest* request, ::pb::RPCGetPeerIdsResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetPeer : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetPeer() {
+      ::grpc::Service::MarkMethodGeneric(7);
+    }
+    ~WithGenericMethod_GetPeer() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPeer(::grpc::ServerContext* context, const ::pb::RPCGetPeerRequest* request, ::pb::RPCGetPeerResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetHealth() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCHealthRequest, ::pb::RPCHealthReply>(std::bind(&WithStreamedUnaryMethod_GetHealth<BaseClass>::StreamedGetHealth, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetHealth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SayHello(::grpc::ServerContext* context, const ::pb::HelloRequest* request, ::pb::HelloReply* response) final override {
+    ::grpc::Status GetHealth(::grpc::ServerContext* context, const ::pb::RPCHealthRequest* request, ::pb::RPCHealthReply* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSayHello(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::HelloRequest,::pb::HelloReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetHealth(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCHealthRequest,::pb::RPCHealthReply>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SayHello<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_UpsertSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_UpsertSession() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCUpsertSessionRequest, ::pb::RPCUpsertSessionResponse>(std::bind(&WithStreamedUnaryMethod_UpsertSession<BaseClass>::StreamedUpsertSession, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_UpsertSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status UpsertSession(::grpc::ServerContext* context, const ::pb::RPCUpsertSessionRequest* request, ::pb::RPCUpsertSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedUpsertSession(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCUpsertSessionRequest,::pb::RPCUpsertSessionResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_DeleteSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_DeleteSession() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCDeleteSessionRequest, ::pb::RPCDeleteSessionResponse>(std::bind(&WithStreamedUnaryMethod_DeleteSession<BaseClass>::StreamedDeleteSession, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_DeleteSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DeleteSession(::grpc::ServerContext* context, const ::pb::RPCDeleteSessionRequest* request, ::pb::RPCDeleteSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDeleteSession(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCDeleteSessionRequest,::pb::RPCDeleteSessionResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetSessionIds : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetSessionIds() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCGetSessionIdsRequest, ::pb::RPCGetSessionIdsResponse>(std::bind(&WithStreamedUnaryMethod_GetSessionIds<BaseClass>::StreamedGetSessionIds, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetSessionIds() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetSessionIds(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsRequest* request, ::pb::RPCGetSessionIdsResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetSessionIds(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetSessionIdsRequest,::pb::RPCGetSessionIdsResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetSession : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetSession() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCGetSessionRequest, ::pb::RPCGetSessionResponse>(std::bind(&WithStreamedUnaryMethod_GetSession<BaseClass>::StreamedGetSession, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetSession() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetSession(::grpc::ServerContext* context, const ::pb::RPCGetSessionRequest* request, ::pb::RPCGetSessionResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetSession(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetSessionRequest,::pb::RPCGetSessionResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_UpsertPeer : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_UpsertPeer() {
+      ::grpc::Service::MarkMethodStreamed(5,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCUpsertPeerRequest, ::pb::RPCUpsertPeerResponse>(std::bind(&WithStreamedUnaryMethod_UpsertPeer<BaseClass>::StreamedUpsertPeer, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_UpsertPeer() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status UpsertPeer(::grpc::ServerContext* context, const ::pb::RPCUpsertPeerRequest* request, ::pb::RPCUpsertPeerResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedUpsertPeer(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCUpsertPeerRequest,::pb::RPCUpsertPeerResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetPeerIds : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetPeerIds() {
+      ::grpc::Service::MarkMethodStreamed(6,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPeerIdsRequest, ::pb::RPCGetPeerIdsResponse>(std::bind(&WithStreamedUnaryMethod_GetPeerIds<BaseClass>::StreamedGetPeerIds, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetPeerIds() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetPeerIds(::grpc::ServerContext* context, const ::pb::RPCGetPeerIdsRequest* request, ::pb::RPCGetPeerIdsResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetPeerIds(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetPeerIdsRequest,::pb::RPCGetPeerIdsResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetPeer : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetPeer() {
+      ::grpc::Service::MarkMethodStreamed(7,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPeerRequest, ::pb::RPCGetPeerResponse>(std::bind(&WithStreamedUnaryMethod_GetPeer<BaseClass>::StreamedGetPeer, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetPeer() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetPeer(::grpc::ServerContext* context, const ::pb::RPCGetPeerRequest* request, ::pb::RPCGetPeerResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetPeer(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetPeerRequest,::pb::RPCGetPeerResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<Service > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SayHello<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<Service > > > > > > > > StreamedService;
 };
 
 }  // namespace pb

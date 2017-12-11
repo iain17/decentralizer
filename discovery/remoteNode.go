@@ -108,7 +108,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 	}
 }
 
-func (rn *RemoteNode) receiveSharedPeers(peers []*pb.Peer) {
+func (rn *RemoteNode) receiveSharedPeers(peers []*pb.DPeer) {
 	if len(peers) > rn.ln.discovery.max {
 		rn.logger.Debug("Sent too many peers")
 		return
@@ -122,7 +122,7 @@ func (rn *RemoteNode) receiveSharedPeers(peers []*pb.Peer) {
 }
 
 func (rn *RemoteNode) SharePeers() error {
-	var peers []*pb.Peer
+	var peers []*pb.DPeer
 	for _, peer := range rn.ln.netTableService.GetPeers() {
 		//Don't share himself to him.
 		if rn.conn.RemoteAddr().String() == peer.conn.RemoteAddr().String() {
@@ -138,7 +138,7 @@ func (rn *RemoteNode) SharePeers() error {
 			rn.logger.Warning(err)
 			continue
 		}
-		peers = append(peers, &pb.Peer{
+		peers = append(peers, &pb.DPeer{
 			Ip: ipPort[0],
 			Port: int32(port),
 		})

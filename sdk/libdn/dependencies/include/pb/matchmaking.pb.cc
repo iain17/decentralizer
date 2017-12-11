@@ -10,23 +10,26 @@
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
-#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#include <google/protobuf/descriptor.h>
+#include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/reflection_ops.h>
+#include <google/protobuf/wire_format.h>
 // This is a temporary google only hack
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
 #include "third_party/protobuf/version.h"
 #endif
 // @@protoc_insertion_point(includes)
 namespace pb {
-class SessionInfo_DetailsEntry_DoNotUseDefaultTypeInternal {
+class Session_DetailsEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SessionInfo_DetailsEntry_DoNotUse>
+  ::google::protobuf::internal::ExplicitlyConstructed<Session_DetailsEntry_DoNotUse>
       _instance;
-} _SessionInfo_DetailsEntry_DoNotUse_default_instance_;
-class SessionInfoDefaultTypeInternal {
+} _Session_DetailsEntry_DoNotUse_default_instance_;
+class SessionDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SessionInfo>
+  ::google::protobuf::internal::ExplicitlyConstructed<Session>
       _instance;
-} _SessionInfo_default_instance_;
+} _Session_default_instance_;
 class DNSessionResponseDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<DNSessionResponse>
@@ -57,16 +60,16 @@ class RPCDeleteSessionResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<RPCDeleteSessionResponse>
       _instance;
 } _RPCDeleteSessionResponse_default_instance_;
-class RPCSessionIdsRequestDefaultTypeInternal {
+class RPCGetSessionIdsRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCSessionIdsRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetSessionIdsRequest>
       _instance;
-} _RPCSessionIdsRequest_default_instance_;
-class RPCSessionIdsResponseDefaultTypeInternal {
+} _RPCGetSessionIdsRequest_default_instance_;
+class RPCGetSessionIdsResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCSessionIdsResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetSessionIdsResponse>
       _instance;
-} _RPCSessionIdsResponse_default_instance_;
+} _RPCGetSessionIdsResponse_default_instance_;
 class RPCGetSessionRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<RPCGetSessionRequest>
@@ -79,7 +82,7 @@ class RPCGetSessionResponseDefaultTypeInternal {
 } _RPCGetSessionResponse_default_instance_;
 }  // namespace pb
 namespace protobuf_pb_2fmatchmaking_2eproto {
-void InitDefaultsSessionInfo_DetailsEntry_DoNotUseImpl() {
+void InitDefaultsSession_DetailsEntry_DoNotUseImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -88,18 +91,18 @@ void InitDefaultsSessionInfo_DetailsEntry_DoNotUseImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_SessionInfo_DetailsEntry_DoNotUse_default_instance_;
-    new (ptr) ::pb::SessionInfo_DetailsEntry_DoNotUse();
+    void* ptr = &::pb::_Session_DetailsEntry_DoNotUse_default_instance_;
+    new (ptr) ::pb::Session_DetailsEntry_DoNotUse();
   }
-  ::pb::SessionInfo_DetailsEntry_DoNotUse::InitAsDefaultInstance();
+  ::pb::Session_DetailsEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-void InitDefaultsSessionInfo_DetailsEntry_DoNotUse() {
+void InitDefaultsSession_DetailsEntry_DoNotUse() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSessionInfo_DetailsEntry_DoNotUseImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSession_DetailsEntry_DoNotUseImpl);
 }
 
-void InitDefaultsSessionInfoImpl() {
+void InitDefaultsSessionImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -107,18 +110,18 @@ void InitDefaultsSessionInfoImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfo_DetailsEntry_DoNotUse();
+  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession_DetailsEntry_DoNotUse();
   {
-    void* ptr = &::pb::_SessionInfo_default_instance_;
-    new (ptr) ::pb::SessionInfo();
+    void* ptr = &::pb::_Session_default_instance_;
+    new (ptr) ::pb::Session();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::SessionInfo::InitAsDefaultInstance();
+  ::pb::Session::InitAsDefaultInstance();
 }
 
-void InitDefaultsSessionInfo() {
+void InitDefaultsSession() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSessionInfoImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSessionImpl);
 }
 
 void InitDefaultsDNSessionResponseImpl() {
@@ -129,7 +132,7 @@ void InitDefaultsDNSessionResponseImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfo();
+  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
   {
     void* ptr = &::pb::_DNSessionResponse_default_instance_;
     new (ptr) ::pb::DNSessionResponse();
@@ -172,7 +175,7 @@ void InitDefaultsRPCUpsertSessionRequestImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfo();
+  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
   {
     void* ptr = &::pb::_RPCUpsertSessionRequest_default_instance_;
     new (ptr) ::pb::RPCUpsertSessionRequest();
@@ -249,7 +252,7 @@ void InitDefaultsRPCDeleteSessionResponse() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCDeleteSessionResponseImpl);
 }
 
-void InitDefaultsRPCSessionIdsRequestImpl() {
+void InitDefaultsRPCGetSessionIdsRequestImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -258,19 +261,19 @@ void InitDefaultsRPCSessionIdsRequestImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_RPCSessionIdsRequest_default_instance_;
-    new (ptr) ::pb::RPCSessionIdsRequest();
+    void* ptr = &::pb::_RPCGetSessionIdsRequest_default_instance_;
+    new (ptr) ::pb::RPCGetSessionIdsRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::RPCSessionIdsRequest::InitAsDefaultInstance();
+  ::pb::RPCGetSessionIdsRequest::InitAsDefaultInstance();
 }
 
-void InitDefaultsRPCSessionIdsRequest() {
+void InitDefaultsRPCGetSessionIdsRequest() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCSessionIdsRequestImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetSessionIdsRequestImpl);
 }
 
-void InitDefaultsRPCSessionIdsResponseImpl() {
+void InitDefaultsRPCGetSessionIdsResponseImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -279,16 +282,16 @@ void InitDefaultsRPCSessionIdsResponseImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_RPCSessionIdsResponse_default_instance_;
-    new (ptr) ::pb::RPCSessionIdsResponse();
+    void* ptr = &::pb::_RPCGetSessionIdsResponse_default_instance_;
+    new (ptr) ::pb::RPCGetSessionIdsResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::RPCSessionIdsResponse::InitAsDefaultInstance();
+  ::pb::RPCGetSessionIdsResponse::InitAsDefaultInstance();
 }
 
-void InitDefaultsRPCSessionIdsResponse() {
+void InitDefaultsRPCGetSessionIdsResponse() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCSessionIdsResponseImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetSessionIdsResponseImpl);
 }
 
 void InitDefaultsRPCGetSessionRequestImpl() {
@@ -320,7 +323,7 @@ void InitDefaultsRPCGetSessionResponseImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfo();
+  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
   {
     void* ptr = &::pb::_RPCGetSessionResponse_default_instance_;
     new (ptr) ::pb::RPCGetSessionResponse();
@@ -334,42 +337,227 @@ void InitDefaultsRPCGetSessionResponse() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetSessionResponseImpl);
 }
 
+::google::protobuf::Metadata file_level_metadata[12];
+
+const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session_DetailsEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session_DetailsEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session_DetailsEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session_DetailsEntry_DoNotUse, value_),
+  0,
+  1,
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, pid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, dnid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, sessionid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, address_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, port_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, details_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionResponse, results_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionRequest, type_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertSessionRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertSessionRequest, session_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertSessionResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertSessionResponse, sessionid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCDeleteSessionRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCDeleteSessionRequest, sessionid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCDeleteSessionResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCDeleteSessionResponse, result_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionIdsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionIdsRequest, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionIdsRequest, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionIdsRequest, value_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionIdsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionIdsResponse, sessionids_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionRequest, sessionid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetSessionResponse, session_),
+};
+static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, 7, sizeof(::pb::Session_DetailsEntry_DoNotUse)},
+  { 9, -1, sizeof(::pb::Session)},
+  { 22, -1, sizeof(::pb::DNSessionResponse)},
+  { 28, -1, sizeof(::pb::DNSessionRequest)},
+  { 34, -1, sizeof(::pb::RPCUpsertSessionRequest)},
+  { 40, -1, sizeof(::pb::RPCUpsertSessionResponse)},
+  { 46, -1, sizeof(::pb::RPCDeleteSessionRequest)},
+  { 52, -1, sizeof(::pb::RPCDeleteSessionResponse)},
+  { 58, -1, sizeof(::pb::RPCGetSessionIdsRequest)},
+  { 66, -1, sizeof(::pb::RPCGetSessionIdsResponse)},
+  { 72, -1, sizeof(::pb::RPCGetSessionRequest)},
+  { 78, -1, sizeof(::pb::RPCGetSessionResponse)},
+};
+
+static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Session_DetailsEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Session_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCUpsertSessionRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCUpsertSessionResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCDeleteSessionRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCDeleteSessionResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetSessionIdsRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetSessionIdsResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetSessionRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetSessionResponse_default_instance_),
+};
+
+void protobuf_AssignDescriptors() {
+  AddDescriptors();
+  ::google::protobuf::MessageFactory* factory = NULL;
+  AssignDescriptors(
+      "pb/matchmaking.proto", schemas, file_default_instances, TableStruct::offsets, factory,
+      file_level_metadata, NULL, NULL);
+}
+
+void protobuf_AssignDescriptorsOnce() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &protobuf_AssignDescriptors);
+}
+
+void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
+void protobuf_RegisterTypes(const ::std::string&) {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 12);
+}
+
+void AddDescriptorsImpl() {
+  InitDefaults();
+  static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+      "\n\024pb/matchmaking.proto\022\002pb\"\315\001\n\007Session\022\013"
+      "\n\003pId\030\001 \001(\t\022\014\n\004dnId\030\002 \001(\004\022\021\n\tsessionId\030\003"
+      " \001(\004\022\014\n\004type\030\004 \001(\004\022\014\n\004name\030\005 \001(\t\022\017\n\007addr"
+      "ess\030\006 \001(\r\022\014\n\004port\030\007 \001(\r\022)\n\007details\030\010 \003(\013"
+      "2\030.pb.Session.DetailsEntry\032.\n\014DetailsEnt"
+      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"1\n\021DN"
+      "SessionResponse\022\034\n\007results\030\001 \003(\0132\013.pb.Se"
+      "ssion\" \n\020DNSessionRequest\022\014\n\004type\030\001 \001(\004\""
+      "7\n\027RPCUpsertSessionRequest\022\034\n\007session\030\001 "
+      "\001(\0132\013.pb.Session\"-\n\030RPCUpsertSessionResp"
+      "onse\022\021\n\tsessionId\030\001 \001(\004\",\n\027RPCDeleteSess"
+      "ionRequest\022\021\n\tsessionId\030\001 \001(\004\"*\n\030RPCDele"
+      "teSessionResponse\022\016\n\006result\030\001 \001(\010\"C\n\027RPC"
+      "GetSessionIdsRequest\022\014\n\004type\030\001 \001(\004\022\013\n\003ke"
+      "y\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\".\n\030RPCGetSessionI"
+      "dsResponse\022\022\n\nsessionIds\030\001 \003(\004\")\n\024RPCGet"
+      "SessionRequest\022\021\n\tsessionId\030\001 \001(\004\"5\n\025RPC"
+      "GetSessionResponse\022\034\n\007session\030\001 \001(\0132\013.pb"
+      ".Sessionb\006proto3"
+  };
+  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
+      descriptor, 736);
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
+    "pb/matchmaking.proto", &protobuf_RegisterTypes);
+}
+
+void AddDescriptors() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &AddDescriptorsImpl);
+}
+// Force AddDescriptors() to be called at dynamic initialization time.
+struct StaticDescriptorInitializer {
+  StaticDescriptorInitializer() {
+    AddDescriptors();
+  }
+} static_descriptor_initializer;
 }  // namespace protobuf_pb_2fmatchmaking_2eproto
 namespace pb {
 
 // ===================================================================
 
-SessionInfo_DetailsEntry_DoNotUse::SessionInfo_DetailsEntry_DoNotUse() {}
-SessionInfo_DetailsEntry_DoNotUse::SessionInfo_DetailsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
-void SessionInfo_DetailsEntry_DoNotUse::MergeFrom(const SessionInfo_DetailsEntry_DoNotUse& other) {
+Session_DetailsEntry_DoNotUse::Session_DetailsEntry_DoNotUse() {}
+Session_DetailsEntry_DoNotUse::Session_DetailsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void Session_DetailsEntry_DoNotUse::MergeFrom(const Session_DetailsEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
+::google::protobuf::Metadata Session_DetailsEntry_DoNotUse::GetMetadata() const {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[0];
+}
+void Session_DetailsEntry_DoNotUse::MergeFrom(
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
+}
+
 
 // ===================================================================
 
-void SessionInfo::InitAsDefaultInstance() {
+void Session::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SessionInfo::kPIdFieldNumber;
-const int SessionInfo::kDnIdFieldNumber;
-const int SessionInfo::kSessionIdFieldNumber;
-const int SessionInfo::kTypeFieldNumber;
-const int SessionInfo::kNameFieldNumber;
-const int SessionInfo::kAddressFieldNumber;
-const int SessionInfo::kPortFieldNumber;
-const int SessionInfo::kDetailsFieldNumber;
+const int Session::kPIdFieldNumber;
+const int Session::kDnIdFieldNumber;
+const int Session::kSessionIdFieldNumber;
+const int Session::kTypeFieldNumber;
+const int Session::kNameFieldNumber;
+const int Session::kAddressFieldNumber;
+const int Session::kPortFieldNumber;
+const int Session::kDetailsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-SessionInfo::SessionInfo()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+Session::Session()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfo();
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.SessionInfo)
+  // @@protoc_insertion_point(constructor:pb.Session)
 }
-SessionInfo::SessionInfo(const SessionInfo& from)
-  : ::google::protobuf::MessageLite(),
+Session::Session(const Session& from)
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -385,10 +573,10 @@ SessionInfo::SessionInfo(const SessionInfo& from)
   ::memcpy(&dnid_, &from.dnid_,
     static_cast<size_t>(reinterpret_cast<char*>(&port_) -
     reinterpret_cast<char*>(&dnid_)) + sizeof(port_));
-  // @@protoc_insertion_point(copy_constructor:pb.SessionInfo)
+  // @@protoc_insertion_point(copy_constructor:pb.Session)
 }
 
-void SessionInfo::SharedCtor() {
+void Session::SharedCtor() {
   pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&dnid_, 0, static_cast<size_t>(
@@ -397,36 +585,41 @@ void SessionInfo::SharedCtor() {
   _cached_size_ = 0;
 }
 
-SessionInfo::~SessionInfo() {
-  // @@protoc_insertion_point(destructor:pb.SessionInfo)
+Session::~Session() {
+  // @@protoc_insertion_point(destructor:pb.Session)
   SharedDtor();
 }
 
-void SessionInfo::SharedDtor() {
+void Session::SharedDtor() {
   pid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-void SessionInfo::SetCachedSize(int size) const {
+void Session::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const SessionInfo& SessionInfo::default_instance() {
-  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfo();
+const ::google::protobuf::Descriptor* Session::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const Session& Session::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
   return *internal_default_instance();
 }
 
-SessionInfo* SessionInfo::New(::google::protobuf::Arena* arena) const {
-  SessionInfo* n = new SessionInfo;
+Session* Session::New(::google::protobuf::Arena* arena) const {
+  Session* n = new Session;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void SessionInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.SessionInfo)
+void Session::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.Session)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -440,17 +633,11 @@ void SessionInfo::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool SessionInfo::MergePartialFromCodedStream(
+bool Session::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
-  // @@protoc_insertion_point(parse_start:pb.SessionInfo)
+  // @@protoc_insertion_point(parse_start:pb.Session)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -465,7 +652,7 @@ bool SessionInfo::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->pid().data(), static_cast<int>(this->pid().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.SessionInfo.pId"));
+            "pb.Session.pId"));
         } else {
           goto handle_unusual;
         }
@@ -523,7 +710,7 @@ bool SessionInfo::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->name().data(), static_cast<int>(this->name().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.SessionInfo.name"));
+            "pb.Session.name"));
         } else {
           goto handle_unusual;
         }
@@ -562,8 +749,8 @@ bool SessionInfo::MergePartialFromCodedStream(
       case 8: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(66u /* 66 & 0xFF */)) {
-          SessionInfo_DetailsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapFieldLite<
-              SessionInfo_DetailsEntry_DoNotUse,
+          Session_DetailsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              Session_DetailsEntry_DoNotUse,
               ::std::string, ::std::string,
               ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
               ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
@@ -574,11 +761,11 @@ bool SessionInfo::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             parser.key().data(), static_cast<int>(parser.key().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.SessionInfo.DetailsEntry.key"));
+            "pb.Session.DetailsEntry.key"));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             parser.value().data(), static_cast<int>(parser.value().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.SessionInfo.DetailsEntry.value"));
+            "pb.Session.DetailsEntry.value"));
         } else {
           goto handle_unusual;
         }
@@ -590,24 +777,24 @@ bool SessionInfo::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.SessionInfo)
+  // @@protoc_insertion_point(parse_success:pb.Session)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.SessionInfo)
+  // @@protoc_insertion_point(parse_failure:pb.Session)
   return false;
 #undef DO_
 }
 
-void SessionInfo::SerializeWithCachedSizes(
+void Session::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.SessionInfo)
+  // @@protoc_insertion_point(serialize_start:pb.Session)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -616,7 +803,7 @@ void SessionInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->pid().data(), static_cast<int>(this->pid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.SessionInfo.pId");
+      "pb.Session.pId");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->pid(), output);
   }
@@ -641,7 +828,7 @@ void SessionInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.SessionInfo.name");
+      "pb.Session.name");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       5, this->name(), output);
   }
@@ -667,11 +854,11 @@ void SessionInfo::SerializeWithCachedSizes(
         ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.SessionInfo.DetailsEntry.key");
+          "pb.Session.DetailsEntry.key");
         ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->second.data(), static_cast<int>(p->second.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.SessionInfo.DetailsEntry.value");
+          "pb.Session.DetailsEntry.value");
       }
     };
 
@@ -687,44 +874,168 @@ void SessionInfo::SerializeWithCachedSizes(
         items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
-      ::google::protobuf::scoped_ptr<SessionInfo_DetailsEntry_DoNotUse> entry;
+      ::google::protobuf::scoped_ptr<Session_DetailsEntry_DoNotUse> entry;
       for (size_type i = 0; i < n; i++) {
         entry.reset(details_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
-        ::google::protobuf::internal::WireFormatLite::WriteMessage(
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
             8, *entry, output);
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
-      ::google::protobuf::scoped_ptr<SessionInfo_DetailsEntry_DoNotUse> entry;
+      ::google::protobuf::scoped_ptr<Session_DetailsEntry_DoNotUse> entry;
       for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
           it = this->details().begin();
           it != this->details().end(); ++it) {
         entry.reset(details_.NewEntryWrapper(
             it->first, it->second));
-        ::google::protobuf::internal::WireFormatLite::WriteMessage(
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
             8, *entry, output);
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
-  // @@protoc_insertion_point(serialize_end:pb.SessionInfo)
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.Session)
 }
 
-size_t SessionInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.SessionInfo)
+::google::protobuf::uint8* Session::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.Session)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string pId = 1;
+  if (this->pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->pid().data(), static_cast<int>(this->pid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Session.pId");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->pid(), target);
+  }
+
+  // uint64 dnId = 2;
+  if (this->dnid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->dnid(), target);
+  }
+
+  // uint64 sessionId = 3;
+  if (this->sessionid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->sessionid(), target);
+  }
+
+  // uint64 type = 4;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->type(), target);
+  }
+
+  // string name = 5;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Session.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->name(), target);
+  }
+
+  // uint32 address = 6;
+  if (this->address() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->address(), target);
+  }
+
+  // uint32 port = 7;
+  if (this->port() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(7, this->port(), target);
+  }
+
+  // map<string, string> details = 8;
+  if (!this->details().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "pb.Session.DetailsEntry.key");
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->second.data(), static_cast<int>(p->second.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "pb.Session.DetailsEntry.value");
+      }
+    };
+
+    if (deterministic &&
+        this->details().size() > 1) {
+      ::google::protobuf::scoped_array<SortItem> items(
+          new SortItem[this->details().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->details().begin();
+          it != this->details().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::google::protobuf::scoped_ptr<Session_DetailsEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(details_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       8, *entry, deterministic, target);
+;
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::google::protobuf::scoped_ptr<Session_DetailsEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->details().begin();
+          it != this->details().end(); ++it) {
+        entry.reset(details_.NewEntryWrapper(
+            it->first, it->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       8, *entry, deterministic, target);
+;
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.Session)
+  return target;
+}
+
+size_t Session::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.Session)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // map<string, string> details = 8;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->details_size());
   {
-    ::google::protobuf::scoped_ptr<SessionInfo_DetailsEntry_DoNotUse> entry;
+    ::google::protobuf::scoped_ptr<Session_DetailsEntry_DoNotUse> entry;
     for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
         it = this->details().begin();
         it != this->details().end(); ++it) {
@@ -790,13 +1101,23 @@ size_t SessionInfo::ByteSizeLong() const {
   return total_size;
 }
 
-void SessionInfo::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const SessionInfo*>(&from));
+void Session::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.Session)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Session* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const Session>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.Session)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.Session)
+    MergeFrom(*source);
+  }
 }
 
-void SessionInfo::MergeFrom(const SessionInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.SessionInfo)
+void Session::MergeFrom(const Session& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.Session)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -828,22 +1149,29 @@ void SessionInfo::MergeFrom(const SessionInfo& from) {
   }
 }
 
-void SessionInfo::CopyFrom(const SessionInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.SessionInfo)
+void Session::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.Session)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SessionInfo::IsInitialized() const {
+void Session::CopyFrom(const Session& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.Session)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Session::IsInitialized() const {
   return true;
 }
 
-void SessionInfo::Swap(SessionInfo* other) {
+void Session::Swap(Session* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void SessionInfo::InternalSwap(SessionInfo* other) {
+void Session::InternalSwap(Session* other) {
   using std::swap;
   details_.Swap(&other->details_);
   pid_.Swap(&other->pid_);
@@ -857,8 +1185,9 @@ void SessionInfo::InternalSwap(SessionInfo* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string SessionInfo::GetTypeName() const {
-  return "pb.SessionInfo";
+::google::protobuf::Metadata Session::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
@@ -871,7 +1200,7 @@ const int DNSessionResponse::kResultsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DNSessionResponse::DNSessionResponse()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionResponse();
   }
@@ -879,7 +1208,7 @@ DNSessionResponse::DNSessionResponse()
   // @@protoc_insertion_point(constructor:pb.DNSessionResponse)
 }
 DNSessionResponse::DNSessionResponse(const DNSessionResponse& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       results_(from.results_),
       _cached_size_(0) {
@@ -904,6 +1233,11 @@ void DNSessionResponse::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* DNSessionResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const DNSessionResponse& DNSessionResponse::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionResponse();
   return *internal_default_instance();
@@ -931,19 +1265,13 @@ bool DNSessionResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.DNSessionResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .pb.SessionInfo results = 1;
+      // repeated .pb.Session results = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
@@ -959,8 +1287,8 @@ bool DNSessionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -980,25 +1308,53 @@ void DNSessionResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .pb.SessionInfo results = 1;
+  // repeated .pb.Session results = 1;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->results_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessage(
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->results(static_cast<int>(i)), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.DNSessionResponse)
+}
+
+::google::protobuf::uint8* DNSessionResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .pb.Session results = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->results_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->results(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionResponse)
+  return target;
 }
 
 size_t DNSessionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.DNSessionResponse)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
-  // repeated .pb.SessionInfo results = 1;
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .pb.Session results = 1;
   {
     unsigned int count = static_cast<unsigned int>(this->results_size());
     total_size += 1UL * count;
@@ -1016,9 +1372,19 @@ size_t DNSessionResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void DNSessionResponse::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const DNSessionResponse*>(&from));
+void DNSessionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNSessionResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionResponse)
+    MergeFrom(*source);
+  }
 }
 
 void DNSessionResponse::MergeFrom(const DNSessionResponse& from) {
@@ -1029,6 +1395,13 @@ void DNSessionResponse::MergeFrom(const DNSessionResponse& from) {
   (void) cached_has_bits;
 
   results_.MergeFrom(from.results_);
+}
+
+void DNSessionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void DNSessionResponse::CopyFrom(const DNSessionResponse& from) {
@@ -1053,8 +1426,9 @@ void DNSessionResponse::InternalSwap(DNSessionResponse* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string DNSessionResponse::GetTypeName() const {
-  return "pb.DNSessionResponse";
+::google::protobuf::Metadata DNSessionResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
@@ -1067,7 +1441,7 @@ const int DNSessionRequest::kTypeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DNSessionRequest::DNSessionRequest()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionRequest();
   }
@@ -1075,7 +1449,7 @@ DNSessionRequest::DNSessionRequest()
   // @@protoc_insertion_point(constructor:pb.DNSessionRequest)
 }
 DNSessionRequest::DNSessionRequest(const DNSessionRequest& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -1101,6 +1475,11 @@ void DNSessionRequest::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* DNSessionRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const DNSessionRequest& DNSessionRequest::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionRequest();
   return *internal_default_instance();
@@ -1128,12 +1507,6 @@ bool DNSessionRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.DNSessionRequest)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
@@ -1159,8 +1532,8 @@ bool DNSessionRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -1185,17 +1558,42 @@ void DNSessionRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->type(), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.DNSessionRequest)
+}
+
+::google::protobuf::uint8* DNSessionRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->type(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionRequest)
+  return target;
 }
 
 size_t DNSessionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.DNSessionRequest)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // uint64 type = 1;
   if (this->type() != 0) {
     total_size += 1 +
@@ -1210,9 +1608,19 @@ size_t DNSessionRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void DNSessionRequest::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const DNSessionRequest*>(&from));
+void DNSessionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNSessionRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionRequest)
+    MergeFrom(*source);
+  }
 }
 
 void DNSessionRequest::MergeFrom(const DNSessionRequest& from) {
@@ -1225,6 +1633,13 @@ void DNSessionRequest::MergeFrom(const DNSessionRequest& from) {
   if (from.type() != 0) {
     set_type(from.type());
   }
+}
+
+void DNSessionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void DNSessionRequest::CopyFrom(const DNSessionRequest& from) {
@@ -1249,23 +1664,24 @@ void DNSessionRequest::InternalSwap(DNSessionRequest* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string DNSessionRequest::GetTypeName() const {
-  return "pb.DNSessionRequest";
+::google::protobuf::Metadata DNSessionRequest::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
 // ===================================================================
 
 void RPCUpsertSessionRequest::InitAsDefaultInstance() {
-  ::pb::_RPCUpsertSessionRequest_default_instance_._instance.get_mutable()->info_ = const_cast< ::pb::SessionInfo*>(
-      ::pb::SessionInfo::internal_default_instance());
+  ::pb::_RPCUpsertSessionRequest_default_instance_._instance.get_mutable()->session_ = const_cast< ::pb::Session*>(
+      ::pb::Session::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCUpsertSessionRequest::kInfoFieldNumber;
+const int RPCUpsertSessionRequest::kSessionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCUpsertSessionRequest::RPCUpsertSessionRequest()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCUpsertSessionRequest();
   }
@@ -1273,20 +1689,20 @@ RPCUpsertSessionRequest::RPCUpsertSessionRequest()
   // @@protoc_insertion_point(constructor:pb.RPCUpsertSessionRequest)
 }
 RPCUpsertSessionRequest::RPCUpsertSessionRequest(const RPCUpsertSessionRequest& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_info()) {
-    info_ = new ::pb::SessionInfo(*from.info_);
+  if (from.has_session()) {
+    session_ = new ::pb::Session(*from.session_);
   } else {
-    info_ = NULL;
+    session_ = NULL;
   }
   // @@protoc_insertion_point(copy_constructor:pb.RPCUpsertSessionRequest)
 }
 
 void RPCUpsertSessionRequest::SharedCtor() {
-  info_ = NULL;
+  session_ = NULL;
   _cached_size_ = 0;
 }
 
@@ -1296,7 +1712,7 @@ RPCUpsertSessionRequest::~RPCUpsertSessionRequest() {
 }
 
 void RPCUpsertSessionRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete info_;
+  if (this != internal_default_instance()) delete session_;
 }
 
 void RPCUpsertSessionRequest::SetCachedSize(int size) const {
@@ -1304,6 +1720,11 @@ void RPCUpsertSessionRequest::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* RPCUpsertSessionRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const RPCUpsertSessionRequest& RPCUpsertSessionRequest::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCUpsertSessionRequest();
   return *internal_default_instance();
@@ -1323,10 +1744,10 @@ void RPCUpsertSessionRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && info_ != NULL) {
-    delete info_;
+  if (GetArenaNoVirtual() == NULL && session_ != NULL) {
+    delete session_;
   }
-  info_ = NULL;
+  session_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -1334,24 +1755,18 @@ bool RPCUpsertSessionRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.RPCUpsertSessionRequest)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .pb.SessionInfo info = 1;
+      // .pb.Session session = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_info()));
+               input, mutable_session()));
         } else {
           goto handle_unusual;
         }
@@ -1363,8 +1778,8 @@ bool RPCUpsertSessionRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -1384,28 +1799,55 @@ void RPCUpsertSessionRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pb.SessionInfo info = 1;
-  if (this->has_info()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      1, *this->info_, output);
+  // .pb.Session session = 1;
+  if (this->has_session()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->session_, output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.RPCUpsertSessionRequest)
+}
+
+::google::protobuf::uint8* RPCUpsertSessionRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCUpsertSessionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .pb.Session session = 1;
+  if (this->has_session()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->session_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCUpsertSessionRequest)
+  return target;
 }
 
 size_t RPCUpsertSessionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCUpsertSessionRequest)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
-  // .pb.SessionInfo info = 1;
-  if (this->has_info()) {
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .pb.Session session = 1;
+  if (this->has_session()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *this->info_);
+        *this->session_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1415,9 +1857,19 @@ size_t RPCUpsertSessionRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCUpsertSessionRequest::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCUpsertSessionRequest*>(&from));
+void RPCUpsertSessionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCUpsertSessionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCUpsertSessionRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCUpsertSessionRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCUpsertSessionRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCUpsertSessionRequest)
+    MergeFrom(*source);
+  }
 }
 
 void RPCUpsertSessionRequest::MergeFrom(const RPCUpsertSessionRequest& from) {
@@ -1427,9 +1879,16 @@ void RPCUpsertSessionRequest::MergeFrom(const RPCUpsertSessionRequest& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_info()) {
-    mutable_info()->::pb::SessionInfo::MergeFrom(from.info());
+  if (from.has_session()) {
+    mutable_session()->::pb::Session::MergeFrom(from.session());
   }
+}
+
+void RPCUpsertSessionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCUpsertSessionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void RPCUpsertSessionRequest::CopyFrom(const RPCUpsertSessionRequest& from) {
@@ -1449,13 +1908,14 @@ void RPCUpsertSessionRequest::Swap(RPCUpsertSessionRequest* other) {
 }
 void RPCUpsertSessionRequest::InternalSwap(RPCUpsertSessionRequest* other) {
   using std::swap;
-  swap(info_, other->info_);
+  swap(session_, other->session_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCUpsertSessionRequest::GetTypeName() const {
-  return "pb.RPCUpsertSessionRequest";
+::google::protobuf::Metadata RPCUpsertSessionRequest::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
@@ -1464,12 +1924,11 @@ void RPCUpsertSessionRequest::InternalSwap(RPCUpsertSessionRequest* other) {
 void RPCUpsertSessionResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCUpsertSessionResponse::kResultFieldNumber;
 const int RPCUpsertSessionResponse::kSessionIdFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCUpsertSessionResponse::RPCUpsertSessionResponse()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCUpsertSessionResponse();
   }
@@ -1477,20 +1936,16 @@ RPCUpsertSessionResponse::RPCUpsertSessionResponse()
   // @@protoc_insertion_point(constructor:pb.RPCUpsertSessionResponse)
 }
 RPCUpsertSessionResponse::RPCUpsertSessionResponse(const RPCUpsertSessionResponse& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::memcpy(&sessionid_, &from.sessionid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&result_) -
-    reinterpret_cast<char*>(&sessionid_)) + sizeof(result_));
+  sessionid_ = from.sessionid_;
   // @@protoc_insertion_point(copy_constructor:pb.RPCUpsertSessionResponse)
 }
 
 void RPCUpsertSessionResponse::SharedCtor() {
-  ::memset(&sessionid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&result_) -
-      reinterpret_cast<char*>(&sessionid_)) + sizeof(result_));
+  sessionid_ = GOOGLE_ULONGLONG(0);
   _cached_size_ = 0;
 }
 
@@ -1507,6 +1962,11 @@ void RPCUpsertSessionResponse::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* RPCUpsertSessionResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const RPCUpsertSessionResponse& RPCUpsertSessionResponse::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCUpsertSessionResponse();
   return *internal_default_instance();
@@ -1526,9 +1986,7 @@ void RPCUpsertSessionResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&sessionid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&result_) -
-      reinterpret_cast<char*>(&sessionid_)) + sizeof(result_));
+  sessionid_ = GOOGLE_ULONGLONG(0);
   _internal_metadata_.Clear();
 }
 
@@ -1536,36 +1994,16 @@ bool RPCUpsertSessionResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.RPCUpsertSessionResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bool result = 1;
+      // uint64 sessionId = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &result_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint64 sessionId = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -1581,8 +2019,8 @@ bool RPCUpsertSessionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -1602,37 +2040,52 @@ void RPCUpsertSessionResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool result = 1;
-  if (this->result() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->result(), output);
-  }
-
-  // uint64 sessionId = 2;
+  // uint64 sessionId = 1;
   if (this->sessionid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->sessionid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->sessionid(), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.RPCUpsertSessionResponse)
+}
+
+::google::protobuf::uint8* RPCUpsertSessionResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCUpsertSessionResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 sessionId = 1;
+  if (this->sessionid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->sessionid(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCUpsertSessionResponse)
+  return target;
 }
 
 size_t RPCUpsertSessionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCUpsertSessionResponse)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
-  // uint64 sessionId = 2;
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // uint64 sessionId = 1;
   if (this->sessionid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->sessionid());
-  }
-
-  // bool result = 1;
-  if (this->result() != 0) {
-    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1642,9 +2095,19 @@ size_t RPCUpsertSessionResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCUpsertSessionResponse::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCUpsertSessionResponse*>(&from));
+void RPCUpsertSessionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCUpsertSessionResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCUpsertSessionResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCUpsertSessionResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCUpsertSessionResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCUpsertSessionResponse)
+    MergeFrom(*source);
+  }
 }
 
 void RPCUpsertSessionResponse::MergeFrom(const RPCUpsertSessionResponse& from) {
@@ -1657,9 +2120,13 @@ void RPCUpsertSessionResponse::MergeFrom(const RPCUpsertSessionResponse& from) {
   if (from.sessionid() != 0) {
     set_sessionid(from.sessionid());
   }
-  if (from.result() != 0) {
-    set_result(from.result());
-  }
+}
+
+void RPCUpsertSessionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCUpsertSessionResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void RPCUpsertSessionResponse::CopyFrom(const RPCUpsertSessionResponse& from) {
@@ -1680,13 +2147,13 @@ void RPCUpsertSessionResponse::Swap(RPCUpsertSessionResponse* other) {
 void RPCUpsertSessionResponse::InternalSwap(RPCUpsertSessionResponse* other) {
   using std::swap;
   swap(sessionid_, other->sessionid_);
-  swap(result_, other->result_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCUpsertSessionResponse::GetTypeName() const {
-  return "pb.RPCUpsertSessionResponse";
+::google::protobuf::Metadata RPCUpsertSessionResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
@@ -1699,7 +2166,7 @@ const int RPCDeleteSessionRequest::kSessionIdFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCDeleteSessionRequest::RPCDeleteSessionRequest()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCDeleteSessionRequest();
   }
@@ -1707,7 +2174,7 @@ RPCDeleteSessionRequest::RPCDeleteSessionRequest()
   // @@protoc_insertion_point(constructor:pb.RPCDeleteSessionRequest)
 }
 RPCDeleteSessionRequest::RPCDeleteSessionRequest(const RPCDeleteSessionRequest& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -1733,6 +2200,11 @@ void RPCDeleteSessionRequest::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* RPCDeleteSessionRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const RPCDeleteSessionRequest& RPCDeleteSessionRequest::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCDeleteSessionRequest();
   return *internal_default_instance();
@@ -1760,12 +2232,6 @@ bool RPCDeleteSessionRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.RPCDeleteSessionRequest)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
@@ -1791,8 +2257,8 @@ bool RPCDeleteSessionRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -1817,17 +2283,42 @@ void RPCDeleteSessionRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->sessionid(), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.RPCDeleteSessionRequest)
+}
+
+::google::protobuf::uint8* RPCDeleteSessionRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCDeleteSessionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 sessionId = 1;
+  if (this->sessionid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->sessionid(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCDeleteSessionRequest)
+  return target;
 }
 
 size_t RPCDeleteSessionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCDeleteSessionRequest)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // uint64 sessionId = 1;
   if (this->sessionid() != 0) {
     total_size += 1 +
@@ -1842,9 +2333,19 @@ size_t RPCDeleteSessionRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCDeleteSessionRequest::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCDeleteSessionRequest*>(&from));
+void RPCDeleteSessionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCDeleteSessionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCDeleteSessionRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCDeleteSessionRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCDeleteSessionRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCDeleteSessionRequest)
+    MergeFrom(*source);
+  }
 }
 
 void RPCDeleteSessionRequest::MergeFrom(const RPCDeleteSessionRequest& from) {
@@ -1857,6 +2358,13 @@ void RPCDeleteSessionRequest::MergeFrom(const RPCDeleteSessionRequest& from) {
   if (from.sessionid() != 0) {
     set_sessionid(from.sessionid());
   }
+}
+
+void RPCDeleteSessionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCDeleteSessionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void RPCDeleteSessionRequest::CopyFrom(const RPCDeleteSessionRequest& from) {
@@ -1881,8 +2389,9 @@ void RPCDeleteSessionRequest::InternalSwap(RPCDeleteSessionRequest* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCDeleteSessionRequest::GetTypeName() const {
-  return "pb.RPCDeleteSessionRequest";
+::google::protobuf::Metadata RPCDeleteSessionRequest::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
@@ -1895,7 +2404,7 @@ const int RPCDeleteSessionResponse::kResultFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCDeleteSessionResponse::RPCDeleteSessionResponse()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCDeleteSessionResponse();
   }
@@ -1903,7 +2412,7 @@ RPCDeleteSessionResponse::RPCDeleteSessionResponse()
   // @@protoc_insertion_point(constructor:pb.RPCDeleteSessionResponse)
 }
 RPCDeleteSessionResponse::RPCDeleteSessionResponse(const RPCDeleteSessionResponse& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -1929,6 +2438,11 @@ void RPCDeleteSessionResponse::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* RPCDeleteSessionResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const RPCDeleteSessionResponse& RPCDeleteSessionResponse::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCDeleteSessionResponse();
   return *internal_default_instance();
@@ -1956,12 +2470,6 @@ bool RPCDeleteSessionResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.RPCDeleteSessionResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
@@ -1987,8 +2495,8 @@ bool RPCDeleteSessionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -2013,17 +2521,42 @@ void RPCDeleteSessionResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->result(), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.RPCDeleteSessionResponse)
+}
+
+::google::protobuf::uint8* RPCDeleteSessionResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCDeleteSessionResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bool result = 1;
+  if (this->result() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->result(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCDeleteSessionResponse)
+  return target;
 }
 
 size_t RPCDeleteSessionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCDeleteSessionResponse)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // bool result = 1;
   if (this->result() != 0) {
     total_size += 1 + 1;
@@ -2036,9 +2569,19 @@ size_t RPCDeleteSessionResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCDeleteSessionResponse::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCDeleteSessionResponse*>(&from));
+void RPCDeleteSessionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCDeleteSessionResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCDeleteSessionResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCDeleteSessionResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCDeleteSessionResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCDeleteSessionResponse)
+    MergeFrom(*source);
+  }
 }
 
 void RPCDeleteSessionResponse::MergeFrom(const RPCDeleteSessionResponse& from) {
@@ -2051,6 +2594,13 @@ void RPCDeleteSessionResponse::MergeFrom(const RPCDeleteSessionResponse& from) {
   if (from.result() != 0) {
     set_result(from.result());
   }
+}
+
+void RPCDeleteSessionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCDeleteSessionResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void RPCDeleteSessionResponse::CopyFrom(const RPCDeleteSessionResponse& from) {
@@ -2075,31 +2625,32 @@ void RPCDeleteSessionResponse::InternalSwap(RPCDeleteSessionResponse* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCDeleteSessionResponse::GetTypeName() const {
-  return "pb.RPCDeleteSessionResponse";
+::google::protobuf::Metadata RPCDeleteSessionResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
 // ===================================================================
 
-void RPCSessionIdsRequest::InitAsDefaultInstance() {
+void RPCGetSessionIdsRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCSessionIdsRequest::kTypeFieldNumber;
-const int RPCSessionIdsRequest::kKeyFieldNumber;
-const int RPCSessionIdsRequest::kValueFieldNumber;
+const int RPCGetSessionIdsRequest::kTypeFieldNumber;
+const int RPCGetSessionIdsRequest::kKeyFieldNumber;
+const int RPCGetSessionIdsRequest::kValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-RPCSessionIdsRequest::RPCSessionIdsRequest()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+RPCGetSessionIdsRequest::RPCGetSessionIdsRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsRequest();
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionIdsRequest();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(constructor:pb.RPCGetSessionIdsRequest)
 }
-RPCSessionIdsRequest::RPCSessionIdsRequest(const RPCSessionIdsRequest& from)
-  : ::google::protobuf::MessageLite(),
+RPCGetSessionIdsRequest::RPCGetSessionIdsRequest(const RPCGetSessionIdsRequest& from)
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -2112,46 +2663,51 @@ RPCSessionIdsRequest::RPCSessionIdsRequest(const RPCSessionIdsRequest& from)
     value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
   type_ = from.type_;
-  // @@protoc_insertion_point(copy_constructor:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(copy_constructor:pb.RPCGetSessionIdsRequest)
 }
 
-void RPCSessionIdsRequest::SharedCtor() {
+void RPCGetSessionIdsRequest::SharedCtor() {
   key_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   type_ = GOOGLE_ULONGLONG(0);
   _cached_size_ = 0;
 }
 
-RPCSessionIdsRequest::~RPCSessionIdsRequest() {
-  // @@protoc_insertion_point(destructor:pb.RPCSessionIdsRequest)
+RPCGetSessionIdsRequest::~RPCGetSessionIdsRequest() {
+  // @@protoc_insertion_point(destructor:pb.RPCGetSessionIdsRequest)
   SharedDtor();
 }
 
-void RPCSessionIdsRequest::SharedDtor() {
+void RPCGetSessionIdsRequest::SharedDtor() {
   key_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   value_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-void RPCSessionIdsRequest::SetCachedSize(int size) const {
+void RPCGetSessionIdsRequest::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const RPCSessionIdsRequest& RPCSessionIdsRequest::default_instance() {
-  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsRequest();
+const ::google::protobuf::Descriptor* RPCGetSessionIdsRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RPCGetSessionIdsRequest& RPCGetSessionIdsRequest::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionIdsRequest();
   return *internal_default_instance();
 }
 
-RPCSessionIdsRequest* RPCSessionIdsRequest::New(::google::protobuf::Arena* arena) const {
-  RPCSessionIdsRequest* n = new RPCSessionIdsRequest;
+RPCGetSessionIdsRequest* RPCGetSessionIdsRequest::New(::google::protobuf::Arena* arena) const {
+  RPCGetSessionIdsRequest* n = new RPCGetSessionIdsRequest;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void RPCSessionIdsRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.RPCSessionIdsRequest)
+void RPCGetSessionIdsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCGetSessionIdsRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -2162,17 +2718,11 @@ void RPCSessionIdsRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool RPCSessionIdsRequest::MergePartialFromCodedStream(
+bool RPCGetSessionIdsRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
-  // @@protoc_insertion_point(parse_start:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(parse_start:pb.RPCGetSessionIdsRequest)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -2201,7 +2751,7 @@ bool RPCSessionIdsRequest::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->key().data(), static_cast<int>(this->key().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCSessionIdsRequest.key"));
+            "pb.RPCGetSessionIdsRequest.key"));
         } else {
           goto handle_unusual;
         }
@@ -2217,7 +2767,7 @@ bool RPCSessionIdsRequest::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->value().data(), static_cast<int>(this->value().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCSessionIdsRequest.value"));
+            "pb.RPCGetSessionIdsRequest.value"));
         } else {
           goto handle_unusual;
         }
@@ -2229,24 +2779,24 @@ bool RPCSessionIdsRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(parse_success:pb.RPCGetSessionIdsRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(parse_failure:pb.RPCGetSessionIdsRequest)
   return false;
 #undef DO_
 }
 
-void RPCSessionIdsRequest::SerializeWithCachedSizes(
+void RPCGetSessionIdsRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(serialize_start:pb.RPCGetSessionIdsRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2260,7 +2810,7 @@ void RPCSessionIdsRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->key().data(), static_cast<int>(this->key().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCSessionIdsRequest.key");
+      "pb.RPCGetSessionIdsRequest.key");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       2, this->key(), output);
   }
@@ -2270,22 +2820,69 @@ void RPCSessionIdsRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), static_cast<int>(this->value().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCSessionIdsRequest.value");
+      "pb.RPCGetSessionIdsRequest.value");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       3, this->value(), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
-  // @@protoc_insertion_point(serialize_end:pb.RPCSessionIdsRequest)
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.RPCGetSessionIdsRequest)
 }
 
-size_t RPCSessionIdsRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.RPCSessionIdsRequest)
+::google::protobuf::uint8* RPCGetSessionIdsRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetSessionIdsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->type(), target);
+  }
+
+  // string key = 2;
+  if (this->key().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->key().data(), static_cast<int>(this->key().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetSessionIdsRequest.key");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->key(), target);
+  }
+
+  // string value = 3;
+  if (this->value().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->value().data(), static_cast<int>(this->value().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetSessionIdsRequest.value");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->value(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetSessionIdsRequest)
+  return target;
+}
+
+size_t RPCGetSessionIdsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetSessionIdsRequest)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // string key = 2;
   if (this->key().size() > 0) {
     total_size += 1 +
@@ -2314,13 +2911,23 @@ size_t RPCSessionIdsRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCSessionIdsRequest::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCSessionIdsRequest*>(&from));
+void RPCGetSessionIdsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetSessionIdsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCGetSessionIdsRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetSessionIdsRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetSessionIdsRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetSessionIdsRequest)
+    MergeFrom(*source);
+  }
 }
 
-void RPCSessionIdsRequest::MergeFrom(const RPCSessionIdsRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCSessionIdsRequest)
+void RPCGetSessionIdsRequest::MergeFrom(const RPCGetSessionIdsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetSessionIdsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -2339,22 +2946,29 @@ void RPCSessionIdsRequest::MergeFrom(const RPCSessionIdsRequest& from) {
   }
 }
 
-void RPCSessionIdsRequest::CopyFrom(const RPCSessionIdsRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCSessionIdsRequest)
+void RPCGetSessionIdsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetSessionIdsRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool RPCSessionIdsRequest::IsInitialized() const {
+void RPCGetSessionIdsRequest::CopyFrom(const RPCGetSessionIdsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetSessionIdsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RPCGetSessionIdsRequest::IsInitialized() const {
   return true;
 }
 
-void RPCSessionIdsRequest::Swap(RPCSessionIdsRequest* other) {
+void RPCGetSessionIdsRequest::Swap(RPCGetSessionIdsRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void RPCSessionIdsRequest::InternalSwap(RPCSessionIdsRequest* other) {
+void RPCGetSessionIdsRequest::InternalSwap(RPCGetSessionIdsRequest* other) {
   using std::swap;
   key_.Swap(&other->key_);
   value_.Swap(&other->value_);
@@ -2363,68 +2977,74 @@ void RPCSessionIdsRequest::InternalSwap(RPCSessionIdsRequest* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCSessionIdsRequest::GetTypeName() const {
-  return "pb.RPCSessionIdsRequest";
+::google::protobuf::Metadata RPCGetSessionIdsRequest::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
 // ===================================================================
 
-void RPCSessionIdsResponse::InitAsDefaultInstance() {
+void RPCGetSessionIdsResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCSessionIdsResponse::kSessionIdsFieldNumber;
+const int RPCGetSessionIdsResponse::kSessionIdsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-RPCSessionIdsResponse::RPCSessionIdsResponse()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+RPCGetSessionIdsResponse::RPCGetSessionIdsResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsResponse();
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionIdsResponse();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(constructor:pb.RPCGetSessionIdsResponse)
 }
-RPCSessionIdsResponse::RPCSessionIdsResponse(const RPCSessionIdsResponse& from)
-  : ::google::protobuf::MessageLite(),
+RPCGetSessionIdsResponse::RPCGetSessionIdsResponse(const RPCGetSessionIdsResponse& from)
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       sessionids_(from.sessionids_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(copy_constructor:pb.RPCGetSessionIdsResponse)
 }
 
-void RPCSessionIdsResponse::SharedCtor() {
+void RPCGetSessionIdsResponse::SharedCtor() {
   _cached_size_ = 0;
 }
 
-RPCSessionIdsResponse::~RPCSessionIdsResponse() {
-  // @@protoc_insertion_point(destructor:pb.RPCSessionIdsResponse)
+RPCGetSessionIdsResponse::~RPCGetSessionIdsResponse() {
+  // @@protoc_insertion_point(destructor:pb.RPCGetSessionIdsResponse)
   SharedDtor();
 }
 
-void RPCSessionIdsResponse::SharedDtor() {
+void RPCGetSessionIdsResponse::SharedDtor() {
 }
 
-void RPCSessionIdsResponse::SetCachedSize(int size) const {
+void RPCGetSessionIdsResponse::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const RPCSessionIdsResponse& RPCSessionIdsResponse::default_instance() {
-  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsResponse();
+const ::google::protobuf::Descriptor* RPCGetSessionIdsResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RPCGetSessionIdsResponse& RPCGetSessionIdsResponse::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionIdsResponse();
   return *internal_default_instance();
 }
 
-RPCSessionIdsResponse* RPCSessionIdsResponse::New(::google::protobuf::Arena* arena) const {
-  RPCSessionIdsResponse* n = new RPCSessionIdsResponse;
+RPCGetSessionIdsResponse* RPCGetSessionIdsResponse::New(::google::protobuf::Arena* arena) const {
+  RPCGetSessionIdsResponse* n = new RPCGetSessionIdsResponse;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void RPCSessionIdsResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.RPCSessionIdsResponse)
+void RPCGetSessionIdsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCGetSessionIdsResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -2433,17 +3053,11 @@ void RPCSessionIdsResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool RPCSessionIdsResponse::MergePartialFromCodedStream(
+bool RPCGetSessionIdsResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
-  // @@protoc_insertion_point(parse_start:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(parse_start:pb.RPCGetSessionIdsResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -2473,24 +3087,24 @@ bool RPCSessionIdsResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(parse_success:pb.RPCGetSessionIdsResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(parse_failure:pb.RPCGetSessionIdsResponse)
   return false;
 #undef DO_
 }
 
-void RPCSessionIdsResponse::SerializeWithCachedSizes(
+void RPCGetSessionIdsResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(serialize_start:pb.RPCGetSessionIdsResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2505,17 +3119,50 @@ void RPCSessionIdsResponse::SerializeWithCachedSizes(
       this->sessionids(i), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
-  // @@protoc_insertion_point(serialize_end:pb.RPCSessionIdsResponse)
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.RPCGetSessionIdsResponse)
 }
 
-size_t RPCSessionIdsResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.RPCSessionIdsResponse)
+::google::protobuf::uint8* RPCGetSessionIdsResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetSessionIdsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated uint64 sessionIds = 1;
+  if (this->sessionids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      1,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _sessionids_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt64NoTagToArray(this->sessionids_, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetSessionIdsResponse)
+  return target;
+}
+
+size_t RPCGetSessionIdsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetSessionIdsResponse)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // repeated uint64 sessionIds = 1;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
@@ -2539,13 +3186,23 @@ size_t RPCSessionIdsResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCSessionIdsResponse::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCSessionIdsResponse*>(&from));
+void RPCGetSessionIdsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetSessionIdsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCGetSessionIdsResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetSessionIdsResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetSessionIdsResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetSessionIdsResponse)
+    MergeFrom(*source);
+  }
 }
 
-void RPCSessionIdsResponse::MergeFrom(const RPCSessionIdsResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCSessionIdsResponse)
+void RPCGetSessionIdsResponse::MergeFrom(const RPCGetSessionIdsResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetSessionIdsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -2554,30 +3211,38 @@ void RPCSessionIdsResponse::MergeFrom(const RPCSessionIdsResponse& from) {
   sessionids_.MergeFrom(from.sessionids_);
 }
 
-void RPCSessionIdsResponse::CopyFrom(const RPCSessionIdsResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCSessionIdsResponse)
+void RPCGetSessionIdsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetSessionIdsResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool RPCSessionIdsResponse::IsInitialized() const {
+void RPCGetSessionIdsResponse::CopyFrom(const RPCGetSessionIdsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetSessionIdsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RPCGetSessionIdsResponse::IsInitialized() const {
   return true;
 }
 
-void RPCSessionIdsResponse::Swap(RPCSessionIdsResponse* other) {
+void RPCGetSessionIdsResponse::Swap(RPCGetSessionIdsResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void RPCSessionIdsResponse::InternalSwap(RPCSessionIdsResponse* other) {
+void RPCGetSessionIdsResponse::InternalSwap(RPCGetSessionIdsResponse* other) {
   using std::swap;
   sessionids_.InternalSwap(&other->sessionids_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCSessionIdsResponse::GetTypeName() const {
-  return "pb.RPCSessionIdsResponse";
+::google::protobuf::Metadata RPCGetSessionIdsResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
@@ -2590,7 +3255,7 @@ const int RPCGetSessionRequest::kSessionIdFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCGetSessionRequest::RPCGetSessionRequest()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionRequest();
   }
@@ -2598,7 +3263,7 @@ RPCGetSessionRequest::RPCGetSessionRequest()
   // @@protoc_insertion_point(constructor:pb.RPCGetSessionRequest)
 }
 RPCGetSessionRequest::RPCGetSessionRequest(const RPCGetSessionRequest& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -2624,6 +3289,11 @@ void RPCGetSessionRequest::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* RPCGetSessionRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const RPCGetSessionRequest& RPCGetSessionRequest::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionRequest();
   return *internal_default_instance();
@@ -2651,12 +3321,6 @@ bool RPCGetSessionRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.RPCGetSessionRequest)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
@@ -2682,8 +3346,8 @@ bool RPCGetSessionRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -2708,17 +3372,42 @@ void RPCGetSessionRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->sessionid(), output);
   }
 
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:pb.RPCGetSessionRequest)
+}
+
+::google::protobuf::uint8* RPCGetSessionRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetSessionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 sessionId = 1;
+  if (this->sessionid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->sessionid(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetSessionRequest)
+  return target;
 }
 
 size_t RPCGetSessionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCGetSessionRequest)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // uint64 sessionId = 1;
   if (this->sessionid() != 0) {
     total_size += 1 +
@@ -2733,9 +3422,19 @@ size_t RPCGetSessionRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCGetSessionRequest::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCGetSessionRequest*>(&from));
+void RPCGetSessionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetSessionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCGetSessionRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetSessionRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetSessionRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetSessionRequest)
+    MergeFrom(*source);
+  }
 }
 
 void RPCGetSessionRequest::MergeFrom(const RPCGetSessionRequest& from) {
@@ -2748,6 +3447,13 @@ void RPCGetSessionRequest::MergeFrom(const RPCGetSessionRequest& from) {
   if (from.sessionid() != 0) {
     set_sessionid(from.sessionid());
   }
+}
+
+void RPCGetSessionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetSessionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void RPCGetSessionRequest::CopyFrom(const RPCGetSessionRequest& from) {
@@ -2772,24 +3478,24 @@ void RPCGetSessionRequest::InternalSwap(RPCGetSessionRequest* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCGetSessionRequest::GetTypeName() const {
-  return "pb.RPCGetSessionRequest";
+::google::protobuf::Metadata RPCGetSessionRequest::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 
 // ===================================================================
 
 void RPCGetSessionResponse::InitAsDefaultInstance() {
-  ::pb::_RPCGetSessionResponse_default_instance_._instance.get_mutable()->result_ = const_cast< ::pb::SessionInfo*>(
-      ::pb::SessionInfo::internal_default_instance());
+  ::pb::_RPCGetSessionResponse_default_instance_._instance.get_mutable()->session_ = const_cast< ::pb::Session*>(
+      ::pb::Session::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCGetSessionResponse::kFoundFieldNumber;
-const int RPCGetSessionResponse::kResultFieldNumber;
+const int RPCGetSessionResponse::kSessionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCGetSessionResponse::RPCGetSessionResponse()
-  : ::google::protobuf::MessageLite(), _internal_metadata_(NULL) {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionResponse();
   }
@@ -2797,23 +3503,20 @@ RPCGetSessionResponse::RPCGetSessionResponse()
   // @@protoc_insertion_point(constructor:pb.RPCGetSessionResponse)
 }
 RPCGetSessionResponse::RPCGetSessionResponse(const RPCGetSessionResponse& from)
-  : ::google::protobuf::MessageLite(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_result()) {
-    result_ = new ::pb::SessionInfo(*from.result_);
+  if (from.has_session()) {
+    session_ = new ::pb::Session(*from.session_);
   } else {
-    result_ = NULL;
+    session_ = NULL;
   }
-  found_ = from.found_;
   // @@protoc_insertion_point(copy_constructor:pb.RPCGetSessionResponse)
 }
 
 void RPCGetSessionResponse::SharedCtor() {
-  ::memset(&result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&found_) -
-      reinterpret_cast<char*>(&result_)) + sizeof(found_));
+  session_ = NULL;
   _cached_size_ = 0;
 }
 
@@ -2823,7 +3526,7 @@ RPCGetSessionResponse::~RPCGetSessionResponse() {
 }
 
 void RPCGetSessionResponse::SharedDtor() {
-  if (this != internal_default_instance()) delete result_;
+  if (this != internal_default_instance()) delete session_;
 }
 
 void RPCGetSessionResponse::SetCachedSize(int size) const {
@@ -2831,6 +3534,11 @@ void RPCGetSessionResponse::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
+const ::google::protobuf::Descriptor* RPCGetSessionResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
 const RPCGetSessionResponse& RPCGetSessionResponse::default_instance() {
   ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionResponse();
   return *internal_default_instance();
@@ -2850,11 +3558,10 @@ void RPCGetSessionResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && result_ != NULL) {
-    delete result_;
+  if (GetArenaNoVirtual() == NULL && session_ != NULL) {
+    delete session_;
   }
-  result_ = NULL;
-  found_ = false;
+  session_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -2862,38 +3569,18 @@ bool RPCGetSessionResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::LiteUnknownFieldSetter unknown_fields_setter(
-      &_internal_metadata_);
-  ::google::protobuf::io::StringOutputStream unknown_fields_output(
-      unknown_fields_setter.buffer());
-  ::google::protobuf::io::CodedOutputStream unknown_fields_stream(
-      &unknown_fields_output, false);
   // @@protoc_insertion_point(parse_start:pb.RPCGetSessionResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bool found = 1;
+      // .pb.Session session = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &found_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .pb.SessionInfo result = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_result()));
+               input, mutable_session()));
         } else {
           goto handle_unusual;
         }
@@ -2905,8 +3592,8 @@ bool RPCGetSessionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(
-            input, tag, &unknown_fields_stream));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -2926,38 +3613,55 @@ void RPCGetSessionResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool found = 1;
-  if (this->found() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->found(), output);
+  // .pb.Session session = 1;
+  if (this->has_session()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->session_, output);
   }
 
-  // .pb.SessionInfo result = 2;
-  if (this->has_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      2, *this->result_, output);
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-
-  output->WriteRaw((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).data(),
-                   static_cast<int>((::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size()));
   // @@protoc_insertion_point(serialize_end:pb.RPCGetSessionResponse)
+}
+
+::google::protobuf::uint8* RPCGetSessionResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetSessionResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .pb.Session session = 1;
+  if (this->has_session()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->session_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetSessionResponse)
+  return target;
 }
 
 size_t RPCGetSessionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.RPCGetSessionResponse)
   size_t total_size = 0;
 
-  total_size += (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()).size();
-
-  // .pb.SessionInfo result = 2;
-  if (this->has_result()) {
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .pb.Session session = 1;
+  if (this->has_session()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *this->result_);
-  }
-
-  // bool found = 1;
-  if (this->found() != 0) {
-    total_size += 1 + 1;
+        *this->session_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2967,9 +3671,19 @@ size_t RPCGetSessionResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCGetSessionResponse::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const RPCGetSessionResponse*>(&from));
+void RPCGetSessionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetSessionResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCGetSessionResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetSessionResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetSessionResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetSessionResponse)
+    MergeFrom(*source);
+  }
 }
 
 void RPCGetSessionResponse::MergeFrom(const RPCGetSessionResponse& from) {
@@ -2979,12 +3693,16 @@ void RPCGetSessionResponse::MergeFrom(const RPCGetSessionResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_result()) {
-    mutable_result()->::pb::SessionInfo::MergeFrom(from.result());
+  if (from.has_session()) {
+    mutable_session()->::pb::Session::MergeFrom(from.session());
   }
-  if (from.found() != 0) {
-    set_found(from.found());
-  }
+}
+
+void RPCGetSessionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetSessionResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
 void RPCGetSessionResponse::CopyFrom(const RPCGetSessionResponse& from) {
@@ -3004,14 +3722,14 @@ void RPCGetSessionResponse::Swap(RPCGetSessionResponse* other) {
 }
 void RPCGetSessionResponse::InternalSwap(RPCGetSessionResponse* other) {
   using std::swap;
-  swap(result_, other->result_);
-  swap(found_, other->found_);
+  swap(session_, other->session_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::std::string RPCGetSessionResponse::GetTypeName() const {
-  return "pb.RPCGetSessionResponse";
+::google::protobuf::Metadata RPCGetSessionResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 

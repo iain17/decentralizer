@@ -79,7 +79,7 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 	peerInfo, err := proto.Marshal(&pb.Message{
 		Version: env.VERSION,
 		Msg: &pb.Message_PeerInfo{
-			PeerInfo: &pb.PeerInfo{
+			PeerInfo: &pb.DPeerInfo{
 				Network: string(ln.discovery.network.ExportPublicKey()),
 				Id: ln.id,
 				Info: ln.info,

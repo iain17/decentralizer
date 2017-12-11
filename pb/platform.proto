@@ -1,17 +1,41 @@
 syntax = "proto3";
 package pb;
+import "pb/matchmaking.proto";
+import "pb/addressbook.proto";
 
-service Greeter {
-	// Sends a greeting
-	rpc SayHello (HelloRequest) returns (HelloReply) {}
+message RPCHealthRequest {}
+
+message RPCHealthReply {
+	bool ready = 1;
+	string message = 2;
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-	string name = 1;
-}
+service Decentralizer {
+	//
+	// Platform
+	//
+	// Get health of decentralizer.
+	rpc GetHealth(RPCHealthRequest) returns (RPCHealthReply) {}
 
-// The response message containing the greetings
-message HelloReply {
-	string message = 1;
+	//
+	// Matchmaking
+	//
+	// Create or update a session. Takes session info, returns session id.
+	rpc UpsertSession(RPCUpsertSessionRequest) returns (RPCUpsertSessionResponse) {}
+	// Delete a session. Takes session id, returns bool informing if the deletion was a success
+	rpc DeleteSession(RPCDeleteSessionRequest) returns (RPCDeleteSessionResponse) {}
+	// Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
+	rpc GetSessionIds(RPCGetSessionIdsRequest) returns (RPCGetSessionIdsResponse) {}
+	// Get an individual session. Takes session id and returns session info.
+	rpc GetSession(RPCGetSessionRequest) returns (RPCGetSessionResponse) {}
+
+	//
+	// Address book
+	//
+	// Create or update a peer. Takes peer info, returns if it was a success.
+	rpc UpsertPeer(RPCUpsertPeerRequest) returns (RPCUpsertPeerResponse) {}
+	// Get peer ids. takes a key and value to filter the peers by details. If left empty this filter will not apply and all will be fetched.
+	rpc GetPeerIds(RPCGetPeerIdsRequest) returns (RPCGetPeerIdsResponse) {}
+	// Get an individual peer. Takes either a peer id or decentralizer id and returns the peer info.
+	rpc GetPeer(RPCGetPeerRequest) returns (RPCGetPeerResponse) {}
 }

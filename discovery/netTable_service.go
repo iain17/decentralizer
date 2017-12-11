@@ -99,7 +99,7 @@ func (nt *NetTableService) Stop() {
 }
 
 func (nt *NetTableService) Save() error {
-	var peers []*pb.Peer
+	var peers []*pb.DPeer
 	for _, peer := range nt.GetPeers() {
 		ipPort := strings.Split(peer.conn.RemoteAddr().String(), ":")
 		if len(ipPort) != 2 {
@@ -109,7 +109,7 @@ func (nt *NetTableService) Save() error {
 		if err != nil {
 			continue
 		}
-		peers = append(peers, &pb.Peer{
+		peers = append(peers, &pb.DPeer{
 			Ip: ipPort[0],
 			Port: int32(port),
 		})

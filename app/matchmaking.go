@@ -38,7 +38,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	sessions := d.getSessionStorage(sessionType)
 	pId, dId := PeerToDnId(d.i.Identity)
-	info := &pb.SessionInfo{
+	info := &pb.Session{
 		DnId: dId,
 		PId: pId,
 		Type: sessionType,
@@ -69,7 +69,7 @@ func (d *Decentralizer) DeleteSession(sessionId uint64) error {
 	return sessions.Remove(sessionId)
 }
 
-func (d *Decentralizer) GetSession(sessionId uint64) (*pb.SessionInfo, error) {
+func (d *Decentralizer) GetSession(sessionId uint64) (*pb.Session, error) {
 	if d.sessionIdToSessionType[sessionId] == 0 {
 		return nil, errors.New("no such session exists")
 	}
@@ -78,7 +78,7 @@ func (d *Decentralizer) GetSession(sessionId uint64) (*pb.SessionInfo, error) {
 	return sessions.FindSessionId(sessionId)
 }
 
-func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, error) {
+func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.Session, error) {
 	sessions := d.getSessionStorage(sessionType)
 	timeout.Do(func(ctx context.Context) {
 		d.refreshSessions(sessionType)
@@ -86,7 +86,7 @@ func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.SessionInfo, erro
 	return sessions.FindAll()
 }
 
-func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value string) ([]*pb.SessionInfo, error) {
+func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value string) ([]*pb.Session, error) {
 	sessions := d.getSessionStorage(sessionType)
 	timeout.Do(func(ctx context.Context) {
 		d.refreshSessions(sessionType)
@@ -161,7 +161,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
 	}
 }
 
-func (d *Decentralizer) getSessions(peer peer.ID, sessionType uint64) ([]*pb.SessionInfo, error) {
+func (d *Decentralizer) getSessions(peer peer.ID, sessionType uint64) ([]*pb.Session, error) {
 	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
 	if err != nil {
 		return nil, err

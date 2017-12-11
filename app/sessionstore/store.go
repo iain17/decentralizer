@@ -54,7 +54,7 @@ func New(size int, expireAt time.Duration) (*Store, error) {
 	return instance, err
 }
 
-func (s *Store) Insert(info *pb.SessionInfo) (uint64, error) {
+func (s *Store) Insert(info *pb.Session) (uint64, error) {
 	info.SessionId = GetId(info)
 	txn := s.db.Txn(true)
 	defer txn.Commit()
@@ -73,7 +73,7 @@ func (s *Store) Remove(sessionId uint64) error {
 	return err
 }
 
-func (s *Store) FindAll() (result []*pb.SessionInfo, err error) {
+func (s *Store) FindAll() (result []*pb.Session, err error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "details")
@@ -81,7 +81,7 @@ func (s *Store) FindAll() (result []*pb.SessionInfo, err error) {
 		return nil, err
 	}
 	for {
-		if session, ok := p.Next().(*pb.SessionInfo); ok {
+		if session, ok := p.Next().(*pb.Session); ok {
 			result = append(result, session)
 		} else {
 			break
@@ -90,7 +90,7 @@ func (s *Store) FindAll() (result []*pb.SessionInfo, err error) {
 	return
 }
 
-func (s *Store) FindByDetails(key, value string) (result []*pb.SessionInfo, err error) {
+func (s *Store) FindByDetails(key, value string) (result []*pb.Session, err error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "details", key, value)
@@ -98,7 +98,7 @@ func (s *Store) FindByDetails(key, value string) (result []*pb.SessionInfo, err 
 		return nil, err
 	}
 	for {
-		if session, ok := p.Next().(*pb.SessionInfo); ok {
+		if session, ok := p.Next().(*pb.Session); ok {
 			result = append(result, session)
 		} else {
 			break
@@ -107,7 +107,7 @@ func (s *Store) FindByDetails(key, value string) (result []*pb.SessionInfo, err 
 	return
 }
 
-func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error) {
+func (s *Store) FindByPeerId(peerId string) (result []*pb.Session, err error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "peerId", peerId)
@@ -115,7 +115,7 @@ func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error
 		return nil, err
 	}
 	for {
-		if session, ok := p.Next().(*pb.SessionInfo); ok {
+		if session, ok := p.Next().(*pb.Session); ok {
 			result = append(result, session)
 		} else {
 			break
@@ -124,7 +124,7 @@ func (s *Store) FindByPeerId(peerId string) (result []*pb.SessionInfo, err error
 	return
 }
 
-func (s *Store) FindSessionId(sessionId uint64) (*pb.SessionInfo, error) {
+func (s *Store) FindSessionId(sessionId uint64) (*pb.Session, error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "id", sessionId)
@@ -135,7 +135,7 @@ func (s *Store) FindSessionId(sessionId uint64) (*pb.SessionInfo, error) {
 	if record == nil {
 		return nil, errors.New("Could not find session.")
 	}
-	if session, ok := record.(*pb.SessionInfo); ok {
+	if session, ok := record.(*pb.Session); ok {
 		return session, nil
 	}
 	return nil, err

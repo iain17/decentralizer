@@ -29,6 +29,8 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
+#include "pb/matchmaking.pb.h"
+#include "pb/addressbook.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fplatform_2eproto {
@@ -42,45 +44,45 @@ struct TableStruct {
   static const ::google::protobuf::uint32 offsets[];
 };
 void AddDescriptors();
-void InitDefaultsHelloRequestImpl();
-void InitDefaultsHelloRequest();
-void InitDefaultsHelloReplyImpl();
-void InitDefaultsHelloReply();
+void InitDefaultsRPCHealthRequestImpl();
+void InitDefaultsRPCHealthRequest();
+void InitDefaultsRPCHealthReplyImpl();
+void InitDefaultsRPCHealthReply();
 inline void InitDefaults() {
-  InitDefaultsHelloRequest();
-  InitDefaultsHelloReply();
+  InitDefaultsRPCHealthRequest();
+  InitDefaultsRPCHealthReply();
 }
 }  // namespace protobuf_pb_2fplatform_2eproto
 namespace pb {
-class HelloReply;
-class HelloReplyDefaultTypeInternal;
-extern HelloReplyDefaultTypeInternal _HelloReply_default_instance_;
-class HelloRequest;
-class HelloRequestDefaultTypeInternal;
-extern HelloRequestDefaultTypeInternal _HelloRequest_default_instance_;
+class RPCHealthReply;
+class RPCHealthReplyDefaultTypeInternal;
+extern RPCHealthReplyDefaultTypeInternal _RPCHealthReply_default_instance_;
+class RPCHealthRequest;
+class RPCHealthRequestDefaultTypeInternal;
+extern RPCHealthRequestDefaultTypeInternal _RPCHealthRequest_default_instance_;
 }  // namespace pb
 namespace pb {
 
 // ===================================================================
 
-class HelloRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.HelloRequest) */ {
+class RPCHealthRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCHealthRequest) */ {
  public:
-  HelloRequest();
-  virtual ~HelloRequest();
+  RPCHealthRequest();
+  virtual ~RPCHealthRequest();
 
-  HelloRequest(const HelloRequest& from);
+  RPCHealthRequest(const RPCHealthRequest& from);
 
-  inline HelloRequest& operator=(const HelloRequest& from) {
+  inline RPCHealthRequest& operator=(const RPCHealthRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  HelloRequest(HelloRequest&& from) noexcept
-    : HelloRequest() {
+  RPCHealthRequest(RPCHealthRequest&& from) noexcept
+    : RPCHealthRequest() {
     *this = ::std::move(from);
   }
 
-  inline HelloRequest& operator=(HelloRequest&& from) noexcept {
+  inline RPCHealthRequest& operator=(RPCHealthRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -90,30 +92,30 @@ class HelloRequest : public ::google::protobuf::Message /* @@protoc_insertion_po
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const HelloRequest& default_instance();
+  static const RPCHealthRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const HelloRequest* internal_default_instance() {
-    return reinterpret_cast<const HelloRequest*>(
-               &_HelloRequest_default_instance_);
+  static inline const RPCHealthRequest* internal_default_instance() {
+    return reinterpret_cast<const RPCHealthRequest*>(
+               &_RPCHealthRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     0;
 
-  void Swap(HelloRequest* other);
-  friend void swap(HelloRequest& a, HelloRequest& b) {
+  void Swap(RPCHealthRequest* other);
+  friend void swap(RPCHealthRequest& a, RPCHealthRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline HelloRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCHealthRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  HelloRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCHealthRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const HelloRequest& from);
-  void MergeFrom(const HelloRequest& from);
+  void CopyFrom(const RPCHealthRequest& from);
+  void MergeFrom(const RPCHealthRequest& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -129,7 +131,7 @@ class HelloRequest : public ::google::protobuf::Message /* @@protoc_insertion_po
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(HelloRequest* other);
+  void InternalSwap(RPCHealthRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -145,49 +147,34 @@ class HelloRequest : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // string name = 1;
-  void clear_name();
-  static const int kNameFieldNumber = 1;
-  const ::std::string& name() const;
-  void set_name(const ::std::string& value);
-  #if LANG_CXX11
-  void set_name(::std::string&& value);
-  #endif
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  ::std::string* mutable_name();
-  ::std::string* release_name();
-  void set_allocated_name(::std::string* name);
-
-  // @@protoc_insertion_point(class_scope:pb.HelloRequest)
+  // @@protoc_insertion_point(class_scope:pb.RPCHealthRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr name_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsHelloRequestImpl();
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthRequestImpl();
 };
 // -------------------------------------------------------------------
 
-class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.HelloReply) */ {
+class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCHealthReply) */ {
  public:
-  HelloReply();
-  virtual ~HelloReply();
+  RPCHealthReply();
+  virtual ~RPCHealthReply();
 
-  HelloReply(const HelloReply& from);
+  RPCHealthReply(const RPCHealthReply& from);
 
-  inline HelloReply& operator=(const HelloReply& from) {
+  inline RPCHealthReply& operator=(const RPCHealthReply& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  HelloReply(HelloReply&& from) noexcept
-    : HelloReply() {
+  RPCHealthReply(RPCHealthReply&& from) noexcept
+    : RPCHealthReply() {
     *this = ::std::move(from);
   }
 
-  inline HelloReply& operator=(HelloReply&& from) noexcept {
+  inline RPCHealthReply& operator=(RPCHealthReply&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -197,30 +184,30 @@ class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_poin
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const HelloReply& default_instance();
+  static const RPCHealthReply& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const HelloReply* internal_default_instance() {
-    return reinterpret_cast<const HelloReply*>(
-               &_HelloReply_default_instance_);
+  static inline const RPCHealthReply* internal_default_instance() {
+    return reinterpret_cast<const RPCHealthReply*>(
+               &_RPCHealthReply_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     1;
 
-  void Swap(HelloReply* other);
-  friend void swap(HelloReply& a, HelloReply& b) {
+  void Swap(RPCHealthReply* other);
+  friend void swap(RPCHealthReply& a, RPCHealthReply& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline HelloReply* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCHealthReply* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  HelloReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCHealthReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const HelloReply& from);
-  void MergeFrom(const HelloReply& from);
+  void CopyFrom(const RPCHealthReply& from);
+  void MergeFrom(const RPCHealthReply& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -236,7 +223,7 @@ class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_poin
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(HelloReply* other);
+  void InternalSwap(RPCHealthReply* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -252,9 +239,9 @@ class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // string message = 1;
+  // string message = 2;
   void clear_message();
-  static const int kMessageFieldNumber = 1;
+  static const int kMessageFieldNumber = 2;
   const ::std::string& message() const;
   void set_message(const ::std::string& value);
   #if LANG_CXX11
@@ -266,14 +253,21 @@ class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_message();
   void set_allocated_message(::std::string* message);
 
-  // @@protoc_insertion_point(class_scope:pb.HelloReply)
+  // bool ready = 1;
+  void clear_ready();
+  static const int kReadyFieldNumber = 1;
+  bool ready() const;
+  void set_ready(bool value);
+
+  // @@protoc_insertion_point(class_scope:pb.RPCHealthReply)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr message_;
+  bool ready_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsHelloReplyImpl();
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthReplyImpl();
 };
 // ===================================================================
 
@@ -284,116 +278,77 @@ class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_poin
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// HelloRequest
-
-// string name = 1;
-inline void HelloRequest::clear_name() {
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& HelloRequest::name() const {
-  // @@protoc_insertion_point(field_get:pb.HelloRequest.name)
-  return name_.GetNoArena();
-}
-inline void HelloRequest::set_name(const ::std::string& value) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.HelloRequest.name)
-}
-#if LANG_CXX11
-inline void HelloRequest::set_name(::std::string&& value) {
-  
-  name_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.HelloRequest.name)
-}
-#endif
-inline void HelloRequest::set_name(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.HelloRequest.name)
-}
-inline void HelloRequest::set_name(const char* value, size_t size) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.HelloRequest.name)
-}
-inline ::std::string* HelloRequest::mutable_name() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.HelloRequest.name)
-  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* HelloRequest::release_name() {
-  // @@protoc_insertion_point(field_release:pb.HelloRequest.name)
-  
-  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void HelloRequest::set_allocated_name(::std::string* name) {
-  if (name != NULL) {
-    
-  } else {
-    
-  }
-  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:pb.HelloRequest.name)
-}
+// RPCHealthRequest
 
 // -------------------------------------------------------------------
 
-// HelloReply
+// RPCHealthReply
 
-// string message = 1;
-inline void HelloReply::clear_message() {
+// bool ready = 1;
+inline void RPCHealthReply::clear_ready() {
+  ready_ = false;
+}
+inline bool RPCHealthReply::ready() const {
+  // @@protoc_insertion_point(field_get:pb.RPCHealthReply.ready)
+  return ready_;
+}
+inline void RPCHealthReply::set_ready(bool value) {
+  
+  ready_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCHealthReply.ready)
+}
+
+// string message = 2;
+inline void RPCHealthReply::clear_message() {
   message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& HelloReply::message() const {
-  // @@protoc_insertion_point(field_get:pb.HelloReply.message)
+inline const ::std::string& RPCHealthReply::message() const {
+  // @@protoc_insertion_point(field_get:pb.RPCHealthReply.message)
   return message_.GetNoArena();
 }
-inline void HelloReply::set_message(const ::std::string& value) {
+inline void RPCHealthReply::set_message(const ::std::string& value) {
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.HelloReply.message)
+  // @@protoc_insertion_point(field_set:pb.RPCHealthReply.message)
 }
 #if LANG_CXX11
-inline void HelloReply::set_message(::std::string&& value) {
+inline void RPCHealthReply::set_message(::std::string&& value) {
   
   message_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.HelloReply.message)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCHealthReply.message)
 }
 #endif
-inline void HelloReply::set_message(const char* value) {
+inline void RPCHealthReply::set_message(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.HelloReply.message)
+  // @@protoc_insertion_point(field_set_char:pb.RPCHealthReply.message)
 }
-inline void HelloReply::set_message(const char* value, size_t size) {
+inline void RPCHealthReply::set_message(const char* value, size_t size) {
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.HelloReply.message)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCHealthReply.message)
 }
-inline ::std::string* HelloReply::mutable_message() {
+inline ::std::string* RPCHealthReply::mutable_message() {
   
-  // @@protoc_insertion_point(field_mutable:pb.HelloReply.message)
+  // @@protoc_insertion_point(field_mutable:pb.RPCHealthReply.message)
   return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* HelloReply::release_message() {
-  // @@protoc_insertion_point(field_release:pb.HelloReply.message)
+inline ::std::string* RPCHealthReply::release_message() {
+  // @@protoc_insertion_point(field_release:pb.RPCHealthReply.message)
   
   return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void HelloReply::set_allocated_message(::std::string* message) {
+inline void RPCHealthReply::set_allocated_message(::std::string* message) {
   if (message != NULL) {
     
   } else {
     
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:pb.HelloReply.message)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCHealthReply.message)
 }
 
 #ifdef __GNUC__

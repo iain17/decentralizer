@@ -1,8 +1,7 @@
 syntax = "proto3";
 package pb;
-option optimize_for = LITE_RUNTIME;
 
-message SessionInfo {
+message Session {
     string pId = 1;//PeerId
     uint64 dnId = 2;
 
@@ -16,7 +15,7 @@ message SessionInfo {
 
 //DN messages
 message DNSessionResponse {
-    repeated SessionInfo results = 1;
+    repeated Session results = 1;
 }
 
 message DNSessionRequest {
@@ -24,14 +23,14 @@ message DNSessionRequest {
 }
 
 //RPC messages
-//Create/update
+
+//Upsert
 message RPCUpsertSessionRequest {
-    SessionInfo info = 1;
+    Session session = 1;
 }
 
 message RPCUpsertSessionResponse {
-    bool result = 1;
-    uint64 sessionId = 2;
+    uint64 sessionId = 1;
 }
 
 //Delete
@@ -43,15 +42,15 @@ message RPCDeleteSessionResponse {
     bool result = 1;
 }
 
-//Fetch session ids
-message RPCSessionIdsRequest {
+//Get session ids
+message RPCGetSessionIdsRequest {
     uint64 type = 1;
     string key = 2;
     string value = 3;
 }
 
-message RPCSessionIdsResponse {
-    repeated uint64 sessionIds = 1;//Available sessions
+message RPCGetSessionIdsResponse {
+    repeated uint64 sessionIds = 1;
 }
 
 //Fetch an individual session
@@ -60,6 +59,5 @@ message RPCGetSessionRequest {
 }
 
 message RPCGetSessionResponse {
-    bool found = 1;
-    SessionInfo result = 2;
+    Session session = 1;
 }

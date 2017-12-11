@@ -10,11 +10,11 @@ import (
 func TestStore_FindByPeerId(t *testing.T) {
 	store, err := New(10, 10 * time.Second)
 	assert.NoError(t, err)
-	store.Insert(&pb.SessionInfo {
+	store.Insert(&pb.Session {
 		DnId: 1,
 		PId: "test1",
 	})
-	store.Insert(&pb.SessionInfo {
+	store.Insert(&pb.Session {
 		DnId: 2,
 		PId: "test2",
 	})
@@ -26,14 +26,14 @@ func TestStore_FindByPeerId(t *testing.T) {
 func TestStore_FindByDetails(t *testing.T) {
 	store, err := New(10, 10 * time.Second)
 	assert.NoError(t, err)
-	store.Insert(&pb.SessionInfo {
+	store.Insert(&pb.Session {
 		DnId: 1,
 		PId: "test1",
 		Details: map[string]string{
 			"cool": "yes",
 		},
 	})
-	store.Insert(&pb.SessionInfo {
+	store.Insert(&pb.Session {
 		DnId: 2,
 		PId: "test2",
 		Details: map[string]string{

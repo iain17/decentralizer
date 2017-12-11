@@ -24,13 +24,14 @@
 #include <google/protobuf/arenastring.h>
 #include <google/protobuf/generated_message_table_driven.h>
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/metadata_lite.h>
-#include <google/protobuf/message_lite.h>
+#include <google/protobuf/metadata.h>
+#include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/map.h>  // IWYU pragma: export
-#include <google/protobuf/map_entry_lite.h>
-#include <google/protobuf/map_field_lite.h>
+#include <google/protobuf/map_entry.h>
+#include <google/protobuf/map_field_inl.h>
+#include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fmatchmaking_2eproto {
@@ -43,10 +44,11 @@ struct TableStruct {
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
 };
-void InitDefaultsSessionInfo_DetailsEntry_DoNotUseImpl();
-void InitDefaultsSessionInfo_DetailsEntry_DoNotUse();
-void InitDefaultsSessionInfoImpl();
-void InitDefaultsSessionInfo();
+void AddDescriptors();
+void InitDefaultsSession_DetailsEntry_DoNotUseImpl();
+void InitDefaultsSession_DetailsEntry_DoNotUse();
+void InitDefaultsSessionImpl();
+void InitDefaultsSession();
 void InitDefaultsDNSessionResponseImpl();
 void InitDefaultsDNSessionResponse();
 void InitDefaultsDNSessionRequestImpl();
@@ -59,25 +61,25 @@ void InitDefaultsRPCDeleteSessionRequestImpl();
 void InitDefaultsRPCDeleteSessionRequest();
 void InitDefaultsRPCDeleteSessionResponseImpl();
 void InitDefaultsRPCDeleteSessionResponse();
-void InitDefaultsRPCSessionIdsRequestImpl();
-void InitDefaultsRPCSessionIdsRequest();
-void InitDefaultsRPCSessionIdsResponseImpl();
-void InitDefaultsRPCSessionIdsResponse();
+void InitDefaultsRPCGetSessionIdsRequestImpl();
+void InitDefaultsRPCGetSessionIdsRequest();
+void InitDefaultsRPCGetSessionIdsResponseImpl();
+void InitDefaultsRPCGetSessionIdsResponse();
 void InitDefaultsRPCGetSessionRequestImpl();
 void InitDefaultsRPCGetSessionRequest();
 void InitDefaultsRPCGetSessionResponseImpl();
 void InitDefaultsRPCGetSessionResponse();
 inline void InitDefaults() {
-  InitDefaultsSessionInfo_DetailsEntry_DoNotUse();
-  InitDefaultsSessionInfo();
+  InitDefaultsSession_DetailsEntry_DoNotUse();
+  InitDefaultsSession();
   InitDefaultsDNSessionResponse();
   InitDefaultsDNSessionRequest();
   InitDefaultsRPCUpsertSessionRequest();
   InitDefaultsRPCUpsertSessionResponse();
   InitDefaultsRPCDeleteSessionRequest();
   InitDefaultsRPCDeleteSessionResponse();
-  InitDefaultsRPCSessionIdsRequest();
-  InitDefaultsRPCSessionIdsResponse();
+  InitDefaultsRPCGetSessionIdsRequest();
+  InitDefaultsRPCGetSessionIdsResponse();
   InitDefaultsRPCGetSessionRequest();
   InitDefaultsRPCGetSessionResponse();
 }
@@ -95,72 +97,74 @@ extern RPCDeleteSessionRequestDefaultTypeInternal _RPCDeleteSessionRequest_defau
 class RPCDeleteSessionResponse;
 class RPCDeleteSessionResponseDefaultTypeInternal;
 extern RPCDeleteSessionResponseDefaultTypeInternal _RPCDeleteSessionResponse_default_instance_;
+class RPCGetSessionIdsRequest;
+class RPCGetSessionIdsRequestDefaultTypeInternal;
+extern RPCGetSessionIdsRequestDefaultTypeInternal _RPCGetSessionIdsRequest_default_instance_;
+class RPCGetSessionIdsResponse;
+class RPCGetSessionIdsResponseDefaultTypeInternal;
+extern RPCGetSessionIdsResponseDefaultTypeInternal _RPCGetSessionIdsResponse_default_instance_;
 class RPCGetSessionRequest;
 class RPCGetSessionRequestDefaultTypeInternal;
 extern RPCGetSessionRequestDefaultTypeInternal _RPCGetSessionRequest_default_instance_;
 class RPCGetSessionResponse;
 class RPCGetSessionResponseDefaultTypeInternal;
 extern RPCGetSessionResponseDefaultTypeInternal _RPCGetSessionResponse_default_instance_;
-class RPCSessionIdsRequest;
-class RPCSessionIdsRequestDefaultTypeInternal;
-extern RPCSessionIdsRequestDefaultTypeInternal _RPCSessionIdsRequest_default_instance_;
-class RPCSessionIdsResponse;
-class RPCSessionIdsResponseDefaultTypeInternal;
-extern RPCSessionIdsResponseDefaultTypeInternal _RPCSessionIdsResponse_default_instance_;
 class RPCUpsertSessionRequest;
 class RPCUpsertSessionRequestDefaultTypeInternal;
 extern RPCUpsertSessionRequestDefaultTypeInternal _RPCUpsertSessionRequest_default_instance_;
 class RPCUpsertSessionResponse;
 class RPCUpsertSessionResponseDefaultTypeInternal;
 extern RPCUpsertSessionResponseDefaultTypeInternal _RPCUpsertSessionResponse_default_instance_;
-class SessionInfo;
-class SessionInfoDefaultTypeInternal;
-extern SessionInfoDefaultTypeInternal _SessionInfo_default_instance_;
-class SessionInfo_DetailsEntry_DoNotUse;
-class SessionInfo_DetailsEntry_DoNotUseDefaultTypeInternal;
-extern SessionInfo_DetailsEntry_DoNotUseDefaultTypeInternal _SessionInfo_DetailsEntry_DoNotUse_default_instance_;
+class Session;
+class SessionDefaultTypeInternal;
+extern SessionDefaultTypeInternal _Session_default_instance_;
+class Session_DetailsEntry_DoNotUse;
+class Session_DetailsEntry_DoNotUseDefaultTypeInternal;
+extern Session_DetailsEntry_DoNotUseDefaultTypeInternal _Session_DetailsEntry_DoNotUse_default_instance_;
 }  // namespace pb
 namespace pb {
 
 // ===================================================================
 
-class SessionInfo_DetailsEntry_DoNotUse : public ::google::protobuf::internal::MapEntryLite<SessionInfo_DetailsEntry_DoNotUse, 
+class Session_DetailsEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<Session_DetailsEntry_DoNotUse, 
     ::std::string, ::std::string,
     ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
     ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
     0 > {
 public:
-  typedef ::google::protobuf::internal::MapEntryLite<SessionInfo_DetailsEntry_DoNotUse, 
+  typedef ::google::protobuf::internal::MapEntry<Session_DetailsEntry_DoNotUse, 
     ::std::string, ::std::string,
     ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
     ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
     0 > SuperType;
-  SessionInfo_DetailsEntry_DoNotUse();
-  SessionInfo_DetailsEntry_DoNotUse(::google::protobuf::Arena* arena);
-  void MergeFrom(const SessionInfo_DetailsEntry_DoNotUse& other);
-  static const SessionInfo_DetailsEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const SessionInfo_DetailsEntry_DoNotUse*>(&_SessionInfo_DetailsEntry_DoNotUse_default_instance_); }
+  Session_DetailsEntry_DoNotUse();
+  Session_DetailsEntry_DoNotUse(::google::protobuf::Arena* arena);
+  void MergeFrom(const Session_DetailsEntry_DoNotUse& other);
+  static const Session_DetailsEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Session_DetailsEntry_DoNotUse*>(&_Session_DetailsEntry_DoNotUse_default_instance_); }
+  void MergeFrom(const ::google::protobuf::Message& other) PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const;
 };
 
 // -------------------------------------------------------------------
 
-class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.SessionInfo) */ {
+class Session : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Session) */ {
  public:
-  SessionInfo();
-  virtual ~SessionInfo();
+  Session();
+  virtual ~Session();
 
-  SessionInfo(const SessionInfo& from);
+  Session(const Session& from);
 
-  inline SessionInfo& operator=(const SessionInfo& from) {
+  inline Session& operator=(const Session& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  SessionInfo(SessionInfo&& from) noexcept
-    : SessionInfo() {
+  Session(Session&& from) noexcept
+    : Session() {
     *this = ::std::move(from);
   }
 
-  inline SessionInfo& operator=(SessionInfo&& from) noexcept {
+  inline Session& operator=(Session&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -169,30 +173,31 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
     return *this;
   }
   #endif
-  static const SessionInfo& default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Session& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SessionInfo* internal_default_instance() {
-    return reinterpret_cast<const SessionInfo*>(
-               &_SessionInfo_default_instance_);
+  static inline const Session* internal_default_instance() {
+    return reinterpret_cast<const Session*>(
+               &_Session_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     1;
 
-  void Swap(SessionInfo* other);
-  friend void swap(SessionInfo& a, SessionInfo& b) {
+  void Swap(Session* other);
+  friend void swap(Session& a, Session& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SessionInfo* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline Session* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  SessionInfo* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const SessionInfo& from);
-  void MergeFrom(const SessionInfo& from);
+  Session* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Session& from);
+  void MergeFrom(const Session& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -201,13 +206,14 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(SessionInfo* other);
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Session* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -217,7 +223,7 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -291,12 +297,12 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   ::google::protobuf::uint32 port() const;
   void set_port(::google::protobuf::uint32 value);
 
-  // @@protoc_insertion_point(class_scope:pb.SessionInfo)
+  // @@protoc_insertion_point(class_scope:pb.Session)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::internal::MapFieldLite<
-      SessionInfo_DetailsEntry_DoNotUse,
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::MapField<
+      Session_DetailsEntry_DoNotUse,
       ::std::string, ::std::string,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
@@ -310,11 +316,11 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   ::google::protobuf::uint32 port_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionInfoImpl();
+  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSessionImpl();
 };
 // -------------------------------------------------------------------
 
-class DNSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.DNSessionResponse) */ {
+class DNSessionResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNSessionResponse) */ {
  public:
   DNSessionResponse();
   virtual ~DNSessionResponse();
@@ -340,6 +346,7 @@ class DNSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_ins
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const DNSessionResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -360,8 +367,8 @@ class DNSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_ins
   inline DNSessionResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
   DNSessionResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const DNSessionResponse& from);
   void MergeFrom(const DNSessionResponse& from);
   void Clear() PROTOBUF_FINAL;
@@ -372,12 +379,13 @@ class DNSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_ins
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(DNSessionResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -388,36 +396,36 @@ class DNSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_ins
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // repeated .pb.SessionInfo results = 1;
+  // repeated .pb.Session results = 1;
   int results_size() const;
   void clear_results();
   static const int kResultsFieldNumber = 1;
-  const ::pb::SessionInfo& results(int index) const;
-  ::pb::SessionInfo* mutable_results(int index);
-  ::pb::SessionInfo* add_results();
-  ::google::protobuf::RepeatedPtrField< ::pb::SessionInfo >*
+  const ::pb::Session& results(int index) const;
+  ::pb::Session* mutable_results(int index);
+  ::pb::Session* add_results();
+  ::google::protobuf::RepeatedPtrField< ::pb::Session >*
       mutable_results();
-  const ::google::protobuf::RepeatedPtrField< ::pb::SessionInfo >&
+  const ::google::protobuf::RepeatedPtrField< ::pb::Session >&
       results() const;
 
   // @@protoc_insertion_point(class_scope:pb.DNSessionResponse)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::pb::SessionInfo > results_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::pb::Session > results_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
   friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionResponseImpl();
 };
 // -------------------------------------------------------------------
 
-class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.DNSessionRequest) */ {
+class DNSessionRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNSessionRequest) */ {
  public:
   DNSessionRequest();
   virtual ~DNSessionRequest();
@@ -443,6 +451,7 @@ class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const DNSessionRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -463,8 +472,8 @@ class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
   inline DNSessionRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
   DNSessionRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const DNSessionRequest& from);
   void MergeFrom(const DNSessionRequest& from);
   void Clear() PROTOBUF_FINAL;
@@ -475,12 +484,13 @@ class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(DNSessionRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -491,7 +501,7 @@ class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -506,7 +516,7 @@ class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
   // @@protoc_insertion_point(class_scope:pb.DNSessionRequest)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint64 type_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
@@ -514,7 +524,7 @@ class DNSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
 };
 // -------------------------------------------------------------------
 
-class RPCUpsertSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCUpsertSessionRequest) */ {
+class RPCUpsertSessionRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCUpsertSessionRequest) */ {
  public:
   RPCUpsertSessionRequest();
   virtual ~RPCUpsertSessionRequest();
@@ -540,6 +550,7 @@ class RPCUpsertSessionRequest : public ::google::protobuf::MessageLite /* @@prot
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const RPCUpsertSessionRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -560,8 +571,8 @@ class RPCUpsertSessionRequest : public ::google::protobuf::MessageLite /* @@prot
   inline RPCUpsertSessionRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
   RPCUpsertSessionRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const RPCUpsertSessionRequest& from);
   void MergeFrom(const RPCUpsertSessionRequest& from);
   void Clear() PROTOBUF_FINAL;
@@ -572,12 +583,13 @@ class RPCUpsertSessionRequest : public ::google::protobuf::MessageLite /* @@prot
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(RPCUpsertSessionRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -588,33 +600,33 @@ class RPCUpsertSessionRequest : public ::google::protobuf::MessageLite /* @@prot
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // .pb.SessionInfo info = 1;
-  bool has_info() const;
-  void clear_info();
-  static const int kInfoFieldNumber = 1;
-  const ::pb::SessionInfo& info() const;
-  ::pb::SessionInfo* release_info();
-  ::pb::SessionInfo* mutable_info();
-  void set_allocated_info(::pb::SessionInfo* info);
+  // .pb.Session session = 1;
+  bool has_session() const;
+  void clear_session();
+  static const int kSessionFieldNumber = 1;
+  const ::pb::Session& session() const;
+  ::pb::Session* release_session();
+  ::pb::Session* mutable_session();
+  void set_allocated_session(::pb::Session* session);
 
   // @@protoc_insertion_point(class_scope:pb.RPCUpsertSessionRequest)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::pb::SessionInfo* info_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::pb::Session* session_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
   friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCUpsertSessionRequestImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCUpsertSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCUpsertSessionResponse) */ {
+class RPCUpsertSessionResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCUpsertSessionResponse) */ {
  public:
   RPCUpsertSessionResponse();
   virtual ~RPCUpsertSessionResponse();
@@ -640,6 +652,7 @@ class RPCUpsertSessionResponse : public ::google::protobuf::MessageLite /* @@pro
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const RPCUpsertSessionResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -660,8 +673,8 @@ class RPCUpsertSessionResponse : public ::google::protobuf::MessageLite /* @@pro
   inline RPCUpsertSessionResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
   RPCUpsertSessionResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const RPCUpsertSessionResponse& from);
   void MergeFrom(const RPCUpsertSessionResponse& from);
   void Clear() PROTOBUF_FINAL;
@@ -672,12 +685,13 @@ class RPCUpsertSessionResponse : public ::google::protobuf::MessageLite /* @@pro
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(RPCUpsertSessionResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -688,37 +702,30 @@ class RPCUpsertSessionResponse : public ::google::protobuf::MessageLite /* @@pro
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // uint64 sessionId = 2;
+  // uint64 sessionId = 1;
   void clear_sessionid();
-  static const int kSessionIdFieldNumber = 2;
+  static const int kSessionIdFieldNumber = 1;
   ::google::protobuf::uint64 sessionid() const;
   void set_sessionid(::google::protobuf::uint64 value);
-
-  // bool result = 1;
-  void clear_result();
-  static const int kResultFieldNumber = 1;
-  bool result() const;
-  void set_result(bool value);
 
   // @@protoc_insertion_point(class_scope:pb.RPCUpsertSessionResponse)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint64 sessionid_;
-  bool result_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
   friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCUpsertSessionResponseImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCDeleteSessionRequest) */ {
+class RPCDeleteSessionRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCDeleteSessionRequest) */ {
  public:
   RPCDeleteSessionRequest();
   virtual ~RPCDeleteSessionRequest();
@@ -744,6 +751,7 @@ class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@prot
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const RPCDeleteSessionRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -764,8 +772,8 @@ class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@prot
   inline RPCDeleteSessionRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
   RPCDeleteSessionRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const RPCDeleteSessionRequest& from);
   void MergeFrom(const RPCDeleteSessionRequest& from);
   void Clear() PROTOBUF_FINAL;
@@ -776,12 +784,13 @@ class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@prot
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(RPCDeleteSessionRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -792,7 +801,7 @@ class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@prot
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -807,7 +816,7 @@ class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@prot
   // @@protoc_insertion_point(class_scope:pb.RPCDeleteSessionRequest)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint64 sessionid_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
@@ -815,7 +824,7 @@ class RPCDeleteSessionRequest : public ::google::protobuf::MessageLite /* @@prot
 };
 // -------------------------------------------------------------------
 
-class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCDeleteSessionResponse) */ {
+class RPCDeleteSessionResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCDeleteSessionResponse) */ {
  public:
   RPCDeleteSessionResponse();
   virtual ~RPCDeleteSessionResponse();
@@ -841,6 +850,7 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const RPCDeleteSessionResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -861,8 +871,8 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
   inline RPCDeleteSessionResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
   RPCDeleteSessionResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const RPCDeleteSessionResponse& from);
   void MergeFrom(const RPCDeleteSessionResponse& from);
   void Clear() PROTOBUF_FINAL;
@@ -873,12 +883,13 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(RPCDeleteSessionResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -889,7 +900,7 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -904,7 +915,7 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
   // @@protoc_insertion_point(class_scope:pb.RPCDeleteSessionResponse)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool result_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
@@ -912,24 +923,24 @@ class RPCDeleteSessionResponse : public ::google::protobuf::MessageLite /* @@pro
 };
 // -------------------------------------------------------------------
 
-class RPCSessionIdsRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCSessionIdsRequest) */ {
+class RPCGetSessionIdsRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetSessionIdsRequest) */ {
  public:
-  RPCSessionIdsRequest();
-  virtual ~RPCSessionIdsRequest();
+  RPCGetSessionIdsRequest();
+  virtual ~RPCGetSessionIdsRequest();
 
-  RPCSessionIdsRequest(const RPCSessionIdsRequest& from);
+  RPCGetSessionIdsRequest(const RPCGetSessionIdsRequest& from);
 
-  inline RPCSessionIdsRequest& operator=(const RPCSessionIdsRequest& from) {
+  inline RPCGetSessionIdsRequest& operator=(const RPCGetSessionIdsRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCSessionIdsRequest(RPCSessionIdsRequest&& from) noexcept
-    : RPCSessionIdsRequest() {
+  RPCGetSessionIdsRequest(RPCGetSessionIdsRequest&& from) noexcept
+    : RPCGetSessionIdsRequest() {
     *this = ::std::move(from);
   }
 
-  inline RPCSessionIdsRequest& operator=(RPCSessionIdsRequest&& from) noexcept {
+  inline RPCGetSessionIdsRequest& operator=(RPCGetSessionIdsRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -938,30 +949,31 @@ class RPCSessionIdsRequest : public ::google::protobuf::MessageLite /* @@protoc_
     return *this;
   }
   #endif
-  static const RPCSessionIdsRequest& default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RPCGetSessionIdsRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCSessionIdsRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCSessionIdsRequest*>(
-               &_RPCSessionIdsRequest_default_instance_);
+  static inline const RPCGetSessionIdsRequest* internal_default_instance() {
+    return reinterpret_cast<const RPCGetSessionIdsRequest*>(
+               &_RPCGetSessionIdsRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     8;
 
-  void Swap(RPCSessionIdsRequest* other);
-  friend void swap(RPCSessionIdsRequest& a, RPCSessionIdsRequest& b) {
+  void Swap(RPCGetSessionIdsRequest* other);
+  friend void swap(RPCGetSessionIdsRequest& a, RPCGetSessionIdsRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCSessionIdsRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCGetSessionIdsRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCSessionIdsRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCSessionIdsRequest& from);
-  void MergeFrom(const RPCSessionIdsRequest& from);
+  RPCGetSessionIdsRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RPCGetSessionIdsRequest& from);
+  void MergeFrom(const RPCGetSessionIdsRequest& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -970,13 +982,14 @@ class RPCSessionIdsRequest : public ::google::protobuf::MessageLite /* @@protoc_
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCSessionIdsRequest* other);
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RPCGetSessionIdsRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -986,7 +999,7 @@ class RPCSessionIdsRequest : public ::google::protobuf::MessageLite /* @@protoc_
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -1026,37 +1039,37 @@ class RPCSessionIdsRequest : public ::google::protobuf::MessageLite /* @@protoc_
   ::google::protobuf::uint64 type() const;
   void set_type(::google::protobuf::uint64 value);
 
-  // @@protoc_insertion_point(class_scope:pb.RPCSessionIdsRequest)
+  // @@protoc_insertion_point(class_scope:pb.RPCGetSessionIdsRequest)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr key_;
   ::google::protobuf::internal::ArenaStringPtr value_;
   ::google::protobuf::uint64 type_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsRequestImpl();
+  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionIdsRequestImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCSessionIdsResponse : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCSessionIdsResponse) */ {
+class RPCGetSessionIdsResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetSessionIdsResponse) */ {
  public:
-  RPCSessionIdsResponse();
-  virtual ~RPCSessionIdsResponse();
+  RPCGetSessionIdsResponse();
+  virtual ~RPCGetSessionIdsResponse();
 
-  RPCSessionIdsResponse(const RPCSessionIdsResponse& from);
+  RPCGetSessionIdsResponse(const RPCGetSessionIdsResponse& from);
 
-  inline RPCSessionIdsResponse& operator=(const RPCSessionIdsResponse& from) {
+  inline RPCGetSessionIdsResponse& operator=(const RPCGetSessionIdsResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCSessionIdsResponse(RPCSessionIdsResponse&& from) noexcept
-    : RPCSessionIdsResponse() {
+  RPCGetSessionIdsResponse(RPCGetSessionIdsResponse&& from) noexcept
+    : RPCGetSessionIdsResponse() {
     *this = ::std::move(from);
   }
 
-  inline RPCSessionIdsResponse& operator=(RPCSessionIdsResponse&& from) noexcept {
+  inline RPCGetSessionIdsResponse& operator=(RPCGetSessionIdsResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1065,30 +1078,31 @@ class RPCSessionIdsResponse : public ::google::protobuf::MessageLite /* @@protoc
     return *this;
   }
   #endif
-  static const RPCSessionIdsResponse& default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RPCGetSessionIdsResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCSessionIdsResponse* internal_default_instance() {
-    return reinterpret_cast<const RPCSessionIdsResponse*>(
-               &_RPCSessionIdsResponse_default_instance_);
+  static inline const RPCGetSessionIdsResponse* internal_default_instance() {
+    return reinterpret_cast<const RPCGetSessionIdsResponse*>(
+               &_RPCGetSessionIdsResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     9;
 
-  void Swap(RPCSessionIdsResponse* other);
-  friend void swap(RPCSessionIdsResponse& a, RPCSessionIdsResponse& b) {
+  void Swap(RPCGetSessionIdsResponse* other);
+  friend void swap(RPCGetSessionIdsResponse& a, RPCGetSessionIdsResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCSessionIdsResponse* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCGetSessionIdsResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCSessionIdsResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCSessionIdsResponse& from);
-  void MergeFrom(const RPCSessionIdsResponse& from);
+  RPCGetSessionIdsResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RPCGetSessionIdsResponse& from);
+  void MergeFrom(const RPCGetSessionIdsResponse& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1097,13 +1111,14 @@ class RPCSessionIdsResponse : public ::google::protobuf::MessageLite /* @@protoc
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCSessionIdsResponse* other);
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RPCGetSessionIdsResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1113,7 +1128,7 @@ class RPCSessionIdsResponse : public ::google::protobuf::MessageLite /* @@protoc
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -1131,19 +1146,19 @@ class RPCSessionIdsResponse : public ::google::protobuf::MessageLite /* @@protoc
   ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
       mutable_sessionids();
 
-  // @@protoc_insertion_point(class_scope:pb.RPCSessionIdsResponse)
+  // @@protoc_insertion_point(class_scope:pb.RPCGetSessionIdsResponse)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint64 > sessionids_;
   mutable int _sessionids_cached_byte_size_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCSessionIdsResponseImpl();
+  friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionIdsResponseImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCGetSessionRequest) */ {
+class RPCGetSessionRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetSessionRequest) */ {
  public:
   RPCGetSessionRequest();
   virtual ~RPCGetSessionRequest();
@@ -1169,6 +1184,7 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const RPCGetSessionRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -1189,8 +1205,8 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
   inline RPCGetSessionRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
   RPCGetSessionRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const RPCGetSessionRequest& from);
   void MergeFrom(const RPCGetSessionRequest& from);
   void Clear() PROTOBUF_FINAL;
@@ -1201,12 +1217,13 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(RPCGetSessionRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -1217,7 +1234,7 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
@@ -1232,7 +1249,7 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
   // @@protoc_insertion_point(class_scope:pb.RPCGetSessionRequest)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint64 sessionid_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
@@ -1240,7 +1257,7 @@ class RPCGetSessionRequest : public ::google::protobuf::MessageLite /* @@protoc_
 };
 // -------------------------------------------------------------------
 
-class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCGetSessionResponse) */ {
+class RPCGetSessionResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetSessionResponse) */ {
  public:
   RPCGetSessionResponse();
   virtual ~RPCGetSessionResponse();
@@ -1266,6 +1283,7 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
     return *this;
   }
   #endif
+  static const ::google::protobuf::Descriptor* descriptor();
   static const RPCGetSessionResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -1286,8 +1304,8 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
   inline RPCGetSessionResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
   RPCGetSessionResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void CopyFrom(const RPCGetSessionResponse& from);
   void MergeFrom(const RPCGetSessionResponse& from);
   void Clear() PROTOBUF_FINAL;
@@ -1298,12 +1316,13 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
   void InternalSwap(RPCGetSessionResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
@@ -1314,33 +1333,26 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // .pb.SessionInfo result = 2;
-  bool has_result() const;
-  void clear_result();
-  static const int kResultFieldNumber = 2;
-  const ::pb::SessionInfo& result() const;
-  ::pb::SessionInfo* release_result();
-  ::pb::SessionInfo* mutable_result();
-  void set_allocated_result(::pb::SessionInfo* result);
-
-  // bool found = 1;
-  void clear_found();
-  static const int kFoundFieldNumber = 1;
-  bool found() const;
-  void set_found(bool value);
+  // .pb.Session session = 1;
+  bool has_session() const;
+  void clear_session();
+  static const int kSessionFieldNumber = 1;
+  const ::pb::Session& session() const;
+  ::pb::Session* release_session();
+  ::pb::Session* mutable_session();
+  void set_allocated_session(::pb::Session* session);
 
   // @@protoc_insertion_point(class_scope:pb.RPCGetSessionResponse)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::pb::SessionInfo* result_;
-  bool found_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::pb::Session* session_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmatchmaking_2eproto::TableStruct;
   friend void ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsRPCGetSessionResponseImpl();
@@ -1356,199 +1368,199 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// SessionInfo
+// Session
 
 // string pId = 1;
-inline void SessionInfo::clear_pid() {
+inline void Session::clear_pid() {
   pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& SessionInfo::pid() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.pId)
+inline const ::std::string& Session::pid() const {
+  // @@protoc_insertion_point(field_get:pb.Session.pId)
   return pid_.GetNoArena();
 }
-inline void SessionInfo::set_pid(const ::std::string& value) {
+inline void Session::set_pid(const ::std::string& value) {
   
   pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.pId)
+  // @@protoc_insertion_point(field_set:pb.Session.pId)
 }
 #if LANG_CXX11
-inline void SessionInfo::set_pid(::std::string&& value) {
+inline void Session::set_pid(::std::string&& value) {
   
   pid_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.SessionInfo.pId)
+  // @@protoc_insertion_point(field_set_rvalue:pb.Session.pId)
 }
 #endif
-inline void SessionInfo::set_pid(const char* value) {
+inline void Session::set_pid(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.SessionInfo.pId)
+  // @@protoc_insertion_point(field_set_char:pb.Session.pId)
 }
-inline void SessionInfo::set_pid(const char* value, size_t size) {
+inline void Session::set_pid(const char* value, size_t size) {
   
   pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.SessionInfo.pId)
+  // @@protoc_insertion_point(field_set_pointer:pb.Session.pId)
 }
-inline ::std::string* SessionInfo::mutable_pid() {
+inline ::std::string* Session::mutable_pid() {
   
-  // @@protoc_insertion_point(field_mutable:pb.SessionInfo.pId)
+  // @@protoc_insertion_point(field_mutable:pb.Session.pId)
   return pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* SessionInfo::release_pid() {
-  // @@protoc_insertion_point(field_release:pb.SessionInfo.pId)
+inline ::std::string* Session::release_pid() {
+  // @@protoc_insertion_point(field_release:pb.Session.pId)
   
   return pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void SessionInfo::set_allocated_pid(::std::string* pid) {
+inline void Session::set_allocated_pid(::std::string* pid) {
   if (pid != NULL) {
     
   } else {
     
   }
   pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), pid);
-  // @@protoc_insertion_point(field_set_allocated:pb.SessionInfo.pId)
+  // @@protoc_insertion_point(field_set_allocated:pb.Session.pId)
 }
 
 // uint64 dnId = 2;
-inline void SessionInfo::clear_dnid() {
+inline void Session::clear_dnid() {
   dnid_ = GOOGLE_ULONGLONG(0);
 }
-inline ::google::protobuf::uint64 SessionInfo::dnid() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.dnId)
+inline ::google::protobuf::uint64 Session::dnid() const {
+  // @@protoc_insertion_point(field_get:pb.Session.dnId)
   return dnid_;
 }
-inline void SessionInfo::set_dnid(::google::protobuf::uint64 value) {
+inline void Session::set_dnid(::google::protobuf::uint64 value) {
   
   dnid_ = value;
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.dnId)
+  // @@protoc_insertion_point(field_set:pb.Session.dnId)
 }
 
 // uint64 sessionId = 3;
-inline void SessionInfo::clear_sessionid() {
+inline void Session::clear_sessionid() {
   sessionid_ = GOOGLE_ULONGLONG(0);
 }
-inline ::google::protobuf::uint64 SessionInfo::sessionid() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.sessionId)
+inline ::google::protobuf::uint64 Session::sessionid() const {
+  // @@protoc_insertion_point(field_get:pb.Session.sessionId)
   return sessionid_;
 }
-inline void SessionInfo::set_sessionid(::google::protobuf::uint64 value) {
+inline void Session::set_sessionid(::google::protobuf::uint64 value) {
   
   sessionid_ = value;
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.sessionId)
+  // @@protoc_insertion_point(field_set:pb.Session.sessionId)
 }
 
 // uint64 type = 4;
-inline void SessionInfo::clear_type() {
+inline void Session::clear_type() {
   type_ = GOOGLE_ULONGLONG(0);
 }
-inline ::google::protobuf::uint64 SessionInfo::type() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.type)
+inline ::google::protobuf::uint64 Session::type() const {
+  // @@protoc_insertion_point(field_get:pb.Session.type)
   return type_;
 }
-inline void SessionInfo::set_type(::google::protobuf::uint64 value) {
+inline void Session::set_type(::google::protobuf::uint64 value) {
   
   type_ = value;
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.type)
+  // @@protoc_insertion_point(field_set:pb.Session.type)
 }
 
 // string name = 5;
-inline void SessionInfo::clear_name() {
+inline void Session::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& SessionInfo::name() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.name)
+inline const ::std::string& Session::name() const {
+  // @@protoc_insertion_point(field_get:pb.Session.name)
   return name_.GetNoArena();
 }
-inline void SessionInfo::set_name(const ::std::string& value) {
+inline void Session::set_name(const ::std::string& value) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.name)
+  // @@protoc_insertion_point(field_set:pb.Session.name)
 }
 #if LANG_CXX11
-inline void SessionInfo::set_name(::std::string&& value) {
+inline void Session::set_name(::std::string&& value) {
   
   name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.SessionInfo.name)
+  // @@protoc_insertion_point(field_set_rvalue:pb.Session.name)
 }
 #endif
-inline void SessionInfo::set_name(const char* value) {
+inline void Session::set_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.SessionInfo.name)
+  // @@protoc_insertion_point(field_set_char:pb.Session.name)
 }
-inline void SessionInfo::set_name(const char* value, size_t size) {
+inline void Session::set_name(const char* value, size_t size) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.SessionInfo.name)
+  // @@protoc_insertion_point(field_set_pointer:pb.Session.name)
 }
-inline ::std::string* SessionInfo::mutable_name() {
+inline ::std::string* Session::mutable_name() {
   
-  // @@protoc_insertion_point(field_mutable:pb.SessionInfo.name)
+  // @@protoc_insertion_point(field_mutable:pb.Session.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* SessionInfo::release_name() {
-  // @@protoc_insertion_point(field_release:pb.SessionInfo.name)
+inline ::std::string* Session::release_name() {
+  // @@protoc_insertion_point(field_release:pb.Session.name)
   
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void SessionInfo::set_allocated_name(::std::string* name) {
+inline void Session::set_allocated_name(::std::string* name) {
   if (name != NULL) {
     
   } else {
     
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:pb.SessionInfo.name)
+  // @@protoc_insertion_point(field_set_allocated:pb.Session.name)
 }
 
 // uint32 address = 6;
-inline void SessionInfo::clear_address() {
+inline void Session::clear_address() {
   address_ = 0u;
 }
-inline ::google::protobuf::uint32 SessionInfo::address() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.address)
+inline ::google::protobuf::uint32 Session::address() const {
+  // @@protoc_insertion_point(field_get:pb.Session.address)
   return address_;
 }
-inline void SessionInfo::set_address(::google::protobuf::uint32 value) {
+inline void Session::set_address(::google::protobuf::uint32 value) {
   
   address_ = value;
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.address)
+  // @@protoc_insertion_point(field_set:pb.Session.address)
 }
 
 // uint32 port = 7;
-inline void SessionInfo::clear_port() {
+inline void Session::clear_port() {
   port_ = 0u;
 }
-inline ::google::protobuf::uint32 SessionInfo::port() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.port)
+inline ::google::protobuf::uint32 Session::port() const {
+  // @@protoc_insertion_point(field_get:pb.Session.port)
   return port_;
 }
-inline void SessionInfo::set_port(::google::protobuf::uint32 value) {
+inline void Session::set_port(::google::protobuf::uint32 value) {
   
   port_ = value;
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.port)
+  // @@protoc_insertion_point(field_set:pb.Session.port)
 }
 
 // map<string, string> details = 8;
-inline int SessionInfo::details_size() const {
+inline int Session::details_size() const {
   return details_.size();
 }
-inline void SessionInfo::clear_details() {
+inline void Session::clear_details() {
   details_.Clear();
 }
 inline const ::google::protobuf::Map< ::std::string, ::std::string >&
-SessionInfo::details() const {
-  // @@protoc_insertion_point(field_map:pb.SessionInfo.details)
+Session::details() const {
+  // @@protoc_insertion_point(field_map:pb.Session.details)
   return details_.GetMap();
 }
 inline ::google::protobuf::Map< ::std::string, ::std::string >*
-SessionInfo::mutable_details() {
-  // @@protoc_insertion_point(field_mutable_map:pb.SessionInfo.details)
+Session::mutable_details() {
+  // @@protoc_insertion_point(field_mutable_map:pb.Session.details)
   return details_.MutableMap();
 }
 
@@ -1556,31 +1568,31 @@ SessionInfo::mutable_details() {
 
 // DNSessionResponse
 
-// repeated .pb.SessionInfo results = 1;
+// repeated .pb.Session results = 1;
 inline int DNSessionResponse::results_size() const {
   return results_.size();
 }
 inline void DNSessionResponse::clear_results() {
   results_.Clear();
 }
-inline const ::pb::SessionInfo& DNSessionResponse::results(int index) const {
+inline const ::pb::Session& DNSessionResponse::results(int index) const {
   // @@protoc_insertion_point(field_get:pb.DNSessionResponse.results)
   return results_.Get(index);
 }
-inline ::pb::SessionInfo* DNSessionResponse::mutable_results(int index) {
+inline ::pb::Session* DNSessionResponse::mutable_results(int index) {
   // @@protoc_insertion_point(field_mutable:pb.DNSessionResponse.results)
   return results_.Mutable(index);
 }
-inline ::pb::SessionInfo* DNSessionResponse::add_results() {
+inline ::pb::Session* DNSessionResponse::add_results() {
   // @@protoc_insertion_point(field_add:pb.DNSessionResponse.results)
   return results_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::pb::SessionInfo >*
+inline ::google::protobuf::RepeatedPtrField< ::pb::Session >*
 DNSessionResponse::mutable_results() {
   // @@protoc_insertion_point(field_mutable_list:pb.DNSessionResponse.results)
   return &results_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::pb::SessionInfo >&
+inline const ::google::protobuf::RepeatedPtrField< ::pb::Session >&
 DNSessionResponse::results() const {
   // @@protoc_insertion_point(field_list:pb.DNSessionResponse.results)
   return results_;
@@ -1608,75 +1620,61 @@ inline void DNSessionRequest::set_type(::google::protobuf::uint64 value) {
 
 // RPCUpsertSessionRequest
 
-// .pb.SessionInfo info = 1;
-inline bool RPCUpsertSessionRequest::has_info() const {
-  return this != internal_default_instance() && info_ != NULL;
+// .pb.Session session = 1;
+inline bool RPCUpsertSessionRequest::has_session() const {
+  return this != internal_default_instance() && session_ != NULL;
 }
-inline void RPCUpsertSessionRequest::clear_info() {
-  if (GetArenaNoVirtual() == NULL && info_ != NULL) {
-    delete info_;
+inline void RPCUpsertSessionRequest::clear_session() {
+  if (GetArenaNoVirtual() == NULL && session_ != NULL) {
+    delete session_;
   }
-  info_ = NULL;
+  session_ = NULL;
 }
-inline const ::pb::SessionInfo& RPCUpsertSessionRequest::info() const {
-  const ::pb::SessionInfo* p = info_;
-  // @@protoc_insertion_point(field_get:pb.RPCUpsertSessionRequest.info)
-  return p != NULL ? *p : *reinterpret_cast<const ::pb::SessionInfo*>(
-      &::pb::_SessionInfo_default_instance_);
+inline const ::pb::Session& RPCUpsertSessionRequest::session() const {
+  const ::pb::Session* p = session_;
+  // @@protoc_insertion_point(field_get:pb.RPCUpsertSessionRequest.session)
+  return p != NULL ? *p : *reinterpret_cast<const ::pb::Session*>(
+      &::pb::_Session_default_instance_);
 }
-inline ::pb::SessionInfo* RPCUpsertSessionRequest::release_info() {
-  // @@protoc_insertion_point(field_release:pb.RPCUpsertSessionRequest.info)
+inline ::pb::Session* RPCUpsertSessionRequest::release_session() {
+  // @@protoc_insertion_point(field_release:pb.RPCUpsertSessionRequest.session)
   
-  ::pb::SessionInfo* temp = info_;
-  info_ = NULL;
+  ::pb::Session* temp = session_;
+  session_ = NULL;
   return temp;
 }
-inline ::pb::SessionInfo* RPCUpsertSessionRequest::mutable_info() {
+inline ::pb::Session* RPCUpsertSessionRequest::mutable_session() {
   
-  if (info_ == NULL) {
-    info_ = new ::pb::SessionInfo;
+  if (session_ == NULL) {
+    session_ = new ::pb::Session;
   }
-  // @@protoc_insertion_point(field_mutable:pb.RPCUpsertSessionRequest.info)
-  return info_;
+  // @@protoc_insertion_point(field_mutable:pb.RPCUpsertSessionRequest.session)
+  return session_;
 }
-inline void RPCUpsertSessionRequest::set_allocated_info(::pb::SessionInfo* info) {
+inline void RPCUpsertSessionRequest::set_allocated_session(::pb::Session* session) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
-    delete info_;
+    delete session_;
   }
-  if (info) {
+  if (session) {
     ::google::protobuf::Arena* submessage_arena = NULL;
     if (message_arena != submessage_arena) {
-      info = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, info, submessage_arena);
+      session = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, session, submessage_arena);
     }
     
   } else {
     
   }
-  info_ = info;
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCUpsertSessionRequest.info)
+  session_ = session;
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCUpsertSessionRequest.session)
 }
 
 // -------------------------------------------------------------------
 
 // RPCUpsertSessionResponse
 
-// bool result = 1;
-inline void RPCUpsertSessionResponse::clear_result() {
-  result_ = false;
-}
-inline bool RPCUpsertSessionResponse::result() const {
-  // @@protoc_insertion_point(field_get:pb.RPCUpsertSessionResponse.result)
-  return result_;
-}
-inline void RPCUpsertSessionResponse::set_result(bool value) {
-  
-  result_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCUpsertSessionResponse.result)
-}
-
-// uint64 sessionId = 2;
+// uint64 sessionId = 1;
 inline void RPCUpsertSessionResponse::clear_sessionid() {
   sessionid_ = GOOGLE_ULONGLONG(0);
 }
@@ -1728,159 +1726,159 @@ inline void RPCDeleteSessionResponse::set_result(bool value) {
 
 // -------------------------------------------------------------------
 
-// RPCSessionIdsRequest
+// RPCGetSessionIdsRequest
 
 // uint64 type = 1;
-inline void RPCSessionIdsRequest::clear_type() {
+inline void RPCGetSessionIdsRequest::clear_type() {
   type_ = GOOGLE_ULONGLONG(0);
 }
-inline ::google::protobuf::uint64 RPCSessionIdsRequest::type() const {
-  // @@protoc_insertion_point(field_get:pb.RPCSessionIdsRequest.type)
+inline ::google::protobuf::uint64 RPCGetSessionIdsRequest::type() const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetSessionIdsRequest.type)
   return type_;
 }
-inline void RPCSessionIdsRequest::set_type(::google::protobuf::uint64 value) {
+inline void RPCGetSessionIdsRequest::set_type(::google::protobuf::uint64 value) {
   
   type_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCSessionIdsRequest.type)
+  // @@protoc_insertion_point(field_set:pb.RPCGetSessionIdsRequest.type)
 }
 
 // string key = 2;
-inline void RPCSessionIdsRequest::clear_key() {
+inline void RPCGetSessionIdsRequest::clear_key() {
   key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCSessionIdsRequest::key() const {
-  // @@protoc_insertion_point(field_get:pb.RPCSessionIdsRequest.key)
+inline const ::std::string& RPCGetSessionIdsRequest::key() const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetSessionIdsRequest.key)
   return key_.GetNoArena();
 }
-inline void RPCSessionIdsRequest::set_key(const ::std::string& value) {
+inline void RPCGetSessionIdsRequest::set_key(const ::std::string& value) {
   
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCSessionIdsRequest.key)
+  // @@protoc_insertion_point(field_set:pb.RPCGetSessionIdsRequest.key)
 }
 #if LANG_CXX11
-inline void RPCSessionIdsRequest::set_key(::std::string&& value) {
+inline void RPCGetSessionIdsRequest::set_key(::std::string&& value) {
   
   key_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCSessionIdsRequest.key)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetSessionIdsRequest.key)
 }
 #endif
-inline void RPCSessionIdsRequest::set_key(const char* value) {
+inline void RPCGetSessionIdsRequest::set_key(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCSessionIdsRequest.key)
+  // @@protoc_insertion_point(field_set_char:pb.RPCGetSessionIdsRequest.key)
 }
-inline void RPCSessionIdsRequest::set_key(const char* value, size_t size) {
+inline void RPCGetSessionIdsRequest::set_key(const char* value, size_t size) {
   
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCSessionIdsRequest.key)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetSessionIdsRequest.key)
 }
-inline ::std::string* RPCSessionIdsRequest::mutable_key() {
+inline ::std::string* RPCGetSessionIdsRequest::mutable_key() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCSessionIdsRequest.key)
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetSessionIdsRequest.key)
   return key_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCSessionIdsRequest::release_key() {
-  // @@protoc_insertion_point(field_release:pb.RPCSessionIdsRequest.key)
+inline ::std::string* RPCGetSessionIdsRequest::release_key() {
+  // @@protoc_insertion_point(field_release:pb.RPCGetSessionIdsRequest.key)
   
   return key_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCSessionIdsRequest::set_allocated_key(::std::string* key) {
+inline void RPCGetSessionIdsRequest::set_allocated_key(::std::string* key) {
   if (key != NULL) {
     
   } else {
     
   }
   key_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), key);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCSessionIdsRequest.key)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetSessionIdsRequest.key)
 }
 
 // string value = 3;
-inline void RPCSessionIdsRequest::clear_value() {
+inline void RPCGetSessionIdsRequest::clear_value() {
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCSessionIdsRequest::value() const {
-  // @@protoc_insertion_point(field_get:pb.RPCSessionIdsRequest.value)
+inline const ::std::string& RPCGetSessionIdsRequest::value() const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetSessionIdsRequest.value)
   return value_.GetNoArena();
 }
-inline void RPCSessionIdsRequest::set_value(const ::std::string& value) {
+inline void RPCGetSessionIdsRequest::set_value(const ::std::string& value) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCSessionIdsRequest.value)
+  // @@protoc_insertion_point(field_set:pb.RPCGetSessionIdsRequest.value)
 }
 #if LANG_CXX11
-inline void RPCSessionIdsRequest::set_value(::std::string&& value) {
+inline void RPCGetSessionIdsRequest::set_value(::std::string&& value) {
   
   value_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCSessionIdsRequest.value)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetSessionIdsRequest.value)
 }
 #endif
-inline void RPCSessionIdsRequest::set_value(const char* value) {
+inline void RPCGetSessionIdsRequest::set_value(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCSessionIdsRequest.value)
+  // @@protoc_insertion_point(field_set_char:pb.RPCGetSessionIdsRequest.value)
 }
-inline void RPCSessionIdsRequest::set_value(const char* value, size_t size) {
+inline void RPCGetSessionIdsRequest::set_value(const char* value, size_t size) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCSessionIdsRequest.value)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetSessionIdsRequest.value)
 }
-inline ::std::string* RPCSessionIdsRequest::mutable_value() {
+inline ::std::string* RPCGetSessionIdsRequest::mutable_value() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCSessionIdsRequest.value)
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetSessionIdsRequest.value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCSessionIdsRequest::release_value() {
-  // @@protoc_insertion_point(field_release:pb.RPCSessionIdsRequest.value)
+inline ::std::string* RPCGetSessionIdsRequest::release_value() {
+  // @@protoc_insertion_point(field_release:pb.RPCGetSessionIdsRequest.value)
   
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCSessionIdsRequest::set_allocated_value(::std::string* value) {
+inline void RPCGetSessionIdsRequest::set_allocated_value(::std::string* value) {
   if (value != NULL) {
     
   } else {
     
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCSessionIdsRequest.value)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetSessionIdsRequest.value)
 }
 
 // -------------------------------------------------------------------
 
-// RPCSessionIdsResponse
+// RPCGetSessionIdsResponse
 
 // repeated uint64 sessionIds = 1;
-inline int RPCSessionIdsResponse::sessionids_size() const {
+inline int RPCGetSessionIdsResponse::sessionids_size() const {
   return sessionids_.size();
 }
-inline void RPCSessionIdsResponse::clear_sessionids() {
+inline void RPCGetSessionIdsResponse::clear_sessionids() {
   sessionids_.Clear();
 }
-inline ::google::protobuf::uint64 RPCSessionIdsResponse::sessionids(int index) const {
-  // @@protoc_insertion_point(field_get:pb.RPCSessionIdsResponse.sessionIds)
+inline ::google::protobuf::uint64 RPCGetSessionIdsResponse::sessionids(int index) const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetSessionIdsResponse.sessionIds)
   return sessionids_.Get(index);
 }
-inline void RPCSessionIdsResponse::set_sessionids(int index, ::google::protobuf::uint64 value) {
+inline void RPCGetSessionIdsResponse::set_sessionids(int index, ::google::protobuf::uint64 value) {
   sessionids_.Set(index, value);
-  // @@protoc_insertion_point(field_set:pb.RPCSessionIdsResponse.sessionIds)
+  // @@protoc_insertion_point(field_set:pb.RPCGetSessionIdsResponse.sessionIds)
 }
-inline void RPCSessionIdsResponse::add_sessionids(::google::protobuf::uint64 value) {
+inline void RPCGetSessionIdsResponse::add_sessionids(::google::protobuf::uint64 value) {
   sessionids_.Add(value);
-  // @@protoc_insertion_point(field_add:pb.RPCSessionIdsResponse.sessionIds)
+  // @@protoc_insertion_point(field_add:pb.RPCGetSessionIdsResponse.sessionIds)
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-RPCSessionIdsResponse::sessionids() const {
-  // @@protoc_insertion_point(field_list:pb.RPCSessionIdsResponse.sessionIds)
+RPCGetSessionIdsResponse::sessionids() const {
+  // @@protoc_insertion_point(field_list:pb.RPCGetSessionIdsResponse.sessionIds)
   return sessionids_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-RPCSessionIdsResponse::mutable_sessionids() {
-  // @@protoc_insertion_point(field_mutable_list:pb.RPCSessionIdsResponse.sessionIds)
+RPCGetSessionIdsResponse::mutable_sessionids() {
+  // @@protoc_insertion_point(field_mutable_list:pb.RPCGetSessionIdsResponse.sessionIds)
   return &sessionids_;
 }
 
@@ -1906,68 +1904,54 @@ inline void RPCGetSessionRequest::set_sessionid(::google::protobuf::uint64 value
 
 // RPCGetSessionResponse
 
-// bool found = 1;
-inline void RPCGetSessionResponse::clear_found() {
-  found_ = false;
+// .pb.Session session = 1;
+inline bool RPCGetSessionResponse::has_session() const {
+  return this != internal_default_instance() && session_ != NULL;
 }
-inline bool RPCGetSessionResponse::found() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetSessionResponse.found)
-  return found_;
-}
-inline void RPCGetSessionResponse::set_found(bool value) {
-  
-  found_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCGetSessionResponse.found)
-}
-
-// .pb.SessionInfo result = 2;
-inline bool RPCGetSessionResponse::has_result() const {
-  return this != internal_default_instance() && result_ != NULL;
-}
-inline void RPCGetSessionResponse::clear_result() {
-  if (GetArenaNoVirtual() == NULL && result_ != NULL) {
-    delete result_;
+inline void RPCGetSessionResponse::clear_session() {
+  if (GetArenaNoVirtual() == NULL && session_ != NULL) {
+    delete session_;
   }
-  result_ = NULL;
+  session_ = NULL;
 }
-inline const ::pb::SessionInfo& RPCGetSessionResponse::result() const {
-  const ::pb::SessionInfo* p = result_;
-  // @@protoc_insertion_point(field_get:pb.RPCGetSessionResponse.result)
-  return p != NULL ? *p : *reinterpret_cast<const ::pb::SessionInfo*>(
-      &::pb::_SessionInfo_default_instance_);
+inline const ::pb::Session& RPCGetSessionResponse::session() const {
+  const ::pb::Session* p = session_;
+  // @@protoc_insertion_point(field_get:pb.RPCGetSessionResponse.session)
+  return p != NULL ? *p : *reinterpret_cast<const ::pb::Session*>(
+      &::pb::_Session_default_instance_);
 }
-inline ::pb::SessionInfo* RPCGetSessionResponse::release_result() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetSessionResponse.result)
+inline ::pb::Session* RPCGetSessionResponse::release_session() {
+  // @@protoc_insertion_point(field_release:pb.RPCGetSessionResponse.session)
   
-  ::pb::SessionInfo* temp = result_;
-  result_ = NULL;
+  ::pb::Session* temp = session_;
+  session_ = NULL;
   return temp;
 }
-inline ::pb::SessionInfo* RPCGetSessionResponse::mutable_result() {
+inline ::pb::Session* RPCGetSessionResponse::mutable_session() {
   
-  if (result_ == NULL) {
-    result_ = new ::pb::SessionInfo;
+  if (session_ == NULL) {
+    session_ = new ::pb::Session;
   }
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetSessionResponse.result)
-  return result_;
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetSessionResponse.session)
+  return session_;
 }
-inline void RPCGetSessionResponse::set_allocated_result(::pb::SessionInfo* result) {
+inline void RPCGetSessionResponse::set_allocated_session(::pb::Session* session) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
-    delete result_;
+    delete session_;
   }
-  if (result) {
+  if (session) {
     ::google::protobuf::Arena* submessage_arena = NULL;
     if (message_arena != submessage_arena) {
-      result = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, result, submessage_arena);
+      session = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, session, submessage_arena);
     }
     
   } else {
     
   }
-  result_ = result;
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetSessionResponse.result)
+  session_ = session;
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetSessionResponse.session)
 }
 
 #ifdef __GNUC__
