@@ -3,7 +3,7 @@
 #include "libdn.h"
 
 namespace libdn {
-	LIBDN_API bool LIBDN_CALL DN_Init(ConnectLogCB callback) {
+	LIBDN_API bool LIBDN_CALL Init(ConnectLogCB callback) {
 		if (!RPC_Init()) {
 			return false;
 		}
@@ -11,13 +11,12 @@ namespace libdn {
 		return true;
 	}
 
-	LIBDN_API bool LIBDN_CALL DN_Shutdown() {
-		//Friends_Shutdown();
+	LIBDN_API bool LIBDN_CALL Shutdown() {
 		RPC_Shutdown();
 		return true;
 	}
 
-	LIBDN_API bool LIBDN_CALL DN_RunFrame() {
+	LIBDN_API bool LIBDN_CALL RunFrame() {
 		Async_RunCallbacks();
 		return true;
 	}

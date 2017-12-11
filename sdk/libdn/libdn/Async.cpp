@@ -1,20 +1,18 @@
 #include "StdInc.h"
 
-std::queue<DNAsyncCallback*> _asyncCallbacks;
+namespace libdn {
+	std::queue<AsyncCallback*> _asyncCallbacks;
+	void Async_RunCallbacks() {
+		RPC_RunFrame();
 
-void Async_RunCallbacks()
-{
-	RPC_RunFrame();
+		while (!_asyncCallbacks.empty()) {
+			AsyncCallback* callback = _asyncCallbacks.front();
 
-	while (!_asyncCallbacks.empty())
-	{
-		DNAsyncCallback* callback = _asyncCallbacks.front();
+			if (callback->RunCallback()) {
+				callback->Free();
+			}
 
-		if (callback->RunCallback())
-		{
-			callback->Free();
+			_asyncCallbacks.pop();
 		}
-
-		_asyncCallbacks.pop();
 	}
 }

@@ -3,11 +3,11 @@
 namespace libdn {
 
 	//Will hang until we are connected and DN is ready.
-	LIBDN_API void LIBDN_CALL DN_WaitUntilReady() {
-		DNHealthResult* health;
+	LIBDN_API void LIBDN_CALL WaitUntilReady() {
+		HealthResult* health;
 		health->ready = false;
 		while (!g_dn.connected || health == nullptr || !health->ready) {
-			health = DN_Health();
+			health = Health();
 			if (health != nullptr && health->ready) {
 				break;
 			}
@@ -15,23 +15,23 @@ namespace libdn {
 		}
 	}
 
-	LIBDN_API DNHealthResult* LIBDN_CALL DN_Health() {
+	LIBDN_API HealthResult* LIBDN_CALL Health() {
 		//build request.
 		RPCHealthRequest* request = new RPCHealthRequest();
 		pb::RPCMessage* msg = new pb::RPCMessage();
 		msg->set_allocated_healthrequest(request);
 
 		//Send request.
-		DNAsync<RPCMessage>* async = RPC_SendMessageAsyncCache("health", msg);
+		Async<RPCMessage>* async = RPC_SendMessageAsyncCache("health", msg);
 
 		//Set callback.
-		NPAsyncImpl<DNHealthResult>* result = new NPAsyncImpl<DNHealthResult>();
-		async->SetCallback([](DNAsync<RPCMessage>* async) {
-			NPAsyncImpl<DNHealthResult>* asyncResult = (NPAsyncImpl<DNHealthResult>*)async->GetUserData();
+		AsyncImpl<HealthResult>* result = new AsyncImpl<HealthResult>();
+		async->SetCallback([](Async<RPCMessage>* async) {
+			AsyncImpl<HealthResult>* asyncResult = (AsyncImpl<HealthResult>*)async->GetUserData();
 			RPCMessage* message = async->GetResult();
 			const RPCHealthReply& reply = message->healthreply();
 
-			DNHealthResult* result = new DNHealthResult();
+			HealthResult* result = new HealthResult();
 			result->message = reply.message();
 			result->ready = reply.ready();
 			asyncResult->SetResult(result);

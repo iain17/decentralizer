@@ -1,7 +1,7 @@
 #include "StdInc.h"
 
 namespace libdn {
-	pb::SessionInfo* DNSessionToPBSession(DNSessionInfo * dnInfo) {
+	pb::SessionInfo* DNSessionToPBSession(libdn::SessionInfo * dnInfo) {
 		pb::SessionInfo* result = new pb::SessionInfo();
 		result->set_dnid(dnInfo->dnId);
 		result->set_pid(dnInfo->pId);
@@ -21,8 +21,8 @@ namespace libdn {
 		return result;
 	}
 
-	DNSessionInfo* PBSessionToDNSession(SessionInfo * pbInfo) {
-		DNSessionInfo* result = new DNSessionInfo();
+	libdn::SessionInfo* PBSessionToDNSession(pb::SessionInfo * pbInfo) {
+		libdn::SessionInfo* result = new libdn::SessionInfo();
 		result->dnId = pbInfo->dnid();
 		result->pId = pbInfo->pid();
 
@@ -37,7 +37,7 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionInfo * info) {
+	LIBDN_API Async<UpsertSessionResult>* LIBDN_CALL UpsertSession(SessionInfo * info) {
 		//build request.
 		pb::SessionInfo* sessInfo = DNSessionToPBSession(info);
 		RPCUpsertSessionRequest* request = new RPCUpsertSessionRequest();
@@ -47,16 +47,16 @@ namespace libdn {
 		msg->set_allocated_upsertsessionrequest(request);
 
 		//Send request.
-		DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
+		Async<RPCMessage>* async = RPC_SendMessageAsync(msg);
 
 		//Set callback.
-		NPAsyncImpl<DNUpsertSessionResult>* result = new NPAsyncImpl<DNUpsertSessionResult>();
-		async->SetCallback([](DNAsync<RPCMessage>* async) {
-			NPAsyncImpl<DNUpsertSessionResult>* asyncResult = (NPAsyncImpl<DNUpsertSessionResult>*)async->GetUserData();
+		AsyncImpl<UpsertSessionResult>* result = new AsyncImpl<UpsertSessionResult>();
+		async->SetCallback([](Async<RPCMessage>* async) {
+			AsyncImpl<UpsertSessionResult>* asyncResult = (AsyncImpl<UpsertSessionResult>*)async->GetUserData();
 			RPCMessage* message = async->GetResult();
 			const RPCUpsertSessionResponse& reply = message->upsertsessionresponse();
 
-			DNUpsertSessionResult* result = new DNUpsertSessionResult();
+			UpsertSessionResult* result = new UpsertSessionResult();
 			result->result = reply.result();
 			result->sessionId = (DNSID)reply.sessionid();
 			asyncResult->SetResult(result);
@@ -65,7 +65,7 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API DNAsync<bool>*LIBDN_CALL DN_DeleteSession(DNSID sid) {
+	LIBDN_API Async<bool>*LIBDN_CALL DeleteSession(DNSID sid) {
 		//build request.
 		RPCDeleteSessionRequest* request = new RPCDeleteSessionRequest();
 		request->set_sessionid(sid);
@@ -74,12 +74,12 @@ namespace libdn {
 		msg->set_allocated_deletesessionrequest(request);
 
 		//Send request.
-		DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
+		Async<RPCMessage>* async = RPC_SendMessageAsync(msg);
 
 		//Set callback.
-		NPAsyncImpl<bool>* result = new NPAsyncImpl<bool>();
-		async->SetCallback([](DNAsync<RPCMessage>* async) {
-			NPAsyncImpl<bool>* asyncResult = (NPAsyncImpl<bool>*)async->GetUserData();
+		AsyncImpl<bool>* result = new AsyncImpl<bool>();
+		async->SetCallback([](Async<RPCMessage>* async) {
+			AsyncImpl<bool>* asyncResult = (AsyncImpl<bool>*)async->GetUserData();
 			RPCMessage* message = async->GetResult();
 			auto reply = message->deletesessionresponse();
 			bool result = reply.result();
@@ -89,7 +89,7 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API DNAsync<int>* LIBDN_CALL DN_GetNumSessions(uint32_t type, const char* key, const char* value) {
+	LIBDN_API Async<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value) {
 		//build request.
 		RPCSessionIdsRequest* request = new RPCSessionIdsRequest();
 		request->set_type(type);
@@ -100,12 +100,12 @@ namespace libdn {
 		msg->set_allocated_sessionidsrequest(request);
 
 		//Send request.
-		DNAsync<RPCMessage>* async = RPC_SendMessageAsync(msg);
+		Async<RPCMessage>* async = RPC_SendMessageAsync(msg);
 
 		//Set callback.
-		auto result = new NPAsyncImpl<int>();
-		async->SetCallback([](DNAsync<RPCMessage>* async) {
-			auto asyncResult = (NPAsyncImpl<int>*)async->GetUserData();
+		auto result = new AsyncImpl<int>();
+		async->SetCallback([](Async<RPCMessage>* async) {
+			auto asyncResult = (AsyncImpl<int>*)async->GetUserData();
 			RPCMessage* message = async->GetResult();
 			auto reply = message->sessionidsresponse();
 			g_dn.sessions = reply.sessionids();
@@ -116,7 +116,7 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSessionBySessionId(DNSID sessionId) {
+	LIBDN_API Async<SessionInfo>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId) {
 		//build request.
 		RPCGetSessionRequest* request = new RPCGetSessionRequest();
 		request->set_sessionid(sessionId);
@@ -127,12 +127,12 @@ namespace libdn {
 		//Send request.
 		char cache[255];
 		sprintf(cache, "matchmaking_%lld", sessionId);
-		DNAsync<RPCMessage>* async = RPC_SendMessageAsyncCache(cache, msg);
+		Async<RPCMessage>* async = RPC_SendMessageAsyncCache(cache, msg);
 
 		//Set callback.
-		auto result = new NPAsyncImpl<DNSessionInfo>();
-		async->SetCallback([](DNAsync<RPCMessage>* async) {
-			auto asyncResult = (NPAsyncImpl<DNSessionInfo>*)async->GetUserData();
+		auto result = new AsyncImpl<SessionInfo>();
+		async->SetCallback([](Async<RPCMessage>* async) {
+			auto asyncResult = (AsyncImpl<SessionInfo>*)async->GetUserData();
 			RPCMessage* message = async->GetResult();
 			auto reply = message->getsessionresponse();
 			pb::SessionInfo info = reply.result();
@@ -144,11 +144,11 @@ namespace libdn {
 	}
 
 
-	LIBDN_API DNSessionInfo* LIBDN_CALL DN_GetSessionByIndex(int index) {
+	LIBDN_API SessionInfo* LIBDN_CALL GetSessionByIndex(int index) {
 		if (index > MAX_SESSIONS || index > g_dn.sessions.size() - 1) {
 			return NULL;
 		}
-		auto sessionRequest = DN_GetSessionBySessionId(g_dn.sessions.Get(index));
+		auto sessionRequest = GetSessionBySessionId(g_dn.sessions.Get(index));
 		if (sessionRequest->Wait(7500) != nullptr) {
 			return sessionRequest->GetResult();
 		}

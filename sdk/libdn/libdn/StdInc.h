@@ -25,7 +25,7 @@ using namespace pb;
 #include "libdn.h"
 #include "Utils.h"
 #include "RPC.h"
-#include "DNAsyncImpl.h"
+#include "AsyncImpl.h"
 
 const int MAX_SESSIONS = 1024;
 // global state

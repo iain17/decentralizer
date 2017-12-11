@@ -6,7 +6,7 @@
  // ----------------------------------------------------------
 namespace libdn {
 	typedef uint64_t DNSID;
-	class DNSessionInfo {
+	class SessionInfo {
 	public:
 		PeerID pId;
 		DNID dnId;
@@ -19,24 +19,24 @@ namespace libdn {
 		std::map<std::string, std::string> details;
 	};
 
-	class DNUpsertSessionResult {
+	class UpsertSessionResult {
 	public:
 		bool result;
 		DNSID sessionId;
 	};
 
 	// creates/updates a session
-	LIBDN_API DNAsync<DNUpsertSessionResult>* LIBDN_CALL DN_UpsertSession(DNSessionInfo* data);
+	LIBDN_API Async<UpsertSessionResult>* LIBDN_CALL UpsertSession(SessionInfo* data);
 
 	// deletes a session
-	LIBDN_API DNAsync<bool>* LIBDN_CALL DN_DeleteSession(DNSID sessionId);
+	LIBDN_API Async<bool>* LIBDN_CALL DeleteSession(DNSID sessionId);
 
 	// gets the number of sessions
-	LIBDN_API DNAsync<int>* LIBDN_CALL DN_GetNumSessions(uint32_t type, const char* key, const char* value);
+	LIBDN_API Async<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value);
 
 	// gets a single session's info by index
-	LIBDN_API DNSessionInfo* LIBDN_CALL DN_GetSessionByIndex(int index);
+	LIBDN_API SessionInfo* LIBDN_CALL GetSessionByIndex(int index);
 
 	// gets a single session's info by sessionId
-	LIBDN_API DNAsync<DNSessionInfo>* LIBDN_CALL DN_GetSessionBySessionId(DNSID sessionId);
+	LIBDN_API Async<SessionInfo>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
 }

@@ -21,14 +21,11 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback);
 
 // send a message
 bool RPC_SendMessage(RPCMessage* message);
-DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message);
-DNAsync<RPCMessage>* RPC_SendMessageAsyncCache(std::string key, RPCMessage* message);
+Async<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message);
+Async<RPCMessage>* RPC_SendMessageAsyncCache(std::string key, RPCMessage* message);
 
 // increment and return a new sequence ID
 uint64_t RPC_GenerateID();
-
-// initialize authenticate service RPC components
-void Authenticate_Init();
 
 // initialize storage service RPC components
 void Storage_Init();

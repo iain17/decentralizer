@@ -14,8 +14,8 @@ static struct rpc_state_s
 
 	// message dispatching
 	std::vector<rpc_dispatch_handler_s> dispatchHandlers;
-	std::vector<NPRPCAsync*> freeNext;
-	std::map<uint64_t, NPRPCAsync*> asyncHandlers;
+	std::vector<RPCAsync*> freeNext;
+	std::map<uint64_t, RPCAsync*> asyncHandlers;
 
 	// thread management
 	HANDLE hThread;
@@ -35,7 +35,7 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 
 		RPC_Shutdown();
 		RPC_Init();
-		if (libdn::DN_Connect(g_dn.serverHost, g_dn.serverPort))
+		if (libdn::Connect(g_dn.serverHost, g_dn.serverPort))
 		{
 			Log_Print("Connected to RPC.\n");
 			g_rpc.sendMessageID = 0;
@@ -93,7 +93,7 @@ static void RPC_DispatchMessage(RPCMessage* message)
 	{
 		Log_Print("Dispatching RPC message to async handler.\n");
 
-		NPRPCAsync* async = g_rpc.asyncHandlers[message->id()];
+		RPCAsync* async = g_rpc.asyncHandlers[message->id()];
 		async->SetResult(message);
 		g_rpc.freeNext.push_back(async);
 	}
@@ -284,7 +284,7 @@ void RPC_Shutdown()
 	}
 
 	for (auto const &ent1 : g_rpc.asyncHandlers) {
-		NPRPCAsync* async = ent1.second;
+		RPCAsync* async = ent1.second;
 		async->SetResult(NULL);
 	}
 
@@ -342,9 +342,9 @@ bool RPC_SendMessage(RPCMessage* message) {
 	return RPC_SendMessage(*message, 0);
 }
 
-DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
+Async<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 	if (message->msg_case() != RPCMessage::MsgCase::kHealthRequest) {
-		libdn::DN_WaitUntilReady();
+		libdn::WaitUntilReady();
 	}
 	else {
 		while (!g_dn.connected) {
@@ -354,7 +354,7 @@ DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 
 	uint64_t id = RPC_GenerateID();
 
-	NPRPCAsync* async = new NPRPCAsync();
+	RPCAsync* async = new RPCAsync();
 	async->SetAsyncID(id);
 
 	g_rpc.asyncHandlers[id] = async;
@@ -369,11 +369,11 @@ DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 	return async;
 }
 
-DNAsync<RPCMessage>* RPC_SendMessageAsyncCache(std::string key, RPCMessage* message) {
+Async<RPCMessage>* RPC_SendMessageAsyncCache(std::string key, RPCMessage* message) {
 	/*
 	if (g_rpc.cache->contains(key)) {
 		Log_Print("Calling back Async RPC call from cache using key %s.\n", key.c_str());
-		NPRPCAsync* async = new NPRPCAsync();
+		RPCAsync* async = new RPCAsync();
 		async->SetResult(g_rpc.cache->lookup(key));
 		return async;
 	}
@@ -389,45 +389,44 @@ void RPC_RunFrame()
 	g_rpc.freeNext.clear();
 }
 
-LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port) {
-	if (g_dn.connected)
-	{
+namespace libdn {
+	LIBDN_API bool LIBDN_CALL Connect(const char* serverAddr, uint16_t port) {
+		if (g_dn.connected) {
+			return true;
+		}
+
+		// store server name and port
+		strncpy(g_dn.serverHost, serverAddr, sizeof(g_dn.serverHost));
+		g_dn.serverPort = port;
+
+		// code to connect to some server
+		hostent* hostEntity = gethostbyname(serverAddr);
+
+		if (hostEntity == NULL) {
+			Log_Print("Could not look up %s: %d.\n", serverAddr, WSAGetLastError());
+			return false;
+		}
+
+		sockaddr_in server;
+		memset(&server, 0, sizeof(server));
+		server.sin_family = AF_INET;
+		server.sin_addr.s_addr = *(ULONG*)hostEntity->h_addr_list[0];
+		server.sin_port = htons(port);
+
+		if (connect(g_rpc.socket, (sockaddr*)&server, sizeof(sockaddr))) {
+			Log_Print("Connecting failed: %d\n", WSAGetLastError());
+			return false;
+		}
+
+		u_long nonBlocking = TRUE;
+		ioctlsocket(g_rpc.socket, FIONBIO, &nonBlocking);
+
+		BOOL noDelay = TRUE;
+		setsockopt(g_rpc.socket, IPPROTO_TCP, TCP_NODELAY, (char*)&noDelay, sizeof(BOOL));
+
+		g_rpc.wasConnected = true;
+		g_dn.connected = true;
+
 		return true;
 	}
-
-	// store server name and port
-	strncpy(g_dn.serverHost, serverAddr, sizeof(g_dn.serverHost));
-	g_dn.serverPort = port;
-
-	// code to connect to some server
-	hostent* hostEntity = gethostbyname(serverAddr);
-
-	if (hostEntity == NULL)
-	{
-		Log_Print("Could not look up %s: %d.\n", serverAddr, WSAGetLastError());
-		return false;
-	}
-
-	sockaddr_in server;
-	memset(&server, 0, sizeof(server));
-	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = *(ULONG*)hostEntity->h_addr_list[0];
-	server.sin_port = htons(port);
-
-	if (connect(g_rpc.socket, (sockaddr*)&server, sizeof(sockaddr)))
-	{
-		Log_Print("Connecting failed: %d\n", WSAGetLastError());
-		return false;
-	}
-
-	u_long nonBlocking = TRUE;
-	ioctlsocket(g_rpc.socket, FIONBIO, &nonBlocking);
-
-	BOOL noDelay = TRUE;
-	setsockopt(g_rpc.socket, IPPROTO_TCP, TCP_NODELAY, (char*)&noDelay, sizeof(BOOL));
-
-	g_rpc.wasConnected = true;
-	g_dn.connected = true;
-
-	return true;
 }

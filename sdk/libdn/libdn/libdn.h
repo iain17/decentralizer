@@ -1,13 +1,13 @@
 #pragma once
 
-#include "DNTypeDefs.h"
+#include "TypeDefs.h"
 #include <vector>
-#include "DNAsync.h"
-#include "DNPlatform.h"
-#include "DNMatchMaking.h"
-#include "DNMessaging.h"
-#include "DNAddressbook.h"
-#include "DNStorage.h"
+#include "Async.h"
+#include "Platform.h"
+#include "MatchMaking.h"
+#include "Messaging.h"
+#include "Addressbook.h"
+#include "Storage.h"
 
 namespace libdn {
 	// ----------------------------------------------------------
@@ -15,14 +15,14 @@ namespace libdn {
 	// ----------------------------------------------------------
 
 	// starts up the network platform functions
-	LIBDN_API bool LIBDN_CALL DN_Init(ConnectLogCB callback);
+	LIBDN_API bool LIBDN_CALL Init(ConnectLogCB callback);
 
 	// cleans up and shuts down the network platform
-	LIBDN_API bool LIBDN_CALL DN_Shutdown();
+	LIBDN_API bool LIBDN_CALL Shutdown();
 
 	// connects to a DN server
-	LIBDN_API bool LIBDN_CALL DN_Connect(const char* server, uint16_t port);
+	LIBDN_API bool LIBDN_CALL Connect(const char* server, uint16_t port);
 
 	// Should be called in the games loop
-	LIBDN_API bool LIBDN_CALL DN_RunFrame();
+	LIBDN_API bool LIBDN_CALL RunFrame();
 }

@@ -169,15 +169,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DNAddressbook.h" />
-    <ClInclude Include="DNAsync.h" />
-    <ClInclude Include="DNMatchmaking.h" />
-    <ClInclude Include="DNMessaging.h" />
-    <ClInclude Include="DNPlatform.h" />
-    <ClInclude Include="DNStorage.h" />
+    <ClInclude Include="Addressbook.h" />
+    <ClInclude Include="Async.h" />
+    <ClInclude Include="Matchmaking.h" />
+    <ClInclude Include="Messaging.h" />
+    <ClInclude Include="Platform.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="RPCAsync.h" />
-    <ClInclude Include="DNAsyncImpl.h" />
-    <ClInclude Include="DNTypeDefs.h" />
+    <ClInclude Include="AsyncImpl.h" />
+    <ClInclude Include="TypeDefs.h" />
     <ClInclude Include="libdn.h" />
     <ClInclude Include="RPC.h" />
     <ClInclude Include="stdafx.h" />

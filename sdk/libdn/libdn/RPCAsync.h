@@ -1,21 +1,21 @@
 #pragma once
 #include "StdInc.h"
-#include "DNAsync.h"
+#include "Async.h"
 
-class NPRPCAsync : public DNAsync<RPCMessage>
+class RPCAsync : public Async<RPCMessage>
 {
 private:
-	void(__cdecl* _callback)(DNAsync<RPCMessage>*);
+	void(__cdecl* _callback)(Async<RPCMessage>*);
 	RPCMessage* _result;
 	void* _userData;
 
-	void(__cdecl* _timeoutCallback)(DNAsync<RPCMessage>*);
+	void(__cdecl* _timeoutCallback)(Async<RPCMessage>*);
 	unsigned int _timeout;
 	DWORD _start;
 	bool _completed;
 
 public:
-	NPRPCAsync()
+	RPCAsync()
 	{
 		_callback = NULL;
 		_result = NULL;
@@ -26,7 +26,7 @@ public:
 		_completed = false;
 	}
 
-	// implementations for base DNAsync
+	// implementations for base Async
 	virtual RPCMessage* Wait()
 	{
 		return Wait(-1);
@@ -68,14 +68,14 @@ public:
 		return _result;
 	}
 
-	virtual void SetCallback(void(__cdecl* callback)(DNAsync<RPCMessage>*), void* userData)
+	virtual void SetCallback(void(__cdecl* callback)(Async<RPCMessage>*), void* userData)
 	{
 		_callback = callback;
 		_userData = userData;
 		_start = GetTickCount();
 	}
 
-	virtual void SetTimeoutCallback(void(__cdecl* callback)(DNAsync<RPCMessage>*), unsigned int timeout)
+	virtual void SetTimeoutCallback(void(__cdecl* callback)(Async<RPCMessage>*), unsigned int timeout)
 	{
 		_timeout = timeout;
 		_start = GetTickCount();
