@@ -1,51 +1,17 @@
 syntax = "proto3";
 package pb;
-option optimize_for = LITE_RUNTIME;
-import "pb/matchmaking.proto";
-import "pb/addressbook.proto";
 
-message RPCHealthRequest {}
-
-message RPCHealthReply {
-	bool ready = 1;
-	string message = 2;
+service Greeter {
+	// Sends a greeting
+	rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
-message RPCGetPeerReply {
-	bool ready = 1;
-	string message = 2;
+// The request message containing the user's name.
+message HelloRequest {
+	string name = 1;
 }
 
-message RPCMessage {
-    int64 version = 1;
-	int64 id = 2;
-	oneof msg {
-		//Platform
-		RPCHealthRequest healthRequest = 3;
-		RPCHealthReply HealthReply = 4;
-
-		//Matchmaking
-		RPCUpsertSessionRequest UpsertSessionRequest = 5;
-		RPCUpsertSessionResponse UpsertSessionResponse = 6;
-
-		RPCDeleteSessionRequest DeleteSessionRequest = 7;
-		RPCDeleteSessionResponse DeleteSessionResponse = 8;
-
-		RPCSessionIdsRequest SessionIdsRequest = 9;
-		RPCSessionIdsResponse SessionIdsResponse = 10;
-
-		RPCGetSessionRequest GetSessionRequest = 11;
-		RPCGetSessionResponse GetSessionResponse = 12;
-
-		//Address Book
-		RPCGetAddressBookPeerRequest GetAddressBookPeerRequest = 13;
-		RPCGetAddressBookPeerResponse GetAddressBookPeerResponse = 14;
-
-		RPCUpdateAddressBookPeerRequest UpdateAddressBookPeerRequest = 15;
-		RPCUpdateAddressBookPeerResponse UpdateAddressBookPeerResponse = 16;
-
-		//Storage
-
-		//Friends
-	}
+// The response message containing the greetings
+message HelloReply {
+	string message = 1;
 }

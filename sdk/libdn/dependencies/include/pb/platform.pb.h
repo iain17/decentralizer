@@ -24,12 +24,11 @@
 #include <google/protobuf/arenastring.h>
 #include <google/protobuf/generated_message_table_driven.h>
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/metadata_lite.h>
-#include <google/protobuf/message_lite.h>
+#include <google/protobuf/metadata.h>
+#include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
-#include "pb/matchmaking.pb.h"
-#include "pb/addressbook.pb.h"
+#include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fplatform_2eproto {
@@ -37,62 +36,51 @@ namespace protobuf_pb_2fplatform_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[2];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
 };
-void InitDefaultsRPCHealthRequestImpl();
-void InitDefaultsRPCHealthRequest();
-void InitDefaultsRPCHealthReplyImpl();
-void InitDefaultsRPCHealthReply();
-void InitDefaultsRPCGetPeerReplyImpl();
-void InitDefaultsRPCGetPeerReply();
-void InitDefaultsRPCMessageImpl();
-void InitDefaultsRPCMessage();
+void AddDescriptors();
+void InitDefaultsHelloRequestImpl();
+void InitDefaultsHelloRequest();
+void InitDefaultsHelloReplyImpl();
+void InitDefaultsHelloReply();
 inline void InitDefaults() {
-  InitDefaultsRPCHealthRequest();
-  InitDefaultsRPCHealthReply();
-  InitDefaultsRPCGetPeerReply();
-  InitDefaultsRPCMessage();
+  InitDefaultsHelloRequest();
+  InitDefaultsHelloReply();
 }
 }  // namespace protobuf_pb_2fplatform_2eproto
 namespace pb {
-class RPCGetPeerReply;
-class RPCGetPeerReplyDefaultTypeInternal;
-extern RPCGetPeerReplyDefaultTypeInternal _RPCGetPeerReply_default_instance_;
-class RPCHealthReply;
-class RPCHealthReplyDefaultTypeInternal;
-extern RPCHealthReplyDefaultTypeInternal _RPCHealthReply_default_instance_;
-class RPCHealthRequest;
-class RPCHealthRequestDefaultTypeInternal;
-extern RPCHealthRequestDefaultTypeInternal _RPCHealthRequest_default_instance_;
-class RPCMessage;
-class RPCMessageDefaultTypeInternal;
-extern RPCMessageDefaultTypeInternal _RPCMessage_default_instance_;
+class HelloReply;
+class HelloReplyDefaultTypeInternal;
+extern HelloReplyDefaultTypeInternal _HelloReply_default_instance_;
+class HelloRequest;
+class HelloRequestDefaultTypeInternal;
+extern HelloRequestDefaultTypeInternal _HelloRequest_default_instance_;
 }  // namespace pb
 namespace pb {
 
 // ===================================================================
 
-class RPCHealthRequest : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCHealthRequest) */ {
+class HelloRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.HelloRequest) */ {
  public:
-  RPCHealthRequest();
-  virtual ~RPCHealthRequest();
+  HelloRequest();
+  virtual ~HelloRequest();
 
-  RPCHealthRequest(const RPCHealthRequest& from);
+  HelloRequest(const HelloRequest& from);
 
-  inline RPCHealthRequest& operator=(const RPCHealthRequest& from) {
+  inline HelloRequest& operator=(const HelloRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCHealthRequest(RPCHealthRequest&& from) noexcept
-    : RPCHealthRequest() {
+  HelloRequest(HelloRequest&& from) noexcept
+    : HelloRequest() {
     *this = ::std::move(from);
   }
 
-  inline RPCHealthRequest& operator=(RPCHealthRequest&& from) noexcept {
+  inline HelloRequest& operator=(HelloRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -101,30 +89,31 @@ class RPCHealthRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
     return *this;
   }
   #endif
-  static const RPCHealthRequest& default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HelloRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCHealthRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCHealthRequest*>(
-               &_RPCHealthRequest_default_instance_);
+  static inline const HelloRequest* internal_default_instance() {
+    return reinterpret_cast<const HelloRequest*>(
+               &_HelloRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     0;
 
-  void Swap(RPCHealthRequest* other);
-  friend void swap(RPCHealthRequest& a, RPCHealthRequest& b) {
+  void Swap(HelloRequest* other);
+  friend void swap(HelloRequest& a, HelloRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCHealthRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline HelloRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCHealthRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCHealthRequest& from);
-  void MergeFrom(const RPCHealthRequest& from);
+  HelloRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HelloRequest& from);
+  void MergeFrom(const HelloRequest& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -133,13 +122,14 @@ class RPCHealthRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCHealthRequest* other);
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HelloRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -149,40 +139,55 @@ class RPCHealthRequest : public ::google::protobuf::MessageLite /* @@protoc_inse
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:pb.RPCHealthRequest)
+  // string name = 1;
+  void clear_name();
+  static const int kNameFieldNumber = 1;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_name(::std::string&& value);
+  #endif
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
+
+  // @@protoc_insertion_point(class_scope:pb.HelloRequest)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthRequestImpl();
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsHelloRequestImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCHealthReply : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCHealthReply) */ {
+class HelloReply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.HelloReply) */ {
  public:
-  RPCHealthReply();
-  virtual ~RPCHealthReply();
+  HelloReply();
+  virtual ~HelloReply();
 
-  RPCHealthReply(const RPCHealthReply& from);
+  HelloReply(const HelloReply& from);
 
-  inline RPCHealthReply& operator=(const RPCHealthReply& from) {
+  inline HelloReply& operator=(const HelloReply& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCHealthReply(RPCHealthReply&& from) noexcept
-    : RPCHealthReply() {
+  HelloReply(HelloReply&& from) noexcept
+    : HelloReply() {
     *this = ::std::move(from);
   }
 
-  inline RPCHealthReply& operator=(RPCHealthReply&& from) noexcept {
+  inline HelloReply& operator=(HelloReply&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -191,30 +196,31 @@ class RPCHealthReply : public ::google::protobuf::MessageLite /* @@protoc_insert
     return *this;
   }
   #endif
-  static const RPCHealthReply& default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HelloReply& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCHealthReply* internal_default_instance() {
-    return reinterpret_cast<const RPCHealthReply*>(
-               &_RPCHealthReply_default_instance_);
+  static inline const HelloReply* internal_default_instance() {
+    return reinterpret_cast<const HelloReply*>(
+               &_HelloReply_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     1;
 
-  void Swap(RPCHealthReply* other);
-  friend void swap(RPCHealthReply& a, RPCHealthReply& b) {
+  void Swap(HelloReply* other);
+  friend void swap(HelloReply& a, HelloReply& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCHealthReply* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline HelloReply* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCHealthReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCHealthReply& from);
-  void MergeFrom(const RPCHealthReply& from);
+  HelloReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HelloReply& from);
+  void MergeFrom(const HelloReply& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -223,13 +229,14 @@ class RPCHealthReply : public ::google::protobuf::MessageLite /* @@protoc_insert
       ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
   int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
   private:
   void SharedCtor();
   void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCHealthReply* other);
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HelloReply* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -239,15 +246,15 @@ class RPCHealthReply : public ::google::protobuf::MessageLite /* @@protoc_insert
   }
   public:
 
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // string message = 2;
+  // string message = 1;
   void clear_message();
-  static const int kMessageFieldNumber = 2;
+  static const int kMessageFieldNumber = 1;
   const ::std::string& message() const;
   void set_message(const ::std::string& value);
   #if LANG_CXX11
@@ -259,395 +266,14 @@ class RPCHealthReply : public ::google::protobuf::MessageLite /* @@protoc_insert
   ::std::string* release_message();
   void set_allocated_message(::std::string* message);
 
-  // bool ready = 1;
-  void clear_ready();
-  static const int kReadyFieldNumber = 1;
-  bool ready() const;
-  void set_ready(bool value);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCHealthReply)
+  // @@protoc_insertion_point(class_scope:pb.HelloReply)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr message_;
-  bool ready_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthReplyImpl();
-};
-// -------------------------------------------------------------------
-
-class RPCGetPeerReply : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCGetPeerReply) */ {
- public:
-  RPCGetPeerReply();
-  virtual ~RPCGetPeerReply();
-
-  RPCGetPeerReply(const RPCGetPeerReply& from);
-
-  inline RPCGetPeerReply& operator=(const RPCGetPeerReply& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCGetPeerReply(RPCGetPeerReply&& from) noexcept
-    : RPCGetPeerReply() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCGetPeerReply& operator=(RPCGetPeerReply&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const RPCGetPeerReply& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCGetPeerReply* internal_default_instance() {
-    return reinterpret_cast<const RPCGetPeerReply*>(
-               &_RPCGetPeerReply_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    2;
-
-  void Swap(RPCGetPeerReply* other);
-  friend void swap(RPCGetPeerReply& a, RPCGetPeerReply& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCGetPeerReply* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCGetPeerReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCGetPeerReply& from);
-  void MergeFrom(const RPCGetPeerReply& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCGetPeerReply* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string message = 2;
-  void clear_message();
-  static const int kMessageFieldNumber = 2;
-  const ::std::string& message() const;
-  void set_message(const ::std::string& value);
-  #if LANG_CXX11
-  void set_message(::std::string&& value);
-  #endif
-  void set_message(const char* value);
-  void set_message(const char* value, size_t size);
-  ::std::string* mutable_message();
-  ::std::string* release_message();
-  void set_allocated_message(::std::string* message);
-
-  // bool ready = 1;
-  void clear_ready();
-  static const int kReadyFieldNumber = 1;
-  bool ready() const;
-  void set_ready(bool value);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCGetPeerReply)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr message_;
-  bool ready_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCGetPeerReplyImpl();
-};
-// -------------------------------------------------------------------
-
-class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_point(class_definition:pb.RPCMessage) */ {
- public:
-  RPCMessage();
-  virtual ~RPCMessage();
-
-  RPCMessage(const RPCMessage& from);
-
-  inline RPCMessage& operator=(const RPCMessage& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCMessage(RPCMessage&& from) noexcept
-    : RPCMessage() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCMessage& operator=(RPCMessage&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const RPCMessage& default_instance();
-
-  enum MsgCase {
-    kHealthRequest = 3,
-    kHealthReply = 4,
-    kAddressBookPeerRequest = 5,
-    kAddressBookPeerResponse = 6,
-    kUpsertSessionRequest = 7,
-    kUpsertSessionResponse = 8,
-    kDeleteSessionRequest = 9,
-    kDeleteSessionResponse = 10,
-    kSessionIdsRequest = 11,
-    kSessionIdsResponse = 12,
-    kGetSessionRequest = 13,
-    kGetSessionResponse = 14,
-    MSG_NOT_SET = 0,
-  };
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCMessage* internal_default_instance() {
-    return reinterpret_cast<const RPCMessage*>(
-               &_RPCMessage_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
-
-  void Swap(RPCMessage* other);
-  friend void swap(RPCMessage& a, RPCMessage& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCMessage* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from)
-    PROTOBUF_FINAL;
-  void CopyFrom(const RPCMessage& from);
-  void MergeFrom(const RPCMessage& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  void DiscardUnknownFields();
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(RPCMessage* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::std::string GetTypeName() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // int64 version = 1;
-  void clear_version();
-  static const int kVersionFieldNumber = 1;
-  ::google::protobuf::int64 version() const;
-  void set_version(::google::protobuf::int64 value);
-
-  // int64 id = 2;
-  void clear_id();
-  static const int kIdFieldNumber = 2;
-  ::google::protobuf::int64 id() const;
-  void set_id(::google::protobuf::int64 value);
-
-  // .pb.RPCHealthRequest healthRequest = 3;
-  bool has_healthrequest() const;
-  void clear_healthrequest();
-  static const int kHealthRequestFieldNumber = 3;
-  const ::pb::RPCHealthRequest& healthrequest() const;
-  ::pb::RPCHealthRequest* release_healthrequest();
-  ::pb::RPCHealthRequest* mutable_healthrequest();
-  void set_allocated_healthrequest(::pb::RPCHealthRequest* healthrequest);
-
-  // .pb.RPCHealthReply HealthReply = 4;
-  bool has_healthreply() const;
-  void clear_healthreply();
-  static const int kHealthReplyFieldNumber = 4;
-  const ::pb::RPCHealthReply& healthreply() const;
-  ::pb::RPCHealthReply* release_healthreply();
-  ::pb::RPCHealthReply* mutable_healthreply();
-  void set_allocated_healthreply(::pb::RPCHealthReply* healthreply);
-
-  // .pb.RPCAddressBookPeerRequest AddressBookPeerRequest = 5;
-  bool has_addressbookpeerrequest() const;
-  void clear_addressbookpeerrequest();
-  static const int kAddressBookPeerRequestFieldNumber = 5;
-  const ::pb::RPCAddressBookPeerRequest& addressbookpeerrequest() const;
-  ::pb::RPCAddressBookPeerRequest* release_addressbookpeerrequest();
-  ::pb::RPCAddressBookPeerRequest* mutable_addressbookpeerrequest();
-  void set_allocated_addressbookpeerrequest(::pb::RPCAddressBookPeerRequest* addressbookpeerrequest);
-
-  // .pb.RPCAddressBookPeerResponse AddressBookPeerResponse = 6;
-  bool has_addressbookpeerresponse() const;
-  void clear_addressbookpeerresponse();
-  static const int kAddressBookPeerResponseFieldNumber = 6;
-  const ::pb::RPCAddressBookPeerResponse& addressbookpeerresponse() const;
-  ::pb::RPCAddressBookPeerResponse* release_addressbookpeerresponse();
-  ::pb::RPCAddressBookPeerResponse* mutable_addressbookpeerresponse();
-  void set_allocated_addressbookpeerresponse(::pb::RPCAddressBookPeerResponse* addressbookpeerresponse);
-
-  // .pb.RPCUpsertSessionRequest UpsertSessionRequest = 7;
-  bool has_upsertsessionrequest() const;
-  void clear_upsertsessionrequest();
-  static const int kUpsertSessionRequestFieldNumber = 7;
-  const ::pb::RPCUpsertSessionRequest& upsertsessionrequest() const;
-  ::pb::RPCUpsertSessionRequest* release_upsertsessionrequest();
-  ::pb::RPCUpsertSessionRequest* mutable_upsertsessionrequest();
-  void set_allocated_upsertsessionrequest(::pb::RPCUpsertSessionRequest* upsertsessionrequest);
-
-  // .pb.RPCUpsertSessionResponse UpsertSessionResponse = 8;
-  bool has_upsertsessionresponse() const;
-  void clear_upsertsessionresponse();
-  static const int kUpsertSessionResponseFieldNumber = 8;
-  const ::pb::RPCUpsertSessionResponse& upsertsessionresponse() const;
-  ::pb::RPCUpsertSessionResponse* release_upsertsessionresponse();
-  ::pb::RPCUpsertSessionResponse* mutable_upsertsessionresponse();
-  void set_allocated_upsertsessionresponse(::pb::RPCUpsertSessionResponse* upsertsessionresponse);
-
-  // .pb.RPCDeleteSessionRequest DeleteSessionRequest = 9;
-  bool has_deletesessionrequest() const;
-  void clear_deletesessionrequest();
-  static const int kDeleteSessionRequestFieldNumber = 9;
-  const ::pb::RPCDeleteSessionRequest& deletesessionrequest() const;
-  ::pb::RPCDeleteSessionRequest* release_deletesessionrequest();
-  ::pb::RPCDeleteSessionRequest* mutable_deletesessionrequest();
-  void set_allocated_deletesessionrequest(::pb::RPCDeleteSessionRequest* deletesessionrequest);
-
-  // .pb.RPCDeleteSessionResponse DeleteSessionResponse = 10;
-  bool has_deletesessionresponse() const;
-  void clear_deletesessionresponse();
-  static const int kDeleteSessionResponseFieldNumber = 10;
-  const ::pb::RPCDeleteSessionResponse& deletesessionresponse() const;
-  ::pb::RPCDeleteSessionResponse* release_deletesessionresponse();
-  ::pb::RPCDeleteSessionResponse* mutable_deletesessionresponse();
-  void set_allocated_deletesessionresponse(::pb::RPCDeleteSessionResponse* deletesessionresponse);
-
-  // .pb.RPCSessionIdsRequest SessionIdsRequest = 11;
-  bool has_sessionidsrequest() const;
-  void clear_sessionidsrequest();
-  static const int kSessionIdsRequestFieldNumber = 11;
-  const ::pb::RPCSessionIdsRequest& sessionidsrequest() const;
-  ::pb::RPCSessionIdsRequest* release_sessionidsrequest();
-  ::pb::RPCSessionIdsRequest* mutable_sessionidsrequest();
-  void set_allocated_sessionidsrequest(::pb::RPCSessionIdsRequest* sessionidsrequest);
-
-  // .pb.RPCSessionIdsResponse SessionIdsResponse = 12;
-  bool has_sessionidsresponse() const;
-  void clear_sessionidsresponse();
-  static const int kSessionIdsResponseFieldNumber = 12;
-  const ::pb::RPCSessionIdsResponse& sessionidsresponse() const;
-  ::pb::RPCSessionIdsResponse* release_sessionidsresponse();
-  ::pb::RPCSessionIdsResponse* mutable_sessionidsresponse();
-  void set_allocated_sessionidsresponse(::pb::RPCSessionIdsResponse* sessionidsresponse);
-
-  // .pb.RPCGetSessionRequest GetSessionRequest = 13;
-  bool has_getsessionrequest() const;
-  void clear_getsessionrequest();
-  static const int kGetSessionRequestFieldNumber = 13;
-  const ::pb::RPCGetSessionRequest& getsessionrequest() const;
-  ::pb::RPCGetSessionRequest* release_getsessionrequest();
-  ::pb::RPCGetSessionRequest* mutable_getsessionrequest();
-  void set_allocated_getsessionrequest(::pb::RPCGetSessionRequest* getsessionrequest);
-
-  // .pb.RPCGetSessionResponse GetSessionResponse = 14;
-  bool has_getsessionresponse() const;
-  void clear_getsessionresponse();
-  static const int kGetSessionResponseFieldNumber = 14;
-  const ::pb::RPCGetSessionResponse& getsessionresponse() const;
-  ::pb::RPCGetSessionResponse* release_getsessionresponse();
-  ::pb::RPCGetSessionResponse* mutable_getsessionresponse();
-  void set_allocated_getsessionresponse(::pb::RPCGetSessionResponse* getsessionresponse);
-
-  MsgCase msg_case() const;
-  // @@protoc_insertion_point(class_scope:pb.RPCMessage)
- private:
-  void set_has_healthrequest();
-  void set_has_healthreply();
-  void set_has_addressbookpeerrequest();
-  void set_has_addressbookpeerresponse();
-  void set_has_upsertsessionrequest();
-  void set_has_upsertsessionresponse();
-  void set_has_deletesessionrequest();
-  void set_has_deletesessionresponse();
-  void set_has_sessionidsrequest();
-  void set_has_sessionidsresponse();
-  void set_has_getsessionrequest();
-  void set_has_getsessionresponse();
-
-  inline bool has_msg() const;
-  void clear_msg();
-  inline void clear_has_msg();
-
-  ::google::protobuf::internal::InternalMetadataWithArenaLite _internal_metadata_;
-  ::google::protobuf::int64 version_;
-  ::google::protobuf::int64 id_;
-  union MsgUnion {
-    MsgUnion() {}
-    ::pb::RPCHealthRequest* healthrequest_;
-    ::pb::RPCHealthReply* healthreply_;
-    ::pb::RPCAddressBookPeerRequest* addressbookpeerrequest_;
-    ::pb::RPCAddressBookPeerResponse* addressbookpeerresponse_;
-    ::pb::RPCUpsertSessionRequest* upsertsessionrequest_;
-    ::pb::RPCUpsertSessionResponse* upsertsessionresponse_;
-    ::pb::RPCDeleteSessionRequest* deletesessionrequest_;
-    ::pb::RPCDeleteSessionResponse* deletesessionresponse_;
-    ::pb::RPCSessionIdsRequest* sessionidsrequest_;
-    ::pb::RPCSessionIdsResponse* sessionidsresponse_;
-    ::pb::RPCGetSessionRequest* getsessionrequest_;
-    ::pb::RPCGetSessionResponse* getsessionresponse_;
-  } msg_;
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _oneof_case_[1];
-
-  friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCMessageImpl();
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsHelloReplyImpl();
 };
 // ===================================================================
 
@@ -658,618 +284,121 @@ class RPCMessage : public ::google::protobuf::MessageLite /* @@protoc_insertion_
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// RPCHealthRequest
+// HelloRequest
+
+// string name = 1;
+inline void HelloRequest::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& HelloRequest::name() const {
+  // @@protoc_insertion_point(field_get:pb.HelloRequest.name)
+  return name_.GetNoArena();
+}
+inline void HelloRequest::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.HelloRequest.name)
+}
+#if LANG_CXX11
+inline void HelloRequest::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.HelloRequest.name)
+}
+#endif
+inline void HelloRequest::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.HelloRequest.name)
+}
+inline void HelloRequest::set_name(const char* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.HelloRequest.name)
+}
+inline ::std::string* HelloRequest::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.HelloRequest.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* HelloRequest::release_name() {
+  // @@protoc_insertion_point(field_release:pb.HelloRequest.name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void HelloRequest::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:pb.HelloRequest.name)
+}
 
 // -------------------------------------------------------------------
 
-// RPCHealthReply
+// HelloReply
 
-// bool ready = 1;
-inline void RPCHealthReply::clear_ready() {
-  ready_ = false;
-}
-inline bool RPCHealthReply::ready() const {
-  // @@protoc_insertion_point(field_get:pb.RPCHealthReply.ready)
-  return ready_;
-}
-inline void RPCHealthReply::set_ready(bool value) {
-  
-  ready_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCHealthReply.ready)
-}
-
-// string message = 2;
-inline void RPCHealthReply::clear_message() {
+// string message = 1;
+inline void HelloReply::clear_message() {
   message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCHealthReply::message() const {
-  // @@protoc_insertion_point(field_get:pb.RPCHealthReply.message)
+inline const ::std::string& HelloReply::message() const {
+  // @@protoc_insertion_point(field_get:pb.HelloReply.message)
   return message_.GetNoArena();
 }
-inline void RPCHealthReply::set_message(const ::std::string& value) {
+inline void HelloReply::set_message(const ::std::string& value) {
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCHealthReply.message)
+  // @@protoc_insertion_point(field_set:pb.HelloReply.message)
 }
 #if LANG_CXX11
-inline void RPCHealthReply::set_message(::std::string&& value) {
+inline void HelloReply::set_message(::std::string&& value) {
   
   message_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCHealthReply.message)
+  // @@protoc_insertion_point(field_set_rvalue:pb.HelloReply.message)
 }
 #endif
-inline void RPCHealthReply::set_message(const char* value) {
+inline void HelloReply::set_message(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCHealthReply.message)
+  // @@protoc_insertion_point(field_set_char:pb.HelloReply.message)
 }
-inline void RPCHealthReply::set_message(const char* value, size_t size) {
+inline void HelloReply::set_message(const char* value, size_t size) {
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCHealthReply.message)
+  // @@protoc_insertion_point(field_set_pointer:pb.HelloReply.message)
 }
-inline ::std::string* RPCHealthReply::mutable_message() {
+inline ::std::string* HelloReply::mutable_message() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCHealthReply.message)
+  // @@protoc_insertion_point(field_mutable:pb.HelloReply.message)
   return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCHealthReply::release_message() {
-  // @@protoc_insertion_point(field_release:pb.RPCHealthReply.message)
+inline ::std::string* HelloReply::release_message() {
+  // @@protoc_insertion_point(field_release:pb.HelloReply.message)
   
   return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCHealthReply::set_allocated_message(::std::string* message) {
+inline void HelloReply::set_allocated_message(::std::string* message) {
   if (message != NULL) {
     
   } else {
     
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCHealthReply.message)
+  // @@protoc_insertion_point(field_set_allocated:pb.HelloReply.message)
 }
 
-// -------------------------------------------------------------------
-
-// RPCGetPeerReply
-
-// bool ready = 1;
-inline void RPCGetPeerReply::clear_ready() {
-  ready_ = false;
-}
-inline bool RPCGetPeerReply::ready() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetPeerReply.ready)
-  return ready_;
-}
-inline void RPCGetPeerReply::set_ready(bool value) {
-  
-  ready_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCGetPeerReply.ready)
-}
-
-// string message = 2;
-inline void RPCGetPeerReply::clear_message() {
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCGetPeerReply::message() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetPeerReply.message)
-  return message_.GetNoArena();
-}
-inline void RPCGetPeerReply::set_message(const ::std::string& value) {
-  
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetPeerReply.message)
-}
-#if LANG_CXX11
-inline void RPCGetPeerReply::set_message(::std::string&& value) {
-  
-  message_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPeerReply.message)
-}
-#endif
-inline void RPCGetPeerReply::set_message(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetPeerReply.message)
-}
-inline void RPCGetPeerReply::set_message(const char* value, size_t size) {
-  
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPeerReply.message)
-}
-inline ::std::string* RPCGetPeerReply::mutable_message() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetPeerReply.message)
-  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCGetPeerReply::release_message() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetPeerReply.message)
-  
-  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCGetPeerReply::set_allocated_message(::std::string* message) {
-  if (message != NULL) {
-    
-  } else {
-    
-  }
-  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPeerReply.message)
-}
-
-// -------------------------------------------------------------------
-
-// RPCMessage
-
-// int64 version = 1;
-inline void RPCMessage::clear_version() {
-  version_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 RPCMessage::version() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.version)
-  return version_;
-}
-inline void RPCMessage::set_version(::google::protobuf::int64 value) {
-  
-  version_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCMessage.version)
-}
-
-// int64 id = 2;
-inline void RPCMessage::clear_id() {
-  id_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 RPCMessage::id() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.id)
-  return id_;
-}
-inline void RPCMessage::set_id(::google::protobuf::int64 value) {
-  
-  id_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCMessage.id)
-}
-
-// .pb.RPCHealthRequest healthRequest = 3;
-inline bool RPCMessage::has_healthrequest() const {
-  return msg_case() == kHealthRequest;
-}
-inline void RPCMessage::set_has_healthrequest() {
-  _oneof_case_[0] = kHealthRequest;
-}
-inline void RPCMessage::clear_healthrequest() {
-  if (has_healthrequest()) {
-    delete msg_.healthrequest_;
-    clear_has_msg();
-  }
-}
-inline ::pb::RPCHealthRequest* RPCMessage::release_healthrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.healthRequest)
-  if (has_healthrequest()) {
-    clear_has_msg();
-      ::pb::RPCHealthRequest* temp = msg_.healthrequest_;
-    msg_.healthrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCHealthRequest& RPCMessage::healthrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.healthRequest)
-  return has_healthrequest()
-      ? *msg_.healthrequest_
-      : *reinterpret_cast< ::pb::RPCHealthRequest*>(&::pb::_RPCHealthRequest_default_instance_);
-}
-inline ::pb::RPCHealthRequest* RPCMessage::mutable_healthrequest() {
-  if (!has_healthrequest()) {
-    clear_msg();
-    set_has_healthrequest();
-    msg_.healthrequest_ = new ::pb::RPCHealthRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.healthRequest)
-  return msg_.healthrequest_;
-}
-
-// .pb.RPCHealthReply HealthReply = 4;
-inline bool RPCMessage::has_healthreply() const {
-  return msg_case() == kHealthReply;
-}
-inline void RPCMessage::set_has_healthreply() {
-  _oneof_case_[0] = kHealthReply;
-}
-inline void RPCMessage::clear_healthreply() {
-  if (has_healthreply()) {
-    delete msg_.healthreply_;
-    clear_has_msg();
-  }
-}
-inline ::pb::RPCHealthReply* RPCMessage::release_healthreply() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.HealthReply)
-  if (has_healthreply()) {
-    clear_has_msg();
-      ::pb::RPCHealthReply* temp = msg_.healthreply_;
-    msg_.healthreply_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCHealthReply& RPCMessage::healthreply() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.HealthReply)
-  return has_healthreply()
-      ? *msg_.healthreply_
-      : *reinterpret_cast< ::pb::RPCHealthReply*>(&::pb::_RPCHealthReply_default_instance_);
-}
-inline ::pb::RPCHealthReply* RPCMessage::mutable_healthreply() {
-  if (!has_healthreply()) {
-    clear_msg();
-    set_has_healthreply();
-    msg_.healthreply_ = new ::pb::RPCHealthReply;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.HealthReply)
-  return msg_.healthreply_;
-}
-
-// .pb.RPCAddressBookPeerRequest AddressBookPeerRequest = 5;
-inline bool RPCMessage::has_addressbookpeerrequest() const {
-  return msg_case() == kAddressBookPeerRequest;
-}
-inline void RPCMessage::set_has_addressbookpeerrequest() {
-  _oneof_case_[0] = kAddressBookPeerRequest;
-}
-inline ::pb::RPCAddressBookPeerRequest* RPCMessage::release_addressbookpeerrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.AddressBookPeerRequest)
-  if (has_addressbookpeerrequest()) {
-    clear_has_msg();
-      ::pb::RPCAddressBookPeerRequest* temp = msg_.addressbookpeerrequest_;
-    msg_.addressbookpeerrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCAddressBookPeerRequest& RPCMessage::addressbookpeerrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.AddressBookPeerRequest)
-  return has_addressbookpeerrequest()
-      ? *msg_.addressbookpeerrequest_
-      : *reinterpret_cast< ::pb::RPCAddressBookPeerRequest*>(&::pb::_RPCAddressBookPeerRequest_default_instance_);
-}
-inline ::pb::RPCAddressBookPeerRequest* RPCMessage::mutable_addressbookpeerrequest() {
-  if (!has_addressbookpeerrequest()) {
-    clear_msg();
-    set_has_addressbookpeerrequest();
-    msg_.addressbookpeerrequest_ = new ::pb::RPCAddressBookPeerRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.AddressBookPeerRequest)
-  return msg_.addressbookpeerrequest_;
-}
-
-// .pb.RPCAddressBookPeerResponse AddressBookPeerResponse = 6;
-inline bool RPCMessage::has_addressbookpeerresponse() const {
-  return msg_case() == kAddressBookPeerResponse;
-}
-inline void RPCMessage::set_has_addressbookpeerresponse() {
-  _oneof_case_[0] = kAddressBookPeerResponse;
-}
-inline ::pb::RPCAddressBookPeerResponse* RPCMessage::release_addressbookpeerresponse() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.AddressBookPeerResponse)
-  if (has_addressbookpeerresponse()) {
-    clear_has_msg();
-      ::pb::RPCAddressBookPeerResponse* temp = msg_.addressbookpeerresponse_;
-    msg_.addressbookpeerresponse_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCAddressBookPeerResponse& RPCMessage::addressbookpeerresponse() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.AddressBookPeerResponse)
-  return has_addressbookpeerresponse()
-      ? *msg_.addressbookpeerresponse_
-      : *reinterpret_cast< ::pb::RPCAddressBookPeerResponse*>(&::pb::_RPCAddressBookPeerResponse_default_instance_);
-}
-inline ::pb::RPCAddressBookPeerResponse* RPCMessage::mutable_addressbookpeerresponse() {
-  if (!has_addressbookpeerresponse()) {
-    clear_msg();
-    set_has_addressbookpeerresponse();
-    msg_.addressbookpeerresponse_ = new ::pb::RPCAddressBookPeerResponse;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.AddressBookPeerResponse)
-  return msg_.addressbookpeerresponse_;
-}
-
-// .pb.RPCUpsertSessionRequest UpsertSessionRequest = 7;
-inline bool RPCMessage::has_upsertsessionrequest() const {
-  return msg_case() == kUpsertSessionRequest;
-}
-inline void RPCMessage::set_has_upsertsessionrequest() {
-  _oneof_case_[0] = kUpsertSessionRequest;
-}
-inline ::pb::RPCUpsertSessionRequest* RPCMessage::release_upsertsessionrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.UpsertSessionRequest)
-  if (has_upsertsessionrequest()) {
-    clear_has_msg();
-      ::pb::RPCUpsertSessionRequest* temp = msg_.upsertsessionrequest_;
-    msg_.upsertsessionrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCUpsertSessionRequest& RPCMessage::upsertsessionrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.UpsertSessionRequest)
-  return has_upsertsessionrequest()
-      ? *msg_.upsertsessionrequest_
-      : *reinterpret_cast< ::pb::RPCUpsertSessionRequest*>(&::pb::_RPCUpsertSessionRequest_default_instance_);
-}
-inline ::pb::RPCUpsertSessionRequest* RPCMessage::mutable_upsertsessionrequest() {
-  if (!has_upsertsessionrequest()) {
-    clear_msg();
-    set_has_upsertsessionrequest();
-    msg_.upsertsessionrequest_ = new ::pb::RPCUpsertSessionRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.UpsertSessionRequest)
-  return msg_.upsertsessionrequest_;
-}
-
-// .pb.RPCUpsertSessionResponse UpsertSessionResponse = 8;
-inline bool RPCMessage::has_upsertsessionresponse() const {
-  return msg_case() == kUpsertSessionResponse;
-}
-inline void RPCMessage::set_has_upsertsessionresponse() {
-  _oneof_case_[0] = kUpsertSessionResponse;
-}
-inline ::pb::RPCUpsertSessionResponse* RPCMessage::release_upsertsessionresponse() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.UpsertSessionResponse)
-  if (has_upsertsessionresponse()) {
-    clear_has_msg();
-      ::pb::RPCUpsertSessionResponse* temp = msg_.upsertsessionresponse_;
-    msg_.upsertsessionresponse_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCUpsertSessionResponse& RPCMessage::upsertsessionresponse() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.UpsertSessionResponse)
-  return has_upsertsessionresponse()
-      ? *msg_.upsertsessionresponse_
-      : *reinterpret_cast< ::pb::RPCUpsertSessionResponse*>(&::pb::_RPCUpsertSessionResponse_default_instance_);
-}
-inline ::pb::RPCUpsertSessionResponse* RPCMessage::mutable_upsertsessionresponse() {
-  if (!has_upsertsessionresponse()) {
-    clear_msg();
-    set_has_upsertsessionresponse();
-    msg_.upsertsessionresponse_ = new ::pb::RPCUpsertSessionResponse;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.UpsertSessionResponse)
-  return msg_.upsertsessionresponse_;
-}
-
-// .pb.RPCDeleteSessionRequest DeleteSessionRequest = 9;
-inline bool RPCMessage::has_deletesessionrequest() const {
-  return msg_case() == kDeleteSessionRequest;
-}
-inline void RPCMessage::set_has_deletesessionrequest() {
-  _oneof_case_[0] = kDeleteSessionRequest;
-}
-inline ::pb::RPCDeleteSessionRequest* RPCMessage::release_deletesessionrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.DeleteSessionRequest)
-  if (has_deletesessionrequest()) {
-    clear_has_msg();
-      ::pb::RPCDeleteSessionRequest* temp = msg_.deletesessionrequest_;
-    msg_.deletesessionrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCDeleteSessionRequest& RPCMessage::deletesessionrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.DeleteSessionRequest)
-  return has_deletesessionrequest()
-      ? *msg_.deletesessionrequest_
-      : *reinterpret_cast< ::pb::RPCDeleteSessionRequest*>(&::pb::_RPCDeleteSessionRequest_default_instance_);
-}
-inline ::pb::RPCDeleteSessionRequest* RPCMessage::mutable_deletesessionrequest() {
-  if (!has_deletesessionrequest()) {
-    clear_msg();
-    set_has_deletesessionrequest();
-    msg_.deletesessionrequest_ = new ::pb::RPCDeleteSessionRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.DeleteSessionRequest)
-  return msg_.deletesessionrequest_;
-}
-
-// .pb.RPCDeleteSessionResponse DeleteSessionResponse = 10;
-inline bool RPCMessage::has_deletesessionresponse() const {
-  return msg_case() == kDeleteSessionResponse;
-}
-inline void RPCMessage::set_has_deletesessionresponse() {
-  _oneof_case_[0] = kDeleteSessionResponse;
-}
-inline ::pb::RPCDeleteSessionResponse* RPCMessage::release_deletesessionresponse() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.DeleteSessionResponse)
-  if (has_deletesessionresponse()) {
-    clear_has_msg();
-      ::pb::RPCDeleteSessionResponse* temp = msg_.deletesessionresponse_;
-    msg_.deletesessionresponse_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCDeleteSessionResponse& RPCMessage::deletesessionresponse() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.DeleteSessionResponse)
-  return has_deletesessionresponse()
-      ? *msg_.deletesessionresponse_
-      : *reinterpret_cast< ::pb::RPCDeleteSessionResponse*>(&::pb::_RPCDeleteSessionResponse_default_instance_);
-}
-inline ::pb::RPCDeleteSessionResponse* RPCMessage::mutable_deletesessionresponse() {
-  if (!has_deletesessionresponse()) {
-    clear_msg();
-    set_has_deletesessionresponse();
-    msg_.deletesessionresponse_ = new ::pb::RPCDeleteSessionResponse;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.DeleteSessionResponse)
-  return msg_.deletesessionresponse_;
-}
-
-// .pb.RPCSessionIdsRequest SessionIdsRequest = 11;
-inline bool RPCMessage::has_sessionidsrequest() const {
-  return msg_case() == kSessionIdsRequest;
-}
-inline void RPCMessage::set_has_sessionidsrequest() {
-  _oneof_case_[0] = kSessionIdsRequest;
-}
-inline ::pb::RPCSessionIdsRequest* RPCMessage::release_sessionidsrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.SessionIdsRequest)
-  if (has_sessionidsrequest()) {
-    clear_has_msg();
-      ::pb::RPCSessionIdsRequest* temp = msg_.sessionidsrequest_;
-    msg_.sessionidsrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCSessionIdsRequest& RPCMessage::sessionidsrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.SessionIdsRequest)
-  return has_sessionidsrequest()
-      ? *msg_.sessionidsrequest_
-      : *reinterpret_cast< ::pb::RPCSessionIdsRequest*>(&::pb::_RPCSessionIdsRequest_default_instance_);
-}
-inline ::pb::RPCSessionIdsRequest* RPCMessage::mutable_sessionidsrequest() {
-  if (!has_sessionidsrequest()) {
-    clear_msg();
-    set_has_sessionidsrequest();
-    msg_.sessionidsrequest_ = new ::pb::RPCSessionIdsRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.SessionIdsRequest)
-  return msg_.sessionidsrequest_;
-}
-
-// .pb.RPCSessionIdsResponse SessionIdsResponse = 12;
-inline bool RPCMessage::has_sessionidsresponse() const {
-  return msg_case() == kSessionIdsResponse;
-}
-inline void RPCMessage::set_has_sessionidsresponse() {
-  _oneof_case_[0] = kSessionIdsResponse;
-}
-inline ::pb::RPCSessionIdsResponse* RPCMessage::release_sessionidsresponse() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.SessionIdsResponse)
-  if (has_sessionidsresponse()) {
-    clear_has_msg();
-      ::pb::RPCSessionIdsResponse* temp = msg_.sessionidsresponse_;
-    msg_.sessionidsresponse_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCSessionIdsResponse& RPCMessage::sessionidsresponse() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.SessionIdsResponse)
-  return has_sessionidsresponse()
-      ? *msg_.sessionidsresponse_
-      : *reinterpret_cast< ::pb::RPCSessionIdsResponse*>(&::pb::_RPCSessionIdsResponse_default_instance_);
-}
-inline ::pb::RPCSessionIdsResponse* RPCMessage::mutable_sessionidsresponse() {
-  if (!has_sessionidsresponse()) {
-    clear_msg();
-    set_has_sessionidsresponse();
-    msg_.sessionidsresponse_ = new ::pb::RPCSessionIdsResponse;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.SessionIdsResponse)
-  return msg_.sessionidsresponse_;
-}
-
-// .pb.RPCGetSessionRequest GetSessionRequest = 13;
-inline bool RPCMessage::has_getsessionrequest() const {
-  return msg_case() == kGetSessionRequest;
-}
-inline void RPCMessage::set_has_getsessionrequest() {
-  _oneof_case_[0] = kGetSessionRequest;
-}
-inline ::pb::RPCGetSessionRequest* RPCMessage::release_getsessionrequest() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.GetSessionRequest)
-  if (has_getsessionrequest()) {
-    clear_has_msg();
-      ::pb::RPCGetSessionRequest* temp = msg_.getsessionrequest_;
-    msg_.getsessionrequest_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCGetSessionRequest& RPCMessage::getsessionrequest() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.GetSessionRequest)
-  return has_getsessionrequest()
-      ? *msg_.getsessionrequest_
-      : *reinterpret_cast< ::pb::RPCGetSessionRequest*>(&::pb::_RPCGetSessionRequest_default_instance_);
-}
-inline ::pb::RPCGetSessionRequest* RPCMessage::mutable_getsessionrequest() {
-  if (!has_getsessionrequest()) {
-    clear_msg();
-    set_has_getsessionrequest();
-    msg_.getsessionrequest_ = new ::pb::RPCGetSessionRequest;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.GetSessionRequest)
-  return msg_.getsessionrequest_;
-}
-
-// .pb.RPCGetSessionResponse GetSessionResponse = 14;
-inline bool RPCMessage::has_getsessionresponse() const {
-  return msg_case() == kGetSessionResponse;
-}
-inline void RPCMessage::set_has_getsessionresponse() {
-  _oneof_case_[0] = kGetSessionResponse;
-}
-inline ::pb::RPCGetSessionResponse* RPCMessage::release_getsessionresponse() {
-  // @@protoc_insertion_point(field_release:pb.RPCMessage.GetSessionResponse)
-  if (has_getsessionresponse()) {
-    clear_has_msg();
-      ::pb::RPCGetSessionResponse* temp = msg_.getsessionresponse_;
-    msg_.getsessionresponse_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline const ::pb::RPCGetSessionResponse& RPCMessage::getsessionresponse() const {
-  // @@protoc_insertion_point(field_get:pb.RPCMessage.GetSessionResponse)
-  return has_getsessionresponse()
-      ? *msg_.getsessionresponse_
-      : *reinterpret_cast< ::pb::RPCGetSessionResponse*>(&::pb::_RPCGetSessionResponse_default_instance_);
-}
-inline ::pb::RPCGetSessionResponse* RPCMessage::mutable_getsessionresponse() {
-  if (!has_getsessionresponse()) {
-    clear_msg();
-    set_has_getsessionresponse();
-    msg_.getsessionresponse_ = new ::pb::RPCGetSessionResponse;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.RPCMessage.GetSessionResponse)
-  return msg_.getsessionresponse_;
-}
-
-inline bool RPCMessage::has_msg() const {
-  return msg_case() != MSG_NOT_SET;
-}
-inline void RPCMessage::clear_has_msg() {
-  _oneof_case_[0] = MSG_NOT_SET;
-}
-inline RPCMessage::MsgCase RPCMessage::msg_case() const {
-  return RPCMessage::MsgCase(_oneof_case_[0]);
-}
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 

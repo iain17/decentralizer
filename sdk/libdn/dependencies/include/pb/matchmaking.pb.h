@@ -233,9 +233,9 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_details();
 
-  // string pId = 2;
+  // string pId = 1;
   void clear_pid();
-  static const int kPIdFieldNumber = 2;
+  static const int kPIdFieldNumber = 1;
   const ::std::string& pid() const;
   void set_pid(const ::std::string& value);
   #if LANG_CXX11
@@ -261,9 +261,9 @@ class SessionInfo : public ::google::protobuf::MessageLite /* @@protoc_insertion
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // uint64 dnId = 1;
+  // uint64 dnId = 2;
   void clear_dnid();
-  static const int kDnIdFieldNumber = 1;
+  static const int kDnIdFieldNumber = 2;
   ::google::protobuf::uint64 dnid() const;
   void set_dnid(::google::protobuf::uint64 value);
 
@@ -1358,21 +1358,7 @@ class RPCGetSessionResponse : public ::google::protobuf::MessageLite /* @@protoc
 
 // SessionInfo
 
-// uint64 dnId = 1;
-inline void SessionInfo::clear_dnid() {
-  dnid_ = GOOGLE_ULONGLONG(0);
-}
-inline ::google::protobuf::uint64 SessionInfo::dnid() const {
-  // @@protoc_insertion_point(field_get:pb.SessionInfo.dnId)
-  return dnid_;
-}
-inline void SessionInfo::set_dnid(::google::protobuf::uint64 value) {
-  
-  dnid_ = value;
-  // @@protoc_insertion_point(field_set:pb.SessionInfo.dnId)
-}
-
-// string pId = 2;
+// string pId = 1;
 inline void SessionInfo::clear_pid() {
   pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1423,6 +1409,20 @@ inline void SessionInfo::set_allocated_pid(::std::string* pid) {
   }
   pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), pid);
   // @@protoc_insertion_point(field_set_allocated:pb.SessionInfo.pId)
+}
+
+// uint64 dnId = 2;
+inline void SessionInfo::clear_dnid() {
+  dnid_ = GOOGLE_ULONGLONG(0);
+}
+inline ::google::protobuf::uint64 SessionInfo::dnid() const {
+  // @@protoc_insertion_point(field_get:pb.SessionInfo.dnId)
+  return dnid_;
+}
+inline void SessionInfo::set_dnid(::google::protobuf::uint64 value) {
+  
+  dnid_ = value;
+  // @@protoc_insertion_point(field_set:pb.SessionInfo.dnId)
 }
 
 // uint64 sessionId = 3;

@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/iain17/decentralizer/app"
 	"github.com/iain17/logger"
-	"github.com/iain17/decentralizer/serve"
+	"github.com/iain17/decentralizer/api"
 )
 
 //This is the privatekey
@@ -23,8 +23,10 @@ func main() {
 		panic(err)
 	}
 
-	s := serve.New(app)
-	s.ListenTCP(3036)
+	_, err = api.New(app, 50051)
+	if err != nil {
+		panic(err)
+	}
 
 	select{}
 }

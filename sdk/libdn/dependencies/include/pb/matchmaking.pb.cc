@@ -350,8 +350,8 @@ void SessionInfo_DetailsEntry_DoNotUse::MergeFrom(const SessionInfo_DetailsEntry
 void SessionInfo::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SessionInfo::kDnIdFieldNumber;
 const int SessionInfo::kPIdFieldNumber;
+const int SessionInfo::kDnIdFieldNumber;
 const int SessionInfo::kSessionIdFieldNumber;
 const int SessionInfo::kTypeFieldNumber;
 const int SessionInfo::kNameFieldNumber;
@@ -456,30 +456,30 @@ bool SessionInfo::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // uint64 dnId = 1;
+      // string pId = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &dnid_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string pId = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_pid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->pid().data(), static_cast<int>(this->pid().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "pb.SessionInfo.pId"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint64 dnId = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &dnid_)));
         } else {
           goto handle_unusual;
         }
@@ -611,19 +611,19 @@ void SessionInfo::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint64 dnId = 1;
-  if (this->dnid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->dnid(), output);
-  }
-
-  // string pId = 2;
+  // string pId = 1;
   if (this->pid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->pid().data(), static_cast<int>(this->pid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "pb.SessionInfo.pId");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->pid(), output);
+      1, this->pid(), output);
+  }
+
+  // uint64 dnId = 2;
+  if (this->dnid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->dnid(), output);
   }
 
   // uint64 sessionId = 3;
@@ -734,7 +734,7 @@ size_t SessionInfo::ByteSizeLong() const {
     }
   }
 
-  // string pId = 2;
+  // string pId = 1;
   if (this->pid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -748,7 +748,7 @@ size_t SessionInfo::ByteSizeLong() const {
         this->name());
   }
 
-  // uint64 dnId = 1;
+  // uint64 dnId = 2;
   if (this->dnid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(

@@ -7,552 +7,141 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import (
+	context "golang.org/x/net/context"
+	grpc "google.golang.org/grpc"
+)
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-type RPCHealthRequest struct {
+// The request message containing the user's name.
+type HelloRequest struct {
+	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 }
 
-func (m *RPCHealthRequest) Reset()                    { *m = RPCHealthRequest{} }
-func (m *RPCHealthRequest) String() string            { return proto.CompactTextString(m) }
-func (*RPCHealthRequest) ProtoMessage()               {}
-func (*RPCHealthRequest) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+func (m *HelloRequest) Reset()                    { *m = HelloRequest{} }
+func (m *HelloRequest) String() string            { return proto.CompactTextString(m) }
+func (*HelloRequest) ProtoMessage()               {}
+func (*HelloRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
-type RPCHealthReply struct {
-	Ready   bool   `protobuf:"varint,1,opt,name=ready" json:"ready,omitempty"`
-	Message string `protobuf:"bytes,2,opt,name=message" json:"message,omitempty"`
-}
-
-func (m *RPCHealthReply) Reset()                    { *m = RPCHealthReply{} }
-func (m *RPCHealthReply) String() string            { return proto.CompactTextString(m) }
-func (*RPCHealthReply) ProtoMessage()               {}
-func (*RPCHealthReply) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
-
-func (m *RPCHealthReply) GetReady() bool {
+func (m *HelloRequest) GetName() string {
 	if m != nil {
-		return m.Ready
-	}
-	return false
-}
-
-func (m *RPCHealthReply) GetMessage() string {
-	if m != nil {
-		return m.Message
+		return m.Name
 	}
 	return ""
 }
 
-type RPCGetPeerReply struct {
-	Ready   bool   `protobuf:"varint,1,opt,name=ready" json:"ready,omitempty"`
-	Message string `protobuf:"bytes,2,opt,name=message" json:"message,omitempty"`
+// The response message containing the greetings
+type HelloReply struct {
+	Message string `protobuf:"bytes,1,opt,name=message" json:"message,omitempty"`
 }
 
-func (m *RPCGetPeerReply) Reset()                    { *m = RPCGetPeerReply{} }
-func (m *RPCGetPeerReply) String() string            { return proto.CompactTextString(m) }
-func (*RPCGetPeerReply) ProtoMessage()               {}
-func (*RPCGetPeerReply) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{2} }
+func (m *HelloReply) Reset()                    { *m = HelloReply{} }
+func (m *HelloReply) String() string            { return proto.CompactTextString(m) }
+func (*HelloReply) ProtoMessage()               {}
+func (*HelloReply) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
 
-func (m *RPCGetPeerReply) GetReady() bool {
-	if m != nil {
-		return m.Ready
-	}
-	return false
-}
-
-func (m *RPCGetPeerReply) GetMessage() string {
+func (m *HelloReply) GetMessage() string {
 	if m != nil {
 		return m.Message
 	}
 	return ""
-}
-
-type RPCMessage struct {
-	Version int64 `protobuf:"varint,1,opt,name=version" json:"version,omitempty"`
-	Id      int64 `protobuf:"varint,2,opt,name=id" json:"id,omitempty"`
-	// Types that are valid to be assigned to Msg:
-	//	*RPCMessage_HealthRequest
-	//	*RPCMessage_HealthReply
-	//	*RPCMessage_AddressBookPeerRequest
-	//	*RPCMessage_AddressBookPeerResponse
-	//	*RPCMessage_UpsertSessionRequest
-	//	*RPCMessage_UpsertSessionResponse
-	//	*RPCMessage_DeleteSessionRequest
-	//	*RPCMessage_DeleteSessionResponse
-	//	*RPCMessage_SessionIdsRequest
-	//	*RPCMessage_SessionIdsResponse
-	//	*RPCMessage_GetSessionRequest
-	//	*RPCMessage_GetSessionResponse
-	Msg isRPCMessage_Msg `protobuf_oneof:"msg"`
-}
-
-func (m *RPCMessage) Reset()                    { *m = RPCMessage{} }
-func (m *RPCMessage) String() string            { return proto.CompactTextString(m) }
-func (*RPCMessage) ProtoMessage()               {}
-func (*RPCMessage) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{3} }
-
-type isRPCMessage_Msg interface {
-	isRPCMessage_Msg()
-}
-
-type RPCMessage_HealthRequest struct {
-	HealthRequest *RPCHealthRequest `protobuf:"bytes,3,opt,name=healthRequest,oneof"`
-}
-type RPCMessage_HealthReply struct {
-	HealthReply *RPCHealthReply `protobuf:"bytes,4,opt,name=HealthReply,oneof"`
-}
-type RPCMessage_AddressBookPeerRequest struct {
-	AddressBookPeerRequest *RPCAddressBookPeerRequest `protobuf:"bytes,5,opt,name=AddressBookPeerRequest,oneof"`
-}
-type RPCMessage_AddressBookPeerResponse struct {
-	AddressBookPeerResponse *RPCAddressBookPeerResponse `protobuf:"bytes,6,opt,name=AddressBookPeerResponse,oneof"`
-}
-type RPCMessage_UpsertSessionRequest struct {
-	UpsertSessionRequest *RPCUpsertSessionRequest `protobuf:"bytes,7,opt,name=UpsertSessionRequest,oneof"`
-}
-type RPCMessage_UpsertSessionResponse struct {
-	UpsertSessionResponse *RPCUpsertSessionResponse `protobuf:"bytes,8,opt,name=UpsertSessionResponse,oneof"`
-}
-type RPCMessage_DeleteSessionRequest struct {
-	DeleteSessionRequest *RPCDeleteSessionRequest `protobuf:"bytes,9,opt,name=DeleteSessionRequest,oneof"`
-}
-type RPCMessage_DeleteSessionResponse struct {
-	DeleteSessionResponse *RPCDeleteSessionResponse `protobuf:"bytes,10,opt,name=DeleteSessionResponse,oneof"`
-}
-type RPCMessage_SessionIdsRequest struct {
-	SessionIdsRequest *RPCSessionIdsRequest `protobuf:"bytes,11,opt,name=SessionIdsRequest,oneof"`
-}
-type RPCMessage_SessionIdsResponse struct {
-	SessionIdsResponse *RPCSessionIdsResponse `protobuf:"bytes,12,opt,name=SessionIdsResponse,oneof"`
-}
-type RPCMessage_GetSessionRequest struct {
-	GetSessionRequest *RPCGetSessionRequest `protobuf:"bytes,13,opt,name=GetSessionRequest,oneof"`
-}
-type RPCMessage_GetSessionResponse struct {
-	GetSessionResponse *RPCGetSessionResponse `protobuf:"bytes,14,opt,name=GetSessionResponse,oneof"`
-}
-
-func (*RPCMessage_HealthRequest) isRPCMessage_Msg()           {}
-func (*RPCMessage_HealthReply) isRPCMessage_Msg()             {}
-func (*RPCMessage_AddressBookPeerRequest) isRPCMessage_Msg()  {}
-func (*RPCMessage_AddressBookPeerResponse) isRPCMessage_Msg() {}
-func (*RPCMessage_UpsertSessionRequest) isRPCMessage_Msg()    {}
-func (*RPCMessage_UpsertSessionResponse) isRPCMessage_Msg()   {}
-func (*RPCMessage_DeleteSessionRequest) isRPCMessage_Msg()    {}
-func (*RPCMessage_DeleteSessionResponse) isRPCMessage_Msg()   {}
-func (*RPCMessage_SessionIdsRequest) isRPCMessage_Msg()       {}
-func (*RPCMessage_SessionIdsResponse) isRPCMessage_Msg()      {}
-func (*RPCMessage_GetSessionRequest) isRPCMessage_Msg()       {}
-func (*RPCMessage_GetSessionResponse) isRPCMessage_Msg()      {}
-
-func (m *RPCMessage) GetMsg() isRPCMessage_Msg {
-	if m != nil {
-		return m.Msg
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetVersion() int64 {
-	if m != nil {
-		return m.Version
-	}
-	return 0
-}
-
-func (m *RPCMessage) GetId() int64 {
-	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-func (m *RPCMessage) GetHealthRequest() *RPCHealthRequest {
-	if x, ok := m.GetMsg().(*RPCMessage_HealthRequest); ok {
-		return x.HealthRequest
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetHealthReply() *RPCHealthReply {
-	if x, ok := m.GetMsg().(*RPCMessage_HealthReply); ok {
-		return x.HealthReply
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetAddressBookPeerRequest() *RPCAddressBookPeerRequest {
-	if x, ok := m.GetMsg().(*RPCMessage_AddressBookPeerRequest); ok {
-		return x.AddressBookPeerRequest
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetAddressBookPeerResponse() *RPCAddressBookPeerResponse {
-	if x, ok := m.GetMsg().(*RPCMessage_AddressBookPeerResponse); ok {
-		return x.AddressBookPeerResponse
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetUpsertSessionRequest() *RPCUpsertSessionRequest {
-	if x, ok := m.GetMsg().(*RPCMessage_UpsertSessionRequest); ok {
-		return x.UpsertSessionRequest
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetUpsertSessionResponse() *RPCUpsertSessionResponse {
-	if x, ok := m.GetMsg().(*RPCMessage_UpsertSessionResponse); ok {
-		return x.UpsertSessionResponse
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetDeleteSessionRequest() *RPCDeleteSessionRequest {
-	if x, ok := m.GetMsg().(*RPCMessage_DeleteSessionRequest); ok {
-		return x.DeleteSessionRequest
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetDeleteSessionResponse() *RPCDeleteSessionResponse {
-	if x, ok := m.GetMsg().(*RPCMessage_DeleteSessionResponse); ok {
-		return x.DeleteSessionResponse
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetSessionIdsRequest() *RPCSessionIdsRequest {
-	if x, ok := m.GetMsg().(*RPCMessage_SessionIdsRequest); ok {
-		return x.SessionIdsRequest
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetSessionIdsResponse() *RPCSessionIdsResponse {
-	if x, ok := m.GetMsg().(*RPCMessage_SessionIdsResponse); ok {
-		return x.SessionIdsResponse
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetGetSessionRequest() *RPCGetSessionRequest {
-	if x, ok := m.GetMsg().(*RPCMessage_GetSessionRequest); ok {
-		return x.GetSessionRequest
-	}
-	return nil
-}
-
-func (m *RPCMessage) GetGetSessionResponse() *RPCGetSessionResponse {
-	if x, ok := m.GetMsg().(*RPCMessage_GetSessionResponse); ok {
-		return x.GetSessionResponse
-	}
-	return nil
-}
-
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*RPCMessage) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _RPCMessage_OneofMarshaler, _RPCMessage_OneofUnmarshaler, _RPCMessage_OneofSizer, []interface{}{
-		(*RPCMessage_HealthRequest)(nil),
-		(*RPCMessage_HealthReply)(nil),
-		(*RPCMessage_AddressBookPeerRequest)(nil),
-		(*RPCMessage_AddressBookPeerResponse)(nil),
-		(*RPCMessage_UpsertSessionRequest)(nil),
-		(*RPCMessage_UpsertSessionResponse)(nil),
-		(*RPCMessage_DeleteSessionRequest)(nil),
-		(*RPCMessage_DeleteSessionResponse)(nil),
-		(*RPCMessage_SessionIdsRequest)(nil),
-		(*RPCMessage_SessionIdsResponse)(nil),
-		(*RPCMessage_GetSessionRequest)(nil),
-		(*RPCMessage_GetSessionResponse)(nil),
-	}
-}
-
-func _RPCMessage_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*RPCMessage)
-	// msg
-	switch x := m.Msg.(type) {
-	case *RPCMessage_HealthRequest:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.HealthRequest); err != nil {
-			return err
-		}
-	case *RPCMessage_HealthReply:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.HealthReply); err != nil {
-			return err
-		}
-	case *RPCMessage_AddressBookPeerRequest:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AddressBookPeerRequest); err != nil {
-			return err
-		}
-	case *RPCMessage_AddressBookPeerResponse:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AddressBookPeerResponse); err != nil {
-			return err
-		}
-	case *RPCMessage_UpsertSessionRequest:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UpsertSessionRequest); err != nil {
-			return err
-		}
-	case *RPCMessage_UpsertSessionResponse:
-		b.EncodeVarint(8<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UpsertSessionResponse); err != nil {
-			return err
-		}
-	case *RPCMessage_DeleteSessionRequest:
-		b.EncodeVarint(9<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DeleteSessionRequest); err != nil {
-			return err
-		}
-	case *RPCMessage_DeleteSessionResponse:
-		b.EncodeVarint(10<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DeleteSessionResponse); err != nil {
-			return err
-		}
-	case *RPCMessage_SessionIdsRequest:
-		b.EncodeVarint(11<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SessionIdsRequest); err != nil {
-			return err
-		}
-	case *RPCMessage_SessionIdsResponse:
-		b.EncodeVarint(12<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SessionIdsResponse); err != nil {
-			return err
-		}
-	case *RPCMessage_GetSessionRequest:
-		b.EncodeVarint(13<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.GetSessionRequest); err != nil {
-			return err
-		}
-	case *RPCMessage_GetSessionResponse:
-		b.EncodeVarint(14<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.GetSessionResponse); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("RPCMessage.Msg has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _RPCMessage_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*RPCMessage)
-	switch tag {
-	case 3: // msg.healthRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCHealthRequest)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_HealthRequest{msg}
-		return true, err
-	case 4: // msg.HealthReply
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCHealthReply)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_HealthReply{msg}
-		return true, err
-	case 5: // msg.AddressBookPeerRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCAddressBookPeerRequest)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_AddressBookPeerRequest{msg}
-		return true, err
-	case 6: // msg.AddressBookPeerResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCAddressBookPeerResponse)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_AddressBookPeerResponse{msg}
-		return true, err
-	case 7: // msg.UpsertSessionRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCUpsertSessionRequest)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_UpsertSessionRequest{msg}
-		return true, err
-	case 8: // msg.UpsertSessionResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCUpsertSessionResponse)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_UpsertSessionResponse{msg}
-		return true, err
-	case 9: // msg.DeleteSessionRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCDeleteSessionRequest)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_DeleteSessionRequest{msg}
-		return true, err
-	case 10: // msg.DeleteSessionResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCDeleteSessionResponse)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_DeleteSessionResponse{msg}
-		return true, err
-	case 11: // msg.SessionIdsRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCSessionIdsRequest)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_SessionIdsRequest{msg}
-		return true, err
-	case 12: // msg.SessionIdsResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCSessionIdsResponse)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_SessionIdsResponse{msg}
-		return true, err
-	case 13: // msg.GetSessionRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCGetSessionRequest)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_GetSessionRequest{msg}
-		return true, err
-	case 14: // msg.GetSessionResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RPCGetSessionResponse)
-		err := b.DecodeMessage(msg)
-		m.Msg = &RPCMessage_GetSessionResponse{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _RPCMessage_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*RPCMessage)
-	// msg
-	switch x := m.Msg.(type) {
-	case *RPCMessage_HealthRequest:
-		s := proto.Size(x.HealthRequest)
-		n += proto.SizeVarint(3<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_HealthReply:
-		s := proto.Size(x.HealthReply)
-		n += proto.SizeVarint(4<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_AddressBookPeerRequest:
-		s := proto.Size(x.AddressBookPeerRequest)
-		n += proto.SizeVarint(5<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_AddressBookPeerResponse:
-		s := proto.Size(x.AddressBookPeerResponse)
-		n += proto.SizeVarint(6<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_UpsertSessionRequest:
-		s := proto.Size(x.UpsertSessionRequest)
-		n += proto.SizeVarint(7<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_UpsertSessionResponse:
-		s := proto.Size(x.UpsertSessionResponse)
-		n += proto.SizeVarint(8<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_DeleteSessionRequest:
-		s := proto.Size(x.DeleteSessionRequest)
-		n += proto.SizeVarint(9<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_DeleteSessionResponse:
-		s := proto.Size(x.DeleteSessionResponse)
-		n += proto.SizeVarint(10<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_SessionIdsRequest:
-		s := proto.Size(x.SessionIdsRequest)
-		n += proto.SizeVarint(11<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_SessionIdsResponse:
-		s := proto.Size(x.SessionIdsResponse)
-		n += proto.SizeVarint(12<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_GetSessionRequest:
-		s := proto.Size(x.GetSessionRequest)
-		n += proto.SizeVarint(13<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RPCMessage_GetSessionResponse:
-		s := proto.Size(x.GetSessionResponse)
-		n += proto.SizeVarint(14<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 func init() {
-	proto.RegisterType((*RPCHealthRequest)(nil), "pb.RPCHealthRequest")
-	proto.RegisterType((*RPCHealthReply)(nil), "pb.RPCHealthReply")
-	proto.RegisterType((*RPCGetPeerReply)(nil), "pb.RPCGetPeerReply")
-	proto.RegisterType((*RPCMessage)(nil), "pb.RPCMessage")
+	proto.RegisterType((*HelloRequest)(nil), "pb.HelloRequest")
+	proto.RegisterType((*HelloReply)(nil), "pb.HelloReply")
 }
 
-func init() { proto.RegisterFile("pb/platform.proto", fileDescriptor2) }
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
 
-var fileDescriptor2 = []byte{
-	// 450 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xdd, 0x8f, 0xd2, 0x40,
-	0x14, 0xc5, 0x4b, 0x2b, 0xcb, 0xee, 0xc5, 0x45, 0x77, 0x82, 0x5a, 0x3f, 0x43, 0x78, 0xe2, 0x89,
-	0x4d, 0x34, 0xf1, 0xc9, 0x07, 0x17, 0x4c, 0x76, 0x8c, 0x31, 0xc1, 0x51, 0x63, 0xe2, 0x5b, 0x6b,
-	0xaf, 0x40, 0x68, 0x99, 0xb1, 0x33, 0x9a, 0xf0, 0x1f, 0xfb, 0x67, 0x98, 0xf9, 0x28, 0xe9, 0xc7,
-	0xf0, 0xe2, 0xe3, 0x3d, 0xf7, 0x9c, 0xc3, 0xef, 0x0e, 0x49, 0xe1, 0x4a, 0xa4, 0xd7, 0x22, 0x4f,
-	0xd4, 0x4f, 0x5e, 0x16, 0x73, 0x51, 0x72, 0xc5, 0x49, 0x28, 0xd2, 0x27, 0x63, 0x91, 0x5e, 0x17,
-	0x89, 0xfa, 0xb1, 0x29, 0x92, 0xdd, 0x76, 0xbf, 0xb6, 0x1b, 0xa3, 0x26, 0x59, 0x56, 0xa2, 0x94,
-	0x29, 0xe7, 0x3b, 0xab, 0x4e, 0x09, 0xdc, 0x67, 0xab, 0x25, 0xc5, 0x24, 0x57, 0x1b, 0x86, 0xbf,
-	0x7e, 0xa3, 0x54, 0xd3, 0xb7, 0x30, 0xaa, 0x69, 0x22, 0x3f, 0x90, 0x31, 0xf4, 0x4b, 0x4c, 0xb2,
-	0x43, 0xdc, 0x9b, 0xf4, 0x66, 0xe7, 0xcc, 0x0e, 0x24, 0x86, 0x41, 0x81, 0x52, 0x26, 0x6b, 0x8c,
-	0xc3, 0x49, 0x6f, 0x76, 0xc1, 0xaa, 0x71, 0x7a, 0x03, 0xf7, 0xd8, 0x6a, 0x79, 0x8b, 0x6a, 0x85,
-	0x58, 0xfe, 0x5f, 0xc5, 0xdf, 0x01, 0x00, 0x5b, 0x2d, 0x3f, 0xda, 0x51, 0x1b, 0xff, 0x60, 0x29,
-	0xb7, 0x7c, 0x6f, 0x0a, 0x22, 0x56, 0x8d, 0x64, 0x04, 0xe1, 0x36, 0x33, 0xe9, 0x88, 0x85, 0xdb,
-	0x8c, 0xbc, 0x81, 0xcb, 0x4d, 0xfd, 0x9c, 0x38, 0x9a, 0xf4, 0x66, 0xc3, 0x97, 0xe3, 0xb9, 0x48,
-	0xe7, 0xed, 0x53, 0x69, 0xc0, 0x9a, 0x66, 0xf2, 0x1a, 0x86, 0xb5, 0xc3, 0xe3, 0x3b, 0x26, 0x4b,
-	0x5a, 0x59, 0x91, 0x1f, 0x68, 0xc0, 0xea, 0x46, 0xf2, 0x0d, 0x1e, 0xde, 0xd8, 0xc7, 0x5d, 0x70,
-	0xbe, 0xb3, 0x67, 0xdb, 0x9f, 0xef, 0x9b, 0x8a, 0xe7, 0xae, 0xc2, 0x6f, 0xa2, 0x01, 0x3b, 0x11,
-	0x27, 0xdf, 0xe1, 0x51, 0x67, 0x23, 0x05, 0xdf, 0x4b, 0x8c, 0xcf, 0x4c, 0xf3, 0x8b, 0x53, 0xcd,
-	0xd6, 0x45, 0x03, 0x76, 0xaa, 0x80, 0x7c, 0x82, 0xf1, 0x57, 0x21, 0xb1, 0x54, 0x9f, 0x51, 0xea,
-	0xb7, 0xac, 0x90, 0x07, 0xa6, 0xf8, 0xa9, 0x2b, 0xf6, 0x59, 0x68, 0xc0, 0xbc, 0x51, 0xf2, 0x05,
-	0x1e, 0xb4, 0x74, 0x07, 0x7b, 0x6e, 0x3a, 0x9f, 0xf9, 0x3b, 0x8f, 0xa8, 0xfe, 0xb0, 0x06, 0x7d,
-	0x87, 0x39, 0x2a, 0x6c, 0x81, 0x5e, 0x34, 0x40, 0x7d, 0x16, 0x0d, 0xea, 0xd3, 0x35, 0x68, 0x4b,
-	0x77, 0xa0, 0xd0, 0x00, 0xf5, 0x7a, 0x34, 0xa8, 0x77, 0x41, 0x28, 0x5c, 0x39, 0xe9, 0x7d, 0x26,
-	0x2b, 0xca, 0xa1, 0x69, 0x8c, 0x5d, 0x63, 0x67, 0x4f, 0x03, 0xd6, 0x0d, 0x91, 0x0f, 0x40, 0xea,
-	0xa2, 0x83, 0xbb, 0x6b, 0xaa, 0x1e, 0x7b, 0xaa, 0x8e, 0x64, 0x9e, 0x98, 0xc6, 0xba, 0xc5, 0xf6,
-	0xbf, 0x7c, 0xd9, 0xc0, 0xea, 0xec, 0x35, 0x56, 0x47, 0xd4, 0x58, 0x75, 0xd1, 0x61, 0x8d, 0x1a,
-	0x58, 0x5d, 0x83, 0xc6, 0xea, 0xaa, 0x8b, 0x3e, 0x44, 0x85, 0x5c, 0x2f, 0x42, 0x1a, 0xa5, 0x67,
-	0xe6, 0x73, 0xf4, 0xea, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x09, 0x35, 0xba, 0x85, 0xd3, 0x04,
-	0x00, 0x00,
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// Client API for Greeter service
+
+type GreeterClient interface {
+	// Sends a greeting
+	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
+}
+
+type greeterClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewGreeterClient(cc *grpc.ClientConn) GreeterClient {
+	return &greeterClient{cc}
+}
+
+func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
+	out := new(HelloReply)
+	err := grpc.Invoke(ctx, "/pb.Greeter/SayHello", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Greeter service
+
+type GreeterServer interface {
+	// Sends a greeting
+	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+}
+
+func RegisterGreeterServer(s *grpc.Server, srv GreeterServer) {
+	s.RegisterService(&_Greeter_serviceDesc, srv)
+}
+
+func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GreeterServer).SayHello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Greeter/SayHello",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GreeterServer).SayHello(ctx, req.(*HelloRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Greeter_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.Greeter",
+	HandlerType: (*GreeterServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SayHello",
+			Handler:    _Greeter_SayHello_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "pb/platform.proto",
+}
+
+func init() { proto.RegisterFile("pb/platform.proto", fileDescriptor1) }
+
+var fileDescriptor1 = []byte{
+	// 145 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0x48, 0xd2, 0x2f,
+	0xc8, 0x49, 0x2c, 0x49, 0xcb, 0x2f, 0xca, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a,
+	0x48, 0x52, 0x52, 0xe2, 0xe2, 0xf1, 0x48, 0xcd, 0xc9, 0xc9, 0x0f, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d,
+	0x2e, 0x11, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc, 0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c,
+	0x02, 0xb3, 0x95, 0xd4, 0xb8, 0xb8, 0xa0, 0x6a, 0x0a, 0x72, 0x2a, 0x85, 0x24, 0xb8, 0xd8, 0x73,
+	0x53, 0x8b, 0x8b, 0x13, 0xd3, 0x61, 0x8a, 0x60, 0x5c, 0x23, 0x4b, 0x2e, 0x76, 0xf7, 0xa2, 0xd4,
+	0xd4, 0x92, 0xd4, 0x22, 0x21, 0x3d, 0x2e, 0x8e, 0xe0, 0xc4, 0x4a, 0xb0, 0x2e, 0x21, 0x01, 0xbd,
+	0x82, 0x24, 0x3d, 0x64, 0x4b, 0xa4, 0xf8, 0x90, 0x44, 0x0a, 0x72, 0x2a, 0x95, 0x18, 0x92, 0xd8,
+	0xc0, 0x2e, 0x32, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0xe0, 0x22, 0xb1, 0xb2, 0xa6, 0x00, 0x00,
+	0x00,
 }
