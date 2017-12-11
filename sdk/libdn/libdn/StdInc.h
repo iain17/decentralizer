@@ -30,10 +30,10 @@ using namespace pb;
 const int MAX_SESSIONS = 1024;
 // global state
 extern struct DN_state_s {
-	DNID DuID;
+	bool connected;
 	char serverHost[1024];
 	uint16_t serverPort;
-	ConnectLogCB g_logCB;
+	libdn::ConnectLogCB g_logCB;
 
 	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
 } g_dn;

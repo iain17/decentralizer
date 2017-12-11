@@ -169,9 +169,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DNAddressbook.h" />
     <ClInclude Include="DNAsync.h" />
     <ClInclude Include="DNMatchmaking.h" />
+    <ClInclude Include="DNMessaging.h" />
     <ClInclude Include="DNPlatform.h" />
+    <ClInclude Include="DNStorage.h" />
     <ClInclude Include="RPCAsync.h" />
     <ClInclude Include="DNAsyncImpl.h" />
     <ClInclude Include="DNTypeDefs.h" />

@@ -3,8 +3,8 @@ package pb;
 option optimize_for = LITE_RUNTIME;
 
 message SessionInfo {
-    uint64 dnId = 1;//DecentralizerId
-    string pId = 2;//peerId
+    string pId = 1;//PeerId
+    uint64 dnId = 2;
 
     uint64 sessionId = 3;
     uint64 type = 4;

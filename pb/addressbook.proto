@@ -3,27 +3,32 @@ package pb;
 option optimize_for = LITE_RUNTIME;
 
 message DNPeer {
-    uint64 dnId = 1;//DecentralizerId
-    string pId = 2;//peerId
-    string nickname = 3;
-    string presence = 4;
-    bytes avatar = 5;
-    bool friend = 6;
-    map<string, string> details = 7;
+    string pId = 1;//PeerId
+    uint64 dnId = 2;
+    map<string, string> details = 3;
 }
 
 //DN messages
-message DNPeerInfoResponse {
+message DNGetPeerInfoResponse {
     DNPeer info = 1;
 }
 
-message DNPeerInfoRequest {}
+message DNGetPeerInfoRequest {}
+
+message DNUpdatePeerInfoResponse {
+    bool result = 1;
+}
+
+message DNUpdatePeerInfoRequest {
+    DNPeer info = 1;
+}
 
 //RPC messages
 message RPCGetAddressBookPeerRequest {
-    //If both are set to 0 or "" we'll assume we mean self.
+    //If pId == "self". We'll resolve it to our peerId.
+    //Either one must be filled in. If both are specified. preference goes to pId
+    string pId = 1;
     uint64 dnId = 1;
-    string pId = 2;
 }
 
 message RPCGetAddressBookPeerResponse {
@@ -31,10 +36,7 @@ message RPCGetAddressBookPeerResponse {
 }
 
 message RPCUpdateAddressBookPeerRequest {
-    //If both are set to 0 or "" we'll assume we mean self.
-    uint64 dnId = 1;
-    string pId = 2;
-    DNPeer info = 3;
+    DNPeer info = 1;
 }
 
 message RPCUpdateAddressBookPeerResponse {

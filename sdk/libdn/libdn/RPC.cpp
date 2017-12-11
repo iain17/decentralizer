@@ -9,7 +9,6 @@ static struct rpc_state_s
 	WSAEVENT hSocketEvent;
 
 	// connected flag
-	bool connected;
 	bool wasConnected;
 	bool reconnecting;
 
@@ -26,23 +25,9 @@ static struct rpc_state_s
 	uint64_t sendMessageID;
 } g_rpc;
 
-//Will hang until we are connected and DN is ready.
-LIBDN_API void LIBDN_CALL DN_WaitUntilReady()
-{
-	DNHealthResult* health;
-	health->ready = false;
-	while (!g_rpc.connected || health == nullptr || !health->ready) {
-		health = DN_Health();
-		if (health != nullptr && health->ready) {
-			break;
-		}
-		Sleep(100);
-	}
-}
-
 static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 {
-	while (!g_rpc.connected)
+	while (!g_dn.connected)
 	{
 		Log_Print("Reconnecting to RPC...\n");
 
@@ -50,7 +35,7 @@ static DWORD WINAPI RPC_HandleReconnect(LPVOID param)
 
 		RPC_Shutdown();
 		RPC_Init();
-		if (DN_Connect(g_dn.serverHost, g_dn.serverPort))
+		if (libdn::DN_Connect(g_dn.serverHost, g_dn.serverPort))
 		{
 			Log_Print("Connected to RPC.\n");
 			g_rpc.sendMessageID = 0;
@@ -75,7 +60,7 @@ void RPC_Reconnect()
 		return;
 	}
 
-	g_rpc.connected = false;
+	g_dn.connected = false;
 	g_rpc.reconnecting = true;
 	CreateThread(NULL, 0, RPC_HandleReconnect, NULL, NULL, NULL);
 }
@@ -170,8 +155,8 @@ bool RPC_ParseMessage(char* buffer, size_t len)
 	}
 	Log_Print("Received reply to RPCMessage with id: %d \n", message.id());
 	//Check version
-	if (message.version() != API_VERSION) {
-		Log_Print("Version mismatch v0x%x != v0x%x \n", message.version(), API_VERSION);
+	if (message.version() != libdn::API_VERSION) {
+		Log_Print("Version mismatch v0x%x != v0x%x \n", message.version(), libdn::API_VERSION);
 		return false;
 	}
 
@@ -322,7 +307,7 @@ void RPC_RegisterDispatch(uint32_t type, DispatchHandlerCB callback)
 bool RPC_SendMessage(RPCMessage message, int id) {
 	EnterCriticalSection(&g_rpc.recvCritSec);
 	message.set_id(id);
-	message.set_version(API_VERSION);
+	message.set_version(libdn::API_VERSION);
 	try {
 		char buffer[MAXMESSAGESIZE];
 		int size = message.ByteSizeLong();
@@ -359,10 +344,10 @@ bool RPC_SendMessage(RPCMessage* message) {
 
 DNAsync<RPCMessage>* RPC_SendMessageAsync(RPCMessage* message) {
 	if (message->msg_case() != RPCMessage::MsgCase::kHealthRequest) {
-		DN_WaitUntilReady();
+		libdn::DN_WaitUntilReady();
 	}
 	else {
-		while (!g_rpc.connected) {
+		while (!g_dn.connected) {
 			Sleep(100);
 		}
 	}
@@ -405,7 +390,7 @@ void RPC_RunFrame()
 }
 
 LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port) {
-	if (g_rpc.connected)
+	if (g_dn.connected)
 	{
 		return true;
 	}
@@ -442,7 +427,7 @@ LIBDN_API bool LIBDN_CALL DN_Connect(const char* serverAddr, uint16_t port) {
 	setsockopt(g_rpc.socket, IPPROTO_TCP, TCP_NODELAY, (char*)&noDelay, sizeof(BOOL));
 
 	g_rpc.wasConnected = true;
-	g_rpc.connected = true;
+	g_dn.connected = true;
 
 	return true;
 }

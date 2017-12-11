@@ -1,0 +1,12 @@
+syntax = "proto3";
+package pb;
+option optimize_for = LITE_RUNTIME;
+
+//Same for DN
+message RPCDirectMessageResponse {
+    bool delivered = 1;
+}
+
+message RPCDirectMessageRequest {
+    bytes message = 1;
+}
