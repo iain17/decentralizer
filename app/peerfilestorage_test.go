@@ -3,16 +3,9 @@ package app
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
-	"github.com/ipfs/go-ipfs/core"
 	"context"
 	"github.com/iain17/decentralizer/app/ipfs"
 )
-
-func fakeNew(node *core.IpfsNode) *Decentralizer {
-	return &Decentralizer{
-		i: node,
-	}
-}
 
 //One user saves a file. The other gets it by its hash.
 func TestDecentralizer_SaveGetFile(t *testing.T) {
@@ -55,7 +48,7 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	_, err = app1.SavePeerFile(filename, updatedMessage)
 	assert.NoError(t, err)
 
-	files, err := app1.GetPeerFiles(app1.i.Identity)
+	files, err := app2.GetPeerFiles(app1.i.Identity)
 	assert.NoError(t, err)
 	assert.Equal(t, len(files), 1)
 	data, err := app1.GetFile(files[0].Cid.String())

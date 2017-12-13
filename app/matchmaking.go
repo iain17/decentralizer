@@ -43,7 +43,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		PId: pId,
 		Type: sessionType,
 		Name: name,
-		Address: uint32(utils.Inet_aton(d.d.GetIP())),
+		Address: uint32(utils.Inet_aton(d.GetIP())),
 		Port: port,
 		Details: details,
 	}

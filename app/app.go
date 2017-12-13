@@ -11,6 +11,7 @@ import (
 	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"errors"
+	"net"
 )
 
 type Decentralizer struct {
@@ -73,4 +74,11 @@ func New(networkStr string) (*Decentralizer, error) {
 		BootstrapPeers:    instance.bootstrap,
 	})
 	return instance, nil
+}
+
+func (d *Decentralizer) GetIP() net.IP {
+	if d.d != nil {
+		return d.d.GetIP()
+	}
+	return net.ParseIP("127.0.0.1")
 }
