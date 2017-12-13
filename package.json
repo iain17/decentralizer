@@ -1,0 +1,21 @@
+{
+  "author": "Iain Munro",
+  "bugs": {},
+  "gx": {
+    "dvcsimport": "github.com/iain17/decentralizer"
+  },
+  "gxDependencies": [
+    {
+      "hash": "QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu",
+      "name": "go-ipfs",
+      "version": "0.4.11"
+    }
+  ],
+  "gxVersion": "0.11.0",
+  "language": "go",
+  "license": "",
+  "name": "decentralizer",
+  "releaseCmd": "git commit -a -m \"gx publish $VERSION\"",
+  "version": "0.0.0"
+}
+

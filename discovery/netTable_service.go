@@ -1,26 +1,26 @@
 package discovery
 
 import (
-	"time"
 	"context"
-	"net"
-	"github.com/pkg/errors"
-	"github.com/hashicorp/golang-lru"
 	"github.com/iain17/decentralizer/discovery/pb"
-	"strings"
-	"strconv"
-	"github.com/golang/protobuf/proto"
-	"io/ioutil"
 	"github.com/iain17/logger"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"gx/ipfs/QmVYxfoJQiZijTgPNHCHgHELvQpbsJNTg6Crmc3dQkj3yy/golang-lru"
+	"gx/ipfs/QmVmDhyTTUcQXFD1rRQ64fGLMSAoaQvNH3hwuaCFAPq2hy/errors"
+	"io/ioutil"
+	"net"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type NetTableService struct {
 	localNode *LocalNode
-	context context.Context
-	newConn chan *net.UDPAddr
+	context   context.Context
+	newConn   chan *net.UDPAddr
 
 	blackList *lru.Cache
-	seen *lru.Cache
+	seen      *lru.Cache
 	peers     *lru.Cache
 
 	heartbeatTicker <-chan time.Time
@@ -32,7 +32,7 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.logger = logger.New("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
-	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION * 2)
+	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION*2)
 	var err error
 	nt.blackList, err = lru.New(1000)
 	if err != nil {
@@ -110,7 +110,7 @@ func (nt *NetTableService) Save() error {
 			continue
 		}
 		peers = append(peers, &pb.DPeer{
-			Ip: ipPort[0],
+			Ip:   ipPort[0],
 			Port: int32(port),
 		})
 	}
@@ -200,7 +200,7 @@ func (nt *NetTableService) heartbeat() {
 			}
 			i := 0
 			for _, peer := range nt.GetPeers() {
-				if time.Since(peer.lastHeartbeat).Seconds() >= HEARTBEAT_DELAY * 2 {
+				if time.Since(peer.lastHeartbeat).Seconds() >= HEARTBEAT_DELAY*2 {
 					nt.logger.Debugf("Closing peer connection. Haven't received a heartbeat for far too long")
 					peer.Close()
 					continue

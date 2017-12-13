@@ -1,12 +1,12 @@
 package ipfs
 
 import (
-	"github.com/ipfs/go-ipfs/core"
 	"context"
-	mocknet "gx/ipfs/QmXZyBQMkqSYigxhJResC6fLWDGFhbphK67eZoqMDUvBmK/go-libp2p/p2p/net/mock"
-	"github.com/ipfs/go-ipfs/core/mock"
-	namesys "github.com/ipfs/go-ipfs/namesys"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core/mock"
+	namesys "gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/namesys"
 	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
+	"gx/ipfs/QmRQ76P5dgvxTujhfPsCRAG83rC15jgb1G9bKLuomuC6dQ/go-libp2p/p2p/net/mock"
 )
 
 func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
@@ -16,9 +16,9 @@ func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
 	var nodes []*core.IpfsNode
 	for i := 0; i < numPeers; i++ {
 		n, err := core.NewNode(ctx, &core.BuildCfg{
-			Online:  true,
+			Online:    true,
 			Permament: true,
-			Host:    coremock.MockHostOption(mn),
+			Host:      coremock.MockHostOption(mn),
 		})
 		if err != nil {
 			panic(err)

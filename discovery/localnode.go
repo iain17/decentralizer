@@ -1,30 +1,30 @@
 package discovery
 
 import (
-	"github.com/iain17/freeport"
-	"github.com/rs/xid"
-	"io"
-	"github.com/golang/protobuf/proto"
-	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/iain17/decentralizer/discovery/env"
+	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/freeport"
 	"github.com/iain17/logger"
+	"github.com/rs/xid"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"io"
 )
 
 type LocalNode struct {
 	Node
 	discovery *Discovery
-	id 		  string//To figure out if its us
+	id        string //To figure out if its us
 	ip        string //Gets filled in by stun service.
 	port      int
 	//Services
 	listenerService ListenerService
-	upNpService UPnPService
+	upNpService     UPnPService
 	netTableService NetTableService
-	StunService StunService
+	StunService     StunService
 	//Peer discoveries
 	discoveryDHT  DiscoveryDHT
 	discoveryIRC  DiscoveryIRC
-	discoveryMDNS  DiscoveryMDNS
+	discoveryMDNS DiscoveryMDNS
 }
 
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {
@@ -33,7 +33,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 			logger: logger.New("LocalNode"),
 			info:   map[string]string{},
 		},
-		id: xid.New().String(),
+		id:        xid.New().String(),
 		discovery: discovery,
 		port:      freeport.GetUDPPort(),
 	}
@@ -81,8 +81,8 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 		Msg: &pb.Message_PeerInfo{
 			PeerInfo: &pb.DPeerInfo{
 				Network: string(ln.discovery.network.ExportPublicKey()),
-				Id: ln.id,
-				Info: ln.info,
+				Id:      ln.id,
+				Info:    ln.info,
 			},
 		},
 	})

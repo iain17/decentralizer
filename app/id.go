@@ -1,8 +1,8 @@
 package app
 
 import (
-	"hash/fnv"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"hash/fnv"
 )
 
 //libp2p peer id to uint64. Some apps expect some user id kind of thing. This will make it so we are compatible.

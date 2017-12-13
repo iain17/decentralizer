@@ -2,30 +2,30 @@ package discovery
 
 import (
 	"fmt"
-	"time"
-	"net"
-	"github.com/iain17/decentralizer/discovery/pb"
-	"github.com/golang/protobuf/proto"
-	"io"
 	"github.com/iain17/decentralizer/discovery/env"
-	"strings"
-	"strconv"
+	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/iain17/logger"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"io"
+	"net"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type RemoteNode struct {
 	Node
 	conn          net.Conn
-	ln *LocalNode
+	ln            *LocalNode
 	lastHeartbeat time.Time
 }
 
 func NewRemoteNode(conn net.Conn, ln *LocalNode) *RemoteNode {
 	return &RemoteNode{
 		Node: Node{
-			logger:        logger.New(fmt.Sprintf("RemoteNode(%s)", conn.RemoteAddr().String())),
+			logger: logger.New(fmt.Sprintf("RemoteNode(%s)", conn.RemoteAddr().String())),
 		},
-		ln: ln,
+		ln:            ln,
 		conn:          conn,
 		lastHeartbeat: time.Now(),
 	}
@@ -92,7 +92,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		//rn.logger.Debugf("received, %+v", packet)
 
 		switch packet.GetMsg().(type) {
-		case *pb.Message_Heartbeat :
+		case *pb.Message_Heartbeat:
 			rn.logger.Debug("heart beat received")
 			rn.lastHeartbeat = time.Now()
 			break
@@ -139,7 +139,7 @@ func (rn *RemoteNode) SharePeers() error {
 			continue
 		}
 		peers = append(peers, &pb.DPeer{
-			Ip: ipPort[0],
+			Ip:   ipPort[0],
 			Port: int32(port),
 		})
 		//Enough?
@@ -161,7 +161,6 @@ func (rn *RemoteNode) SharePeers() error {
 	}
 	return pb.Write(rn.conn, peerShare)
 }
-
 
 func (rn *RemoteNode) String() string {
 	return fmt.Sprintf("Remote node(%s) with info: %#v", rn.conn.RemoteAddr().String(), rn.info)

@@ -1,14 +1,14 @@
 package ipfs
 
 import (
-	"os"
-	"github.com/ipfs/go-ipfs/core"
-	"github.com/ipfs/go-ipfs/repo/config"
-	"github.com/ipfs/go-ipfs/repo/fsrepo"
 	"context"
 	"fmt"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/repo"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/repo/config"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/repo/fsrepo"
+	"os"
 	"strings"
-	"github.com/ipfs/go-ipfs/repo"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
 
@@ -19,11 +19,11 @@ func init() {
 func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
 	r, err := getIPFSRepo(path, portIdx)
 	cfg := &core.BuildCfg{
-		Repo:   r,
-		Online: true,
+		Repo:      r,
+		Online:    true,
 		Permament: true,
 		ExtraOpts: map[string]bool{
-			//"pubsub": true,
+		//"pubsub": true,
 		},
 	}
 

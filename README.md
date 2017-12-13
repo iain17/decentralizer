@@ -1,5 +1,8 @@
 # Decentralizer
 
+[![pipeline status](https://gitlab.com/atlascorporation/adna/badges/master/pipeline.svg)](https://gitlab.com/atlascorporation/adna/commits/master)
+[![coverage report](https://gitlab.com/atlascorporation/adna/badges/master/coverage.svg)](https://gitlab.com/atlascorporation/adna/commits/master)
+
 This project aims to be the tool to decentralize any existing or in-development service. By running this project in the background you are able to find other peers. No servers needed, no NAT getting in the way. You'll be able to discover peers, share details and send messages up and down to them.
 On top of that this project provides an easy to use API to find other peers around a topic and save files to the network.
 

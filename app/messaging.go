@@ -1,8 +1,8 @@
 package app
 
 import (
+	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	inet "gx/ipfs/QmahYsGWry85Y7WUe2SX5G4JkH2zifEQAUtJVLZ24aC9DF/go-libp2p-net"
 )
 
 func (d *Decentralizer) initMessaging() {
@@ -13,6 +13,6 @@ func (d *Decentralizer) SendMessage(peer peer.ID, data []byte) (bool, error) {
 	return false, nil
 }
 
-func (d *Decentralizer) directMessageReceived(stream inet.Stream)  {
+func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 
 }

@@ -1,16 +1,16 @@
 package ipfs
 
 import (
-	"github.com/ipfs/go-ipfs/core"
-	"github.com/ipfs/go-ipfs/exchange/bitswap"
-	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	"reflect"
-	bsnet "github.com/ipfs/go-ipfs/exchange/bitswap/network"
+	"errors"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/exchange/bitswap"
+	bsnet "gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/exchange/bitswap/network"
 	"gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
-	"unsafe"
 	"gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
-	"errors"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"reflect"
+	"unsafe"
 )
 
 var log = logging.Logger("BitswapService")
@@ -19,7 +19,7 @@ var log = logging.Logger("BitswapService")
 //This is done by using the bitswap network of IPFS which is currently powered by DHT.
 
 type BitswapService struct {
-	node *core.IpfsNode
+	node    *core.IpfsNode
 	network bsnet.BitSwapNetwork
 }
 

@@ -1,12 +1,12 @@
 package pb
 
 import (
-	"io"
+	"bufio"
 	"errors"
 	"fmt"
 	"github.com/iain17/decentralizer/discovery/env"
-	"bufio"
-	"github.com/golang/protobuf/proto"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"io"
 )
 
 var delimiter = byte(255)

@@ -1,19 +1,19 @@
 package app
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/utils"
-	"errors"
-	"time"
-	"github.com/iain17/decentralizer/app/sessionstore"
-	inet "gx/ipfs/QmahYsGWry85Y7WUe2SX5G4JkH2zifEQAUtJVLZ24aC9DF/go-libp2p-net"
+	"github.com/iain17/logger"
+	"github.com/iain17/timeout"
+	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"sync"
-	"github.com/golang/protobuf/proto"
-	"github.com/iain17/logger"
-	"context"
-	"github.com/iain17/timeout"
+	"time"
 )
 
 func getKey(sessionType uint64) string {
@@ -27,7 +27,7 @@ func (d *Decentralizer) initMatchmaking() {
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
 	if d.sessions[sessionType] == nil {
 		var err error
-		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION * 1.5) * time.Second))
+		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second))
 		if err != nil {
 			return nil
 		}
@@ -39,12 +39,12 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 	sessions := d.getSessionStorage(sessionType)
 	pId, dId := PeerToDnId(d.i.Identity)
 	info := &pb.Session{
-		DnId: dId,
-		PId: pId,
-		Type: sessionType,
-		Name: name,
+		DnId:    dId,
+		PId:     pId,
+		Type:    sessionType,
+		Name:    name,
 		Address: uint32(utils.Inet_aton(d.GetIP())),
-		Port: port,
+		Port:    port,
 		Details: details,
 	}
 	sessionId, err := sessions.Insert(info)
@@ -82,7 +82,7 @@ func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.Session, error) {
 	sessions := d.getSessionStorage(sessionType)
 	timeout.Do(func(ctx context.Context) {
 		d.refreshSessions(sessionType)
-	}, 10 * time.Second)
+	}, 10*time.Second)
 	return sessions.FindAll()
 }
 
@@ -90,7 +90,7 @@ func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value stri
 	sessions := d.getSessionStorage(sessionType)
 	timeout.Do(func(ctx context.Context) {
 		d.refreshSessions(sessionType)
-	}, 10 * time.Second)
+	}, 10*time.Second)
 	return sessions.FindByDetails(key, value)
 }
 
@@ -127,7 +127,7 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 	wg.Wait()
 }
 
-func (d *Decentralizer) getSessionResponse(stream inet.Stream)  {
+func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 	reqData, err := Read(stream)
 	if err != nil {
 		logger.Error(err)

@@ -1,11 +1,11 @@
 package pb
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
-	"net"
 	"github.com/iain17/decentralizer/discovery/env"
-	"github.com/golang/protobuf/proto"
+	"github.com/stretchr/testify/assert"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"net"
+	"testing"
 )
 
 func TestDecode(t *testing.T) {
@@ -34,7 +34,8 @@ func TestDecode(t *testing.T) {
 		err = Write(conn, heartbeat)
 		assert.NoError(t, err)
 		println("sent. done")
-		for running {}
+		for running {
+		}
 	}()
 
 	defer l.Close()

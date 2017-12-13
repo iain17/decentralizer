@@ -1,21 +1,28 @@
-image: golang:1.9
+image: golang:1.9.2
 stages:
-#  - test
-  - build
+  - test
+  - build-win
+#  - build-darwin
+#  - build-linux
 
 before_script:
-  - go get github.com/tools/godep
-  - cp -r /builds/user /go/src/github.com/user/
-  - cd /go/src/github.com/user/repo
+  - mkdir -p $GOPATH/gitlab.com/iain17/decentralizer
+  - ln -s $CI_PROJECT_PATH $GOPATH/gitlab.com/iain17/decentralizer
+  - apt-get -y update
+  - apt-get -y install build-essential upx-ucl
+  - go get -v -u github.com/whyrusleeping/gx-go
+  - go get -v -u github.com/golang/dep/cmd/dep
+  - $GOPATH/gitlab.com/iain17/decentralizer/install.sh
 
-build-my-project:
-  stage: build
-  script:
-    - godep restore
-    - godep go build
-
-test-my-project:
+test:
   stage: test
   script:
-    - godep restore
-    - godep go test -v -cover ./...
+    - go test -v -cover ./...
+
+build-win:
+  stage: build-win
+  artifacts:
+    paths:
+    - bin/win/adna.exe
+  script:
+    - make build-win

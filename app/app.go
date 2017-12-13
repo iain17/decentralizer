@@ -1,16 +1,16 @@
 package app
 
 import (
-	"github.com/iain17/decentralizer/network"
-	"github.com/iain17/decentralizer/discovery"
-	"github.com/ipfs/go-ipfs/core"
-	"time"
 	"github.com/iain17/decentralizer/app/ipfs"
+	"github.com/iain17/decentralizer/discovery"
+	"github.com/iain17/decentralizer/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	"time"
 	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
-	"github.com/iain17/decentralizer/app/sessionstore"
 	"errors"
+	"github.com/iain17/decentralizer/app/sessionstore"
 	"net"
 )
 
@@ -20,7 +20,7 @@ type Decentralizer struct {
 	i *core.IpfsNode
 	b *ipfs.BitswapService
 
-	sessions map[uint64]*sessionstore.Store
+	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	//subscriptions map[uint32]*floodsub.Subscription
 }
@@ -57,11 +57,11 @@ func New(networkStr string) (*Decentralizer, error) {
 		return nil, err
 	}
 	instance := &Decentralizer{
-		n: n,
-		d: d,
-		i: i,
-		b: b,
-		sessions: make(map[uint64]*sessionstore.Store),
+		n:                      n,
+		d:                      d,
+		i:                      i,
+		b:                      b,
+		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
 	instance.initMatchmaking()

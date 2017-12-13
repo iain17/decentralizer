@@ -1,15 +1,15 @@
 package app
 
 import (
-	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
-	"time"
-	"github.com/ipfs/go-ipfs/core"
-	"github.com/iain17/decentralizer/discovery"
-	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
-	"strings"
 	"context"
+	"github.com/iain17/decentralizer/discovery"
 	"github.com/iain17/logger"
+	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
+	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"strings"
+	"time"
 )
 
 func init() {
@@ -27,7 +27,7 @@ func (d *Decentralizer) bootstrap() []pstore.PeerInfo {
 	logger.Info("Bootstrapping")
 	d.setInfo()
 	var peers []pstore.PeerInfo
-	for _, peer := range d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 5 * time.Minute) {
+	for _, peer := range d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 5*time.Minute) {
 		peerInfo, err := getInfo(peer)
 		if err != nil {
 			logger.Warning(err)
@@ -71,7 +71,7 @@ func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 		addrs = append(addrs, addr)
 	}
 	return &pstore.PeerInfo{
-		ID: peerId,
+		ID:    peerId,
 		Addrs: addrs,
 	}, nil
 }
