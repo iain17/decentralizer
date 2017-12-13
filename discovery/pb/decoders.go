@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/iain17/decentralizer/discovery/env"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"io"
 )
 

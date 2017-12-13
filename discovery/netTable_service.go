@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"gx/ipfs/QmVYxfoJQiZijTgPNHCHgHELvQpbsJNTg6Crmc3dQkj3yy/golang-lru"
 	"gx/ipfs/QmVmDhyTTUcQXFD1rRQ64fGLMSAoaQvNH3hwuaCFAPq2hy/errors"
 	"io/ioutil"

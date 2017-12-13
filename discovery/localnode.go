@@ -6,7 +6,7 @@ import (
 	"github.com/iain17/freeport"
 	"github.com/iain17/logger"
 	"github.com/rs/xid"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"io"
 )
 

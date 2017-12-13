@@ -5,7 +5,7 @@ import (
 	"github.com/iain17/decentralizer/discovery/env"
 	"github.com/iain17/decentralizer/discovery/pb"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"io"
 	"net"
 	"strconv"

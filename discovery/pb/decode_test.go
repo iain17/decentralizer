@@ -3,7 +3,7 @@ package pb
 import (
 	"github.com/iain17/decentralizer/discovery/env"
 	"github.com/stretchr/testify/assert"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"net"
 	"testing"
 )
