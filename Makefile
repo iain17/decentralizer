@@ -3,6 +3,7 @@ install:
 	mkdir -p $(GOPATH)/src/gx/
 	$(GOPATH)/bin/gx install
 	ls $(GOPATH)/src/gx/
+	ls $(GOPATH)/src/
     #Patch a stupid fucking problem because of gx and the way ipfs does deps: debug/requests problem
 	find $(GOPATH)/src/gx/ -name 'trace.go' -exec sed -i '.bak' -e 's/requests"/requestss"/g' {} \;
 	find $(GOPATH)/src/gx/ -name 'trace.go' -exec sed -i '.bak' -e 's/events"/eventss"/g' {} \;
