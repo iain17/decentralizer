@@ -10,7 +10,7 @@ variables:
 
 before_script:
   - mkdir -p $GOPATH/src/$REPO_BASE
-  - cp -r $CI_PROJECT_PATH/* $GOPATH/src/$REPO_BASE
+  - cp -r $CI_PROJECT_DIR/* $GOPATH/src/$REPO_BASE
   - cd $GOPATH/src/$REPO_BASE
 #  - apt-get -y update
 #  - apt-get -y install build-essential upx-ucl
