@@ -31,7 +31,7 @@ ci:
 	gitlab-runner --debug exec docker test
 
 test:
-	go test $(go list ./... | grep -v /vendor/)
+	go test -race $(go list ./... | grep -v /vendor/)
 
 #https://github.com/jteeuwen/go-bindata
 generate:

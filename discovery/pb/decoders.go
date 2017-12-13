@@ -1,36 +1,34 @@
 package pb
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"github.com/iain17/decentralizer/discovery/env"
 	"github.com/golang/protobuf/proto"
 	"io"
+	"github.com/getlantern/framed"
 )
 
-var delimiter = byte(255)
-
+//TODO: Replace framed for something better.
 func Write(w io.Writer, data []byte) error {
-	s, err := w.Write(data)
+	fw := framed.NewWriter(w)
+	s, err := fw.Write(data)
 	if err != nil {
 		return err
 	}
 	if len(data) != s {
 		return errors.New("Didn't write all of the data")
 	}
-	s, err = w.Write([]byte{delimiter})
-	if err != nil {
-		return err
-	}
-	if s != 1 {
-		return errors.New("Didn't write the delimiter")
-	}
 	return err
 }
 
+func Read(r io.Reader) ([]byte, error) {
+	fr := framed.NewReader(r)
+	return fr.ReadFrame()
+}
+
 func Decode(r io.Reader) (*Message, error) {
-	data, err := bufio.NewReader(r).ReadBytes(delimiter)
+	data, err := Read(r)
 	if err != nil {
 		return nil, err
 	}
