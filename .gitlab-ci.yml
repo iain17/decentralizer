@@ -12,16 +12,16 @@ before_script:
   - mkdir -p $GOPATH/src/$REPO_BASE
   - cp -r $CI_PROJECT_DIR/* $GOPATH/src/$REPO_BASE
   - cd $GOPATH/src/$REPO_BASE
-#  - apt-get -y update
-#  - apt-get -y install build-essential upx-ucl
-#  - go get -v -u github.com/whyrusleeping/gx
-#  - go get -v -u github.com/golang/dep/cmd/dep
+  - apt-get -y update
+  - apt-get -y install build-essential upx-ucl
+  - go get -v -u github.com/whyrusleeping/gx
+  - go get -v -u github.com/golang/dep/cmd/dep
   - make install
 
 test:
   stage: test
   script:
-    - go test -v -cover ./...
+    - go test -v -coverprofile .testCoverage.txt ./...
 
 build-win:
   stage: build-win
