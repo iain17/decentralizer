@@ -10,7 +10,7 @@ before_script:
   - ln -s $CI_PROJECT_PATH $GOPATH/src/github.com/iain17/decentralizer/
   - apt-get -y update
   - apt-get -y install build-essential upx-ucl
-  - go get -v -u github.com/whyrusleeping/gx-go
+  - go get -v -u github.com/whyrusleeping/gx
   - go get -v -u github.com/golang/dep/cmd/dep
   - make install
 
