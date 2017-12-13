@@ -8,6 +8,7 @@ stages:
 before_script:
   - mkdir -p $GOPATH/src/github.com/iain17/decentralizer/
   - ln -s $CI_PROJECT_PATH $GOPATH/src/github.com/iain17/decentralizer/
+  - git submodule update --init --recursive
   - apt-get -y update
   - apt-get -y install build-essential upx-ucl
   - go get -v -u github.com/whyrusleeping/gx
