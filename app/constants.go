@@ -8,4 +8,5 @@ const DELIMITER_ADDR = ";;"
 const EXPIRE_TIME_SESSION = 30
 const MAX_SESSIONS = 1000
 const GET_SESSION_REQ = "/decentralizer/1.0.0/get"
+const DIRECT_MESSAGE = "/decentralizer/1.0.0/message"
 const MAX_SIZE = int64(3 * datasize.MB)

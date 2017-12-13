@@ -23,7 +23,7 @@ func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
 		Online: true,
 		Permament: true,
 		ExtraOpts: map[string]bool{
-			"pubsub": true,
+			//"pubsub": true,
 		},
 	}
 
@@ -64,7 +64,6 @@ func resetRepoConfigPorts(r repo.Repo, nodeIdx int) {
 	apiPort := fmt.Sprintf("500%d", nodeIdx)
 	gatewayPort := fmt.Sprintf("808%d", nodeIdx)
 	swarmPort := fmt.Sprintf("400%d", nodeIdx)
-	println("Gateway running on:", gatewayPort)
 
 	rc, err := r.Config()
 	if err != nil {

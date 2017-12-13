@@ -65,6 +65,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
 	instance.initMatchmaking()
+	instance.initMessaging()
 	_, dnID := PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
 	go instance.i.Bootstrap(core.BootstrapConfig{

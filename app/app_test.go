@@ -28,5 +28,6 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 		sessionIdToSessionType: make(map[uint64]uint64),
 	}
 	instance.initMatchmaking()
+	instance.initMessaging()
 	return instance
 }
