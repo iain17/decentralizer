@@ -1,6 +1,11 @@
 TARGET=adna
 install:
-	./install.sh
+	$(GOPATH)/bin/gx install
+    #Patch a stupid fucking problem because of gx and the way ipfs does deps: debug/requests problem
+	find $(GOPATH)/src/gx/ -name 'trace.go' -exec sed -i '.bak' -e 's/requests"/requestss"/g' {} \;
+	find $(GOPATH)/src/gx/ -name 'trace.go' -exec sed -i '.bak' -e 's/events"/eventss"/g' {} \;
+	find $(GOPATH)/src/gx/ -name '*.bak' -type f -exec rm -f {} +
+	$(GOPATH)/bin/dep ensure
 
 build-linux:
 	GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o bin/linux/$(TARGET) main.go
