@@ -2,13 +2,15 @@ image: golang:1.9.2
 stages:
   - test
   - build-win
-#  - build-darwin
-#  - build-linux
+  - build-darwin
+  - build-linux
 
 variables:
   REPO_BASE: github.com/iain17/decentralizer/
 
 before_script:
+  - apt-get -y update
+  - apt-get -y install build-essential upx-ucl
   - mkdir -p $GOPATH/src/$REPO_BASE
   - cp -r $CI_PROJECT_DIR/* $GOPATH/src/$REPO_BASE
   - cd $GOPATH/src/$REPO_BASE
@@ -23,6 +25,25 @@ build-win:
   stage: build-win
   artifacts:
     paths:
-    - bin/win/adna.exe
+    - $GOPATH/src/$REPO_BASE/bin/win/adna.exe
   script:
+    - cd $GOPATH/src/$REPO_BASE
     - make build-win
+
+build-darwin:
+  stage: build-darwin
+  artifacts:
+    paths:
+    - $GOPATH/src/$REPO_BASE/bin/mac/adna
+  script:
+    - cd $GOPATH/src/$REPO_BASE
+    - make build-darwin
+
+build-linux:
+  stage: build-linux
+  artifacts:
+    paths:
+    - $GOPATH/src/$REPO_BASE/bin/linux/adna
+  script:
+    - cd $GOPATH/src/$REPO_BASE
+    - make build-linux
