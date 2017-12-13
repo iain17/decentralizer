@@ -16,7 +16,8 @@ before_script:
 test:
   stage: test
   script:
-    - go test -v -coverprofile .testCoverage.txt ./...
+    - cd $GOPATH/src/$REPO_BASE
+    - go test -race $(go list ./... | grep -v /vendor/)
 
 build-win:
   stage: build-win
