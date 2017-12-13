@@ -60,7 +60,7 @@ func (s *Store) Insert(info *pb.Session) (uint64, error) {
 	defer txn.Commit()
 	err := txn.Insert(TABLE, info)
 	if err == nil{
-		s.sessionIds.Add(info.SessionId, true)
+		s.sessionIds.AddWithTTL(info.SessionId, true, s.expireAt)
 	}
 	return info.SessionId, err
 }

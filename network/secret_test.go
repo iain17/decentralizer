@@ -15,7 +15,7 @@ func TestNetwork_InfoHash(t *testing.T) {
 	network, err := New()
 	assert.NoError(t, err)
 	assert.NotEmpty(t, network.InfoHash())
-	assert.Equal(t, len(network.InfoHash()), 40)
+	assert.Equal(t, 20, len(network.InfoHash()))
 }
 
 func TestNetwork_Marshal(t *testing.T) {

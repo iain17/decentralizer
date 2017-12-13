@@ -19,7 +19,7 @@ test:
   stage: test
   script:
     - cd $GOPATH/src/$REPO_BASE
-    - go test -race $(go list ./... | grep -v /vendor/)
+    - go test -cover ./...
 
 build-win:
   stage: build-win
