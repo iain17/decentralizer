@@ -6,13 +6,14 @@ stages:
 #  - build-linux
 
 before_script:
-  - mkdir -p $GOPATH/gitlab.com/iain17/decentralizer
-  - ln -s $CI_PROJECT_PATH $GOPATH/gitlab.com/iain17/decentralizer
+  - mkdir -p $GOPATH/src/github.com/iain17/decentralizer/
+  - ln -s $CI_PROJECT_PATH $GOPATH/src/github.com/iain17/decentralizer/
   - apt-get -y update
   - apt-get -y install build-essential upx-ucl
   - go get -v -u github.com/whyrusleeping/gx-go
   - go get -v -u github.com/golang/dep/cmd/dep
-  - $GOPATH/gitlab.com/iain17/decentralizer/install.sh
+  - ls
+  - $GOPATH/src/github.com/iain17/decentralizer/install.sh
 
 test:
   stage: test
