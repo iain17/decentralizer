@@ -1,5 +1,5 @@
 {
-  "author": "Iain Munro",
+  "author": "iain17",
   "bugs": {},
   "gx": {
     "dvcsimport": "github.com/iain17/decentralizer"
@@ -11,7 +11,7 @@
       "version": "0.4.11"
     }
   ],
-  "gxVersion": "0.11.0",
+  "gxVersion": "0.12.1",
   "language": "go",
   "license": "",
   "name": "decentralizer",
