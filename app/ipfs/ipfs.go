@@ -17,6 +17,24 @@ func init() {
 }
 
 func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
+	r, err := getIPFSRepo(path, portIdx)
+	cfg := &core.BuildCfg{
+		Repo:   r,
+		Online: true,
+		Permament: true,
+		ExtraOpts: map[string]bool{
+			"pubsub": true,
+		},
+	}
+
+	node, err := core.NewNode(context.Background(), cfg)
+	if err != nil {
+		return nil, err
+	}
+	return node, nil
+}
+
+func getIPFSRepo(path string, portIdx int) (repo.Repo, error) {
 	r, err := fsrepo.Open(path)
 	if _, ok := err.(fsrepo.NoRepoError); ok {
 		var conf *config.Config
@@ -35,21 +53,7 @@ func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
 	}
 
 	resetRepoConfigPorts(r, portIdx)
-
-	cfg := &core.BuildCfg{
-		Repo:   r,
-		Online: true,
-		Permament: true,
-		ExtraOpts: map[string]bool{
-			"pubsub": true,
-		},
-	}
-
-	node, err := core.NewNode(context.Background(), cfg)
-	if err != nil {
-		return nil, err
-	}
-	return node, nil
+	return r, nil
 }
 
 func resetRepoConfigPorts(r repo.Repo, nodeIdx int) {
@@ -60,6 +64,7 @@ func resetRepoConfigPorts(r repo.Repo, nodeIdx int) {
 	apiPort := fmt.Sprintf("500%d", nodeIdx)
 	gatewayPort := fmt.Sprintf("808%d", nodeIdx)
 	swarmPort := fmt.Sprintf("400%d", nodeIdx)
+	println("Gateway running on:", gatewayPort)
 
 	rc, err := r.Config()
 	if err != nil {

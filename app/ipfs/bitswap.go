@@ -10,6 +10,7 @@ import (
 	"unsafe"
 	"gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	"errors"
 )
 
 var log = logging.Logger("BitswapService")
@@ -24,19 +25,23 @@ type BitswapService struct {
 
 func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 	//Extract the network unexported value from the bitswap exchange of ipfs
-	exchange := node.Exchange.(*bitswap.Bitswap)
-	pointerVal := reflect.ValueOf(exchange)
-	val := reflect.Indirect(pointerVal)
+	if exchange, ok := node.Exchange.(*bitswap.Bitswap); ok {
 
-	member := val.FieldByName("network")
-	ptrToY := unsafe.Pointer(member.UnsafeAddr())
-	realPtrToY := (*bsnet.BitSwapNetwork)(ptrToY)
-	network := *(realPtrToY)
+		pointerVal := reflect.ValueOf(exchange)
+		val := reflect.Indirect(pointerVal)
 
-	return &BitswapService{
-		node: node,
-		network: network,
-	}, nil
+		member := val.FieldByName("network")
+		ptrToY := unsafe.Pointer(member.UnsafeAddr())
+		realPtrToY := (*bsnet.BitSwapNetwork)(ptrToY)
+		network := *(realPtrToY)
+
+		return &BitswapService{
+			node:    node,
+			network: network,
+		}, nil
+	} else {
+		return nil, errors.New("interface conversion: node.Exchange is not *bitswap.Bitswap")
+	}
 }
 
 func (b *BitswapService) Find(subject string, num int) <-chan peer.ID {

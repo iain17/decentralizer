@@ -32,7 +32,6 @@ func getIpfsPath() (string, error) {
 		return "", errors.New("queryFolder request failed")
 	}
 	return paths[0].Path, nil
-	//return fmt.Sprintf("/tmp/%d", time.Now().Unix()), nil
 }
 
 func New(networkStr string) (*Decentralizer, error) {
@@ -71,7 +70,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		MinPeerThreshold:  4,
 		Period:            30 * time.Second,
 		ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
-		BootstrapPeers: instance.bootstrap,
+		BootstrapPeers:    instance.bootstrap,
 	})
 	return instance, nil
 }

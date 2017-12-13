@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"github.com/iain17/logger"
 )
 
 type Server struct {
@@ -22,6 +23,7 @@ func New(app *app.Decentralizer, port int) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
+	logger.Info("Serving GRPC API on: %s", address)
 	s := grpc.NewServer()
 	pb.RegisterDecentralizerServer(s, i)
 	// Register reflection service on gRPC server.
