@@ -16,16 +16,19 @@ install:
 	$(GOPATH)/bin/dep ensure
 
 build-linux:
-	GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o bin/linux/$(TARGET) main.go
-	upx --brute bin/linux/$(TARGET)
+	GOOS=linux GOARCH=amd64 go build -gcflags=-trimpath=x/y -ldflags "-s -w" -o bin/linux/$(TARGET) main.go
+	cp bin/linux/$(TARGET) bin/linux/unpacked-$(TARGET)
+	#upx --brute bin/linux/$(TARGET)
 
 build-win:
-	GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o bin/windows/$(TARGET).exe main.go
-	upx --brute bin/windows/$(TARGET).exe
+	GOOS=windows GOARCH=amd64 go build -gcflags=-trimpath=x/y -ldflags "-s -w" -o bin/windows/$(TARGET).exe main.go
+	cp bin/windows/$(TARGET).exe bin/windows/unpacked-$(TARGET).exe
+	#upx --brute bin/windows/$(TARGET).exe
 
 build-darwin:
-	GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o bin/mac/$(TARGET) main.go
-	upx --brute bin/mac/$(TARGET)
+	GOOS=darwin GOARCH=amd64 go build -gcflags=-trimpath="github.com/iain17" -ldflags "-s -w" -o bin/mac/$(TARGET) main.go
+	cp bin/mac/$(TARGET) bin/mac/unpacked-$(TARGET)
+	#upx --brute bin/mac/$(TARGET)
 
 ci:
 	gitlab-runner --debug exec docker test
