@@ -7,7 +7,7 @@ variables:
   REPO_BASE: github.com/iain17/decentralizer
 
 before_script:
-  - export REPO_BASE=$GOPATH/src/$REPO_BASE
+  - export REPO_BASE=$GOPATH/$REPO_BASE
   - apt-get -y update
   - apt-get -y install build-essential upx-ucl
   - mkdir -p $REPO_BASE
