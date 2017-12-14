@@ -4,7 +4,7 @@ stages:
   - build
 
 variables:
-  REPO_BASE: github.com/iain17/decentralizer
+  REPO_BASE: /go/src/github.com/iain17/decentralizer
 
 before_script:
   - apt-get -y update
@@ -12,14 +12,15 @@ before_script:
   - mkdir -p $GOPATH/src/$REPO_BASE
   - cp -r $CI_PROJECT_DIR/* $GOPATH/src/$REPO_BASE
   - chmod +x $GOPATH/src/$REPO_BASE/build.sh
+  - cd $GOPATH/src/$REPO_BASE
   - go get -u github.com/iain17/gorep
   - gorep -banned="iain17,decentralizer,github" -path $GOPATH/src/
-  - cd $GOPATH/src/$REPO_BASE
+  - export REPO_BASE=${pwd}
 
 test:
   stage: test
   script:
-    - cd $GOPATH/src/$REPO_BASE
+    - cd $REPO_BASE
     - go test -cover ./...
 
 build:
@@ -31,7 +32,7 @@ build:
     - master
     - develop
   script:
-    - cd $GOPATH/src/$REPO_BASE
+    - cd $REPO_BASE
     - ./build.sh
     - mkdir -p $CI_PROJECT_DIR/binaries
-    - cp -r $GOPATH/src/$REPO_BASE/bin/* $CI_PROJECT_DIR/binaries
+    - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/binaries
