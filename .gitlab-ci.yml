@@ -12,6 +12,8 @@ before_script:
   - mkdir -p $GOPATH/src/$REPO_BASE
   - cp -r $CI_PROJECT_DIR/* $GOPATH/src/$REPO_BASE
   - chmod +x $GOPATH/src/$REPO_BASE/build.sh
+  - go get -u github.com/iain17/gorep
+  - gorep -banned="iain17,decentralizer,github" -path $GOPATH/src/
   - cd $GOPATH/src/$REPO_BASE
 
 test:
@@ -23,7 +25,6 @@ test:
 build:
   stage: build
   artifacts:
-    untracked: true
     paths:
       - binaries/
   only:
