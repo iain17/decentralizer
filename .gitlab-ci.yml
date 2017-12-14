@@ -16,6 +16,7 @@ before_script:
   - cd $REPO_BASE
   - go get -u github.com/iain17/gorep
   - gorep -banned="iain17,decentralizer,github" -path $GOPATH/src/
+  - mkdir updateDir && cd updateDir && cd .. && rm -rf updateDir
   - export REPO_BASE=$(pwd)
   - echo $REPO_BASE
 
