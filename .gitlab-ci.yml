@@ -6,7 +6,7 @@ stages:
   - build-linux
 
 variables:
-  REPO_BASE: github.com/iain17/decentralizer/
+  REPO_BASE: github.com/iain17/decentralizer
 
 before_script:
   - apt-get -y update
