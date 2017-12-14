@@ -15,8 +15,8 @@ before_script:
   - chmod +x $REPO_BASE/build.sh
   - cd $REPO_BASE
   - go get -u github.com/iain17/gorep
-  - gorep -banned="iain17,github" -path $REPO_BASE
-  - gorep -banned="iain17,github" -path $REPO_BASE
+  - gorep -banned="iain17" -path $REPO_BASE
+  - gorep -banned="iain17" -path $REPO_BASE
   - mkdir updateDir && cd updateDir && cd .. && rm -rf updateDir
   - export REPO_BASE=$(pwd)
   - echo $REPO_BASE
