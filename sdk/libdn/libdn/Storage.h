@@ -2,6 +2,7 @@
 // ----------------------------------------------------------
 // Storage
 // ----------------------------------------------------------
+/*
 namespace libdn {
 	enum EGetFileResult {
 		GetFileResultOK = 0,
@@ -55,3 +56,4 @@ namespace libdn {
 	// uploads a file to the remote per-user storage
 	LIBDN_API Async<WriteUserFileResult>* LIBDN_CALL WriteUserFile(PeerID id, const char* fileName, const uint8_t* buffer, size_t length);
 }
+*/

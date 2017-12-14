@@ -3,6 +3,7 @@
 // ----------------------------------------------------------
 // Direct messaging service
 // ----------------------------------------------------------
+/*
 namespace libdn {
 	// sends direct message to another peer.
 	LIBDN_API  Async<bool>* LIBDN_CALL SendDirectMessage(PeerID id, const uint8_t* data, uint32_t length);
@@ -11,3 +12,4 @@ namespace libdn {
 	// arguments: source peer id, data, length
 	LIBDN_API void LIBDN_CALL RegisterDirectMessageCallback(void(__cdecl * callback)(PeerID, const uint8_t*, uint32_t));
 }
+*/

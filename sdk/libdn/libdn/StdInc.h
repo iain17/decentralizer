@@ -9,11 +9,17 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-//Protobuf
-#include "matchmaking.pb.h"
-#include "platform.pb.h"
+//GRPC + Protobuf
+#include <grpc++/grpc++.h>
+
 #include "addressbook.pb.h"
-using namespace pb;
+#include "addressbook.grpc.pb.h"
+
+#include "matchmaking.pb.h"
+#include "matchmaking.grpc.pb.h"
+
+#include "platform.pb.h"
+#include "platform.grpc.pb.h"
 
 // C/C++ headers
 #include <string>
@@ -21,21 +27,22 @@ using namespace pb;
 #include <queue>
 #include <mutex>
 
-// code headers
+// app specific headers
 #include "libdn.h"
 #include "Utils.h"
 #include "RPC.h"
-#include "AsyncImpl.h"
+#include "Conversions.h"
+#include "Promise.h"
+#include "DecentralizerClient.h"
 
 const int MAX_SESSIONS = 1024;
+
 // global state
 extern struct DN_state_s {
-	bool connected;
-	char serverHost[1024];
-	uint16_t serverPort;
+	libdn::DecentralizerClient* client;
+	bool initialized = false;
 	libdn::ConnectLogCB g_logCB;
-
 	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
-} g_dn;
+} context;
 
 #endif

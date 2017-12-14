@@ -6,7 +6,7 @@
  // ----------------------------------------------------------
 namespace libdn {
 	typedef uint64_t DNSID;
-	class SessionInfo {
+	class Session {
 	public:
 		PeerID pId;
 		DNID dnId;
@@ -21,22 +21,21 @@ namespace libdn {
 
 	class UpsertSessionResult {
 	public:
-		bool result;
 		DNSID sessionId;
 	};
 
 	// creates/updates a session
-	LIBDN_API Async<UpsertSessionResult>* LIBDN_CALL UpsertSession(SessionInfo* data);
+	LIBDN_API Promise<UpsertSessionResult>* LIBDN_CALL UpsertSession(libdn::Session * session);
 
 	// deletes a session
-	LIBDN_API Async<bool>* LIBDN_CALL DeleteSession(DNSID sessionId);
+	LIBDN_API Promise<bool>* LIBDN_CALL DeleteSession(DNSID sessionId);
 
 	// gets the number of sessions
-	LIBDN_API Async<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value);
+	LIBDN_API Promise<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value);
 
 	// gets a single session's info by index
-	LIBDN_API SessionInfo* LIBDN_CALL GetSessionByIndex(int index);
+	LIBDN_API Session* LIBDN_CALL GetSessionByIndex(int index);
 
 	// gets a single session's info by sessionId
-	LIBDN_API Async<SessionInfo>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
+	LIBDN_API Promise<Session>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
 }

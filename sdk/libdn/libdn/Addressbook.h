@@ -3,6 +3,7 @@
 // ----------------------------------------------------------
 // Addressbook service
 // ----------------------------------------------------------
+/*
 namespace libdn {
 	class Peer {
 	public:
@@ -23,3 +24,4 @@ namespace libdn {
 	// gets a single session's info by either peer id or decentralized id
 	LIBDN_API Async<Peer>* LIBDN_CALL GetPeerById(DNID dId, PeerID pId);
 }
+*/

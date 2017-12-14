@@ -88,10 +88,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>LIBCONNECT_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x600;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\include\pb\</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <LanguageStandard>
       </LanguageStandard>
@@ -100,7 +100,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;libprotobuf-lited.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlibd.lib;ssl.lib;crypto.lib;decrepit.lib;libprotobufd.lib;ws2_32.lib;grpc.lib;gpr.lib;grpc++.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
@@ -133,9 +133,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCONNECT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_WIN32_WINNT=0x600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\include;$(SolutionDir)\dependencies\include\pb\</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +143,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;libprotobuf-lite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;zlib.lib;crypto.lib;decrepit.lib;libprotobuf.lib;ws2_32.lib;grpc.lib;gpr.lib;grpc++.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if "%COMPUTERNAME%" == "DESKTOP-QOO0SV2" (
@@ -170,32 +170,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Addressbook.h" />
-    <ClInclude Include="Async.h" />
+    <ClInclude Include="Conversions.h" />
+    <ClInclude Include="DecentralizerClient.h" />
     <ClInclude Include="Matchmaking.h" />
     <ClInclude Include="Messaging.h" />
     <ClInclude Include="Platform.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Promise.h" />
     <ClInclude Include="Storage.h" />
-    <ClInclude Include="RPCAsync.h" />
-    <ClInclude Include="AsyncImpl.h" />
     <ClInclude Include="TypeDefs.h" />
     <ClInclude Include="libdn.h" />
-    <ClInclude Include="RPC.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StdInc.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dependencies\include\pb\addressbook.pb.cc" />
-    <ClCompile Include="..\dependencies\include\pb\matchmaking.pb.cc" />
-    <ClCompile Include="..\dependencies\include\pb\platform.pb.cc" />
     <ClCompile Include="Addressbook.cpp" />
-    <ClCompile Include="API.cpp" />
-    <ClCompile Include="Async.cpp" />
+    <ClCompile Include="Conversions.cpp" />
+    <ClCompile Include="DecentralizerClient.cpp" />
+    <ClCompile Include="pb.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Matchmaking.cpp" />
-    <ClCompile Include="RPC.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="libdn.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

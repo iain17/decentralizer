@@ -1,12 +1,11 @@
 #include "StdInc.h"
 
 namespace libdn {
-
 	//Will hang until we are connected and DN is ready.
 	LIBDN_API void LIBDN_CALL WaitUntilReady() {
 		HealthResult* health;
 		health->ready = false;
-		while (!g_dn.connected || health == nullptr || !health->ready) {
+		while (health == nullptr || !health->ready) {
 			health = Health();
 			if (health != nullptr && health->ready) {
 				break;
@@ -16,28 +15,24 @@ namespace libdn {
 	}
 
 	LIBDN_API HealthResult* LIBDN_CALL Health() {
-		//build request.
-		RPCHealthRequest* request = new RPCHealthRequest();
-		pb::RPCMessage* msg = new pb::RPCMessage();
-		msg->set_allocated_healthrequest(request);
+		// Data we are sending to the server.
+		pb::RPCHealthRequest request;
 
-		//Send request.
-		Async<RPCMessage>* async = RPC_SendMessageAsyncCache("health", msg);
+		// Container for the data we expect from the server.
+		pb::RPCHealthReply reply;
 
-		//Set callback.
-		AsyncImpl<HealthResult>* result = new AsyncImpl<HealthResult>();
-		async->SetCallback([](Async<RPCMessage>* async) {
-			AsyncImpl<HealthResult>* asyncResult = (AsyncImpl<HealthResult>*)async->GetUserData();
-			RPCMessage* message = async->GetResult();
-			const RPCHealthReply& reply = message->healthreply();
+		// Context for the client. It could be used to convey extra information to
+		// the server and/or tweak certain RPC behaviors.
+		grpc::ClientContext ctx;
+		grpc::Status status = context.client->stub_->GetHealth(&ctx, request, &reply);
 
-			HealthResult* result = new HealthResult();
+		HealthResult* result = new HealthResult();
+		if (status.ok()) {
 			result->message = reply.message();
 			result->ready = reply.ready();
-			asyncResult->SetResult(result);
-		}, result);
-		async->Wait();
-
-		return result->GetResult();
+		} else {
+			result->message = va("[RPC failed] %s: %s", status.error_code(), status.error_message());
+		}
+		return result;
 	}
 }
