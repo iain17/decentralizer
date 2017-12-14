@@ -17,6 +17,7 @@ before_script:
   - go get -u github.com/iain17/gorep
   - gorep -banned="iain17,decentralizer,github" -path $GOPATH/src/
   - export REPO_BASE=${pwd}
+  - echo $REPO_BASE
 
 test:
   stage: test
