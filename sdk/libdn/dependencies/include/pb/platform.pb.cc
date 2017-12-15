@@ -123,31 +123,41 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\021pb/platform.proto\022\002pb\032\024pb/matchmaking."
-      "proto\032\024pb/addressbook.proto\"\022\n\020RPCHealth"
-      "Request\"0\n\016RPCHealthReply\022\r\n\005ready\030\001 \001(\010"
-      "\022\017\n\007message\030\002 \001(\t2\275\004\n\rDecentralizer\0227\n\tG"
-      "etHealth\022\024.pb.RPCHealthRequest\032\022.pb.RPCH"
-      "ealthReply\"\000\022L\n\rUpsertSession\022\033.pb.RPCUp"
-      "sertSessionRequest\032\034.pb.RPCUpsertSession"
-      "Response\"\000\022L\n\rDeleteSession\022\033.pb.RPCDele"
-      "teSessionRequest\032\034.pb.RPCDeleteSessionRe"
-      "sponse\"\000\022L\n\rGetSessionIds\022\033.pb.RPCGetSes"
-      "sionIdsRequest\032\034.pb.RPCGetSessionIdsResp"
-      "onse\"\000\022C\n\nGetSession\022\030.pb.RPCGetSessionR"
-      "equest\032\031.pb.RPCGetSessionResponse\"\000\022C\n\nU"
-      "psertPeer\022\030.pb.RPCUpsertPeerRequest\032\031.pb"
-      ".RPCUpsertPeerResponse\"\000\022C\n\nGetPeerIds\022\030"
-      ".pb.RPCGetPeerIdsRequest\032\031.pb.RPCGetPeer"
-      "IdsResponse\"\000\022:\n\007GetPeer\022\025.pb.RPCGetPeer"
-      "Request\032\026.pb.RPCGetPeerResponse\"\000b\006proto"
-      "3"
+      "proto\032\024pb/addressbook.proto\032\020pb/storage."
+      "proto\032\022pb/messaging.proto\"\022\n\020RPCHealthRe"
+      "quest\"0\n\016RPCHealthReply\022\r\n\005ready\030\001 \001(\010\022\017"
+      "\n\007message\030\002 \001(\t2\374\006\n\rDecentralizer\0227\n\tGet"
+      "Health\022\024.pb.RPCHealthRequest\032\022.pb.RPCHea"
+      "lthReply\"\000\022L\n\rUpsertSession\022\033.pb.RPCUpse"
+      "rtSessionRequest\032\034.pb.RPCUpsertSessionRe"
+      "sponse\"\000\022L\n\rDeleteSession\022\033.pb.RPCDelete"
+      "SessionRequest\032\034.pb.RPCDeleteSessionResp"
+      "onse\"\000\022L\n\rGetSessionIds\022\033.pb.RPCGetSessi"
+      "onIdsRequest\032\034.pb.RPCGetSessionIdsRespon"
+      "se\"\000\022C\n\nGetSession\022\030.pb.RPCGetSessionReq"
+      "uest\032\031.pb.RPCGetSessionResponse\"\000\022C\n\nUps"
+      "ertPeer\022\030.pb.RPCUpsertPeerRequest\032\031.pb.R"
+      "PCUpsertPeerResponse\"\000\022C\n\nGetPeerIds\022\030.p"
+      "b.RPCGetPeerIdsRequest\032\031.pb.RPCGetPeerId"
+      "sResponse\"\000\022:\n\007GetPeer\022\025.pb.RPCGetPeerRe"
+      "quest\032\026.pb.RPCGetPeerResponse\"\000\022L\n\rWrite"
+      "UserFile\022\033.pb.RPCWriteUserFileRequest\032\034."
+      "pb.RPCWriteUserFileResponse\"\000\022F\n\013GetUser"
+      "File\022\031.pb.RPCGetUserFileRequest\032\032.pb.RPC"
+      "GetUserFileResponse\"\000\022U\n\020GetPublisherFil"
+      "e\022\036.pb.RPCGetPublisherFileRequest\032\037.pb.R"
+      "PCGetPublisherFileResponse\"\000\022P\n\021SendDire"
+      "ctMessage\022\033.pb.RPCDirectMessageRequest\032\034"
+      ".pb.RPCDirectMessageResponse\"\000b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 721);
+      descriptor, 1078);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/platform.proto", &protobuf_RegisterTypes);
   ::protobuf_pb_2fmatchmaking_2eproto::AddDescriptors();
   ::protobuf_pb_2faddressbook_2eproto::AddDescriptors();
+  ::protobuf_pb_2fstorage_2eproto::AddDescriptors();
+  ::protobuf_pb_2fmessaging_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {

@@ -1,0 +1,22 @@
+syntax = "proto3";
+package pb;
+
+//DN messages
+message DNDirectMessageResponse {
+    bool delivered = 1;
+}
+
+message DNDirectMessageRequest {
+    bytes message = 1;
+}
+
+//RPC messages
+
+message RPCDirectMessageResponse {
+    string err = 1;
+}
+
+message RPCDirectMessageRequest {
+    string pId = 1;
+    bytes message = 2;
+}

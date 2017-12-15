@@ -2,6 +2,8 @@ syntax = "proto3";
 package pb;
 import "pb/matchmaking.proto";
 import "pb/addressbook.proto";
+import "pb/storage.proto";
+import "pb/messaging.proto";
 
 message RPCHealthRequest {}
 
@@ -38,4 +40,20 @@ service Decentralizer {
 	rpc GetPeerIds(RPCGetPeerIdsRequest) returns (RPCGetPeerIdsResponse) {}
 	// Get an individual peer. Takes either a peer id or decentralizer id and returns the peer info.
 	rpc GetPeer(RPCGetPeerRequest) returns (RPCGetPeerResponse) {}
+
+	//
+	// Storage
+	//
+	// Write a user file. Takes a file name and the data it should save.
+	rpc WriteUserFile(RPCWriteUserFileRequest) returns (RPCWriteUserFileResponse) {}
+	// Get a user file. Takes a file name, returns the file.
+	rpc GetUserFile(RPCGetUserFileRequest) returns (RPCGetUserFileResponse) {}
+	// Get a publisher file.
+	rpc GetPublisherFile(RPCGetPublisherFileRequest) returns (RPCGetPublisherFileResponse) {}
+
+	//
+	// Messaging
+	//
+	// Send another peer a direct message. Takes a peer id and the data it should send
+	rpc SendDirectMessage(RPCDirectMessageRequest) returns (RPCDirectMessageResponse) {}
 }

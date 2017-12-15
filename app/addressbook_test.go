@@ -7,6 +7,24 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 )
 
+func TestDecentralizer_FindSelf(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
+	app1 := fakeNew(nodes[0])
+	assert.NotNil(t, app1)
+
+	err := app1.UpsertPeer("self", map[string]string{
+		"quote": "these violent delights have violent ends",
+	})
+	assert.NoError(t, err)
+
+	peer, err := app1.FindByPeerId("self")
+	assert.NoError(t, err)
+	assert.NotNil(t, peer)
+	assert.Equal(t, peer.Details["quote"], "these violent delights have violent ends")
+}
+
 func TestDecentralizer_FindByPeerId(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

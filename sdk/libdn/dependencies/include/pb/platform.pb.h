@@ -31,6 +31,8 @@
 #include <google/protobuf/unknown_field_set.h>
 #include "pb/matchmaking.pb.h"
 #include "pb/addressbook.pb.h"
+#include "pb/storage.pb.h"
+#include "pb/messaging.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fplatform_2eproto {

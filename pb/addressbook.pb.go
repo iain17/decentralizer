@@ -7,7 +7,9 @@ Package pb is a generated protocol buffer package.
 It is generated from these files:
 	pb/addressbook.proto
 	pb/matchmaking.proto
+	pb/messaging.proto
 	pb/platform.proto
+	pb/storage.proto
 
 It has these top-level messages:
 	Peer
@@ -30,8 +32,18 @@ It has these top-level messages:
 	RPCGetSessionIdsResponse
 	RPCGetSessionRequest
 	RPCGetSessionResponse
+	DNDirectMessageResponse
+	DNDirectMessageRequest
+	RPCDirectMessageResponse
+	RPCDirectMessageRequest
 	RPCHealthRequest
 	RPCHealthReply
+	RPCWriteUserFileRequest
+	RPCWriteUserFileResponse
+	RPCGetUserFileRequest
+	RPCGetUserFileResponse
+	RPCGetPublisherFileRequest
+	RPCGetPublisherFileResponse
 */
 package pb
 
