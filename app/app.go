@@ -23,6 +23,7 @@ type Decentralizer struct {
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	peers			   	   *peerstore.Store
+	directMessage		   chan *DirectMessage
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -68,6 +69,7 @@ func New(networkStr string) (*Decentralizer, error) {
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		peers:				    peers,
+		directMessage: 			make(chan *DirectMessage, 10),
 	}
 	instance.initMatchmaking()
 	instance.initMessaging()

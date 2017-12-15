@@ -110,7 +110,7 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 		wg.Add(1)
 		go func(id peer.ID) {
 			logger.Infof("Request sessions from %s", id.Pretty())
-			sessions, err := d.getSessions(id, sessionType)
+			sessions, err := d.getSessionsRequest(id, sessionType)
 			if err != nil {
 				logger.Error(err)
 				return
@@ -162,7 +162,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 	}
 }
 
-func (d *Decentralizer) getSessions(peer peer.ID, sessionType uint64) ([]*pb.Session, error) {
+func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]*pb.Session, error) {
 	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
 	if err != nil {
 		return nil, err

@@ -12,9 +12,7 @@ message DNDirectMessageRequest {
 
 //RPC messages
 
-message RPCDirectMessageResponse {
-    string err = 1;
-}
+message RPCDirectMessageResponse {}
 
 message RPCDirectMessageRequest {
     string pId = 1;
