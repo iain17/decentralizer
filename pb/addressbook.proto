@@ -34,7 +34,7 @@ message RPCGetPeerIdsRequest {
 }
 
 message RPCGetPeerIdsResponse {
-    repeated string peerId = 1;
+    repeated string peerIds = 1;
 }
 
 //Get individual peer

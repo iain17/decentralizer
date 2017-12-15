@@ -864,33 +864,33 @@ class RPCGetPeerIdsResponse : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // repeated string peerId = 1;
-  int peerid_size() const;
-  void clear_peerid();
-  static const int kPeerIdFieldNumber = 1;
-  const ::std::string& peerid(int index) const;
-  ::std::string* mutable_peerid(int index);
-  void set_peerid(int index, const ::std::string& value);
+  // repeated string peerIds = 1;
+  int peerids_size() const;
+  void clear_peerids();
+  static const int kPeerIdsFieldNumber = 1;
+  const ::std::string& peerids(int index) const;
+  ::std::string* mutable_peerids(int index);
+  void set_peerids(int index, const ::std::string& value);
   #if LANG_CXX11
-  void set_peerid(int index, ::std::string&& value);
+  void set_peerids(int index, ::std::string&& value);
   #endif
-  void set_peerid(int index, const char* value);
-  void set_peerid(int index, const char* value, size_t size);
-  ::std::string* add_peerid();
-  void add_peerid(const ::std::string& value);
+  void set_peerids(int index, const char* value);
+  void set_peerids(int index, const char* value, size_t size);
+  ::std::string* add_peerids();
+  void add_peerids(const ::std::string& value);
   #if LANG_CXX11
-  void add_peerid(::std::string&& value);
+  void add_peerids(::std::string&& value);
   #endif
-  void add_peerid(const char* value);
-  void add_peerid(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& peerid() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_peerid();
+  void add_peerids(const char* value);
+  void add_peerids(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& peerids() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_peerids();
 
   // @@protoc_insertion_point(class_scope:pb.RPCGetPeerIdsResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> peerid_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> peerids_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2faddressbook_2eproto::TableStruct;
   friend void ::protobuf_pb_2faddressbook_2eproto::InitDefaultsRPCGetPeerIdsResponseImpl();
@@ -1453,73 +1453,73 @@ inline void RPCGetPeerIdsRequest::set_allocated_value(::std::string* value) {
 
 // RPCGetPeerIdsResponse
 
-// repeated string peerId = 1;
-inline int RPCGetPeerIdsResponse::peerid_size() const {
-  return peerid_.size();
+// repeated string peerIds = 1;
+inline int RPCGetPeerIdsResponse::peerids_size() const {
+  return peerids_.size();
 }
-inline void RPCGetPeerIdsResponse::clear_peerid() {
-  peerid_.Clear();
+inline void RPCGetPeerIdsResponse::clear_peerids() {
+  peerids_.Clear();
 }
-inline const ::std::string& RPCGetPeerIdsResponse::peerid(int index) const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetPeerIdsResponse.peerId)
-  return peerid_.Get(index);
+inline const ::std::string& RPCGetPeerIdsResponse::peerids(int index) const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetPeerIdsResponse.peerIds)
+  return peerids_.Get(index);
 }
-inline ::std::string* RPCGetPeerIdsResponse::mutable_peerid(int index) {
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetPeerIdsResponse.peerId)
-  return peerid_.Mutable(index);
+inline ::std::string* RPCGetPeerIdsResponse::mutable_peerids(int index) {
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetPeerIdsResponse.peerIds)
+  return peerids_.Mutable(index);
 }
-inline void RPCGetPeerIdsResponse::set_peerid(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:pb.RPCGetPeerIdsResponse.peerId)
-  peerid_.Mutable(index)->assign(value);
+inline void RPCGetPeerIdsResponse::set_peerids(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:pb.RPCGetPeerIdsResponse.peerIds)
+  peerids_.Mutable(index)->assign(value);
 }
 #if LANG_CXX11
-inline void RPCGetPeerIdsResponse::set_peerid(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:pb.RPCGetPeerIdsResponse.peerId)
-  peerid_.Mutable(index)->assign(std::move(value));
+inline void RPCGetPeerIdsResponse::set_peerids(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:pb.RPCGetPeerIdsResponse.peerIds)
+  peerids_.Mutable(index)->assign(std::move(value));
 }
 #endif
-inline void RPCGetPeerIdsResponse::set_peerid(int index, const char* value) {
+inline void RPCGetPeerIdsResponse::set_peerids(int index, const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  peerid_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetPeerIdsResponse.peerId)
+  peerids_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:pb.RPCGetPeerIdsResponse.peerIds)
 }
-inline void RPCGetPeerIdsResponse::set_peerid(int index, const char* value, size_t size) {
-  peerid_.Mutable(index)->assign(
+inline void RPCGetPeerIdsResponse::set_peerids(int index, const char* value, size_t size) {
+  peerids_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPeerIdsResponse.peerId)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPeerIdsResponse.peerIds)
 }
-inline ::std::string* RPCGetPeerIdsResponse::add_peerid() {
-  // @@protoc_insertion_point(field_add_mutable:pb.RPCGetPeerIdsResponse.peerId)
-  return peerid_.Add();
+inline ::std::string* RPCGetPeerIdsResponse::add_peerids() {
+  // @@protoc_insertion_point(field_add_mutable:pb.RPCGetPeerIdsResponse.peerIds)
+  return peerids_.Add();
 }
-inline void RPCGetPeerIdsResponse::add_peerid(const ::std::string& value) {
-  peerid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:pb.RPCGetPeerIdsResponse.peerId)
+inline void RPCGetPeerIdsResponse::add_peerids(const ::std::string& value) {
+  peerids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:pb.RPCGetPeerIdsResponse.peerIds)
 }
 #if LANG_CXX11
-inline void RPCGetPeerIdsResponse::add_peerid(::std::string&& value) {
-  peerid_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:pb.RPCGetPeerIdsResponse.peerId)
+inline void RPCGetPeerIdsResponse::add_peerids(::std::string&& value) {
+  peerids_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:pb.RPCGetPeerIdsResponse.peerIds)
 }
 #endif
-inline void RPCGetPeerIdsResponse::add_peerid(const char* value) {
+inline void RPCGetPeerIdsResponse::add_peerids(const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  peerid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:pb.RPCGetPeerIdsResponse.peerId)
+  peerids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:pb.RPCGetPeerIdsResponse.peerIds)
 }
-inline void RPCGetPeerIdsResponse::add_peerid(const char* value, size_t size) {
-  peerid_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:pb.RPCGetPeerIdsResponse.peerId)
+inline void RPCGetPeerIdsResponse::add_peerids(const char* value, size_t size) {
+  peerids_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:pb.RPCGetPeerIdsResponse.peerIds)
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-RPCGetPeerIdsResponse::peerid() const {
-  // @@protoc_insertion_point(field_list:pb.RPCGetPeerIdsResponse.peerId)
-  return peerid_;
+RPCGetPeerIdsResponse::peerids() const {
+  // @@protoc_insertion_point(field_list:pb.RPCGetPeerIdsResponse.peerIds)
+  return peerids_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-RPCGetPeerIdsResponse::mutable_peerid() {
-  // @@protoc_insertion_point(field_mutable_list:pb.RPCGetPeerIdsResponse.peerId)
-  return &peerid_;
+RPCGetPeerIdsResponse::mutable_peerids() {
+  // @@protoc_insertion_point(field_mutable_list:pb.RPCGetPeerIdsResponse.peerIds)
+  return &peerids_;
 }
 
 // -------------------------------------------------------------------

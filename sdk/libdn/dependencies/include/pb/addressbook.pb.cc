@@ -340,7 +340,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerIdsResponse, peerid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerIdsResponse, peerids_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -411,14 +411,14 @@ void AddDescriptorsImpl() {
       "rRequest\".\n\024RPCUpsertPeerRequest\022\026\n\004peer"
       "\030\001 \001(\0132\010.pb.Peer\"\'\n\025RPCUpsertPeerRespons"
       "e\022\016\n\006result\030\001 \001(\010\"2\n\024RPCGetPeerIdsReques"
-      "t\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\'\n\025RPCGetP"
-      "eerIdsResponse\022\016\n\006peerId\030\001 \003(\t\".\n\021RPCGet"
-      "PeerRequest\022\013\n\003pId\030\001 \001(\t\022\014\n\004dnId\030\002 \001(\004\","
-      "\n\022RPCGetPeerResponse\022\026\n\004peer\030\001 \001(\0132\010.pb."
-      "Peerb\006proto3"
+      "t\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"(\n\025RPCGetP"
+      "eerIdsResponse\022\017\n\007peerIds\030\001 \003(\t\".\n\021RPCGe"
+      "tPeerRequest\022\013\n\003pId\030\001 \001(\t\022\014\n\004dnId\030\002 \001(\004\""
+      ",\n\022RPCGetPeerResponse\022\026\n\004peer\030\001 \001(\0132\010.pb"
+      ".Peerb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 492);
+      descriptor, 493);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/addressbook.proto", &protobuf_RegisterTypes);
 }
@@ -2150,7 +2150,7 @@ void RPCGetPeerIdsRequest::InternalSwap(RPCGetPeerIdsRequest* other) {
 void RPCGetPeerIdsResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCGetPeerIdsResponse::kPeerIdFieldNumber;
+const int RPCGetPeerIdsResponse::kPeerIdsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCGetPeerIdsResponse::RPCGetPeerIdsResponse()
@@ -2164,7 +2164,7 @@ RPCGetPeerIdsResponse::RPCGetPeerIdsResponse()
 RPCGetPeerIdsResponse::RPCGetPeerIdsResponse(const RPCGetPeerIdsResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      peerid_(from.peerid_),
+      peerids_(from.peerids_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:pb.RPCGetPeerIdsResponse)
@@ -2211,7 +2211,7 @@ void RPCGetPeerIdsResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  peerid_.Clear();
+  peerids_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -2225,17 +2225,17 @@ bool RPCGetPeerIdsResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated string peerId = 1;
+      // repeated string peerIds = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_peerid()));
+                input, this->add_peerids()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->peerid(this->peerid_size() - 1).data(),
-            static_cast<int>(this->peerid(this->peerid_size() - 1).length()),
+            this->peerids(this->peerids_size() - 1).data(),
+            static_cast<int>(this->peerids(this->peerids_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCGetPeerIdsResponse.peerId"));
+            "pb.RPCGetPeerIdsResponse.peerIds"));
         } else {
           goto handle_unusual;
         }
@@ -2268,14 +2268,14 @@ void RPCGetPeerIdsResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated string peerId = 1;
-  for (int i = 0, n = this->peerid_size(); i < n; i++) {
+  // repeated string peerIds = 1;
+  for (int i = 0, n = this->peerids_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->peerid(i).data(), static_cast<int>(this->peerid(i).length()),
+      this->peerids(i).data(), static_cast<int>(this->peerids(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetPeerIdsResponse.peerId");
+      "pb.RPCGetPeerIdsResponse.peerIds");
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->peerid(i), output);
+      1, this->peerids(i), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2292,14 +2292,14 @@ void RPCGetPeerIdsResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated string peerId = 1;
-  for (int i = 0, n = this->peerid_size(); i < n; i++) {
+  // repeated string peerIds = 1;
+  for (int i = 0, n = this->peerids_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->peerid(i).data(), static_cast<int>(this->peerid(i).length()),
+      this->peerids(i).data(), static_cast<int>(this->peerids(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetPeerIdsResponse.peerId");
+      "pb.RPCGetPeerIdsResponse.peerIds");
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(1, this->peerid(i), target);
+      WriteStringToArray(1, this->peerids(i), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2319,12 +2319,12 @@ size_t RPCGetPeerIdsResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated string peerId = 1;
+  // repeated string peerIds = 1;
   total_size += 1 *
-      ::google::protobuf::internal::FromIntSize(this->peerid_size());
-  for (int i = 0, n = this->peerid_size(); i < n; i++) {
+      ::google::protobuf::internal::FromIntSize(this->peerids_size());
+  for (int i = 0, n = this->peerids_size(); i < n; i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->peerid(i));
+      this->peerids(i));
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2356,7 +2356,7 @@ void RPCGetPeerIdsResponse::MergeFrom(const RPCGetPeerIdsResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  peerid_.MergeFrom(from.peerid_);
+  peerids_.MergeFrom(from.peerids_);
 }
 
 void RPCGetPeerIdsResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2383,7 +2383,7 @@ void RPCGetPeerIdsResponse::Swap(RPCGetPeerIdsResponse* other) {
 }
 void RPCGetPeerIdsResponse::InternalSwap(RPCGetPeerIdsResponse* other) {
   using std::swap;
-  peerid_.InternalSwap(&other->peerid_);
+  peerids_.InternalSwap(&other->peerids_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
