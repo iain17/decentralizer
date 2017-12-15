@@ -6,6 +6,7 @@ import (
 	"github.com/ChrisLundquist/golang-lru"
 	"time"
 	"errors"
+	"github.com/iain17/logger"
 )
 
 type Store struct {
@@ -52,6 +53,22 @@ func New(size int, expireAt time.Duration) (*Store, error) {
 	}
 	instance.sessionIds, err = lru.NewTTLWithEvict(size, instance.onEvicted)
 	return instance, err
+}
+
+func (s *Store) onEvicted(key interface{}, value interface{}) {
+	//In go routine. Because of deadlock caused when evicted is called, the insert function higher up the call chain has just locked the mutex.
+	go func() {
+		if sSessionId, ok := key.(uint64); ok {
+			err := s.Remove(sSessionId)
+			if err != nil {
+				logger.Warningf("Could not delete session id: %d", sSessionId)
+			} else {
+				logger.Infof("Deleted session id: %d", sSessionId)
+			}
+		} else {
+			logger.Warningf("Could not delete session id...", sSessionId)
+		}
+	}()
 }
 
 func (s *Store) Insert(info *pb.Session) (uint64, error) {

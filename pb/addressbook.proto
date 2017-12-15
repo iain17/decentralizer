@@ -8,6 +8,12 @@ message Peer {
     map<string, string> details = 3;
 }
 
+message DNPeerResponse {
+    Peer peer = 1;
+}
+
+message DNPeerRequest {}
+
 //RPC messages
 
 //upsert

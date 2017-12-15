@@ -14,6 +14,7 @@ import (
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"sync"
 	"time"
+	"github.com/iain17/decentralizer/app/peerstore"
 )
 
 func getKey(sessionType uint64) string {
@@ -37,7 +38,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	sessions := d.getSessionStorage(sessionType)
-	pId, dId := PeerToDnId(d.i.Identity)
+	pId, dId := peerstore.PeerToDnId(d.i.Identity)
 	info := &pb.Session{
 		DnId:    dId,
 		PId:     pId,

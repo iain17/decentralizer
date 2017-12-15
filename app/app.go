@@ -8,10 +8,10 @@ import (
 	"github.com/shibukawa/configdir"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
 	"time"
-	//"gx/ipfs/QmTm7GoSkSSQPP32bZhvu17oY1AfvPKND6ELUdYAcKuR1j/floodsub"
 	"errors"
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"net"
+	"github.com/iain17/decentralizer/app/peerstore"
 )
 
 type Decentralizer struct {
@@ -22,7 +22,7 @@ type Decentralizer struct {
 
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
-	//subscriptions map[uint32]*floodsub.Subscription
+	peers			   	   *peerstore.Store
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -56,6 +56,10 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
+	peers, err := peerstore.New(MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), i.Identity)
+	if err != nil {
+		return nil, err
+	}
 	instance := &Decentralizer{
 		n:                      n,
 		d:                      d,
@@ -63,10 +67,12 @@ func New(networkStr string) (*Decentralizer, error) {
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
+		peers:				    peers,
 	}
 	instance.initMatchmaking()
 	instance.initMessaging()
-	_, dnID := PeerToDnId(i.Identity)
+	instance.initAddressbook()
+	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
 	go instance.i.Bootstrap(core.BootstrapConfig{
 		MinPeerThreshold:  4,

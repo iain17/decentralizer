@@ -8,11 +8,8 @@ variables:
 
 before_script:
   - export REPO_BASE=$GOPATH/src/$REPO_BASE
-  - apt-get -y update
-  - apt-get -y install build-essential upx-ucl
   - mkdir -p $REPO_BASE
   - cp -r $CI_PROJECT_DIR/* $REPO_BASE
-  - chmod +x $REPO_BASE/build.sh
   - cd $REPO_BASE
 
 test:
@@ -30,6 +27,9 @@ build:
     - master
     - develop
   script:
+    - apt-get -y update
+    - apt-get -y install upx-ucl
+
     - go get -u github.com/iain17/gorep
     - gorep -banned="iain17,github.com" -path $GOPATH/src/ > /dev/null 2>&1
     - mkdir updateDir && cd updateDir && cd .. && rm -rf updateDir
@@ -37,6 +37,7 @@ build:
     - echo $REPO_BASE
 
     - cd $REPO_BASE
+    - chmod +x $REPO_BASE/build.sh
     - ./build.sh
     - mkdir -p $CI_PROJECT_DIR/binaries
     - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/binaries

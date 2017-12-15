@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Decentralizer) initMessaging() {
-	d.i.PeerHost.SetStreamHandler(DIRECT_MESSAGE, d.directMessageReceived)
+	d.i.PeerHost.SetStreamHandler(SEND_DIRECT_MESSAGE, d.directMessageReceived)
 }
 
 func (d *Decentralizer) SendMessage(peer peer.ID, data []byte) (bool, error) {

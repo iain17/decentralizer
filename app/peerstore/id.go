@@ -1,4 +1,4 @@
-package app
+package peerstore
 
 import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
