@@ -48,11 +48,11 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	_, err = app1.SavePeerFile(filename, updatedMessage)
 	assert.NoError(t, err)
 
-	files, err := app2.GetPeerFiles(app1.i.Identity)
+	file, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)
-	assert.Equal(t, len(files), 1)
-	data, err := app1.GetFile(files[0].Cid.String())
-	assert.NoError(t, err)
-	assert.Equal(t, updatedMessage, data)
+	assert.Equal(t, updatedMessage, file)
+
+	_, err = app2.GetPeerFile(app1.i.Identity.Pretty(), "random shit")
+	assert.Error(t, err)
 }
 

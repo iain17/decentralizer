@@ -42,69 +42,69 @@ struct TableStruct {
   static const ::google::protobuf::uint32 offsets[];
 };
 void AddDescriptors();
-void InitDefaultsRPCWriteUserFileRequestImpl();
-void InitDefaultsRPCWriteUserFileRequest();
-void InitDefaultsRPCWriteUserFileResponseImpl();
-void InitDefaultsRPCWriteUserFileResponse();
-void InitDefaultsRPCGetUserFileRequestImpl();
-void InitDefaultsRPCGetUserFileRequest();
-void InitDefaultsRPCGetUserFileResponseImpl();
-void InitDefaultsRPCGetUserFileResponse();
+void InitDefaultsRPCWritePeerFileRequestImpl();
+void InitDefaultsRPCWritePeerFileRequest();
+void InitDefaultsRPCWritePeerFileResponseImpl();
+void InitDefaultsRPCWritePeerFileResponse();
+void InitDefaultsRPCGetPeerFileRequestImpl();
+void InitDefaultsRPCGetPeerFileRequest();
+void InitDefaultsRPCGetPeerFileResponseImpl();
+void InitDefaultsRPCGetPeerFileResponse();
 void InitDefaultsRPCGetPublisherFileRequestImpl();
 void InitDefaultsRPCGetPublisherFileRequest();
 void InitDefaultsRPCGetPublisherFileResponseImpl();
 void InitDefaultsRPCGetPublisherFileResponse();
 inline void InitDefaults() {
-  InitDefaultsRPCWriteUserFileRequest();
-  InitDefaultsRPCWriteUserFileResponse();
-  InitDefaultsRPCGetUserFileRequest();
-  InitDefaultsRPCGetUserFileResponse();
+  InitDefaultsRPCWritePeerFileRequest();
+  InitDefaultsRPCWritePeerFileResponse();
+  InitDefaultsRPCGetPeerFileRequest();
+  InitDefaultsRPCGetPeerFileResponse();
   InitDefaultsRPCGetPublisherFileRequest();
   InitDefaultsRPCGetPublisherFileResponse();
 }
 }  // namespace protobuf_pb_2fstorage_2eproto
 namespace pb {
+class RPCGetPeerFileRequest;
+class RPCGetPeerFileRequestDefaultTypeInternal;
+extern RPCGetPeerFileRequestDefaultTypeInternal _RPCGetPeerFileRequest_default_instance_;
+class RPCGetPeerFileResponse;
+class RPCGetPeerFileResponseDefaultTypeInternal;
+extern RPCGetPeerFileResponseDefaultTypeInternal _RPCGetPeerFileResponse_default_instance_;
 class RPCGetPublisherFileRequest;
 class RPCGetPublisherFileRequestDefaultTypeInternal;
 extern RPCGetPublisherFileRequestDefaultTypeInternal _RPCGetPublisherFileRequest_default_instance_;
 class RPCGetPublisherFileResponse;
 class RPCGetPublisherFileResponseDefaultTypeInternal;
 extern RPCGetPublisherFileResponseDefaultTypeInternal _RPCGetPublisherFileResponse_default_instance_;
-class RPCGetUserFileRequest;
-class RPCGetUserFileRequestDefaultTypeInternal;
-extern RPCGetUserFileRequestDefaultTypeInternal _RPCGetUserFileRequest_default_instance_;
-class RPCGetUserFileResponse;
-class RPCGetUserFileResponseDefaultTypeInternal;
-extern RPCGetUserFileResponseDefaultTypeInternal _RPCGetUserFileResponse_default_instance_;
-class RPCWriteUserFileRequest;
-class RPCWriteUserFileRequestDefaultTypeInternal;
-extern RPCWriteUserFileRequestDefaultTypeInternal _RPCWriteUserFileRequest_default_instance_;
-class RPCWriteUserFileResponse;
-class RPCWriteUserFileResponseDefaultTypeInternal;
-extern RPCWriteUserFileResponseDefaultTypeInternal _RPCWriteUserFileResponse_default_instance_;
+class RPCWritePeerFileRequest;
+class RPCWritePeerFileRequestDefaultTypeInternal;
+extern RPCWritePeerFileRequestDefaultTypeInternal _RPCWritePeerFileRequest_default_instance_;
+class RPCWritePeerFileResponse;
+class RPCWritePeerFileResponseDefaultTypeInternal;
+extern RPCWritePeerFileResponseDefaultTypeInternal _RPCWritePeerFileResponse_default_instance_;
 }  // namespace pb
 namespace pb {
 
 // ===================================================================
 
-class RPCWriteUserFileRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCWriteUserFileRequest) */ {
+class RPCWritePeerFileRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCWritePeerFileRequest) */ {
  public:
-  RPCWriteUserFileRequest();
-  virtual ~RPCWriteUserFileRequest();
+  RPCWritePeerFileRequest();
+  virtual ~RPCWritePeerFileRequest();
 
-  RPCWriteUserFileRequest(const RPCWriteUserFileRequest& from);
+  RPCWritePeerFileRequest(const RPCWritePeerFileRequest& from);
 
-  inline RPCWriteUserFileRequest& operator=(const RPCWriteUserFileRequest& from) {
+  inline RPCWritePeerFileRequest& operator=(const RPCWritePeerFileRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCWriteUserFileRequest(RPCWriteUserFileRequest&& from) noexcept
-    : RPCWriteUserFileRequest() {
+  RPCWritePeerFileRequest(RPCWritePeerFileRequest&& from) noexcept
+    : RPCWritePeerFileRequest() {
     *this = ::std::move(from);
   }
 
-  inline RPCWriteUserFileRequest& operator=(RPCWriteUserFileRequest&& from) noexcept {
+  inline RPCWritePeerFileRequest& operator=(RPCWritePeerFileRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -114,30 +114,30 @@ class RPCWriteUserFileRequest : public ::google::protobuf::Message /* @@protoc_i
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCWriteUserFileRequest& default_instance();
+  static const RPCWritePeerFileRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCWriteUserFileRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCWriteUserFileRequest*>(
-               &_RPCWriteUserFileRequest_default_instance_);
+  static inline const RPCWritePeerFileRequest* internal_default_instance() {
+    return reinterpret_cast<const RPCWritePeerFileRequest*>(
+               &_RPCWritePeerFileRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     0;
 
-  void Swap(RPCWriteUserFileRequest* other);
-  friend void swap(RPCWriteUserFileRequest& a, RPCWriteUserFileRequest& b) {
+  void Swap(RPCWritePeerFileRequest* other);
+  friend void swap(RPCWritePeerFileRequest& a, RPCWritePeerFileRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCWriteUserFileRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCWritePeerFileRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCWriteUserFileRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCWritePeerFileRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCWriteUserFileRequest& from);
-  void MergeFrom(const RPCWriteUserFileRequest& from);
+  void CopyFrom(const RPCWritePeerFileRequest& from);
+  void MergeFrom(const RPCWritePeerFileRequest& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -153,7 +153,7 @@ class RPCWriteUserFileRequest : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCWriteUserFileRequest* other);
+  void InternalSwap(RPCWritePeerFileRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -169,49 +169,64 @@ class RPCWriteUserFileRequest : public ::google::protobuf::Message /* @@protoc_i
 
   // accessors -------------------------------------------------------
 
-  // string err = 1;
-  void clear_err();
-  static const int kErrFieldNumber = 1;
-  const ::std::string& err() const;
-  void set_err(const ::std::string& value);
+  // string name = 1;
+  void clear_name();
+  static const int kNameFieldNumber = 1;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
   #if LANG_CXX11
-  void set_err(::std::string&& value);
+  void set_name(::std::string&& value);
   #endif
-  void set_err(const char* value);
-  void set_err(const char* value, size_t size);
-  ::std::string* mutable_err();
-  ::std::string* release_err();
-  void set_allocated_err(::std::string* err);
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
 
-  // @@protoc_insertion_point(class_scope:pb.RPCWriteUserFileRequest)
+  // bytes file = 2;
+  void clear_file();
+  static const int kFileFieldNumber = 2;
+  const ::std::string& file() const;
+  void set_file(const ::std::string& value);
+  #if LANG_CXX11
+  void set_file(::std::string&& value);
+  #endif
+  void set_file(const char* value);
+  void set_file(const void* value, size_t size);
+  ::std::string* mutable_file();
+  ::std::string* release_file();
+  void set_allocated_file(::std::string* file);
+
+  // @@protoc_insertion_point(class_scope:pb.RPCWritePeerFileRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr err_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
+  ::google::protobuf::internal::ArenaStringPtr file_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWriteUserFileRequestImpl();
+  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWritePeerFileRequestImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCWriteUserFileResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCWriteUserFileResponse) */ {
+class RPCWritePeerFileResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCWritePeerFileResponse) */ {
  public:
-  RPCWriteUserFileResponse();
-  virtual ~RPCWriteUserFileResponse();
+  RPCWritePeerFileResponse();
+  virtual ~RPCWritePeerFileResponse();
 
-  RPCWriteUserFileResponse(const RPCWriteUserFileResponse& from);
+  RPCWritePeerFileResponse(const RPCWritePeerFileResponse& from);
 
-  inline RPCWriteUserFileResponse& operator=(const RPCWriteUserFileResponse& from) {
+  inline RPCWritePeerFileResponse& operator=(const RPCWritePeerFileResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCWriteUserFileResponse(RPCWriteUserFileResponse&& from) noexcept
-    : RPCWriteUserFileResponse() {
+  RPCWritePeerFileResponse(RPCWritePeerFileResponse&& from) noexcept
+    : RPCWritePeerFileResponse() {
     *this = ::std::move(from);
   }
 
-  inline RPCWriteUserFileResponse& operator=(RPCWriteUserFileResponse&& from) noexcept {
+  inline RPCWritePeerFileResponse& operator=(RPCWritePeerFileResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -221,30 +236,30 @@ class RPCWriteUserFileResponse : public ::google::protobuf::Message /* @@protoc_
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCWriteUserFileResponse& default_instance();
+  static const RPCWritePeerFileResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCWriteUserFileResponse* internal_default_instance() {
-    return reinterpret_cast<const RPCWriteUserFileResponse*>(
-               &_RPCWriteUserFileResponse_default_instance_);
+  static inline const RPCWritePeerFileResponse* internal_default_instance() {
+    return reinterpret_cast<const RPCWritePeerFileResponse*>(
+               &_RPCWritePeerFileResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     1;
 
-  void Swap(RPCWriteUserFileResponse* other);
-  friend void swap(RPCWriteUserFileResponse& a, RPCWriteUserFileResponse& b) {
+  void Swap(RPCWritePeerFileResponse* other);
+  friend void swap(RPCWritePeerFileResponse& a, RPCWritePeerFileResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCWriteUserFileResponse* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCWritePeerFileResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCWriteUserFileResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCWritePeerFileResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCWriteUserFileResponse& from);
-  void MergeFrom(const RPCWriteUserFileResponse& from);
+  void CopyFrom(const RPCWritePeerFileResponse& from);
+  void MergeFrom(const RPCWritePeerFileResponse& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -260,7 +275,7 @@ class RPCWriteUserFileResponse : public ::google::protobuf::Message /* @@protoc_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCWriteUserFileResponse* other);
+  void InternalSwap(RPCWritePeerFileResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -276,64 +291,41 @@ class RPCWriteUserFileResponse : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // string name = 1;
-  void clear_name();
-  static const int kNameFieldNumber = 1;
-  const ::std::string& name() const;
-  void set_name(const ::std::string& value);
-  #if LANG_CXX11
-  void set_name(::std::string&& value);
-  #endif
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  ::std::string* mutable_name();
-  ::std::string* release_name();
-  void set_allocated_name(::std::string* name);
+  // bool success = 1;
+  void clear_success();
+  static const int kSuccessFieldNumber = 1;
+  bool success() const;
+  void set_success(bool value);
 
-  // bytes file = 2;
-  void clear_file();
-  static const int kFileFieldNumber = 2;
-  const ::std::string& file() const;
-  void set_file(const ::std::string& value);
-  #if LANG_CXX11
-  void set_file(::std::string&& value);
-  #endif
-  void set_file(const char* value);
-  void set_file(const void* value, size_t size);
-  ::std::string* mutable_file();
-  ::std::string* release_file();
-  void set_allocated_file(::std::string* file);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(class_scope:pb.RPCWritePeerFileResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr name_;
-  ::google::protobuf::internal::ArenaStringPtr file_;
+  bool success_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWriteUserFileResponseImpl();
+  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWritePeerFileResponseImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCGetUserFileRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetUserFileRequest) */ {
+class RPCGetPeerFileRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetPeerFileRequest) */ {
  public:
-  RPCGetUserFileRequest();
-  virtual ~RPCGetUserFileRequest();
+  RPCGetPeerFileRequest();
+  virtual ~RPCGetPeerFileRequest();
 
-  RPCGetUserFileRequest(const RPCGetUserFileRequest& from);
+  RPCGetPeerFileRequest(const RPCGetPeerFileRequest& from);
 
-  inline RPCGetUserFileRequest& operator=(const RPCGetUserFileRequest& from) {
+  inline RPCGetPeerFileRequest& operator=(const RPCGetPeerFileRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCGetUserFileRequest(RPCGetUserFileRequest&& from) noexcept
-    : RPCGetUserFileRequest() {
+  RPCGetPeerFileRequest(RPCGetPeerFileRequest&& from) noexcept
+    : RPCGetPeerFileRequest() {
     *this = ::std::move(from);
   }
 
-  inline RPCGetUserFileRequest& operator=(RPCGetUserFileRequest&& from) noexcept {
+  inline RPCGetPeerFileRequest& operator=(RPCGetPeerFileRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -343,30 +335,30 @@ class RPCGetUserFileRequest : public ::google::protobuf::Message /* @@protoc_ins
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCGetUserFileRequest& default_instance();
+  static const RPCGetPeerFileRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCGetUserFileRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCGetUserFileRequest*>(
-               &_RPCGetUserFileRequest_default_instance_);
+  static inline const RPCGetPeerFileRequest* internal_default_instance() {
+    return reinterpret_cast<const RPCGetPeerFileRequest*>(
+               &_RPCGetPeerFileRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     2;
 
-  void Swap(RPCGetUserFileRequest* other);
-  friend void swap(RPCGetUserFileRequest& a, RPCGetUserFileRequest& b) {
+  void Swap(RPCGetPeerFileRequest* other);
+  friend void swap(RPCGetPeerFileRequest& a, RPCGetPeerFileRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCGetUserFileRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCGetPeerFileRequest* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCGetUserFileRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCGetPeerFileRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCGetUserFileRequest& from);
-  void MergeFrom(const RPCGetUserFileRequest& from);
+  void CopyFrom(const RPCGetPeerFileRequest& from);
+  void MergeFrom(const RPCGetPeerFileRequest& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -382,7 +374,7 @@ class RPCGetUserFileRequest : public ::google::protobuf::Message /* @@protoc_ins
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCGetUserFileRequest* other);
+  void InternalSwap(RPCGetPeerFileRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -398,9 +390,23 @@ class RPCGetUserFileRequest : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // string name = 1;
+  // string pId = 1;
+  void clear_pid();
+  static const int kPIdFieldNumber = 1;
+  const ::std::string& pid() const;
+  void set_pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_pid(::std::string&& value);
+  #endif
+  void set_pid(const char* value);
+  void set_pid(const char* value, size_t size);
+  ::std::string* mutable_pid();
+  ::std::string* release_pid();
+  void set_allocated_pid(::std::string* pid);
+
+  // string name = 2;
   void clear_name();
-  static const int kNameFieldNumber = 1;
+  static const int kNameFieldNumber = 2;
   const ::std::string& name() const;
   void set_name(const ::std::string& value);
   #if LANG_CXX11
@@ -412,35 +418,36 @@ class RPCGetUserFileRequest : public ::google::protobuf::Message /* @@protoc_ins
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // @@protoc_insertion_point(class_scope:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(class_scope:pb.RPCGetPeerFileRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr pid_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetUserFileRequestImpl();
+  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileRequestImpl();
 };
 // -------------------------------------------------------------------
 
-class RPCGetUserFileResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetUserFileResponse) */ {
+class RPCGetPeerFileResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetPeerFileResponse) */ {
  public:
-  RPCGetUserFileResponse();
-  virtual ~RPCGetUserFileResponse();
+  RPCGetPeerFileResponse();
+  virtual ~RPCGetPeerFileResponse();
 
-  RPCGetUserFileResponse(const RPCGetUserFileResponse& from);
+  RPCGetPeerFileResponse(const RPCGetPeerFileResponse& from);
 
-  inline RPCGetUserFileResponse& operator=(const RPCGetUserFileResponse& from) {
+  inline RPCGetPeerFileResponse& operator=(const RPCGetPeerFileResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCGetUserFileResponse(RPCGetUserFileResponse&& from) noexcept
-    : RPCGetUserFileResponse() {
+  RPCGetPeerFileResponse(RPCGetPeerFileResponse&& from) noexcept
+    : RPCGetPeerFileResponse() {
     *this = ::std::move(from);
   }
 
-  inline RPCGetUserFileResponse& operator=(RPCGetUserFileResponse&& from) noexcept {
+  inline RPCGetPeerFileResponse& operator=(RPCGetPeerFileResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -450,30 +457,30 @@ class RPCGetUserFileResponse : public ::google::protobuf::Message /* @@protoc_in
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCGetUserFileResponse& default_instance();
+  static const RPCGetPeerFileResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCGetUserFileResponse* internal_default_instance() {
-    return reinterpret_cast<const RPCGetUserFileResponse*>(
-               &_RPCGetUserFileResponse_default_instance_);
+  static inline const RPCGetPeerFileResponse* internal_default_instance() {
+    return reinterpret_cast<const RPCGetPeerFileResponse*>(
+               &_RPCGetPeerFileResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     3;
 
-  void Swap(RPCGetUserFileResponse* other);
-  friend void swap(RPCGetUserFileResponse& a, RPCGetUserFileResponse& b) {
+  void Swap(RPCGetPeerFileResponse* other);
+  friend void swap(RPCGetPeerFileResponse& a, RPCGetPeerFileResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCGetUserFileResponse* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCGetPeerFileResponse* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCGetUserFileResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCGetPeerFileResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCGetUserFileResponse& from);
-  void MergeFrom(const RPCGetUserFileResponse& from);
+  void CopyFrom(const RPCGetPeerFileResponse& from);
+  void MergeFrom(const RPCGetPeerFileResponse& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -489,7 +496,7 @@ class RPCGetUserFileResponse : public ::google::protobuf::Message /* @@protoc_in
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCGetUserFileResponse* other);
+  void InternalSwap(RPCGetPeerFileResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -505,23 +512,9 @@ class RPCGetUserFileResponse : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // string err = 1;
-  void clear_err();
-  static const int kErrFieldNumber = 1;
-  const ::std::string& err() const;
-  void set_err(const ::std::string& value);
-  #if LANG_CXX11
-  void set_err(::std::string&& value);
-  #endif
-  void set_err(const char* value);
-  void set_err(const char* value, size_t size);
-  ::std::string* mutable_err();
-  ::std::string* release_err();
-  void set_allocated_err(::std::string* err);
-
-  // bytes file = 2;
+  // bytes file = 1;
   void clear_file();
-  static const int kFileFieldNumber = 2;
+  static const int kFileFieldNumber = 1;
   const ::std::string& file() const;
   void set_file(const ::std::string& value);
   #if LANG_CXX11
@@ -533,15 +526,14 @@ class RPCGetUserFileResponse : public ::google::protobuf::Message /* @@protoc_in
   ::std::string* release_file();
   void set_allocated_file(::std::string* file);
 
-  // @@protoc_insertion_point(class_scope:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(class_scope:pb.RPCGetPeerFileResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr err_;
   ::google::protobuf::internal::ArenaStringPtr file_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetUserFileResponseImpl();
+  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileResponseImpl();
 };
 // -------------------------------------------------------------------
 
@@ -734,23 +726,9 @@ class RPCGetPublisherFileResponse : public ::google::protobuf::Message /* @@prot
 
   // accessors -------------------------------------------------------
 
-  // string err = 1;
-  void clear_err();
-  static const int kErrFieldNumber = 1;
-  const ::std::string& err() const;
-  void set_err(const ::std::string& value);
-  #if LANG_CXX11
-  void set_err(::std::string&& value);
-  #endif
-  void set_err(const char* value);
-  void set_err(const char* value, size_t size);
-  ::std::string* mutable_err();
-  ::std::string* release_err();
-  void set_allocated_err(::std::string* err);
-
-  // bytes file = 2;
+  // bytes file = 1;
   void clear_file();
-  static const int kFileFieldNumber = 2;
+  static const int kFileFieldNumber = 1;
   const ::std::string& file() const;
   void set_file(const ::std::string& value);
   #if LANG_CXX11
@@ -766,7 +744,6 @@ class RPCGetPublisherFileResponse : public ::google::protobuf::Message /* @@prot
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr err_;
   ::google::protobuf::internal::ArenaStringPtr file_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
@@ -781,336 +758,297 @@ class RPCGetPublisherFileResponse : public ::google::protobuf::Message /* @@prot
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// RPCWriteUserFileRequest
-
-// string err = 1;
-inline void RPCWriteUserFileRequest::clear_err() {
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCWriteUserFileRequest::err() const {
-  // @@protoc_insertion_point(field_get:pb.RPCWriteUserFileRequest.err)
-  return err_.GetNoArena();
-}
-inline void RPCWriteUserFileRequest::set_err(const ::std::string& value) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCWriteUserFileRequest.err)
-}
-#if LANG_CXX11
-inline void RPCWriteUserFileRequest::set_err(::std::string&& value) {
-  
-  err_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCWriteUserFileRequest.err)
-}
-#endif
-inline void RPCWriteUserFileRequest::set_err(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCWriteUserFileRequest.err)
-}
-inline void RPCWriteUserFileRequest::set_err(const char* value, size_t size) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCWriteUserFileRequest.err)
-}
-inline ::std::string* RPCWriteUserFileRequest::mutable_err() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCWriteUserFileRequest.err)
-  return err_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCWriteUserFileRequest::release_err() {
-  // @@protoc_insertion_point(field_release:pb.RPCWriteUserFileRequest.err)
-  
-  return err_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCWriteUserFileRequest::set_allocated_err(::std::string* err) {
-  if (err != NULL) {
-    
-  } else {
-    
-  }
-  err_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), err);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCWriteUserFileRequest.err)
-}
-
-// -------------------------------------------------------------------
-
-// RPCWriteUserFileResponse
+// RPCWritePeerFileRequest
 
 // string name = 1;
-inline void RPCWriteUserFileResponse::clear_name() {
+inline void RPCWritePeerFileRequest::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCWriteUserFileResponse::name() const {
-  // @@protoc_insertion_point(field_get:pb.RPCWriteUserFileResponse.name)
+inline const ::std::string& RPCWritePeerFileRequest::name() const {
+  // @@protoc_insertion_point(field_get:pb.RPCWritePeerFileRequest.name)
   return name_.GetNoArena();
 }
-inline void RPCWriteUserFileResponse::set_name(const ::std::string& value) {
+inline void RPCWritePeerFileRequest::set_name(const ::std::string& value) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCWriteUserFileResponse.name)
+  // @@protoc_insertion_point(field_set:pb.RPCWritePeerFileRequest.name)
 }
 #if LANG_CXX11
-inline void RPCWriteUserFileResponse::set_name(::std::string&& value) {
+inline void RPCWritePeerFileRequest::set_name(::std::string&& value) {
   
   name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCWriteUserFileResponse.name)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCWritePeerFileRequest.name)
 }
 #endif
-inline void RPCWriteUserFileResponse::set_name(const char* value) {
+inline void RPCWritePeerFileRequest::set_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCWriteUserFileResponse.name)
+  // @@protoc_insertion_point(field_set_char:pb.RPCWritePeerFileRequest.name)
 }
-inline void RPCWriteUserFileResponse::set_name(const char* value, size_t size) {
+inline void RPCWritePeerFileRequest::set_name(const char* value, size_t size) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCWriteUserFileResponse.name)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCWritePeerFileRequest.name)
 }
-inline ::std::string* RPCWriteUserFileResponse::mutable_name() {
+inline ::std::string* RPCWritePeerFileRequest::mutable_name() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCWriteUserFileResponse.name)
+  // @@protoc_insertion_point(field_mutable:pb.RPCWritePeerFileRequest.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCWriteUserFileResponse::release_name() {
-  // @@protoc_insertion_point(field_release:pb.RPCWriteUserFileResponse.name)
+inline ::std::string* RPCWritePeerFileRequest::release_name() {
+  // @@protoc_insertion_point(field_release:pb.RPCWritePeerFileRequest.name)
   
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCWriteUserFileResponse::set_allocated_name(::std::string* name) {
+inline void RPCWritePeerFileRequest::set_allocated_name(::std::string* name) {
   if (name != NULL) {
     
   } else {
     
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCWriteUserFileResponse.name)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCWritePeerFileRequest.name)
 }
 
 // bytes file = 2;
-inline void RPCWriteUserFileResponse::clear_file() {
+inline void RPCWritePeerFileRequest::clear_file() {
   file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCWriteUserFileResponse::file() const {
-  // @@protoc_insertion_point(field_get:pb.RPCWriteUserFileResponse.file)
+inline const ::std::string& RPCWritePeerFileRequest::file() const {
+  // @@protoc_insertion_point(field_get:pb.RPCWritePeerFileRequest.file)
   return file_.GetNoArena();
 }
-inline void RPCWriteUserFileResponse::set_file(const ::std::string& value) {
+inline void RPCWritePeerFileRequest::set_file(const ::std::string& value) {
   
   file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCWriteUserFileResponse.file)
+  // @@protoc_insertion_point(field_set:pb.RPCWritePeerFileRequest.file)
 }
 #if LANG_CXX11
-inline void RPCWriteUserFileResponse::set_file(::std::string&& value) {
+inline void RPCWritePeerFileRequest::set_file(::std::string&& value) {
   
   file_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCWriteUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCWritePeerFileRequest.file)
 }
 #endif
-inline void RPCWriteUserFileResponse::set_file(const char* value) {
+inline void RPCWritePeerFileRequest::set_file(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCWriteUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_char:pb.RPCWritePeerFileRequest.file)
 }
-inline void RPCWriteUserFileResponse::set_file(const void* value, size_t size) {
+inline void RPCWritePeerFileRequest::set_file(const void* value, size_t size) {
   
   file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCWriteUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCWritePeerFileRequest.file)
 }
-inline ::std::string* RPCWriteUserFileResponse::mutable_file() {
+inline ::std::string* RPCWritePeerFileRequest::mutable_file() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCWriteUserFileResponse.file)
+  // @@protoc_insertion_point(field_mutable:pb.RPCWritePeerFileRequest.file)
   return file_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCWriteUserFileResponse::release_file() {
-  // @@protoc_insertion_point(field_release:pb.RPCWriteUserFileResponse.file)
+inline ::std::string* RPCWritePeerFileRequest::release_file() {
+  // @@protoc_insertion_point(field_release:pb.RPCWritePeerFileRequest.file)
   
   return file_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCWriteUserFileResponse::set_allocated_file(::std::string* file) {
+inline void RPCWritePeerFileRequest::set_allocated_file(::std::string* file) {
   if (file != NULL) {
     
   } else {
     
   }
   file_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCWriteUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCWritePeerFileRequest.file)
 }
 
 // -------------------------------------------------------------------
 
-// RPCGetUserFileRequest
+// RPCWritePeerFileResponse
 
-// string name = 1;
-inline void RPCGetUserFileRequest::clear_name() {
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// bool success = 1;
+inline void RPCWritePeerFileResponse::clear_success() {
+  success_ = false;
 }
-inline const ::std::string& RPCGetUserFileRequest::name() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetUserFileRequest.name)
-  return name_.GetNoArena();
+inline bool RPCWritePeerFileResponse::success() const {
+  // @@protoc_insertion_point(field_get:pb.RPCWritePeerFileResponse.success)
+  return success_;
 }
-inline void RPCGetUserFileRequest::set_name(const ::std::string& value) {
+inline void RPCWritePeerFileResponse::set_success(bool value) {
   
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetUserFileRequest.name)
+  success_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCWritePeerFileResponse.success)
+}
+
+// -------------------------------------------------------------------
+
+// RPCGetPeerFileRequest
+
+// string pId = 1;
+inline void RPCGetPeerFileRequest::clear_pid() {
+  pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCGetPeerFileRequest::pid() const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetPeerFileRequest.pId)
+  return pid_.GetNoArena();
+}
+inline void RPCGetPeerFileRequest::set_pid(const ::std::string& value) {
+  
+  pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCGetPeerFileRequest.pId)
 }
 #if LANG_CXX11
-inline void RPCGetUserFileRequest::set_name(::std::string&& value) {
+inline void RPCGetPeerFileRequest::set_pid(::std::string&& value) {
+  
+  pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPeerFileRequest.pId)
+}
+#endif
+inline void RPCGetPeerFileRequest::set_pid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.RPCGetPeerFileRequest.pId)
+}
+inline void RPCGetPeerFileRequest::set_pid(const char* value, size_t size) {
+  
+  pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPeerFileRequest.pId)
+}
+inline ::std::string* RPCGetPeerFileRequest::mutable_pid() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetPeerFileRequest.pId)
+  return pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RPCGetPeerFileRequest::release_pid() {
+  // @@protoc_insertion_point(field_release:pb.RPCGetPeerFileRequest.pId)
+  
+  return pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RPCGetPeerFileRequest::set_allocated_pid(::std::string* pid) {
+  if (pid != NULL) {
+    
+  } else {
+    
+  }
+  pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), pid);
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPeerFileRequest.pId)
+}
+
+// string name = 2;
+inline void RPCGetPeerFileRequest::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCGetPeerFileRequest::name() const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetPeerFileRequest.name)
+  return name_.GetNoArena();
+}
+inline void RPCGetPeerFileRequest::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCGetPeerFileRequest.name)
+}
+#if LANG_CXX11
+inline void RPCGetPeerFileRequest::set_name(::std::string&& value) {
   
   name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetUserFileRequest.name)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPeerFileRequest.name)
 }
 #endif
-inline void RPCGetUserFileRequest::set_name(const char* value) {
+inline void RPCGetPeerFileRequest::set_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetUserFileRequest.name)
+  // @@protoc_insertion_point(field_set_char:pb.RPCGetPeerFileRequest.name)
 }
-inline void RPCGetUserFileRequest::set_name(const char* value, size_t size) {
+inline void RPCGetPeerFileRequest::set_name(const char* value, size_t size) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetUserFileRequest.name)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPeerFileRequest.name)
 }
-inline ::std::string* RPCGetUserFileRequest::mutable_name() {
+inline ::std::string* RPCGetPeerFileRequest::mutable_name() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetUserFileRequest.name)
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetPeerFileRequest.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCGetUserFileRequest::release_name() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetUserFileRequest.name)
+inline ::std::string* RPCGetPeerFileRequest::release_name() {
+  // @@protoc_insertion_point(field_release:pb.RPCGetPeerFileRequest.name)
   
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCGetUserFileRequest::set_allocated_name(::std::string* name) {
+inline void RPCGetPeerFileRequest::set_allocated_name(::std::string* name) {
   if (name != NULL) {
     
   } else {
     
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetUserFileRequest.name)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPeerFileRequest.name)
 }
 
 // -------------------------------------------------------------------
 
-// RPCGetUserFileResponse
+// RPCGetPeerFileResponse
 
-// string err = 1;
-inline void RPCGetUserFileResponse::clear_err() {
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCGetUserFileResponse::err() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetUserFileResponse.err)
-  return err_.GetNoArena();
-}
-inline void RPCGetUserFileResponse::set_err(const ::std::string& value) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetUserFileResponse.err)
-}
-#if LANG_CXX11
-inline void RPCGetUserFileResponse::set_err(::std::string&& value) {
-  
-  err_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetUserFileResponse.err)
-}
-#endif
-inline void RPCGetUserFileResponse::set_err(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetUserFileResponse.err)
-}
-inline void RPCGetUserFileResponse::set_err(const char* value, size_t size) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetUserFileResponse.err)
-}
-inline ::std::string* RPCGetUserFileResponse::mutable_err() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetUserFileResponse.err)
-  return err_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCGetUserFileResponse::release_err() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetUserFileResponse.err)
-  
-  return err_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCGetUserFileResponse::set_allocated_err(::std::string* err) {
-  if (err != NULL) {
-    
-  } else {
-    
-  }
-  err_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), err);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetUserFileResponse.err)
-}
-
-// bytes file = 2;
-inline void RPCGetUserFileResponse::clear_file() {
+// bytes file = 1;
+inline void RPCGetPeerFileResponse::clear_file() {
   file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCGetUserFileResponse::file() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetUserFileResponse.file)
+inline const ::std::string& RPCGetPeerFileResponse::file() const {
+  // @@protoc_insertion_point(field_get:pb.RPCGetPeerFileResponse.file)
   return file_.GetNoArena();
 }
-inline void RPCGetUserFileResponse::set_file(const ::std::string& value) {
+inline void RPCGetPeerFileResponse::set_file(const ::std::string& value) {
   
   file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetUserFileResponse.file)
+  // @@protoc_insertion_point(field_set:pb.RPCGetPeerFileResponse.file)
 }
 #if LANG_CXX11
-inline void RPCGetUserFileResponse::set_file(::std::string&& value) {
+inline void RPCGetPeerFileResponse::set_file(::std::string&& value) {
   
   file_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPeerFileResponse.file)
 }
 #endif
-inline void RPCGetUserFileResponse::set_file(const char* value) {
+inline void RPCGetPeerFileResponse::set_file(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_char:pb.RPCGetPeerFileResponse.file)
 }
-inline void RPCGetUserFileResponse::set_file(const void* value, size_t size) {
+inline void RPCGetPeerFileResponse::set_file(const void* value, size_t size) {
   
   file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPeerFileResponse.file)
 }
-inline ::std::string* RPCGetUserFileResponse::mutable_file() {
+inline ::std::string* RPCGetPeerFileResponse::mutable_file() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetUserFileResponse.file)
+  // @@protoc_insertion_point(field_mutable:pb.RPCGetPeerFileResponse.file)
   return file_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCGetUserFileResponse::release_file() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetUserFileResponse.file)
+inline ::std::string* RPCGetPeerFileResponse::release_file() {
+  // @@protoc_insertion_point(field_release:pb.RPCGetPeerFileResponse.file)
   
   return file_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCGetUserFileResponse::set_allocated_file(::std::string* file) {
+inline void RPCGetPeerFileResponse::set_allocated_file(::std::string* file) {
   if (file != NULL) {
     
   } else {
     
   }
   file_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetUserFileResponse.file)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPeerFileResponse.file)
 }
 
 // -------------------------------------------------------------------
@@ -1174,60 +1112,7 @@ inline void RPCGetPublisherFileRequest::set_allocated_name(::std::string* name) 
 
 // RPCGetPublisherFileResponse
 
-// string err = 1;
-inline void RPCGetPublisherFileResponse::clear_err() {
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCGetPublisherFileResponse::err() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetPublisherFileResponse.err)
-  return err_.GetNoArena();
-}
-inline void RPCGetPublisherFileResponse::set_err(const ::std::string& value) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetPublisherFileResponse.err)
-}
-#if LANG_CXX11
-inline void RPCGetPublisherFileResponse::set_err(::std::string&& value) {
-  
-  err_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPublisherFileResponse.err)
-}
-#endif
-inline void RPCGetPublisherFileResponse::set_err(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetPublisherFileResponse.err)
-}
-inline void RPCGetPublisherFileResponse::set_err(const char* value, size_t size) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPublisherFileResponse.err)
-}
-inline ::std::string* RPCGetPublisherFileResponse::mutable_err() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetPublisherFileResponse.err)
-  return err_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCGetPublisherFileResponse::release_err() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetPublisherFileResponse.err)
-  
-  return err_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCGetPublisherFileResponse::set_allocated_err(::std::string* err) {
-  if (err != NULL) {
-    
-  } else {
-    
-  }
-  err_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), err);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPublisherFileResponse.err)
-}
-
-// bytes file = 2;
+// bytes file = 1;
 inline void RPCGetPublisherFileResponse::clear_file() {
   file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

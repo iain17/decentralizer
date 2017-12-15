@@ -38,10 +38,10 @@ It has these top-level messages:
 	RPCDirectMessageRequest
 	RPCHealthRequest
 	RPCHealthReply
-	RPCWriteUserFileRequest
-	RPCWriteUserFileResponse
-	RPCGetUserFileRequest
-	RPCGetUserFileResponse
+	RPCWritePeerFileRequest
+	RPCWritePeerFileResponse
+	RPCGetPeerFileRequest
+	RPCGetPeerFileResponse
 	RPCGetPublisherFileRequest
 	RPCGetPublisherFileResponse
 */

@@ -44,10 +44,10 @@ service Decentralizer {
 	//
 	// Storage
 	//
-	// Write a user file. Takes a file name and the data it should save.
-	rpc WriteUserFile(RPCWriteUserFileRequest) returns (RPCWriteUserFileResponse) {}
-	// Get a user file. Takes a file name, returns the file.
-	rpc GetUserFile(RPCGetUserFileRequest) returns (RPCGetUserFileResponse) {}
+	// Write a peer file. Takes a file name and the data it should save.
+	rpc WritePeerFile(RPCWritePeerFileRequest) returns (RPCWritePeerFileResponse) {}
+	// Get a peer file. Takes a file name, returns the file.
+	rpc GetPeerFile(RPCGetPeerFileRequest) returns (RPCGetPeerFileResponse) {}
 	// Get a publisher file.
 	rpc GetPublisherFile(RPCGetPublisherFileRequest) returns (RPCGetPublisherFileResponse) {}
 

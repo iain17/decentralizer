@@ -2,22 +2,22 @@ syntax = "proto3";
 package pb;
 
 //RPC
-message RPCWriteUserFileRequest {
-    string err = 1;
-}
-
-message RPCWriteUserFileResponse {
+message RPCWritePeerFileRequest {
     string name = 1;
     bytes file = 2;
 }
 
-message RPCGetUserFileRequest {
-    string name = 1;
+message RPCWritePeerFileResponse {
+    bool success = 1;
 }
 
-message RPCGetUserFileResponse {
-    string err = 1;
-    bytes file = 2;
+message RPCGetPeerFileRequest {
+    string pId = 1;
+    string name = 2;
+}
+
+message RPCGetPeerFileResponse {
+    bytes file = 1;
 }
 
 message RPCGetPublisherFileRequest {
@@ -25,6 +25,5 @@ message RPCGetPublisherFileRequest {
 }
 
 message RPCGetPublisherFileResponse {
-    string err = 1;
-    bytes file = 2;
+    bytes file = 1;
 }

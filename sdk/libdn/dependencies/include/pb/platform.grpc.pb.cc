@@ -24,8 +24,8 @@ static const char* Decentralizer_method_names[] = {
   "/pb.Decentralizer/UpsertPeer",
   "/pb.Decentralizer/GetPeerIds",
   "/pb.Decentralizer/GetPeer",
-  "/pb.Decentralizer/WriteUserFile",
-  "/pb.Decentralizer/GetUserFile",
+  "/pb.Decentralizer/WritePeerFile",
+  "/pb.Decentralizer/GetPeerFile",
   "/pb.Decentralizer/GetPublisherFile",
   "/pb.Decentralizer/SendDirectMessage",
 };
@@ -44,8 +44,8 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_UpsertPeer_(Decentralizer_method_names[5], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetPeerIds_(Decentralizer_method_names[6], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetPeer_(Decentralizer_method_names[7], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_WriteUserFile_(Decentralizer_method_names[8], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetUserFile_(Decentralizer_method_names[9], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_WritePeerFile_(Decentralizer_method_names[8], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPeerFile_(Decentralizer_method_names[9], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetPublisherFile_(Decentralizer_method_names[10], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SendDirectMessage_(Decentralizer_method_names[11], ::grpc::RpcMethod::NORMAL_RPC, channel)
   {}
@@ -146,28 +146,28 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerResponse>::Create(channel_.get(), cq, rpcmethod_GetPeer_, context, request, false);
 }
 
-::grpc::Status Decentralizer::Stub::WriteUserFile(::grpc::ClientContext* context, const ::pb::RPCWriteUserFileRequest& request, ::pb::RPCWriteUserFileResponse* response) {
-  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_WriteUserFile_, context, request, response);
+::grpc::Status Decentralizer::Stub::WritePeerFile(::grpc::ClientContext* context, const ::pb::RPCWritePeerFileRequest& request, ::pb::RPCWritePeerFileResponse* response) {
+  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_WritePeerFile_, context, request, response);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::RPCWriteUserFileResponse>* Decentralizer::Stub::AsyncWriteUserFileRaw(::grpc::ClientContext* context, const ::pb::RPCWriteUserFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCWriteUserFileResponse>::Create(channel_.get(), cq, rpcmethod_WriteUserFile_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::pb::RPCWritePeerFileResponse>* Decentralizer::Stub::AsyncWritePeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCWritePeerFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCWritePeerFileResponse>::Create(channel_.get(), cq, rpcmethod_WritePeerFile_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::RPCWriteUserFileResponse>* Decentralizer::Stub::PrepareAsyncWriteUserFileRaw(::grpc::ClientContext* context, const ::pb::RPCWriteUserFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCWriteUserFileResponse>::Create(channel_.get(), cq, rpcmethod_WriteUserFile_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::pb::RPCWritePeerFileResponse>* Decentralizer::Stub::PrepareAsyncWritePeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCWritePeerFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCWritePeerFileResponse>::Create(channel_.get(), cq, rpcmethod_WritePeerFile_, context, request, false);
 }
 
-::grpc::Status Decentralizer::Stub::GetUserFile(::grpc::ClientContext* context, const ::pb::RPCGetUserFileRequest& request, ::pb::RPCGetUserFileResponse* response) {
-  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetUserFile_, context, request, response);
+::grpc::Status Decentralizer::Stub::GetPeerFile(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::pb::RPCGetPeerFileResponse* response) {
+  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetPeerFile_, context, request, response);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::RPCGetUserFileResponse>* Decentralizer::Stub::AsyncGetUserFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetUserFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetUserFileResponse>::Create(channel_.get(), cq, rpcmethod_GetUserFile_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>* Decentralizer::Stub::AsyncGetPeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPeerFile_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::RPCGetUserFileResponse>* Decentralizer::Stub::PrepareAsyncGetUserFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetUserFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetUserFileResponse>::Create(channel_.get(), cq, rpcmethod_GetUserFile_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>* Decentralizer::Stub::PrepareAsyncGetPeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPeerFile_, context, request, false);
 }
 
 ::grpc::Status Decentralizer::Stub::GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) {
@@ -238,13 +238,13 @@ Decentralizer::Service::Service() {
   AddMethod(new ::grpc::RpcServiceMethod(
       Decentralizer_method_names[8],
       ::grpc::RpcMethod::NORMAL_RPC,
-      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCWriteUserFileRequest, ::pb::RPCWriteUserFileResponse>(
-          std::mem_fn(&Decentralizer::Service::WriteUserFile), this)));
+      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCWritePeerFileRequest, ::pb::RPCWritePeerFileResponse>(
+          std::mem_fn(&Decentralizer::Service::WritePeerFile), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
       Decentralizer_method_names[9],
       ::grpc::RpcMethod::NORMAL_RPC,
-      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetUserFileRequest, ::pb::RPCGetUserFileResponse>(
-          std::mem_fn(&Decentralizer::Service::GetUserFile), this)));
+      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPeerFileRequest, ::pb::RPCGetPeerFileResponse>(
+          std::mem_fn(&Decentralizer::Service::GetPeerFile), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
       Decentralizer_method_names[10],
       ::grpc::RpcMethod::NORMAL_RPC,
@@ -316,14 +316,14 @@ Decentralizer::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Decentralizer::Service::WriteUserFile(::grpc::ServerContext* context, const ::pb::RPCWriteUserFileRequest* request, ::pb::RPCWriteUserFileResponse* response) {
+::grpc::Status Decentralizer::Service::WritePeerFile(::grpc::ServerContext* context, const ::pb::RPCWritePeerFileRequest* request, ::pb::RPCWritePeerFileResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Decentralizer::Service::GetUserFile(::grpc::ServerContext* context, const ::pb::RPCGetUserFileRequest* request, ::pb::RPCGetUserFileResponse* response) {
+::grpc::Status Decentralizer::Service::GetPeerFile(::grpc::ServerContext* context, const ::pb::RPCGetPeerFileRequest* request, ::pb::RPCGetPeerFileResponse* response) {
   (void) context;
   (void) request;
   (void) response;

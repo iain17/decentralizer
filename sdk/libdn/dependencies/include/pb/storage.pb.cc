@@ -20,26 +20,26 @@
 #endif
 // @@protoc_insertion_point(includes)
 namespace pb {
-class RPCWriteUserFileRequestDefaultTypeInternal {
+class RPCWritePeerFileRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCWriteUserFileRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCWritePeerFileRequest>
       _instance;
-} _RPCWriteUserFileRequest_default_instance_;
-class RPCWriteUserFileResponseDefaultTypeInternal {
+} _RPCWritePeerFileRequest_default_instance_;
+class RPCWritePeerFileResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCWriteUserFileResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCWritePeerFileResponse>
       _instance;
-} _RPCWriteUserFileResponse_default_instance_;
-class RPCGetUserFileRequestDefaultTypeInternal {
+} _RPCWritePeerFileResponse_default_instance_;
+class RPCGetPeerFileRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetUserFileRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetPeerFileRequest>
       _instance;
-} _RPCGetUserFileRequest_default_instance_;
-class RPCGetUserFileResponseDefaultTypeInternal {
+} _RPCGetPeerFileRequest_default_instance_;
+class RPCGetPeerFileResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetUserFileResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetPeerFileResponse>
       _instance;
-} _RPCGetUserFileResponse_default_instance_;
+} _RPCGetPeerFileResponse_default_instance_;
 class RPCGetPublisherFileRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<RPCGetPublisherFileRequest>
@@ -52,7 +52,7 @@ class RPCGetPublisherFileResponseDefaultTypeInternal {
 } _RPCGetPublisherFileResponse_default_instance_;
 }  // namespace pb
 namespace protobuf_pb_2fstorage_2eproto {
-void InitDefaultsRPCWriteUserFileRequestImpl() {
+void InitDefaultsRPCWritePeerFileRequestImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -61,19 +61,19 @@ void InitDefaultsRPCWriteUserFileRequestImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_RPCWriteUserFileRequest_default_instance_;
-    new (ptr) ::pb::RPCWriteUserFileRequest();
+    void* ptr = &::pb::_RPCWritePeerFileRequest_default_instance_;
+    new (ptr) ::pb::RPCWritePeerFileRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::RPCWriteUserFileRequest::InitAsDefaultInstance();
+  ::pb::RPCWritePeerFileRequest::InitAsDefaultInstance();
 }
 
-void InitDefaultsRPCWriteUserFileRequest() {
+void InitDefaultsRPCWritePeerFileRequest() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCWriteUserFileRequestImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCWritePeerFileRequestImpl);
 }
 
-void InitDefaultsRPCWriteUserFileResponseImpl() {
+void InitDefaultsRPCWritePeerFileResponseImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -82,19 +82,19 @@ void InitDefaultsRPCWriteUserFileResponseImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_RPCWriteUserFileResponse_default_instance_;
-    new (ptr) ::pb::RPCWriteUserFileResponse();
+    void* ptr = &::pb::_RPCWritePeerFileResponse_default_instance_;
+    new (ptr) ::pb::RPCWritePeerFileResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::RPCWriteUserFileResponse::InitAsDefaultInstance();
+  ::pb::RPCWritePeerFileResponse::InitAsDefaultInstance();
 }
 
-void InitDefaultsRPCWriteUserFileResponse() {
+void InitDefaultsRPCWritePeerFileResponse() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCWriteUserFileResponseImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCWritePeerFileResponseImpl);
 }
 
-void InitDefaultsRPCGetUserFileRequestImpl() {
+void InitDefaultsRPCGetPeerFileRequestImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -103,19 +103,19 @@ void InitDefaultsRPCGetUserFileRequestImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_RPCGetUserFileRequest_default_instance_;
-    new (ptr) ::pb::RPCGetUserFileRequest();
+    void* ptr = &::pb::_RPCGetPeerFileRequest_default_instance_;
+    new (ptr) ::pb::RPCGetPeerFileRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::RPCGetUserFileRequest::InitAsDefaultInstance();
+  ::pb::RPCGetPeerFileRequest::InitAsDefaultInstance();
 }
 
-void InitDefaultsRPCGetUserFileRequest() {
+void InitDefaultsRPCGetPeerFileRequest() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetUserFileRequestImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetPeerFileRequestImpl);
 }
 
-void InitDefaultsRPCGetUserFileResponseImpl() {
+void InitDefaultsRPCGetPeerFileResponseImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -124,16 +124,16 @@ void InitDefaultsRPCGetUserFileResponseImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_RPCGetUserFileResponse_default_instance_;
-    new (ptr) ::pb::RPCGetUserFileResponse();
+    void* ptr = &::pb::_RPCGetPeerFileResponse_default_instance_;
+    new (ptr) ::pb::RPCGetPeerFileResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::RPCGetUserFileResponse::InitAsDefaultInstance();
+  ::pb::RPCGetPeerFileResponse::InitAsDefaultInstance();
 }
 
-void InitDefaultsRPCGetUserFileResponse() {
+void InitDefaultsRPCGetPeerFileResponse() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetUserFileResponseImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetPeerFileResponseImpl);
 }
 
 void InitDefaultsRPCGetPublisherFileRequestImpl() {
@@ -182,31 +182,31 @@ void InitDefaultsRPCGetPublisherFileResponse() {
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWriteUserFileRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWritePeerFileRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWriteUserFileRequest, err_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWritePeerFileRequest, name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWritePeerFileRequest, file_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWriteUserFileResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWritePeerFileResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWriteUserFileResponse, name_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWriteUserFileResponse, file_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCWritePeerFileResponse, success_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetUserFileRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerFileRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetUserFileRequest, name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerFileRequest, pid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerFileRequest, name_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetUserFileResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerFileResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetUserFileResponse, err_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetUserFileResponse, file_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerFileResponse, file_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -218,23 +218,22 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileResponse, err_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileResponse, file_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::pb::RPCWriteUserFileRequest)},
-  { 6, -1, sizeof(::pb::RPCWriteUserFileResponse)},
-  { 13, -1, sizeof(::pb::RPCGetUserFileRequest)},
-  { 19, -1, sizeof(::pb::RPCGetUserFileResponse)},
+  { 0, -1, sizeof(::pb::RPCWritePeerFileRequest)},
+  { 7, -1, sizeof(::pb::RPCWritePeerFileResponse)},
+  { 13, -1, sizeof(::pb::RPCGetPeerFileRequest)},
+  { 20, -1, sizeof(::pb::RPCGetPeerFileResponse)},
   { 26, -1, sizeof(::pb::RPCGetPublisherFileRequest)},
   { 32, -1, sizeof(::pb::RPCGetPublisherFileResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCWriteUserFileRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCWriteUserFileResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetUserFileRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetUserFileResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCWritePeerFileRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCWritePeerFileResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetPeerFileRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetPeerFileResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetPublisherFileRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetPublisherFileResponse_default_instance_),
 };
@@ -261,17 +260,17 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\020pb/storage.proto\022\002pb\"&\n\027RPCWriteUserFi"
-      "leRequest\022\013\n\003err\030\001 \001(\t\"6\n\030RPCWriteUserFi"
-      "leResponse\022\014\n\004name\030\001 \001(\t\022\014\n\004file\030\002 \001(\014\"%"
-      "\n\025RPCGetUserFileRequest\022\014\n\004name\030\001 \001(\t\"3\n"
-      "\026RPCGetUserFileResponse\022\013\n\003err\030\001 \001(\t\022\014\n\004"
-      "file\030\002 \001(\014\"*\n\032RPCGetPublisherFileRequest"
-      "\022\014\n\004name\030\001 \001(\t\"8\n\033RPCGetPublisherFileRes"
-      "ponse\022\013\n\003err\030\001 \001(\t\022\014\n\004file\030\002 \001(\014b\006proto3"
+      "\n\020pb/storage.proto\022\002pb\"5\n\027RPCWritePeerFi"
+      "leRequest\022\014\n\004name\030\001 \001(\t\022\014\n\004file\030\002 \001(\014\"+\n"
+      "\030RPCWritePeerFileResponse\022\017\n\007success\030\001 \001"
+      "(\010\"2\n\025RPCGetPeerFileRequest\022\013\n\003pId\030\001 \001(\t"
+      "\022\014\n\004name\030\002 \001(\t\"&\n\026RPCGetPeerFileResponse"
+      "\022\014\n\004file\030\001 \001(\014\"*\n\032RPCGetPublisherFileReq"
+      "uest\022\014\n\004name\030\001 \001(\t\"+\n\033RPCGetPublisherFil"
+      "eResponse\022\014\n\004file\030\001 \001(\014b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 320);
+      descriptor, 311);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/storage.proto", &protobuf_RegisterTypes);
 }
@@ -291,278 +290,22 @@ namespace pb {
 
 // ===================================================================
 
-void RPCWriteUserFileRequest::InitAsDefaultInstance() {
+void RPCWritePeerFileRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCWriteUserFileRequest::kErrFieldNumber;
+const int RPCWritePeerFileRequest::kNameFieldNumber;
+const int RPCWritePeerFileRequest::kFileFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-RPCWriteUserFileRequest::RPCWriteUserFileRequest()
+RPCWritePeerFileRequest::RPCWritePeerFileRequest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWriteUserFileRequest();
+    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWritePeerFileRequest();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.RPCWriteUserFileRequest)
+  // @@protoc_insertion_point(constructor:pb.RPCWritePeerFileRequest)
 }
-RPCWriteUserFileRequest::RPCWriteUserFileRequest(const RPCWriteUserFileRequest& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      _cached_size_(0) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.err().size() > 0) {
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
-  // @@protoc_insertion_point(copy_constructor:pb.RPCWriteUserFileRequest)
-}
-
-void RPCWriteUserFileRequest::SharedCtor() {
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  _cached_size_ = 0;
-}
-
-RPCWriteUserFileRequest::~RPCWriteUserFileRequest() {
-  // @@protoc_insertion_point(destructor:pb.RPCWriteUserFileRequest)
-  SharedDtor();
-}
-
-void RPCWriteUserFileRequest::SharedDtor() {
-  err_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-
-void RPCWriteUserFileRequest::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* RPCWriteUserFileRequest::descriptor() {
-  ::protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const RPCWriteUserFileRequest& RPCWriteUserFileRequest::default_instance() {
-  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWriteUserFileRequest();
-  return *internal_default_instance();
-}
-
-RPCWriteUserFileRequest* RPCWriteUserFileRequest::New(::google::protobuf::Arena* arena) const {
-  RPCWriteUserFileRequest* n = new RPCWriteUserFileRequest;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
-
-void RPCWriteUserFileRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.RPCWriteUserFileRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
-}
-
-bool RPCWriteUserFileRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.RPCWriteUserFileRequest)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string err = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_err()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->err().data(), static_cast<int>(this->err().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCWriteUserFileRequest.err"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:pb.RPCWriteUserFileRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:pb.RPCWriteUserFileRequest)
-  return false;
-#undef DO_
-}
-
-void RPCWriteUserFileRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.RPCWriteUserFileRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCWriteUserFileRequest.err");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->err(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:pb.RPCWriteUserFileRequest)
-}
-
-::google::protobuf::uint8* RPCWriteUserFileRequest::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCWriteUserFileRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCWriteUserFileRequest.err");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->err(), target);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCWriteUserFileRequest)
-  return target;
-}
-
-size_t RPCWriteUserFileRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.RPCWriteUserFileRequest)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // string err = 1;
-  if (this->err().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->err());
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = cached_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void RPCWriteUserFileRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCWriteUserFileRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  const RPCWriteUserFileRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const RPCWriteUserFileRequest>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCWriteUserFileRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCWriteUserFileRequest)
-    MergeFrom(*source);
-  }
-}
-
-void RPCWriteUserFileRequest::MergeFrom(const RPCWriteUserFileRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCWriteUserFileRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.err().size() > 0) {
-
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
-}
-
-void RPCWriteUserFileRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCWriteUserFileRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void RPCWriteUserFileRequest::CopyFrom(const RPCWriteUserFileRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCWriteUserFileRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool RPCWriteUserFileRequest::IsInitialized() const {
-  return true;
-}
-
-void RPCWriteUserFileRequest::Swap(RPCWriteUserFileRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void RPCWriteUserFileRequest::InternalSwap(RPCWriteUserFileRequest* other) {
-  using std::swap;
-  err_.Swap(&other->err_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(_cached_size_, other->_cached_size_);
-}
-
-::google::protobuf::Metadata RPCWriteUserFileRequest::GetMetadata() const {
-  protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
-// ===================================================================
-
-void RPCWriteUserFileResponse::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCWriteUserFileResponse::kNameFieldNumber;
-const int RPCWriteUserFileResponse::kFileFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-RPCWriteUserFileResponse::RPCWriteUserFileResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWriteUserFileResponse();
-  }
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.RPCWriteUserFileResponse)
-}
-RPCWriteUserFileResponse::RPCWriteUserFileResponse(const RPCWriteUserFileResponse& from)
+RPCWritePeerFileRequest::RPCWritePeerFileRequest(const RPCWritePeerFileRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
@@ -575,50 +318,50 @@ RPCWriteUserFileResponse::RPCWriteUserFileResponse(const RPCWriteUserFileRespons
   if (from.file().size() > 0) {
     file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
   }
-  // @@protoc_insertion_point(copy_constructor:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(copy_constructor:pb.RPCWritePeerFileRequest)
 }
 
-void RPCWriteUserFileResponse::SharedCtor() {
+void RPCWritePeerFileRequest::SharedCtor() {
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
-RPCWriteUserFileResponse::~RPCWriteUserFileResponse() {
-  // @@protoc_insertion_point(destructor:pb.RPCWriteUserFileResponse)
+RPCWritePeerFileRequest::~RPCWritePeerFileRequest() {
+  // @@protoc_insertion_point(destructor:pb.RPCWritePeerFileRequest)
   SharedDtor();
 }
 
-void RPCWriteUserFileResponse::SharedDtor() {
+void RPCWritePeerFileRequest::SharedDtor() {
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   file_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-void RPCWriteUserFileResponse::SetCachedSize(int size) const {
+void RPCWritePeerFileRequest::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* RPCWriteUserFileResponse::descriptor() {
+const ::google::protobuf::Descriptor* RPCWritePeerFileRequest::descriptor() {
   ::protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const RPCWriteUserFileResponse& RPCWriteUserFileResponse::default_instance() {
-  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWriteUserFileResponse();
+const RPCWritePeerFileRequest& RPCWritePeerFileRequest::default_instance() {
+  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWritePeerFileRequest();
   return *internal_default_instance();
 }
 
-RPCWriteUserFileResponse* RPCWriteUserFileResponse::New(::google::protobuf::Arena* arena) const {
-  RPCWriteUserFileResponse* n = new RPCWriteUserFileResponse;
+RPCWritePeerFileRequest* RPCWritePeerFileRequest::New(::google::protobuf::Arena* arena) const {
+  RPCWritePeerFileRequest* n = new RPCWritePeerFileRequest;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void RPCWriteUserFileResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.RPCWriteUserFileResponse)
+void RPCWritePeerFileRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCWritePeerFileRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -628,11 +371,11 @@ void RPCWriteUserFileResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool RPCWriteUserFileResponse::MergePartialFromCodedStream(
+bool RPCWritePeerFileRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(parse_start:pb.RPCWritePeerFileRequest)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -647,7 +390,7 @@ bool RPCWriteUserFileResponse::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->name().data(), static_cast<int>(this->name().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCWriteUserFileResponse.name"));
+            "pb.RPCWritePeerFileRequest.name"));
         } else {
           goto handle_unusual;
         }
@@ -678,17 +421,17 @@ bool RPCWriteUserFileResponse::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(parse_success:pb.RPCWritePeerFileRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(parse_failure:pb.RPCWritePeerFileRequest)
   return false;
 #undef DO_
 }
 
-void RPCWriteUserFileResponse::SerializeWithCachedSizes(
+void RPCWritePeerFileRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(serialize_start:pb.RPCWritePeerFileRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -697,7 +440,7 @@ void RPCWriteUserFileResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCWriteUserFileResponse.name");
+      "pb.RPCWritePeerFileRequest.name");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->name(), output);
   }
@@ -712,13 +455,13 @@ void RPCWriteUserFileResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(serialize_end:pb.RPCWritePeerFileRequest)
 }
 
-::google::protobuf::uint8* RPCWriteUserFileResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* RPCWritePeerFileRequest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCWritePeerFileRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -727,7 +470,7 @@ void RPCWriteUserFileResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCWriteUserFileResponse.name");
+      "pb.RPCWritePeerFileRequest.name");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->name(), target);
@@ -744,12 +487,12 @@ void RPCWriteUserFileResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCWritePeerFileRequest)
   return target;
 }
 
-size_t RPCWriteUserFileResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.RPCWriteUserFileResponse)
+size_t RPCWritePeerFileRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCWritePeerFileRequest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -778,23 +521,23 @@ size_t RPCWriteUserFileResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCWriteUserFileResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCWriteUserFileResponse)
+void RPCWritePeerFileRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCWritePeerFileRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const RPCWriteUserFileResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const RPCWriteUserFileResponse>(
+  const RPCWritePeerFileRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCWritePeerFileRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCWritePeerFileRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCWriteUserFileResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCWritePeerFileRequest)
     MergeFrom(*source);
   }
 }
 
-void RPCWriteUserFileResponse::MergeFrom(const RPCWriteUserFileResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCWriteUserFileResponse)
+void RPCWritePeerFileRequest::MergeFrom(const RPCWritePeerFileRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCWritePeerFileRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -810,29 +553,29 @@ void RPCWriteUserFileResponse::MergeFrom(const RPCWriteUserFileResponse& from) {
   }
 }
 
-void RPCWriteUserFileResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCWriteUserFileResponse)
+void RPCWritePeerFileRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCWritePeerFileRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void RPCWriteUserFileResponse::CopyFrom(const RPCWriteUserFileResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCWriteUserFileResponse)
+void RPCWritePeerFileRequest::CopyFrom(const RPCWritePeerFileRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCWritePeerFileRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool RPCWriteUserFileResponse::IsInitialized() const {
+bool RPCWritePeerFileRequest::IsInitialized() const {
   return true;
 }
 
-void RPCWriteUserFileResponse::Swap(RPCWriteUserFileResponse* other) {
+void RPCWritePeerFileRequest::Swap(RPCWritePeerFileRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void RPCWriteUserFileResponse::InternalSwap(RPCWriteUserFileResponse* other) {
+void RPCWritePeerFileRequest::InternalSwap(RPCWritePeerFileRequest* other) {
   using std::swap;
   name_.Swap(&other->name_);
   file_.Swap(&other->file_);
@@ -840,7 +583,7 @@ void RPCWriteUserFileResponse::InternalSwap(RPCWriteUserFileResponse* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata RPCWriteUserFileResponse::GetMetadata() const {
+::google::protobuf::Metadata RPCWritePeerFileRequest::GetMetadata() const {
   protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -848,99 +591,93 @@ void RPCWriteUserFileResponse::InternalSwap(RPCWriteUserFileResponse* other) {
 
 // ===================================================================
 
-void RPCGetUserFileRequest::InitAsDefaultInstance() {
+void RPCWritePeerFileResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCGetUserFileRequest::kNameFieldNumber;
+const int RPCWritePeerFileResponse::kSuccessFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-RPCGetUserFileRequest::RPCGetUserFileRequest()
+RPCWritePeerFileResponse::RPCWritePeerFileResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetUserFileRequest();
+    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWritePeerFileResponse();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(constructor:pb.RPCWritePeerFileResponse)
 }
-RPCGetUserFileRequest::RPCGetUserFileRequest(const RPCGetUserFileRequest& from)
+RPCWritePeerFileResponse::RPCWritePeerFileResponse(const RPCWritePeerFileResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.name().size() > 0) {
-    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
-  }
-  // @@protoc_insertion_point(copy_constructor:pb.RPCGetUserFileRequest)
+  success_ = from.success_;
+  // @@protoc_insertion_point(copy_constructor:pb.RPCWritePeerFileResponse)
 }
 
-void RPCGetUserFileRequest::SharedCtor() {
-  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void RPCWritePeerFileResponse::SharedCtor() {
+  success_ = false;
   _cached_size_ = 0;
 }
 
-RPCGetUserFileRequest::~RPCGetUserFileRequest() {
-  // @@protoc_insertion_point(destructor:pb.RPCGetUserFileRequest)
+RPCWritePeerFileResponse::~RPCWritePeerFileResponse() {
+  // @@protoc_insertion_point(destructor:pb.RPCWritePeerFileResponse)
   SharedDtor();
 }
 
-void RPCGetUserFileRequest::SharedDtor() {
-  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void RPCWritePeerFileResponse::SharedDtor() {
 }
 
-void RPCGetUserFileRequest::SetCachedSize(int size) const {
+void RPCWritePeerFileResponse::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* RPCGetUserFileRequest::descriptor() {
+const ::google::protobuf::Descriptor* RPCWritePeerFileResponse::descriptor() {
   ::protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const RPCGetUserFileRequest& RPCGetUserFileRequest::default_instance() {
-  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetUserFileRequest();
+const RPCWritePeerFileResponse& RPCWritePeerFileResponse::default_instance() {
+  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCWritePeerFileResponse();
   return *internal_default_instance();
 }
 
-RPCGetUserFileRequest* RPCGetUserFileRequest::New(::google::protobuf::Arena* arena) const {
-  RPCGetUserFileRequest* n = new RPCGetUserFileRequest;
+RPCWritePeerFileResponse* RPCWritePeerFileResponse::New(::google::protobuf::Arena* arena) const {
+  RPCWritePeerFileResponse* n = new RPCWritePeerFileResponse;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void RPCGetUserFileRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.RPCGetUserFileRequest)
+void RPCWritePeerFileResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCWritePeerFileResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  success_ = false;
   _internal_metadata_.Clear();
 }
 
-bool RPCGetUserFileRequest::MergePartialFromCodedStream(
+bool RPCWritePeerFileResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(parse_start:pb.RPCWritePeerFileResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string name = 1;
+      // bool success = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->name().data(), static_cast<int>(this->name().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCGetUserFileRequest.name"));
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &success_)));
         } else {
           goto handle_unusual;
         }
@@ -959,65 +696,54 @@ bool RPCGetUserFileRequest::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(parse_success:pb.RPCWritePeerFileResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(parse_failure:pb.RPCWritePeerFileResponse)
   return false;
 #undef DO_
 }
 
-void RPCGetUserFileRequest::SerializeWithCachedSizes(
+void RPCWritePeerFileResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(serialize_start:pb.RPCWritePeerFileResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetUserFileRequest.name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->name(), output);
+  // bool success = 1;
+  if (this->success() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->success(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(serialize_end:pb.RPCWritePeerFileResponse)
 }
 
-::google::protobuf::uint8* RPCGetUserFileRequest::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* RPCWritePeerFileResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCWritePeerFileResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetUserFileRequest.name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->name(), target);
+  // bool success = 1;
+  if (this->success() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->success(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCWritePeerFileResponse)
   return target;
 }
 
-size_t RPCGetUserFileRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetUserFileRequest)
+size_t RPCWritePeerFileResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCWritePeerFileResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1025,7 +751,312 @@ size_t RPCGetUserFileRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string name = 1;
+  // bool success = 1;
+  if (this->success() != 0) {
+    total_size += 1 + 1;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RPCWritePeerFileResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCWritePeerFileResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCWritePeerFileResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCWritePeerFileResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCWritePeerFileResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCWritePeerFileResponse)
+    MergeFrom(*source);
+  }
+}
+
+void RPCWritePeerFileResponse::MergeFrom(const RPCWritePeerFileResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCWritePeerFileResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.success() != 0) {
+    set_success(from.success());
+  }
+}
+
+void RPCWritePeerFileResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCWritePeerFileResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RPCWritePeerFileResponse::CopyFrom(const RPCWritePeerFileResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCWritePeerFileResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RPCWritePeerFileResponse::IsInitialized() const {
+  return true;
+}
+
+void RPCWritePeerFileResponse::Swap(RPCWritePeerFileResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void RPCWritePeerFileResponse::InternalSwap(RPCWritePeerFileResponse* other) {
+  using std::swap;
+  swap(success_, other->success_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata RPCWritePeerFileResponse::GetMetadata() const {
+  protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void RPCGetPeerFileRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RPCGetPeerFileRequest::kPIdFieldNumber;
+const int RPCGetPeerFileRequest::kNameFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+RPCGetPeerFileRequest::RPCGetPeerFileRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.RPCGetPeerFileRequest)
+}
+RPCGetPeerFileRequest::RPCGetPeerFileRequest(const RPCGetPeerFileRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.pid().size() > 0) {
+    pid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.pid_);
+  }
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.name().size() > 0) {
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+  // @@protoc_insertion_point(copy_constructor:pb.RPCGetPeerFileRequest)
+}
+
+void RPCGetPeerFileRequest::SharedCtor() {
+  pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+RPCGetPeerFileRequest::~RPCGetPeerFileRequest() {
+  // @@protoc_insertion_point(destructor:pb.RPCGetPeerFileRequest)
+  SharedDtor();
+}
+
+void RPCGetPeerFileRequest::SharedDtor() {
+  pid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void RPCGetPeerFileRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RPCGetPeerFileRequest::descriptor() {
+  ::protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RPCGetPeerFileRequest& RPCGetPeerFileRequest::default_instance() {
+  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileRequest();
+  return *internal_default_instance();
+}
+
+RPCGetPeerFileRequest* RPCGetPeerFileRequest::New(::google::protobuf::Arena* arena) const {
+  RPCGetPeerFileRequest* n = new RPCGetPeerFileRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void RPCGetPeerFileRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCGetPeerFileRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool RPCGetPeerFileRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.RPCGetPeerFileRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string pId = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_pid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->pid().data(), static_cast<int>(this->pid().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.RPCGetPeerFileRequest.pId"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string name = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), static_cast<int>(this->name().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.RPCGetPeerFileRequest.name"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.RPCGetPeerFileRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.RPCGetPeerFileRequest)
+  return false;
+#undef DO_
+}
+
+void RPCGetPeerFileRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.RPCGetPeerFileRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string pId = 1;
+  if (this->pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->pid().data(), static_cast<int>(this->pid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetPeerFileRequest.pId");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->pid(), output);
+  }
+
+  // string name = 2;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetPeerFileRequest.name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->name(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.RPCGetPeerFileRequest)
+}
+
+::google::protobuf::uint8* RPCGetPeerFileRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetPeerFileRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string pId = 1;
+  if (this->pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->pid().data(), static_cast<int>(this->pid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetPeerFileRequest.pId");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->pid(), target);
+  }
+
+  // string name = 2;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetPeerFileRequest.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->name(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetPeerFileRequest)
+  return target;
+}
+
+size_t RPCGetPeerFileRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetPeerFileRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string pId = 1;
+  if (this->pid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->pid());
+  }
+
+  // string name = 2;
   if (this->name().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1039,64 +1070,69 @@ size_t RPCGetUserFileRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCGetUserFileRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetUserFileRequest)
+void RPCGetPeerFileRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetPeerFileRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const RPCGetUserFileRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetUserFileRequest>(
+  const RPCGetPeerFileRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetPeerFileRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetPeerFileRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetUserFileRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetPeerFileRequest)
     MergeFrom(*source);
   }
 }
 
-void RPCGetUserFileRequest::MergeFrom(const RPCGetUserFileRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetUserFileRequest)
+void RPCGetPeerFileRequest::MergeFrom(const RPCGetPeerFileRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetPeerFileRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.pid().size() > 0) {
+
+    pid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.pid_);
+  }
   if (from.name().size() > 0) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
 }
 
-void RPCGetUserFileRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetUserFileRequest)
+void RPCGetPeerFileRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetPeerFileRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void RPCGetUserFileRequest::CopyFrom(const RPCGetUserFileRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetUserFileRequest)
+void RPCGetPeerFileRequest::CopyFrom(const RPCGetPeerFileRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetPeerFileRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool RPCGetUserFileRequest::IsInitialized() const {
+bool RPCGetPeerFileRequest::IsInitialized() const {
   return true;
 }
 
-void RPCGetUserFileRequest::Swap(RPCGetUserFileRequest* other) {
+void RPCGetPeerFileRequest::Swap(RPCGetPeerFileRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void RPCGetUserFileRequest::InternalSwap(RPCGetUserFileRequest* other) {
+void RPCGetPeerFileRequest::InternalSwap(RPCGetPeerFileRequest* other) {
   using std::swap;
+  pid_.Swap(&other->pid_);
   name_.Swap(&other->name_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata RPCGetUserFileRequest::GetMetadata() const {
+::google::protobuf::Metadata RPCGetPeerFileRequest::GetMetadata() const {
   protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1104,117 +1140,93 @@ void RPCGetUserFileRequest::InternalSwap(RPCGetUserFileRequest* other) {
 
 // ===================================================================
 
-void RPCGetUserFileResponse::InitAsDefaultInstance() {
+void RPCGetPeerFileResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCGetUserFileResponse::kErrFieldNumber;
-const int RPCGetUserFileResponse::kFileFieldNumber;
+const int RPCGetPeerFileResponse::kFileFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-RPCGetUserFileResponse::RPCGetUserFileResponse()
+RPCGetPeerFileResponse::RPCGetPeerFileResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetUserFileResponse();
+    ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileResponse();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(constructor:pb.RPCGetPeerFileResponse)
 }
-RPCGetUserFileResponse::RPCGetUserFileResponse(const RPCGetUserFileResponse& from)
+RPCGetPeerFileResponse::RPCGetPeerFileResponse(const RPCGetPeerFileResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.err().size() > 0) {
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
   file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.file().size() > 0) {
     file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
   }
-  // @@protoc_insertion_point(copy_constructor:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(copy_constructor:pb.RPCGetPeerFileResponse)
 }
 
-void RPCGetUserFileResponse::SharedCtor() {
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void RPCGetPeerFileResponse::SharedCtor() {
   file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
-RPCGetUserFileResponse::~RPCGetUserFileResponse() {
-  // @@protoc_insertion_point(destructor:pb.RPCGetUserFileResponse)
+RPCGetPeerFileResponse::~RPCGetPeerFileResponse() {
+  // @@protoc_insertion_point(destructor:pb.RPCGetPeerFileResponse)
   SharedDtor();
 }
 
-void RPCGetUserFileResponse::SharedDtor() {
-  err_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void RPCGetPeerFileResponse::SharedDtor() {
   file_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-void RPCGetUserFileResponse::SetCachedSize(int size) const {
+void RPCGetPeerFileResponse::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* RPCGetUserFileResponse::descriptor() {
+const ::google::protobuf::Descriptor* RPCGetPeerFileResponse::descriptor() {
   ::protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const RPCGetUserFileResponse& RPCGetUserFileResponse::default_instance() {
-  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetUserFileResponse();
+const RPCGetPeerFileResponse& RPCGetPeerFileResponse::default_instance() {
+  ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileResponse();
   return *internal_default_instance();
 }
 
-RPCGetUserFileResponse* RPCGetUserFileResponse::New(::google::protobuf::Arena* arena) const {
-  RPCGetUserFileResponse* n = new RPCGetUserFileResponse;
+RPCGetPeerFileResponse* RPCGetPeerFileResponse::New(::google::protobuf::Arena* arena) const {
+  RPCGetPeerFileResponse* n = new RPCGetPeerFileResponse;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void RPCGetUserFileResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.RPCGetUserFileResponse)
+void RPCGetPeerFileResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCGetPeerFileResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
-bool RPCGetUserFileResponse::MergePartialFromCodedStream(
+bool RPCGetPeerFileResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(parse_start:pb.RPCGetPeerFileResponse)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string err = 1;
+      // bytes file = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_err()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->err().data(), static_cast<int>(this->err().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCGetUserFileResponse.err"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bytes file = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_file()));
         } else {
@@ -1235,78 +1247,57 @@ bool RPCGetUserFileResponse::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(parse_success:pb.RPCGetPeerFileResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(parse_failure:pb.RPCGetPeerFileResponse)
   return false;
 #undef DO_
 }
 
-void RPCGetUserFileResponse::SerializeWithCachedSizes(
+void RPCGetPeerFileResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(serialize_start:pb.RPCGetPeerFileResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetUserFileResponse.err");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->err(), output);
-  }
-
-  // bytes file = 2;
+  // bytes file = 1;
   if (this->file().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      2, this->file(), output);
+      1, this->file(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(serialize_end:pb.RPCGetPeerFileResponse)
 }
 
-::google::protobuf::uint8* RPCGetUserFileResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* RPCGetPeerFileResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetPeerFileResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetUserFileResponse.err");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->err(), target);
-  }
-
-  // bytes file = 2;
+  // bytes file = 1;
   if (this->file().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->file(), target);
+        1, this->file(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetPeerFileResponse)
   return target;
 }
 
-size_t RPCGetUserFileResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetUserFileResponse)
+size_t RPCGetPeerFileResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetPeerFileResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1314,14 +1305,7 @@ size_t RPCGetUserFileResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string err = 1;
-  if (this->err().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->err());
-  }
-
-  // bytes file = 2;
+  // bytes file = 1;
   if (this->file().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -1335,69 +1319,64 @@ size_t RPCGetUserFileResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void RPCGetUserFileResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetUserFileResponse)
+void RPCGetPeerFileResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetPeerFileResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  const RPCGetUserFileResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetUserFileResponse>(
+  const RPCGetPeerFileResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetPeerFileResponse>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetPeerFileResponse)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetUserFileResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetPeerFileResponse)
     MergeFrom(*source);
   }
 }
 
-void RPCGetUserFileResponse::MergeFrom(const RPCGetUserFileResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetUserFileResponse)
+void RPCGetPeerFileResponse::MergeFrom(const RPCGetPeerFileResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetPeerFileResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.err().size() > 0) {
-
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
   if (from.file().size() > 0) {
 
     file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
   }
 }
 
-void RPCGetUserFileResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetUserFileResponse)
+void RPCGetPeerFileResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetPeerFileResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void RPCGetUserFileResponse::CopyFrom(const RPCGetUserFileResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetUserFileResponse)
+void RPCGetPeerFileResponse::CopyFrom(const RPCGetPeerFileResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetPeerFileResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool RPCGetUserFileResponse::IsInitialized() const {
+bool RPCGetPeerFileResponse::IsInitialized() const {
   return true;
 }
 
-void RPCGetUserFileResponse::Swap(RPCGetUserFileResponse* other) {
+void RPCGetPeerFileResponse::Swap(RPCGetPeerFileResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void RPCGetUserFileResponse::InternalSwap(RPCGetUserFileResponse* other) {
+void RPCGetPeerFileResponse::InternalSwap(RPCGetPeerFileResponse* other) {
   using std::swap;
-  err_.Swap(&other->err_);
   file_.Swap(&other->file_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata RPCGetUserFileResponse::GetMetadata() const {
+::google::protobuf::Metadata RPCGetPeerFileResponse::GetMetadata() const {
   protobuf_pb_2fstorage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fstorage_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1664,7 +1643,6 @@ void RPCGetPublisherFileRequest::InternalSwap(RPCGetPublisherFileRequest* other)
 void RPCGetPublisherFileResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCGetPublisherFileResponse::kErrFieldNumber;
 const int RPCGetPublisherFileResponse::kFileFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -1681,10 +1659,6 @@ RPCGetPublisherFileResponse::RPCGetPublisherFileResponse(const RPCGetPublisherFi
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.err().size() > 0) {
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
   file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.file().size() > 0) {
     file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
@@ -1693,7 +1667,6 @@ RPCGetPublisherFileResponse::RPCGetPublisherFileResponse(const RPCGetPublisherFi
 }
 
 void RPCGetPublisherFileResponse::SharedCtor() {
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
@@ -1704,7 +1677,6 @@ RPCGetPublisherFileResponse::~RPCGetPublisherFileResponse() {
 }
 
 void RPCGetPublisherFileResponse::SharedDtor() {
-  err_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   file_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -1737,7 +1709,6 @@ void RPCGetPublisherFileResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
@@ -1752,26 +1723,10 @@ bool RPCGetPublisherFileResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string err = 1;
+      // bytes file = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_err()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->err().data(), static_cast<int>(this->err().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCGetPublisherFileResponse.err"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bytes file = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_file()));
         } else {
@@ -1806,20 +1761,10 @@ void RPCGetPublisherFileResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetPublisherFileResponse.err");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->err(), output);
-  }
-
-  // bytes file = 2;
+  // bytes file = 1;
   if (this->file().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      2, this->file(), output);
+      1, this->file(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1836,22 +1781,11 @@ void RPCGetPublisherFileResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCGetPublisherFileResponse.err");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->err(), target);
-  }
-
-  // bytes file = 2;
+  // bytes file = 1;
   if (this->file().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->file(), target);
+        1, this->file(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1871,14 +1805,7 @@ size_t RPCGetPublisherFileResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string err = 1;
-  if (this->err().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->err());
-  }
-
-  // bytes file = 2;
+  // bytes file = 1;
   if (this->file().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -1914,10 +1841,6 @@ void RPCGetPublisherFileResponse::MergeFrom(const RPCGetPublisherFileResponse& f
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.err().size() > 0) {
-
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
   if (from.file().size() > 0) {
 
     file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
@@ -1948,7 +1871,6 @@ void RPCGetPublisherFileResponse::Swap(RPCGetPublisherFileResponse* other) {
 }
 void RPCGetPublisherFileResponse::InternalSwap(RPCGetPublisherFileResponse* other) {
   using std::swap;
-  err_.Swap(&other->err_);
   file_.Swap(&other->file_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);

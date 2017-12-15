@@ -13,80 +13,80 @@ var _ = fmt.Errorf
 var _ = math.Inf
 
 // RPC
-type RPCWriteUserFileRequest struct {
-	Err string `protobuf:"bytes,1,opt,name=err" json:"err,omitempty"`
-}
-
-func (m *RPCWriteUserFileRequest) Reset()                    { *m = RPCWriteUserFileRequest{} }
-func (m *RPCWriteUserFileRequest) String() string            { return proto.CompactTextString(m) }
-func (*RPCWriteUserFileRequest) ProtoMessage()               {}
-func (*RPCWriteUserFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
-
-func (m *RPCWriteUserFileRequest) GetErr() string {
-	if m != nil {
-		return m.Err
-	}
-	return ""
-}
-
-type RPCWriteUserFileResponse struct {
+type RPCWritePeerFileRequest struct {
 	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 	File []byte `protobuf:"bytes,2,opt,name=file,proto3" json:"file,omitempty"`
 }
 
-func (m *RPCWriteUserFileResponse) Reset()                    { *m = RPCWriteUserFileResponse{} }
-func (m *RPCWriteUserFileResponse) String() string            { return proto.CompactTextString(m) }
-func (*RPCWriteUserFileResponse) ProtoMessage()               {}
-func (*RPCWriteUserFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
+func (m *RPCWritePeerFileRequest) Reset()                    { *m = RPCWritePeerFileRequest{} }
+func (m *RPCWritePeerFileRequest) String() string            { return proto.CompactTextString(m) }
+func (*RPCWritePeerFileRequest) ProtoMessage()               {}
+func (*RPCWritePeerFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
-func (m *RPCWriteUserFileResponse) GetName() string {
+func (m *RPCWritePeerFileRequest) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *RPCWriteUserFileResponse) GetFile() []byte {
+func (m *RPCWritePeerFileRequest) GetFile() []byte {
 	if m != nil {
 		return m.File
 	}
 	return nil
 }
 
-type RPCGetUserFileRequest struct {
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+type RPCWritePeerFileResponse struct {
+	Success bool `protobuf:"varint,1,opt,name=success" json:"success,omitempty"`
 }
 
-func (m *RPCGetUserFileRequest) Reset()                    { *m = RPCGetUserFileRequest{} }
-func (m *RPCGetUserFileRequest) String() string            { return proto.CompactTextString(m) }
-func (*RPCGetUserFileRequest) ProtoMessage()               {}
-func (*RPCGetUserFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
+func (m *RPCWritePeerFileResponse) Reset()                    { *m = RPCWritePeerFileResponse{} }
+func (m *RPCWritePeerFileResponse) String() string            { return proto.CompactTextString(m) }
+func (*RPCWritePeerFileResponse) ProtoMessage()               {}
+func (*RPCWritePeerFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
 
-func (m *RPCGetUserFileRequest) GetName() string {
+func (m *RPCWritePeerFileResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+type RPCGetPeerFileRequest struct {
+	PId  string `protobuf:"bytes,1,opt,name=pId" json:"pId,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
+}
+
+func (m *RPCGetPeerFileRequest) Reset()                    { *m = RPCGetPeerFileRequest{} }
+func (m *RPCGetPeerFileRequest) String() string            { return proto.CompactTextString(m) }
+func (*RPCGetPeerFileRequest) ProtoMessage()               {}
+func (*RPCGetPeerFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
+
+func (m *RPCGetPeerFileRequest) GetPId() string {
+	if m != nil {
+		return m.PId
+	}
+	return ""
+}
+
+func (m *RPCGetPeerFileRequest) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-type RPCGetUserFileResponse struct {
-	Err  string `protobuf:"bytes,1,opt,name=err" json:"err,omitempty"`
-	File []byte `protobuf:"bytes,2,opt,name=file,proto3" json:"file,omitempty"`
+type RPCGetPeerFileResponse struct {
+	File []byte `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
 }
 
-func (m *RPCGetUserFileResponse) Reset()                    { *m = RPCGetUserFileResponse{} }
-func (m *RPCGetUserFileResponse) String() string            { return proto.CompactTextString(m) }
-func (*RPCGetUserFileResponse) ProtoMessage()               {}
-func (*RPCGetUserFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
+func (m *RPCGetPeerFileResponse) Reset()                    { *m = RPCGetPeerFileResponse{} }
+func (m *RPCGetPeerFileResponse) String() string            { return proto.CompactTextString(m) }
+func (*RPCGetPeerFileResponse) ProtoMessage()               {}
+func (*RPCGetPeerFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
 
-func (m *RPCGetUserFileResponse) GetErr() string {
-	if m != nil {
-		return m.Err
-	}
-	return ""
-}
-
-func (m *RPCGetUserFileResponse) GetFile() []byte {
+func (m *RPCGetPeerFileResponse) GetFile() []byte {
 	if m != nil {
 		return m.File
 	}
@@ -110,21 +110,13 @@ func (m *RPCGetPublisherFileRequest) GetName() string {
 }
 
 type RPCGetPublisherFileResponse struct {
-	Err  string `protobuf:"bytes,1,opt,name=err" json:"err,omitempty"`
-	File []byte `protobuf:"bytes,2,opt,name=file,proto3" json:"file,omitempty"`
+	File []byte `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
 }
 
 func (m *RPCGetPublisherFileResponse) Reset()                    { *m = RPCGetPublisherFileResponse{} }
 func (m *RPCGetPublisherFileResponse) String() string            { return proto.CompactTextString(m) }
 func (*RPCGetPublisherFileResponse) ProtoMessage()               {}
 func (*RPCGetPublisherFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{5} }
-
-func (m *RPCGetPublisherFileResponse) GetErr() string {
-	if m != nil {
-		return m.Err
-	}
-	return ""
-}
 
 func (m *RPCGetPublisherFileResponse) GetFile() []byte {
 	if m != nil {
@@ -134,10 +126,10 @@ func (m *RPCGetPublisherFileResponse) GetFile() []byte {
 }
 
 func init() {
-	proto.RegisterType((*RPCWriteUserFileRequest)(nil), "pb.RPCWriteUserFileRequest")
-	proto.RegisterType((*RPCWriteUserFileResponse)(nil), "pb.RPCWriteUserFileResponse")
-	proto.RegisterType((*RPCGetUserFileRequest)(nil), "pb.RPCGetUserFileRequest")
-	proto.RegisterType((*RPCGetUserFileResponse)(nil), "pb.RPCGetUserFileResponse")
+	proto.RegisterType((*RPCWritePeerFileRequest)(nil), "pb.RPCWritePeerFileRequest")
+	proto.RegisterType((*RPCWritePeerFileResponse)(nil), "pb.RPCWritePeerFileResponse")
+	proto.RegisterType((*RPCGetPeerFileRequest)(nil), "pb.RPCGetPeerFileRequest")
+	proto.RegisterType((*RPCGetPeerFileResponse)(nil), "pb.RPCGetPeerFileResponse")
 	proto.RegisterType((*RPCGetPublisherFileRequest)(nil), "pb.RPCGetPublisherFileRequest")
 	proto.RegisterType((*RPCGetPublisherFileResponse)(nil), "pb.RPCGetPublisherFileResponse")
 }
@@ -145,17 +137,18 @@ func init() {
 func init() { proto.RegisterFile("pb/storage.proto", fileDescriptor4) }
 
 var fileDescriptor4 = []byte{
-	// 182 bytes of a gzipped FileDescriptorProto
+	// 203 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x48, 0xd2, 0x2f,
 	0x2e, 0xc9, 0x2f, 0x4a, 0x4c, 0x4f, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48,
-	0x52, 0xd2, 0xe6, 0x12, 0x0f, 0x0a, 0x70, 0x0e, 0x2f, 0xca, 0x2c, 0x49, 0x0d, 0x2d, 0x4e, 0x2d,
-	0x72, 0xcb, 0xcc, 0x49, 0x0d, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe0, 0x62, 0x4e,
-	0x2d, 0x2a, 0x92, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0x31, 0x95, 0x9c, 0xb8, 0x24, 0x30,
-	0x15, 0x17, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x0a, 0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x42,
-	0x95, 0x83, 0xd9, 0x20, 0xb1, 0xb4, 0xcc, 0x9c, 0x54, 0x09, 0x26, 0x05, 0x46, 0x0d, 0x9e, 0x20,
-	0x30, 0x5b, 0x49, 0x9b, 0x4b, 0x34, 0x28, 0xc0, 0xd9, 0x3d, 0xb5, 0x04, 0xdd, 0x3a, 0x2c, 0x06,
-	0x28, 0xd9, 0x71, 0x89, 0xa1, 0x2b, 0x86, 0x5a, 0x87, 0xe1, 0x38, 0xac, 0x96, 0x19, 0x70, 0x49,
-	0x41, 0xf4, 0x07, 0x94, 0x26, 0xe5, 0x64, 0x16, 0x67, 0x10, 0xb6, 0xd1, 0x99, 0x4b, 0x1a, 0xab,
-	0x0e, 0x52, 0xac, 0x4d, 0x62, 0x03, 0x87, 0xaf, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x1d, 0x0b,
-	0xe8, 0x29, 0x73, 0x01, 0x00, 0x00,
+	0x52, 0x72, 0xe4, 0x12, 0x0f, 0x0a, 0x70, 0x0e, 0x2f, 0xca, 0x2c, 0x49, 0x0d, 0x48, 0x4d, 0x2d,
+	0x72, 0xcb, 0xcc, 0x49, 0x0d, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe2, 0x62, 0xc9,
+	0x4b, 0xcc, 0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x41, 0x62, 0x69, 0x99,
+	0x39, 0xa9, 0x12, 0x4c, 0x0a, 0x8c, 0x1a, 0x3c, 0x41, 0x60, 0xb6, 0x92, 0x09, 0x97, 0x04, 0xa6,
+	0x11, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x42, 0x12, 0x5c, 0xec, 0xc5, 0xa5, 0xc9, 0xc9, 0xa9,
+	0xc5, 0xc5, 0x60, 0x63, 0x38, 0x82, 0x60, 0x5c, 0x25, 0x5b, 0x2e, 0xd1, 0xa0, 0x00, 0x67, 0xf7,
+	0xd4, 0x12, 0x74, 0x6b, 0x05, 0xb8, 0x98, 0x0b, 0x3c, 0x53, 0xa0, 0xb6, 0x82, 0x98, 0x70, 0x87,
+	0x30, 0x21, 0x1c, 0xa2, 0xa4, 0xc3, 0x25, 0x86, 0xae, 0x1d, 0x6a, 0x25, 0xcc, 0x89, 0x8c, 0x48,
+	0x4e, 0x34, 0xe0, 0x92, 0x82, 0xaa, 0x2e, 0x4d, 0xca, 0xc9, 0x2c, 0xce, 0x20, 0xe8, 0x51, 0x25,
+	0x43, 0x2e, 0x69, 0xac, 0x3a, 0x70, 0x5b, 0x92, 0xc4, 0x06, 0x0e, 0x55, 0x63, 0x40, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0xf8, 0xa6, 0xac, 0x5c, 0x69, 0x01, 0x00, 0x00,
 }
