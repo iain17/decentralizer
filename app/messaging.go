@@ -5,8 +5,8 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
-	"github.com/gogo/protobuf/proto"
-	"github.com/libp2p/go-libp2p-peer"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"github.com/golang/protobuf/proto"
 )
 
 type DirectMessage struct {
