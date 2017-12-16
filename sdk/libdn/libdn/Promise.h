@@ -24,6 +24,7 @@ namespace libdn {
 		}
 	public:
 		Promise(Job job) {
+			failureText = nullptr;
 			this->_promise = std::async(std::launch::async, [&](Job job, Promise* self) {
 				Sleep(1);
 				T result = job(self);
