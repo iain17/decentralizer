@@ -23,7 +23,7 @@ func New(app *app.Decentralizer, port int) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	logger.Info("Serving GRPC API on: %s", address)
+	logger.Infof("Serving GRPC API on: %s", address)
 	s := grpc.NewServer()
 	pb.RegisterDecentralizerServer(s, i)
 	// Register reflection service on gRPC server.

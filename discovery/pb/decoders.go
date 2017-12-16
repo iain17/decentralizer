@@ -33,7 +33,7 @@ func Decode(r io.Reader) (*Message, error) {
 		return nil, err
 	}
 	var result Message
-	if err := proto.Unmarshal(data[:len(data)-1], &result); err != nil {
+	if err := proto.Unmarshal(data, &result); err != nil {
 		return nil, err
 	}
 	if result.Version != env.VERSION {
