@@ -1,20 +1,19 @@
 package discovery
 
 import (
-	"github.com/iain17/dht"
+	"github.com/nictuku/dht"
 	"context"
 	"time"
 	"net"
-	"encoding/hex"
 	"github.com/iain17/logger"
+	"strconv"
 )
 
 type DiscoveryDHT struct {
-	node      *dht.Server
-	announce *dht.Announce
+	node      *dht.DHT
 	localNode *LocalNode
 	context context.Context
-	ih [20]byte
+	ih dht.InfoHash
 
 	logger *logger.Logger
 }
@@ -24,15 +23,16 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.localNode = ln
 	d.context = ctx
 
-	conn, err := net.ListenPacket("udp", ":0")
+	cfg := dht.NewConfig()
+	cfg.Port = d.localNode.port
+	d.node, err = dht.New(cfg)
+
+	ih := d.localNode.discovery.network.InfoHash()
+	d.ih, err = dht.DecodeInfoHash(string(ih[:]))
 	if err != nil {
-		return err
+		return
 	}
-	d.node, err = dht.NewServer(&dht.ServerConfig{
-		Conn: conn,
-		StartingNodes: dht.GlobalBootstrapAddrs,
-	})
-	d.ih = d.localNode.discovery.network.InfoHash()
+	err = d.node.Start()
 	if err != nil {
 		return
 	}
@@ -41,16 +41,15 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 }
 
 func (d *DiscoveryDHT) Stop() {
-	if d.announce != nil {
-		d.announce.Close()
+	if d.node != nil {
+		d.node.Stop()
 	}
-	d.node.Close()
 }
 
 func (d *DiscoveryDHT) Run() {
 	defer d.Stop()
 	d.request()
-	if d.announce == nil {
+	if d.node == nil {
 		d.logger.Error("Can't initiate DHT.")
 		return
 	}
@@ -59,19 +58,30 @@ func (d *DiscoveryDHT) Run() {
 		select {
 		case <-d.context.Done():
 			return
-		case peers, ok := <-d.announce.Peers:
+		case r, ok := <-d.node.PeersRequestResults:
 			if !ok {
-				d.announce.Close()
 				time.Sleep(30 * time.Second)
 				d.request()
 				continue
 			}
 			if !d.localNode.netTableService.isEnoughPeers() {
-				for _, peer := range peers.Peers {
-					go d.localNode.netTableService.Discovered(&net.UDPAddr{
-						IP:   peer.IP[:],
-						Port: int(peer.Port),
-					})
+				for _, peers := range r {
+					for _, x := range peers {
+						host, rawPort, err := net.SplitHostPort(dht.DecodePeerAddress(x))
+						if err != nil {
+							d.logger.Debug(err)
+							continue
+						}
+						port, err := strconv.Atoi(rawPort)
+						if err != nil {
+							d.logger.Debug(err)
+							continue
+						}
+						go d.localNode.netTableService.Discovered(&net.UDPAddr{
+							IP:   net.ParseIP(host),
+							Port: int(port),
+						})
+					}
 				}
 			}
 		}
@@ -79,10 +89,6 @@ func (d *DiscoveryDHT) Run() {
 }
 
 func (d *DiscoveryDHT) request() {
-	d.logger.Debugf("sending request '%s'", hex.EncodeToString(d.ih[:]))
-	var err error
-	d.announce, err = d.node.Announce(d.ih, d.localNode.port, false)
-	if err != nil {
-		d.logger.Warning(err)
-	}
+	d.logger.Debugf("sending request '%s'", string(d.ih))
+	d.node.PeersRequest(string(d.ih), false)
 }
