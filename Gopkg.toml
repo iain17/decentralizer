@@ -63,10 +63,6 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/iain17/dht"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/iain17/freeport"
 
 [[constraint]]
@@ -104,3 +100,7 @@
 [[constraint]]
   name = "google.golang.org/grpc"
   version = "1.8.2"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/golang/glog"

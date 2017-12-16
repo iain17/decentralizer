@@ -16,7 +16,7 @@ func init() {
 	//logging.SetDebugLogging()
 }
 
-func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
+func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, error) {
 	r, err := getIPFSRepo(path, portIdx)
 	cfg := &core.BuildCfg{
 		Repo:      r,
@@ -27,7 +27,7 @@ func OpenIPFSRepo(path string, portIdx int) (*core.IpfsNode, error) {
 		},
 	}
 
-	node, err := core.NewNode(context.Background(), cfg)
+	node, err := core.NewNode(ctx, cfg)
 	if err != nil {
 		return nil, err
 	}

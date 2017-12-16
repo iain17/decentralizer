@@ -36,6 +36,16 @@ ci:
 test:
 	go test -race -cover ./...
 
+dep:
+	mv vendor/gx /tmp/
+	dep ensure
+	mv /tmp/gx vendor/
+
+dep-update:
+	mv vendor/gx /tmp/
+	dep ensure --update
+	mv /tmp/gx vendor/
+
 #https://github.com/jteeuwen/go-bindata
 generate:
 	./generate.sh

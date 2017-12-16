@@ -12,6 +12,7 @@ import (
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"net"
 	"github.com/iain17/decentralizer/app/peerstore"
+	"context"
 )
 
 type Decentralizer struct {
@@ -36,7 +37,7 @@ func getIpfsPath() (string, error) {
 	return paths[0].Path, nil
 }
 
-func New(networkStr string) (*Decentralizer, error) {
+func New(ctx context.Context, networkStr string) (*Decentralizer, error) {
 	n, err := network.UnmarshalFromPrivateKey(networkStr)
 	if err != nil {
 		return nil, err
@@ -49,7 +50,7 @@ func New(networkStr string) (*Decentralizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	i, err := ipfs.OpenIPFSRepo(path, -1)
+	i, err := ipfs.OpenIPFSRepo(ctx, path, -1)
 	if err != nil {
 		return nil, err
 	}

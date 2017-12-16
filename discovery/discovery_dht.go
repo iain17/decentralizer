@@ -7,6 +7,7 @@ import (
 	"net"
 	"github.com/iain17/logger"
 	"strconv"
+	"encoding/hex"
 )
 
 type DiscoveryDHT struct {
@@ -24,11 +25,11 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.context = ctx
 
 	cfg := dht.NewConfig()
-	cfg.Port = d.localNode.port
+	cfg.Port = d.localNode.port+10
 	d.node, err = dht.New(cfg)
 
 	ih := d.localNode.discovery.network.InfoHash()
-	d.ih, err = dht.DecodeInfoHash(string(ih[:]))
+	d.ih, err = dht.DecodeInfoHash(hex.EncodeToString(ih[:]))
 	if err != nil {
 		return
 	}
@@ -36,6 +37,7 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	if err != nil {
 		return
 	}
+	go d.process()
 	go d.Run()
 	return
 }
@@ -46,9 +48,20 @@ func (d *DiscoveryDHT) Stop() {
 	}
 }
 
+func (d *DiscoveryDHT) process() {
+	for {
+		select {
+		case <-d.context.Done():
+			return
+		default:
+			go d.request()
+			time.Sleep(60 * time.Second)
+		}
+	}
+}
+
 func (d *DiscoveryDHT) Run() {
 	defer d.Stop()
-	d.request()
 	if d.node == nil {
 		d.logger.Error("Can't initiate DHT.")
 		return
@@ -58,12 +71,7 @@ func (d *DiscoveryDHT) Run() {
 		select {
 		case <-d.context.Done():
 			return
-		case r, ok := <-d.node.PeersRequestResults:
-			if !ok {
-				time.Sleep(30 * time.Second)
-				d.request()
-				continue
-			}
+		case r, _ := <-d.node.PeersRequestResults:
 			if !d.localNode.netTableService.isEnoughPeers() {
 				for _, peers := range r {
 					for _, x := range peers {
@@ -77,10 +85,12 @@ func (d *DiscoveryDHT) Run() {
 							d.logger.Debug(err)
 							continue
 						}
-						go d.localNode.netTableService.Discovered(&net.UDPAddr{
+						addr := &net.UDPAddr{
 							IP:   net.ParseIP(host),
-							Port: int(port),
-						})
+							Port: int(port-10),
+						}
+						d.logger.Debugf("Discovered: %v", addr)
+						go d.localNode.netTableService.Discovered(addr)
 					}
 				}
 			}
@@ -89,6 +99,6 @@ func (d *DiscoveryDHT) Run() {
 }
 
 func (d *DiscoveryDHT) request() {
-	d.logger.Debugf("sending request '%s'", string(d.ih))
-	d.node.PeersRequest(string(d.ih), false)
+	d.logger.Debugf("sending request '%s'", d.ih.String())
+	d.node.PeersRequest(string(d.ih), true)
 }

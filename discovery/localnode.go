@@ -35,7 +35,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 		},
 		id:        xid.New().String(),
 		discovery: discovery,
-		port:      freeport.GetUDPPort(),
+		port:      freeport.GetPortRange("udp", 10),
 	}
 	err := instance.listenerService.Init(discovery.ctx, instance)
 	if err != nil {

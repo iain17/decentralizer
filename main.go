@@ -4,6 +4,9 @@ import (
 	"github.com/iain17/decentralizer/app"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/api"
+	"context"
+	"os"
+	"os/signal"
 )
 
 //This is the privatekey
@@ -18,7 +21,8 @@ func init() {
 }
 
 func main() {
-	app, err := app.New(ourNetwork)
+	ctx, cancel := context.WithCancel(context.Background())
+	app, err := app.New(ctx, ourNetwork)
 	if err != nil {
 		panic(err)
 	}
@@ -28,5 +32,16 @@ func main() {
 		panic(err)
 	}
 
-	select{}
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	defer func() {
+		signal.Stop(c)
+		cancel()
+	}()
+
+	select {
+	case <-c:
+		cancel()
+	case <-ctx.Done():
+	}
 }
