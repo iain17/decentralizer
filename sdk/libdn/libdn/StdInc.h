@@ -18,6 +18,12 @@
 #include "matchmaking.pb.h"
 #include "matchmaking.grpc.pb.h"
 
+#include "messaging.pb.h"
+#include "messaging.grpc.pb.h"
+
+#include "storage.pb.h"
+#include "storage.grpc.pb.h"
+
 #include "platform.pb.h"
 #include "platform.grpc.pb.h"
 

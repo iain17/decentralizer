@@ -37,5 +37,5 @@ namespace libdn {
 	LIBDN_API Session* LIBDN_CALL GetSessionByIndex(int index);
 
 	// gets a single session's info by sessionId
-	LIBDN_API Promise<Session>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
+	LIBDN_API Promise<Session*>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
 }

@@ -20,6 +20,7 @@ namespace libdn {
 		CompletionQueue cq_;
 
 		explicit DecentralizerClient(std::shared_ptr<Channel> channel) : stub_(Decentralizer::NewStub(channel)) {
+			
 		}
 	};
 }

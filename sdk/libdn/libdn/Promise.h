@@ -7,34 +7,27 @@ namespace libdn {
 	class Promise {
 		typedef std::function<T(Promise*)> Job;
 		typedef std::function<void(T)> resultCallback;
-		typedef std::function<void(std::string)> failCallback;
+		typedef std::function<void(const char*)> failCallback;
 		typedef std::function<void()> finallyCallback;
 	private:
 		std::future<T> _promise;
 		std::vector<resultCallback> _resultCBs;
 		std::vector<failCallback> _failCBs;
 		std::vector<finallyCallback> _finallyCBs;
+		const char* failureText;
 
-		int referenced = 1;
 		void callFinallyCBs() {
 			for (auto const& cb : this->_finallyCBs) {
 				cb();
 			}
-		}
-		void free() {
-			referenced--;
-			if (referenced > 0) {
-				return;
-			}
-			delete this;
+			//free();
 		}
 	public:
-		std::string failureText;
 		Promise(Job job) {
 			this->_promise = std::async(std::launch::async, [&](Job job, Promise* self) {
 				Sleep(1);
 				T result = job(self);
-				if (self != nullptr && !self->failureText.empty()) {
+				if (self != nullptr) {
 					self->resolve(result);
 				}
 				return result;
@@ -42,20 +35,22 @@ namespace libdn {
 		}
 
 		void resolve(T result) {
+			if (failureText) {
+				return;
+			}
 			for (auto const& cb : this->_resultCBs) {
 				cb(result);
 			}
 			this->callFinallyCBs();
-			free();
 		}
 
-		void reject(std::string result) {
+		void reject(const char* result) {
 			this->failureText = result;
 			for (auto const& cb : this->_failCBs) {
 				cb(result);
 			}
+			//this->_promise._Set_value(NULL);
 			this->callFinallyCBs();
-			free();
 		}
 
 		Promise* then(resultCallback cb) {
@@ -73,24 +68,37 @@ namespace libdn {
 			return this;
 		}
 
-		//Blocking!
-		T get(int timeout = 7500) {
-			referenced++;
+		bool wait(int timeout = 7500) {
 			std::future_status status;
 			do {
+				if (failureText) {return false;}
 				status = this->_promise.wait_for(std::chrono::milliseconds(timeout));
+				if (failureText) { return false; }
 				if (status == std::future_status::deferred) {
 					Sleep(100);
 				} else if (status == std::future_status::timeout) {
-					this->reject("timed out");
-					return NULL;
+					this->reject("Promise failed. Timed out on wait call.");
+					return false;
 				} else if (status == std::future_status::ready) {
-					return this->_promise.get();
+					return failureText == 0;
 				}
 			} while (status != std::future_status::ready);
+			return failureText == 0;
+		}
+
+		//Blocking!
+		T get() {
 			return this->_promise.get();
 		}
 
+		/*
+		void free() {
+			if (failureText) {
+				delete failureText;
+			}
+			delete this;
+		}
+		*/
 	};
 
 }

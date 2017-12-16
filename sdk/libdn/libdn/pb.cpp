@@ -6,3 +6,9 @@
 
 #include "pb/platform.grpc.pb.cc"
 #include "pb/platform.pb.cc"
+
+#include "pb/storage.grpc.pb.cc"
+#include "pb/storage.pb.cc"
+
+#include "pb/messaging.grpc.pb.cc"
+#include "pb/messaging.pb.cc"
