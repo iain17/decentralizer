@@ -36,6 +36,8 @@ It has these top-level messages:
 	DNDirectMessageRequest
 	RPCDirectMessageResponse
 	RPCDirectMessageRequest
+	RPCSetNetworkRequest
+	RPCSetNetworkResponse
 	RPCHealthRequest
 	RPCHealthReply
 	RPCWritePeerFileRequest

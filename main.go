@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/iain17/decentralizer/app"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/api"
 	"context"
@@ -22,12 +21,8 @@ func init() {
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
-	app, err := app.New(ctx, ourNetwork)
-	if err != nil {
-		panic(err)
-	}
 
-	_, err = api.New(app, 50051)
+	_, err := api.New(ctx, 50051)
 	if err != nil {
 		panic(err)
 	}

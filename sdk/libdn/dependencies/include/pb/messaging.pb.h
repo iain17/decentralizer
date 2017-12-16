@@ -363,25 +363,10 @@ class RPCDirectMessageResponse : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // string err = 1;
-  void clear_err();
-  static const int kErrFieldNumber = 1;
-  const ::std::string& err() const;
-  void set_err(const ::std::string& value);
-  #if LANG_CXX11
-  void set_err(::std::string&& value);
-  #endif
-  void set_err(const char* value);
-  void set_err(const char* value, size_t size);
-  ::std::string* mutable_err();
-  ::std::string* release_err();
-  void set_allocated_err(::std::string* err);
-
   // @@protoc_insertion_point(class_scope:pb.RPCDirectMessageResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr err_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmessaging_2eproto::TableStruct;
   friend void ::protobuf_pb_2fmessaging_2eproto::InitDefaultsRPCDirectMessageResponseImpl();
@@ -593,59 +578,6 @@ inline void DNDirectMessageRequest::set_allocated_message(::std::string* message
 // -------------------------------------------------------------------
 
 // RPCDirectMessageResponse
-
-// string err = 1;
-inline void RPCDirectMessageResponse::clear_err() {
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCDirectMessageResponse::err() const {
-  // @@protoc_insertion_point(field_get:pb.RPCDirectMessageResponse.err)
-  return err_.GetNoArena();
-}
-inline void RPCDirectMessageResponse::set_err(const ::std::string& value) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCDirectMessageResponse.err)
-}
-#if LANG_CXX11
-inline void RPCDirectMessageResponse::set_err(::std::string&& value) {
-  
-  err_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCDirectMessageResponse.err)
-}
-#endif
-inline void RPCDirectMessageResponse::set_err(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCDirectMessageResponse.err)
-}
-inline void RPCDirectMessageResponse::set_err(const char* value, size_t size) {
-  
-  err_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCDirectMessageResponse.err)
-}
-inline ::std::string* RPCDirectMessageResponse::mutable_err() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCDirectMessageResponse.err)
-  return err_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCDirectMessageResponse::release_err() {
-  // @@protoc_insertion_point(field_release:pb.RPCDirectMessageResponse.err)
-  
-  return err_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCDirectMessageResponse::set_allocated_err(::std::string* err) {
-  if (err != NULL) {
-    
-  } else {
-    
-  }
-  err_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), err);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCDirectMessageResponse.err)
-}
 
 // -------------------------------------------------------------------
 

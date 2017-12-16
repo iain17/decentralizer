@@ -40,17 +40,23 @@ namespace protobuf_pb_2fplatform_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[4];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
 };
 void AddDescriptors();
+void InitDefaultsRPCSetNetworkRequestImpl();
+void InitDefaultsRPCSetNetworkRequest();
+void InitDefaultsRPCSetNetworkResponseImpl();
+void InitDefaultsRPCSetNetworkResponse();
 void InitDefaultsRPCHealthRequestImpl();
 void InitDefaultsRPCHealthRequest();
 void InitDefaultsRPCHealthReplyImpl();
 void InitDefaultsRPCHealthReply();
 inline void InitDefaults() {
+  InitDefaultsRPCSetNetworkRequest();
+  InitDefaultsRPCSetNetworkResponse();
   InitDefaultsRPCHealthRequest();
   InitDefaultsRPCHealthReply();
 }
@@ -62,10 +68,252 @@ extern RPCHealthReplyDefaultTypeInternal _RPCHealthReply_default_instance_;
 class RPCHealthRequest;
 class RPCHealthRequestDefaultTypeInternal;
 extern RPCHealthRequestDefaultTypeInternal _RPCHealthRequest_default_instance_;
+class RPCSetNetworkRequest;
+class RPCSetNetworkRequestDefaultTypeInternal;
+extern RPCSetNetworkRequestDefaultTypeInternal _RPCSetNetworkRequest_default_instance_;
+class RPCSetNetworkResponse;
+class RPCSetNetworkResponseDefaultTypeInternal;
+extern RPCSetNetworkResponseDefaultTypeInternal _RPCSetNetworkResponse_default_instance_;
 }  // namespace pb
 namespace pb {
 
 // ===================================================================
+
+class RPCSetNetworkRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCSetNetworkRequest) */ {
+ public:
+  RPCSetNetworkRequest();
+  virtual ~RPCSetNetworkRequest();
+
+  RPCSetNetworkRequest(const RPCSetNetworkRequest& from);
+
+  inline RPCSetNetworkRequest& operator=(const RPCSetNetworkRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RPCSetNetworkRequest(RPCSetNetworkRequest&& from) noexcept
+    : RPCSetNetworkRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline RPCSetNetworkRequest& operator=(RPCSetNetworkRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RPCSetNetworkRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RPCSetNetworkRequest* internal_default_instance() {
+    return reinterpret_cast<const RPCSetNetworkRequest*>(
+               &_RPCSetNetworkRequest_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    0;
+
+  void Swap(RPCSetNetworkRequest* other);
+  friend void swap(RPCSetNetworkRequest& a, RPCSetNetworkRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RPCSetNetworkRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RPCSetNetworkRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RPCSetNetworkRequest& from);
+  void MergeFrom(const RPCSetNetworkRequest& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RPCSetNetworkRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string clientVersion = 1;
+  void clear_clientversion();
+  static const int kClientVersionFieldNumber = 1;
+  const ::std::string& clientversion() const;
+  void set_clientversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_clientversion(::std::string&& value);
+  #endif
+  void set_clientversion(const char* value);
+  void set_clientversion(const char* value, size_t size);
+  ::std::string* mutable_clientversion();
+  ::std::string* release_clientversion();
+  void set_allocated_clientversion(::std::string* clientversion);
+
+  // string networkKey = 2;
+  void clear_networkkey();
+  static const int kNetworkKeyFieldNumber = 2;
+  const ::std::string& networkkey() const;
+  void set_networkkey(const ::std::string& value);
+  #if LANG_CXX11
+  void set_networkkey(::std::string&& value);
+  #endif
+  void set_networkkey(const char* value);
+  void set_networkkey(const char* value, size_t size);
+  ::std::string* mutable_networkkey();
+  ::std::string* release_networkkey();
+  void set_allocated_networkkey(::std::string* networkkey);
+
+  // bool privateKey = 3;
+  void clear_privatekey();
+  static const int kPrivateKeyFieldNumber = 3;
+  bool privatekey() const;
+  void set_privatekey(bool value);
+
+  // @@protoc_insertion_point(class_scope:pb.RPCSetNetworkRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr clientversion_;
+  ::google::protobuf::internal::ArenaStringPtr networkkey_;
+  bool privatekey_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCSetNetworkRequestImpl();
+};
+// -------------------------------------------------------------------
+
+class RPCSetNetworkResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCSetNetworkResponse) */ {
+ public:
+  RPCSetNetworkResponse();
+  virtual ~RPCSetNetworkResponse();
+
+  RPCSetNetworkResponse(const RPCSetNetworkResponse& from);
+
+  inline RPCSetNetworkResponse& operator=(const RPCSetNetworkResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RPCSetNetworkResponse(RPCSetNetworkResponse&& from) noexcept
+    : RPCSetNetworkResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline RPCSetNetworkResponse& operator=(RPCSetNetworkResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RPCSetNetworkResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RPCSetNetworkResponse* internal_default_instance() {
+    return reinterpret_cast<const RPCSetNetworkResponse*>(
+               &_RPCSetNetworkResponse_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    1;
+
+  void Swap(RPCSetNetworkResponse* other);
+  friend void swap(RPCSetNetworkResponse& a, RPCSetNetworkResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RPCSetNetworkResponse* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RPCSetNetworkResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RPCSetNetworkResponse& from);
+  void MergeFrom(const RPCSetNetworkResponse& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RPCSetNetworkResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string version = 1;
+  void clear_version();
+  static const int kVersionFieldNumber = 1;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  #if LANG_CXX11
+  void set_version(::std::string&& value);
+  #endif
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
+  // @@protoc_insertion_point(class_scope:pb.RPCSetNetworkResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCSetNetworkResponseImpl();
+};
+// -------------------------------------------------------------------
 
 class RPCHealthRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCHealthRequest) */ {
  public:
@@ -102,7 +350,7 @@ class RPCHealthRequest : public ::google::protobuf::Message /* @@protoc_insertio
                &_RPCHealthRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    0;
+    2;
 
   void Swap(RPCHealthRequest* other);
   friend void swap(RPCHealthRequest& a, RPCHealthRequest& b) {
@@ -194,7 +442,7 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
                &_RPCHealthReply_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    1;
+    3;
 
   void Swap(RPCHealthReply* other);
   friend void swap(RPCHealthReply& a, RPCHealthReply& b) {
@@ -280,6 +528,187 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// RPCSetNetworkRequest
+
+// string clientVersion = 1;
+inline void RPCSetNetworkRequest::clear_clientversion() {
+  clientversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCSetNetworkRequest::clientversion() const {
+  // @@protoc_insertion_point(field_get:pb.RPCSetNetworkRequest.clientVersion)
+  return clientversion_.GetNoArena();
+}
+inline void RPCSetNetworkRequest::set_clientversion(const ::std::string& value) {
+  
+  clientversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCSetNetworkRequest.clientVersion)
+}
+#if LANG_CXX11
+inline void RPCSetNetworkRequest::set_clientversion(::std::string&& value) {
+  
+  clientversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCSetNetworkRequest.clientVersion)
+}
+#endif
+inline void RPCSetNetworkRequest::set_clientversion(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  clientversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.RPCSetNetworkRequest.clientVersion)
+}
+inline void RPCSetNetworkRequest::set_clientversion(const char* value, size_t size) {
+  
+  clientversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCSetNetworkRequest.clientVersion)
+}
+inline ::std::string* RPCSetNetworkRequest::mutable_clientversion() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.RPCSetNetworkRequest.clientVersion)
+  return clientversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RPCSetNetworkRequest::release_clientversion() {
+  // @@protoc_insertion_point(field_release:pb.RPCSetNetworkRequest.clientVersion)
+  
+  return clientversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RPCSetNetworkRequest::set_allocated_clientversion(::std::string* clientversion) {
+  if (clientversion != NULL) {
+    
+  } else {
+    
+  }
+  clientversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientversion);
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCSetNetworkRequest.clientVersion)
+}
+
+// string networkKey = 2;
+inline void RPCSetNetworkRequest::clear_networkkey() {
+  networkkey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCSetNetworkRequest::networkkey() const {
+  // @@protoc_insertion_point(field_get:pb.RPCSetNetworkRequest.networkKey)
+  return networkkey_.GetNoArena();
+}
+inline void RPCSetNetworkRequest::set_networkkey(const ::std::string& value) {
+  
+  networkkey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCSetNetworkRequest.networkKey)
+}
+#if LANG_CXX11
+inline void RPCSetNetworkRequest::set_networkkey(::std::string&& value) {
+  
+  networkkey_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCSetNetworkRequest.networkKey)
+}
+#endif
+inline void RPCSetNetworkRequest::set_networkkey(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  networkkey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.RPCSetNetworkRequest.networkKey)
+}
+inline void RPCSetNetworkRequest::set_networkkey(const char* value, size_t size) {
+  
+  networkkey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCSetNetworkRequest.networkKey)
+}
+inline ::std::string* RPCSetNetworkRequest::mutable_networkkey() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.RPCSetNetworkRequest.networkKey)
+  return networkkey_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RPCSetNetworkRequest::release_networkkey() {
+  // @@protoc_insertion_point(field_release:pb.RPCSetNetworkRequest.networkKey)
+  
+  return networkkey_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RPCSetNetworkRequest::set_allocated_networkkey(::std::string* networkkey) {
+  if (networkkey != NULL) {
+    
+  } else {
+    
+  }
+  networkkey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), networkkey);
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCSetNetworkRequest.networkKey)
+}
+
+// bool privateKey = 3;
+inline void RPCSetNetworkRequest::clear_privatekey() {
+  privatekey_ = false;
+}
+inline bool RPCSetNetworkRequest::privatekey() const {
+  // @@protoc_insertion_point(field_get:pb.RPCSetNetworkRequest.privateKey)
+  return privatekey_;
+}
+inline void RPCSetNetworkRequest::set_privatekey(bool value) {
+  
+  privatekey_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCSetNetworkRequest.privateKey)
+}
+
+// -------------------------------------------------------------------
+
+// RPCSetNetworkResponse
+
+// string version = 1;
+inline void RPCSetNetworkResponse::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCSetNetworkResponse::version() const {
+  // @@protoc_insertion_point(field_get:pb.RPCSetNetworkResponse.version)
+  return version_.GetNoArena();
+}
+inline void RPCSetNetworkResponse::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCSetNetworkResponse.version)
+}
+#if LANG_CXX11
+inline void RPCSetNetworkResponse::set_version(::std::string&& value) {
+  
+  version_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCSetNetworkResponse.version)
+}
+#endif
+inline void RPCSetNetworkResponse::set_version(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.RPCSetNetworkResponse.version)
+}
+inline void RPCSetNetworkResponse::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCSetNetworkResponse.version)
+}
+inline ::std::string* RPCSetNetworkResponse::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.RPCSetNetworkResponse.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RPCSetNetworkResponse::release_version() {
+  // @@protoc_insertion_point(field_release:pb.RPCSetNetworkResponse.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RPCSetNetworkResponse::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCSetNetworkResponse.version)
+}
+
+// -------------------------------------------------------------------
+
 // RPCHealthRequest
 
 // -------------------------------------------------------------------
@@ -356,6 +785,10 @@ inline void RPCHealthReply::set_allocated_message(::std::string* message) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

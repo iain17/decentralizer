@@ -37,8 +37,14 @@ func getIpfsPath() (string, error) {
 	return paths[0].Path, nil
 }
 
-func New(ctx context.Context, networkStr string) (*Decentralizer, error) {
-	n, err := network.UnmarshalFromPrivateKey(networkStr)
+func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralizer, error) {
+	var n *network.Network
+	var err error
+	if privateKey {
+		n, err = network.UnmarshalFromPrivateKey(networkStr)
+	} else {
+		n, err = network.Unmarshal(networkStr)
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -8,15 +8,17 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"github.com/iain17/logger"
+	"context"
 )
 
 type Server struct {
+	ctx context.Context
 	app *app.Decentralizer
 }
 
-func New(app *app.Decentralizer, port int) (*Server, error) {
+func New(ctx context.Context, port int) (*Server, error) {
 	i := &Server {
-		app: app,
+		ctx: ctx,
 	}
 	address := fmt.Sprintf(":%d", port)
 	lis, err := net.Listen("tcp", address)

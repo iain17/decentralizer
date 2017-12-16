@@ -146,7 +146,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCDirectMessageResponse, err_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCDirectMessageRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -159,7 +158,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 0, -1, sizeof(::pb::DNDirectMessageResponse)},
   { 6, -1, sizeof(::pb::DNDirectMessageRequest)},
   { 12, -1, sizeof(::pb::RPCDirectMessageResponse)},
-  { 18, -1, sizeof(::pb::RPCDirectMessageRequest)},
+  { 17, -1, sizeof(::pb::RPCDirectMessageRequest)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -193,13 +192,13 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\022pb/messaging.proto\022\002pb\",\n\027DNDirectMess"
       "ageResponse\022\021\n\tdelivered\030\001 \001(\010\")\n\026DNDire"
-      "ctMessageRequest\022\017\n\007message\030\001 \001(\014\"\'\n\030RPC"
-      "DirectMessageResponse\022\013\n\003err\030\001 \001(\t\"7\n\027RP"
-      "CDirectMessageRequest\022\013\n\003pId\030\001 \001(\t\022\017\n\007me"
-      "ssage\030\002 \001(\014b\006proto3"
+      "ctMessageRequest\022\017\n\007message\030\001 \001(\014\"\032\n\030RPC"
+      "DirectMessageResponse\"7\n\027RPCDirectMessag"
+      "eRequest\022\013\n\003pId\030\001 \001(\t\022\017\n\007message\030\002 \001(\014b\006"
+      "proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 219);
+      descriptor, 206);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/messaging.proto", &protobuf_RegisterTypes);
 }
@@ -702,7 +701,6 @@ void DNDirectMessageRequest::InternalSwap(DNDirectMessageRequest* other) {
 void RPCDirectMessageResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCDirectMessageResponse::kErrFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCDirectMessageResponse::RPCDirectMessageResponse()
@@ -718,15 +716,10 @@ RPCDirectMessageResponse::RPCDirectMessageResponse(const RPCDirectMessageRespons
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.err().size() > 0) {
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
   // @@protoc_insertion_point(copy_constructor:pb.RPCDirectMessageResponse)
 }
 
 void RPCDirectMessageResponse::SharedCtor() {
-  err_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -736,7 +729,6 @@ RPCDirectMessageResponse::~RPCDirectMessageResponse() {
 }
 
 void RPCDirectMessageResponse::SharedDtor() {
-  err_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void RPCDirectMessageResponse::SetCachedSize(int size) const {
@@ -768,7 +760,6 @@ void RPCDirectMessageResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  err_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -781,33 +772,12 @@ bool RPCDirectMessageResponse::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string err = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_err()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->err().data(), static_cast<int>(this->err().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.RPCDirectMessageResponse.err"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
     }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:pb.RPCDirectMessageResponse)
@@ -824,16 +794,6 @@ void RPCDirectMessageResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCDirectMessageResponse.err");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->err(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -847,17 +807,6 @@ void RPCDirectMessageResponse::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:pb.RPCDirectMessageResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // string err = 1;
-  if (this->err().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->err().data(), static_cast<int>(this->err().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.RPCDirectMessageResponse.err");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->err(), target);
-  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -876,13 +825,6 @@ size_t RPCDirectMessageResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string err = 1;
-  if (this->err().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->err());
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -912,10 +854,6 @@ void RPCDirectMessageResponse::MergeFrom(const RPCDirectMessageResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.err().size() > 0) {
-
-    err_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.err_);
-  }
 }
 
 void RPCDirectMessageResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -942,7 +880,6 @@ void RPCDirectMessageResponse::Swap(RPCDirectMessageResponse* other) {
 }
 void RPCDirectMessageResponse::InternalSwap(RPCDirectMessageResponse* other) {
   using std::swap;
-  err_.Swap(&other->err_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
