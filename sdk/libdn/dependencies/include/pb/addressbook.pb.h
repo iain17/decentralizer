@@ -643,17 +643,10 @@ class RPCUpsertPeerResponse : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // bool result = 1;
-  void clear_result();
-  static const int kResultFieldNumber = 1;
-  bool result() const;
-  void set_result(bool value);
-
   // @@protoc_insertion_point(class_scope:pb.RPCUpsertPeerResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool result_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2faddressbook_2eproto::TableStruct;
   friend void ::protobuf_pb_2faddressbook_2eproto::InitDefaultsRPCUpsertPeerResponseImpl();
@@ -1324,20 +1317,6 @@ inline void RPCUpsertPeerRequest::set_allocated_peer(::pb::Peer* peer) {
 // -------------------------------------------------------------------
 
 // RPCUpsertPeerResponse
-
-// bool result = 1;
-inline void RPCUpsertPeerResponse::clear_result() {
-  result_ = false;
-}
-inline bool RPCUpsertPeerResponse::result() const {
-  // @@protoc_insertion_point(field_get:pb.RPCUpsertPeerResponse.result)
-  return result_;
-}
-inline void RPCUpsertPeerResponse::set_result(bool value) {
-  
-  result_ = value;
-  // @@protoc_insertion_point(field_set:pb.RPCUpsertPeerResponse.result)
-}
 
 // -------------------------------------------------------------------
 

@@ -4,6 +4,8 @@ import "pb/matchmaking.proto";
 import "pb/addressbook.proto";
 import "pb/storage.proto";
 import "pb/messaging.proto";
+import "pb/publisher.proto";
+import "google/api/annotations.proto";
 
 message RPCHealthRequest {}
 
@@ -17,7 +19,9 @@ service Decentralizer {
 	// Platform
 	//
 	// Get health of decentralizer.
-	rpc GetHealth(RPCHealthRequest) returns (RPCHealthReply) {}
+	rpc GetHealth(RPCHealthRequest) returns (RPCHealthReply) {
+		option (google.api.http) = { get: "/v1/health" };
+	}
 
 	//
 	// Matchmaking
@@ -56,4 +60,9 @@ service Decentralizer {
 	//
 	// Send another peer a direct message. Takes a peer id and the data it should send
 	rpc SendDirectMessage(RPCDirectMessageRequest) returns (RPCDirectMessageResponse) {}
+
+
+	//
+	// Publisher
+	//
 }

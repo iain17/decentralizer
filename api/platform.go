@@ -25,7 +25,7 @@ func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RP
 	}, nil
 }
 
-func (s *Server) SetNetwork(clientVersion string, networkKey string, isPrivateKey bool) error {
+func (s *Server) setNetwork(clientVersion string, networkKey string, isPrivateKey bool) error {
 	if s.app != nil {
 		return errors.New("network already set")
 	}

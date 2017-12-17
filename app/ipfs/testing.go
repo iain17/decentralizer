@@ -7,6 +7,7 @@ import (
 	namesys "gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/namesys"
 	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
 	"gx/ipfs/QmRQ76P5dgvxTujhfPsCRAG83rC15jgb1G9bKLuomuC6dQ/go-libp2p/p2p/net/mock"
+	"time"
 )
 
 func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
@@ -53,6 +54,7 @@ func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
 			panic(err)
 		}
 	}
+	time.Sleep(1 * time.Second)
 
 	return nodes
 }

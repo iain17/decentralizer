@@ -327,7 +327,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertPeerResponse, result_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPeerIdsRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -362,10 +361,10 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 23, -1, sizeof(::pb::DNPeerRequest)},
   { 28, -1, sizeof(::pb::RPCUpsertPeerRequest)},
   { 34, -1, sizeof(::pb::RPCUpsertPeerResponse)},
-  { 40, -1, sizeof(::pb::RPCGetPeerIdsRequest)},
-  { 47, -1, sizeof(::pb::RPCGetPeerIdsResponse)},
-  { 53, -1, sizeof(::pb::RPCGetPeerRequest)},
-  { 60, -1, sizeof(::pb::RPCGetPeerResponse)},
+  { 39, -1, sizeof(::pb::RPCGetPeerIdsRequest)},
+  { 46, -1, sizeof(::pb::RPCGetPeerIdsResponse)},
+  { 52, -1, sizeof(::pb::RPCGetPeerRequest)},
+  { 59, -1, sizeof(::pb::RPCGetPeerResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -409,16 +408,15 @@ void AddDescriptorsImpl() {
       "\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"(\n\016DNPeerR"
       "esponse\022\026\n\004peer\030\001 \001(\0132\010.pb.Peer\"\017\n\rDNPee"
       "rRequest\".\n\024RPCUpsertPeerRequest\022\026\n\004peer"
-      "\030\001 \001(\0132\010.pb.Peer\"\'\n\025RPCUpsertPeerRespons"
-      "e\022\016\n\006result\030\001 \001(\010\"2\n\024RPCGetPeerIdsReques"
-      "t\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"(\n\025RPCGetP"
-      "eerIdsResponse\022\017\n\007peerIds\030\001 \003(\t\".\n\021RPCGe"
-      "tPeerRequest\022\013\n\003pId\030\001 \001(\t\022\014\n\004dnId\030\002 \001(\004\""
-      ",\n\022RPCGetPeerResponse\022\026\n\004peer\030\001 \001(\0132\010.pb"
-      ".Peerb\006proto3"
+      "\030\001 \001(\0132\010.pb.Peer\"\027\n\025RPCUpsertPeerRespons"
+      "e\"2\n\024RPCGetPeerIdsRequest\022\013\n\003key\030\001 \001(\t\022\r"
+      "\n\005value\030\002 \001(\t\"(\n\025RPCGetPeerIdsResponse\022\017"
+      "\n\007peerIds\030\001 \003(\t\".\n\021RPCGetPeerRequest\022\013\n\003"
+      "pId\030\001 \001(\t\022\014\n\004dnId\030\002 \001(\004\",\n\022RPCGetPeerRes"
+      "ponse\022\026\n\004peer\030\001 \001(\0132\010.pb.Peerb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 493);
+      descriptor, 477);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/addressbook.proto", &protobuf_RegisterTypes);
 }
@@ -1601,7 +1599,6 @@ void RPCUpsertPeerRequest::InternalSwap(RPCUpsertPeerRequest* other) {
 void RPCUpsertPeerResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RPCUpsertPeerResponse::kResultFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RPCUpsertPeerResponse::RPCUpsertPeerResponse()
@@ -1617,12 +1614,10 @@ RPCUpsertPeerResponse::RPCUpsertPeerResponse(const RPCUpsertPeerResponse& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  result_ = from.result_;
   // @@protoc_insertion_point(copy_constructor:pb.RPCUpsertPeerResponse)
 }
 
 void RPCUpsertPeerResponse::SharedCtor() {
-  result_ = false;
   _cached_size_ = 0;
 }
 
@@ -1663,7 +1658,6 @@ void RPCUpsertPeerResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_ = false;
   _internal_metadata_.Clear();
 }
 
@@ -1676,31 +1670,12 @@ bool RPCUpsertPeerResponse::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bool result = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &result_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
     }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:pb.RPCUpsertPeerResponse)
@@ -1717,11 +1692,6 @@ void RPCUpsertPeerResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool result = 1;
-  if (this->result() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->result(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1735,11 +1705,6 @@ void RPCUpsertPeerResponse::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:pb.RPCUpsertPeerResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // bool result = 1;
-  if (this->result() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->result(), target);
-  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -1758,11 +1723,6 @@ size_t RPCUpsertPeerResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bool result = 1;
-  if (this->result() != 0) {
-    total_size += 1 + 1;
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -1792,9 +1752,6 @@ void RPCUpsertPeerResponse::MergeFrom(const RPCUpsertPeerResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.result() != 0) {
-    set_result(from.result());
-  }
 }
 
 void RPCUpsertPeerResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1821,7 +1778,6 @@ void RPCUpsertPeerResponse::Swap(RPCUpsertPeerResponse* other) {
 }
 void RPCUpsertPeerResponse::InternalSwap(RPCUpsertPeerResponse* other) {
   using std::swap;
-  swap(result_, other->result_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

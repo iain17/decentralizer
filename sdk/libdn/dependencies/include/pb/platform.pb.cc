@@ -124,40 +124,44 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\021pb/platform.proto\022\002pb\032\024pb/matchmaking."
       "proto\032\024pb/addressbook.proto\032\020pb/storage."
-      "proto\032\022pb/messaging.proto\"\022\n\020RPCHealthRe"
-      "quest\"0\n\016RPCHealthReply\022\r\n\005ready\030\001 \001(\010\022\017"
-      "\n\007message\030\002 \001(\t2\374\006\n\rDecentralizer\0227\n\tGet"
-      "Health\022\024.pb.RPCHealthRequest\032\022.pb.RPCHea"
-      "lthReply\"\000\022L\n\rUpsertSession\022\033.pb.RPCUpse"
-      "rtSessionRequest\032\034.pb.RPCUpsertSessionRe"
-      "sponse\"\000\022L\n\rDeleteSession\022\033.pb.RPCDelete"
-      "SessionRequest\032\034.pb.RPCDeleteSessionResp"
-      "onse\"\000\022L\n\rGetSessionIds\022\033.pb.RPCGetSessi"
-      "onIdsRequest\032\034.pb.RPCGetSessionIdsRespon"
-      "se\"\000\022C\n\nGetSession\022\030.pb.RPCGetSessionReq"
-      "uest\032\031.pb.RPCGetSessionResponse\"\000\022C\n\nUps"
-      "ertPeer\022\030.pb.RPCUpsertPeerRequest\032\031.pb.R"
-      "PCUpsertPeerResponse\"\000\022C\n\nGetPeerIds\022\030.p"
-      "b.RPCGetPeerIdsRequest\032\031.pb.RPCGetPeerId"
-      "sResponse\"\000\022:\n\007GetPeer\022\025.pb.RPCGetPeerRe"
-      "quest\032\026.pb.RPCGetPeerResponse\"\000\022L\n\rWrite"
-      "PeerFile\022\033.pb.RPCWritePeerFileRequest\032\034."
-      "pb.RPCWritePeerFileResponse\"\000\022F\n\013GetPeer"
-      "File\022\031.pb.RPCGetPeerFileRequest\032\032.pb.RPC"
-      "GetPeerFileResponse\"\000\022U\n\020GetPublisherFil"
-      "e\022\036.pb.RPCGetPublisherFileRequest\032\037.pb.R"
-      "PCGetPublisherFileResponse\"\000\022P\n\021SendDire"
-      "ctMessage\022\033.pb.RPCDirectMessageRequest\032\034"
-      ".pb.RPCDirectMessageResponse\"\000b\006proto3"
+      "proto\032\022pb/messaging.proto\032\022pb/publisher."
+      "proto\032\034google/api/annotations.proto\"\022\n\020R"
+      "PCHealthRequest\"0\n\016RPCHealthReply\022\r\n\005rea"
+      "dy\030\001 \001(\010\022\017\n\007message\030\002 \001(\t2\216\007\n\rDecentrali"
+      "zer\022I\n\tGetHealth\022\024.pb.RPCHealthRequest\032\022"
+      ".pb.RPCHealthReply\"\022\202\323\344\223\002\014\022\n/v1/health\022L"
+      "\n\rUpsertSession\022\033.pb.RPCUpsertSessionReq"
+      "uest\032\034.pb.RPCUpsertSessionResponse\"\000\022L\n\r"
+      "DeleteSession\022\033.pb.RPCDeleteSessionReque"
+      "st\032\034.pb.RPCDeleteSessionResponse\"\000\022L\n\rGe"
+      "tSessionIds\022\033.pb.RPCGetSessionIdsRequest"
+      "\032\034.pb.RPCGetSessionIdsResponse\"\000\022C\n\nGetS"
+      "ession\022\030.pb.RPCGetSessionRequest\032\031.pb.RP"
+      "CGetSessionResponse\"\000\022C\n\nUpsertPeer\022\030.pb"
+      ".RPCUpsertPeerRequest\032\031.pb.RPCUpsertPeer"
+      "Response\"\000\022C\n\nGetPeerIds\022\030.pb.RPCGetPeer"
+      "IdsRequest\032\031.pb.RPCGetPeerIdsResponse\"\000\022"
+      ":\n\007GetPeer\022\025.pb.RPCGetPeerRequest\032\026.pb.R"
+      "PCGetPeerResponse\"\000\022L\n\rWritePeerFile\022\033.p"
+      "b.RPCWritePeerFileRequest\032\034.pb.RPCWriteP"
+      "eerFileResponse\"\000\022F\n\013GetPeerFile\022\031.pb.RP"
+      "CGetPeerFileRequest\032\032.pb.RPCGetPeerFileR"
+      "esponse\"\000\022U\n\020GetPublisherFile\022\036.pb.RPCGe"
+      "tPublisherFileRequest\032\037.pb.RPCGetPublish"
+      "erFileResponse\"\000\022P\n\021SendDirectMessage\022\033."
+      "pb.RPCDirectMessageRequest\032\034.pb.RPCDirec"
+      "tMessageResponse\"\000b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1078);
+      descriptor, 1146);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/platform.proto", &protobuf_RegisterTypes);
   ::protobuf_pb_2fmatchmaking_2eproto::AddDescriptors();
   ::protobuf_pb_2faddressbook_2eproto::AddDescriptors();
   ::protobuf_pb_2fstorage_2eproto::AddDescriptors();
   ::protobuf_pb_2fmessaging_2eproto::AddDescriptors();
+  ::protobuf_pb_2fpublisher_2eproto::AddDescriptors();
+  ::protobuf_google_2fapi_2fannotations_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {

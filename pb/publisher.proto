@@ -1,0 +1,11 @@
+syntax = "proto3";
+package pb;
+
+//RPC
+message PublisherDefinition {
+    string hash = 1;
+    string signature = 2;
+    map<string, string> files = 3;//name, ipfs path
+    map<string, string> instructions = 4;//Anything at all
+    bool status = 5;//Network alive or not. This gives the publisher the power to kill a network.
+}

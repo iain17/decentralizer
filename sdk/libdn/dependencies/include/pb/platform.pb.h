@@ -33,6 +33,8 @@
 #include "pb/addressbook.pb.h"
 #include "pb/storage.pb.h"
 #include "pb/messaging.pb.h"
+#include "pb/publisher.pb.h"
+#include "google/api/annotations.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fplatform_2eproto {

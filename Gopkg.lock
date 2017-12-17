@@ -16,8 +16,8 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/missinggo"
-  packages = [".","inproc","pproffd"]
-  revision = "80d58ba10e649c63a4388257be87edd07bb6b16f"
+  packages = [".","assert","inproc","pproffd"]
+  revision = "7bdb34b592536f72bf50c709a0ac3d12abbc5adc"
 
 [[projects]]
   branch = "master"
@@ -88,7 +88,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/golang/protobuf"
-  packages = ["proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/timestamp"]
+  packages = ["jsonpb","proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/struct","ptypes/timestamp"]
   revision = "1e59b77b52bf8e4b449a57e6f79f21226d571845"
 
 [[projects]]
@@ -102,6 +102,12 @@
   name = "github.com/grpc-ecosystem/go-grpc-middleware"
   packages = [".","auth","recovery","util/metautils"]
   revision = "967bee733a734780623ac3d7c8e9216e4372ea62"
+
+[[projects]]
+  name = "github.com/grpc-ecosystem/grpc-gateway"
+  packages = ["runtime","runtime/internal","utilities"]
+  revision = "8cc3a55af3bcf171a1c23a90c4df9cf591706104"
+  version = "v1.3.0"
 
 [[projects]]
   branch = "master"
@@ -232,7 +238,7 @@
 [[projects]]
   branch = "master"
   name = "google.golang.org/genproto"
-  packages = ["googleapis/rpc/status"]
+  packages = ["googleapis/api/annotations","googleapis/rpc/status"]
   revision = "a8101f21cf983e773d0c1133ebc5424792003214"
 
 [[projects]]
@@ -244,6 +250,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3b3cea7602c27da845d93711b5ce6c52616beb6acc089cb9e08d64ef35818f0a"
+  inputs-digest = "95bbe2fe7c7d50acf719f41d005788c57f36f99f16c221b8331fa7f79d1a18e6"
   solver-name = "gps-cdcl"
   solver-version = 1

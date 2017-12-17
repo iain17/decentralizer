@@ -21,7 +21,7 @@ type RPCWritePeerFileRequest struct {
 func (m *RPCWritePeerFileRequest) Reset()                    { *m = RPCWritePeerFileRequest{} }
 func (m *RPCWritePeerFileRequest) String() string            { return proto.CompactTextString(m) }
 func (*RPCWritePeerFileRequest) ProtoMessage()               {}
-func (*RPCWritePeerFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (*RPCWritePeerFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
 
 func (m *RPCWritePeerFileRequest) GetName() string {
 	if m != nil {
@@ -44,7 +44,7 @@ type RPCWritePeerFileResponse struct {
 func (m *RPCWritePeerFileResponse) Reset()                    { *m = RPCWritePeerFileResponse{} }
 func (m *RPCWritePeerFileResponse) String() string            { return proto.CompactTextString(m) }
 func (*RPCWritePeerFileResponse) ProtoMessage()               {}
-func (*RPCWritePeerFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
+func (*RPCWritePeerFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
 
 func (m *RPCWritePeerFileResponse) GetSuccess() bool {
 	if m != nil {
@@ -61,7 +61,7 @@ type RPCGetPeerFileRequest struct {
 func (m *RPCGetPeerFileRequest) Reset()                    { *m = RPCGetPeerFileRequest{} }
 func (m *RPCGetPeerFileRequest) String() string            { return proto.CompactTextString(m) }
 func (*RPCGetPeerFileRequest) ProtoMessage()               {}
-func (*RPCGetPeerFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
+func (*RPCGetPeerFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{2} }
 
 func (m *RPCGetPeerFileRequest) GetPId() string {
 	if m != nil {
@@ -84,7 +84,7 @@ type RPCGetPeerFileResponse struct {
 func (m *RPCGetPeerFileResponse) Reset()                    { *m = RPCGetPeerFileResponse{} }
 func (m *RPCGetPeerFileResponse) String() string            { return proto.CompactTextString(m) }
 func (*RPCGetPeerFileResponse) ProtoMessage()               {}
-func (*RPCGetPeerFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
+func (*RPCGetPeerFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{3} }
 
 func (m *RPCGetPeerFileResponse) GetFile() []byte {
 	if m != nil {
@@ -100,7 +100,7 @@ type RPCGetPublisherFileRequest struct {
 func (m *RPCGetPublisherFileRequest) Reset()                    { *m = RPCGetPublisherFileRequest{} }
 func (m *RPCGetPublisherFileRequest) String() string            { return proto.CompactTextString(m) }
 func (*RPCGetPublisherFileRequest) ProtoMessage()               {}
-func (*RPCGetPublisherFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{4} }
+func (*RPCGetPublisherFileRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{4} }
 
 func (m *RPCGetPublisherFileRequest) GetName() string {
 	if m != nil {
@@ -116,7 +116,7 @@ type RPCGetPublisherFileResponse struct {
 func (m *RPCGetPublisherFileResponse) Reset()                    { *m = RPCGetPublisherFileResponse{} }
 func (m *RPCGetPublisherFileResponse) String() string            { return proto.CompactTextString(m) }
 func (*RPCGetPublisherFileResponse) ProtoMessage()               {}
-func (*RPCGetPublisherFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{5} }
+func (*RPCGetPublisherFileResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{5} }
 
 func (m *RPCGetPublisherFileResponse) GetFile() []byte {
 	if m != nil {
@@ -134,9 +134,9 @@ func init() {
 	proto.RegisterType((*RPCGetPublisherFileResponse)(nil), "pb.RPCGetPublisherFileResponse")
 }
 
-func init() { proto.RegisterFile("pb/storage.proto", fileDescriptor4) }
+func init() { proto.RegisterFile("pb/storage.proto", fileDescriptor5) }
 
-var fileDescriptor4 = []byte{
+var fileDescriptor5 = []byte{
 	// 203 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x48, 0xd2, 0x2f,
 	0x2e, 0xc9, 0x2f, 0x4a, 0x4c, 0x4f, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48,

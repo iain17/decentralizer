@@ -34,7 +34,7 @@ ci:
 	gitlab-runner --debug exec docker test
 
 test:
-	go test -race -cover ./...
+	go test -cover ./...
 
 dep:
 	mv vendor/gx /tmp/

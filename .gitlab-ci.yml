@@ -3,6 +3,14 @@ stages:
   - test
   - build
 
+cache:
+  paths:
+    - /apt-cache
+    - /go/src/github.com
+    - /go/src/golang.org
+    - /go/src/google.golang.org
+    - /go/src/gopkg.in
+
 variables:
   REPO_BASE: github.com/iain17/decentralizer
 

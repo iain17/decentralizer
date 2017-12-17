@@ -11,9 +11,7 @@ import (
 // Create or update a peer. Takes peer info, returns if it was a success.
 func (s *Server) UpsertPeer(ctx context.Context, request *pb.RPCUpsertPeerRequest) (*pb.RPCUpsertPeerResponse, error) {
 	err := s.app.UpsertPeer(request.Peer.PId, request.Peer.Details)
-	return &pb.RPCUpsertPeerResponse{
-		Result: err == nil,
-	}, err
+	return &pb.RPCUpsertPeerResponse{}, err
 }
 
 // Get peer ids. takes a key and value to filter the peers by details. If left empty this filter will not apply and all will be fetched.
