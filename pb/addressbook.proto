@@ -21,9 +21,7 @@ message RPCUpsertPeerRequest {
     Peer peer = 1;
 }
 
-message RPCUpsertPeerResponse {
-    bool result = 1;
-}
+message RPCUpsertPeerResponse {}
 
 //Get peer ids
 message RPCGetPeerIdsRequest {

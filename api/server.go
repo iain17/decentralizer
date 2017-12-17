@@ -57,12 +57,6 @@ func (s *Server) Stop() {
 }
 
 func (s *Server) auth(ctx context.Context) (context.Context, error) {
-	//Check health
-	_, err := s.app.Health()
-	if err != nil {
-		return ctx, err
-	}
-
 	var clientVersion string
 	var networkKey string
 	var isPrivateKey bool
@@ -88,6 +82,13 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 	if s.app == nil {
 		return ctx, errors.New("network is not set. Please set the network first")
 	}
+
+	//Check health
+	_, err := s.app.Health()
+	if err != nil {
+		return ctx, err
+	}
+
 	return ctx, nil
 }
 
