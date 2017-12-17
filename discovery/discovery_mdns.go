@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/grandcat/zeroconf"
 	"github.com/iain17/logger"
-	"os"
 	"net"
 )
 
@@ -19,10 +18,8 @@ func (d *DiscoveryMDNS) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.logger = logger.New("DiscoveryMDNS")
 	d.localNode = ln
 	d.context = ctx
-	infoHash := d.localNode.discovery.network.InfoHash()
-	host, _ := os.Hostname()
 
-	d.server, err = zeroconf.Register(host, SERVICE, "local.", d.localNode.port, []string{string(infoHash[:])}, nil)
+	d.server, err = zeroconf.Register(d.localNode.id, SERVICE, "local.", d.localNode.port, []string{}, nil)
 	if err != nil {
 		return err
 	}
@@ -47,8 +44,8 @@ func (d *DiscoveryMDNS) Run() {
 		d.logger.Errorf("Failed to initialize resolver:", err.Error())
 	}
 
-	entriesCh := make(chan *zeroconf.ServiceEntry, 4)
-	resolver.Browse(d.context, SERVICE, "local.", entriesCh)
+	entriesCh := make(chan *zeroconf.ServiceEntry)
+	resolver.Browse(d.context, SERVICE, "", entriesCh)
 	for {
 		select {
 		case <-d.context.Done():
@@ -61,11 +58,12 @@ func (d *DiscoveryMDNS) Run() {
 			if ip == nil {
 				ip = entry.AddrIPv6[0]
 			}
-			go d.localNode.netTableService.Discovered(&net.UDPAddr{
+			addr := &net.UDPAddr{
 				IP:   ip,
 				Port: entry.Port,
-			})
-			d.logger.Debugf("found entry %v", entry)
+			}
+			d.logger.Debugf("Discovered local peer %s %v", entry.HostName, addr)
+			go d.localNode.netTableService.Discovered(addr)
 		}
 	}
 }

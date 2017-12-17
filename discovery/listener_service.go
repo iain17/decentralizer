@@ -46,7 +46,7 @@ func (l *ListenerService) Run() {
 			l.logger.Debugf("new connection from %q", conn.RemoteAddr().String())
 
 			if err = l.process(conn); err != nil {
-				if err.Error() == "peer reset" {
+				if err.Error() == "peer reset" || err.Error() == "we can't add ourselves" {
 					continue
 				}
 				l.logger.Errorf("error on process, %v", err)
