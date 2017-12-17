@@ -25,23 +25,18 @@ func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RP
 	}, nil
 }
 
-func (s *Server) SetNetwork(ctx context.Context, request *pb.RPCSetNetworkRequest) (*pb.RPCSetNetworkResponse, error) {
+func (s *Server) SetNetwork(clientVersion string, networkKey string, isPrivateKey bool) error {
 	if s.app != nil {
-		return nil, errors.New("network already set")
+		return errors.New("network already set")
 	}
-	clientVersion, err := version.NewVersion(request.ClientVersion)
+	v, err := version.NewVersion(clientVersion)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	versionMismatch := pb.CONSTRAINT.Check(clientVersion)
+	versionMismatch := pb.CONSTRAINT.Check(v)
 	if !versionMismatch {
-		return nil, errors.New("please update your client")
+		return errors.New("please update your client")
 	}
-	s.app, err = app.New(s.ctx, request.NetworkKey, request.PrivateKey)
-	if err != nil {
-		return nil, err
-	}
-	return &pb.RPCSetNetworkResponse{
-		Version: pb.VERSION.String(),
-	}, nil
+	s.app, err = app.New(s.ctx, networkKey, isPrivateKey)
+	return err
 }

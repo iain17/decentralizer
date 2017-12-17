@@ -13,7 +13,7 @@ const ourNetwork = "2d2d2d2d2d424547494e205253412050524956415445204b45592d2d2d2d
 
 func init() {
 	logger.AddOutput(logger.Stdout{
-		MinLevel: logger.DEBUG, //logger.DEBUG,
+		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
 	//logging.Configure(logging.LevelDebug)
@@ -22,7 +22,7 @@ func init() {
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	_, err := api.New(ctx, 50051)
+	s, err := api.New(ctx, 50051)
 	if err != nil {
 		panic(err)
 	}
@@ -31,6 +31,7 @@ func main() {
 	signal.Notify(c, os.Interrupt)
 	defer func() {
 		signal.Stop(c)
+		s.Stop()
 		cancel()
 	}()
 

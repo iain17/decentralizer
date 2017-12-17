@@ -104,3 +104,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/golang/glog"
+
+[[constraint]]
+  name = "github.com/youtube/vitess"
+  version = "2.1.1"

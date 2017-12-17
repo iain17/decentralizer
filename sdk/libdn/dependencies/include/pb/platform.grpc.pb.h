@@ -45,14 +45,6 @@ class Decentralizer final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>> PrepareAsyncGetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>>(PrepareAsyncGetHealthRaw(context, request, cq));
     }
-    // Set the public or private key of a network
-    virtual ::grpc::Status SetNetwork(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::pb::RPCSetNetworkResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCSetNetworkResponse>> AsyncSetNetwork(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCSetNetworkResponse>>(AsyncSetNetworkRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCSetNetworkResponse>> PrepareAsyncSetNetwork(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCSetNetworkResponse>>(PrepareAsyncSetNetworkRaw(context, request, cq));
-    }
     //
     // Matchmaking
     //
@@ -156,8 +148,6 @@ class Decentralizer final {
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>* AsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>* PrepareAsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCSetNetworkResponse>* AsyncSetNetworkRaw(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCSetNetworkResponse>* PrepareAsyncSetNetworkRaw(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>* AsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCUpsertSessionResponse>* PrepareAsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCDeleteSessionResponse>* AsyncDeleteSessionRaw(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -190,13 +180,6 @@ class Decentralizer final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>> PrepareAsyncGetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>>(PrepareAsyncGetHealthRaw(context, request, cq));
-    }
-    ::grpc::Status SetNetwork(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::pb::RPCSetNetworkResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCSetNetworkResponse>> AsyncSetNetwork(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCSetNetworkResponse>>(AsyncSetNetworkRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCSetNetworkResponse>> PrepareAsyncSetNetwork(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCSetNetworkResponse>>(PrepareAsyncSetNetworkRaw(context, request, cq));
     }
     ::grpc::Status UpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::pb::RPCUpsertSessionResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>> AsyncUpsertSession(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) {
@@ -280,8 +263,6 @@ class Decentralizer final {
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>* AsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCHealthReply>* PrepareAsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::pb::RPCSetNetworkResponse>* AsyncSetNetworkRaw(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::pb::RPCSetNetworkResponse>* PrepareAsyncSetNetworkRaw(::grpc::ClientContext* context, const ::pb::RPCSetNetworkRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>* AsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCUpsertSessionResponse>* PrepareAsyncUpsertSessionRaw(::grpc::ClientContext* context, const ::pb::RPCUpsertSessionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>* AsyncDeleteSessionRaw(::grpc::ClientContext* context, const ::pb::RPCDeleteSessionRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -305,7 +286,6 @@ class Decentralizer final {
     ::grpc::ClientAsyncResponseReader< ::pb::RPCDirectMessageResponse>* AsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCDirectMessageResponse>* PrepareAsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::RpcMethod rpcmethod_GetHealth_;
-    const ::grpc::RpcMethod rpcmethod_SetNetwork_;
     const ::grpc::RpcMethod rpcmethod_UpsertSession_;
     const ::grpc::RpcMethod rpcmethod_DeleteSession_;
     const ::grpc::RpcMethod rpcmethod_GetSessionIds_;
@@ -329,8 +309,6 @@ class Decentralizer final {
     //
     // Get health of decentralizer.
     virtual ::grpc::Status GetHealth(::grpc::ServerContext* context, const ::pb::RPCHealthRequest* request, ::pb::RPCHealthReply* response);
-    // Set the public or private key of a network
-    virtual ::grpc::Status SetNetwork(::grpc::ServerContext* context, const ::pb::RPCSetNetworkRequest* request, ::pb::RPCSetNetworkResponse* response);
     //
     // Matchmaking
     //
@@ -387,32 +365,12 @@ class Decentralizer final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_SetNetwork : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithAsyncMethod_SetNetwork() {
-      ::grpc::Service::MarkMethodAsync(1);
-    }
-    ~WithAsyncMethod_SetNetwork() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SetNetwork(::grpc::ServerContext* context, const ::pb::RPCSetNetworkRequest* request, ::pb::RPCSetNetworkResponse* response) final override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSetNetwork(::grpc::ServerContext* context, ::pb::RPCSetNetworkRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCSetNetworkResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithAsyncMethod_UpsertSession : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_UpsertSession() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(1);
     }
     ~WithAsyncMethod_UpsertSession() override {
       BaseClassMustBeDerivedFromService(this);
@@ -423,7 +381,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestUpsertSession(::grpc::ServerContext* context, ::pb::RPCUpsertSessionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCUpsertSessionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -432,7 +390,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_DeleteSession() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_DeleteSession() override {
       BaseClassMustBeDerivedFromService(this);
@@ -443,7 +401,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestDeleteSession(::grpc::ServerContext* context, ::pb::RPCDeleteSessionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCDeleteSessionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -452,7 +410,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetSessionIds() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_GetSessionIds() override {
       BaseClassMustBeDerivedFromService(this);
@@ -463,7 +421,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetSessionIds(::grpc::ServerContext* context, ::pb::RPCGetSessionIdsRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetSessionIdsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -472,7 +430,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetSession() {
-      ::grpc::Service::MarkMethodAsync(5);
+      ::grpc::Service::MarkMethodAsync(4);
     }
     ~WithAsyncMethod_GetSession() override {
       BaseClassMustBeDerivedFromService(this);
@@ -483,7 +441,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetSession(::grpc::ServerContext* context, ::pb::RPCGetSessionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetSessionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -492,7 +450,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_UpsertPeer() {
-      ::grpc::Service::MarkMethodAsync(6);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_UpsertPeer() override {
       BaseClassMustBeDerivedFromService(this);
@@ -503,7 +461,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestUpsertPeer(::grpc::ServerContext* context, ::pb::RPCUpsertPeerRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCUpsertPeerResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -512,7 +470,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetPeerIds() {
-      ::grpc::Service::MarkMethodAsync(7);
+      ::grpc::Service::MarkMethodAsync(6);
     }
     ~WithAsyncMethod_GetPeerIds() override {
       BaseClassMustBeDerivedFromService(this);
@@ -523,7 +481,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetPeerIds(::grpc::ServerContext* context, ::pb::RPCGetPeerIdsRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPeerIdsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -532,7 +490,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetPeer() {
-      ::grpc::Service::MarkMethodAsync(8);
+      ::grpc::Service::MarkMethodAsync(7);
     }
     ~WithAsyncMethod_GetPeer() override {
       BaseClassMustBeDerivedFromService(this);
@@ -543,7 +501,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetPeer(::grpc::ServerContext* context, ::pb::RPCGetPeerRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPeerResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -552,7 +510,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_WritePeerFile() {
-      ::grpc::Service::MarkMethodAsync(9);
+      ::grpc::Service::MarkMethodAsync(8);
     }
     ~WithAsyncMethod_WritePeerFile() override {
       BaseClassMustBeDerivedFromService(this);
@@ -563,7 +521,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestWritePeerFile(::grpc::ServerContext* context, ::pb::RPCWritePeerFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCWritePeerFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -572,7 +530,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetPeerFile() {
-      ::grpc::Service::MarkMethodAsync(10);
+      ::grpc::Service::MarkMethodAsync(9);
     }
     ~WithAsyncMethod_GetPeerFile() override {
       BaseClassMustBeDerivedFromService(this);
@@ -583,7 +541,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetPeerFile(::grpc::ServerContext* context, ::pb::RPCGetPeerFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPeerFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -592,7 +550,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetPublisherFile() {
-      ::grpc::Service::MarkMethodAsync(11);
+      ::grpc::Service::MarkMethodAsync(10);
     }
     ~WithAsyncMethod_GetPublisherFile() override {
       BaseClassMustBeDerivedFromService(this);
@@ -603,7 +561,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetPublisherFile(::grpc::ServerContext* context, ::pb::RPCGetPublisherFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPublisherFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -612,7 +570,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_SendDirectMessage() {
-      ::grpc::Service::MarkMethodAsync(12);
+      ::grpc::Service::MarkMethodAsync(11);
     }
     ~WithAsyncMethod_SendDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -623,10 +581,10 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSendDirectMessage(::grpc::ServerContext* context, ::pb::RPCDirectMessageRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCDirectMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetHealth<WithAsyncMethod_SetNetwork<WithAsyncMethod_UpsertSession<WithAsyncMethod_DeleteSession<WithAsyncMethod_GetSessionIds<WithAsyncMethod_GetSession<WithAsyncMethod_UpsertPeer<WithAsyncMethod_GetPeerIds<WithAsyncMethod_GetPeer<WithAsyncMethod_WritePeerFile<WithAsyncMethod_GetPeerFile<WithAsyncMethod_GetPublisherFile<WithAsyncMethod_SendDirectMessage<Service > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_GetHealth<WithAsyncMethod_UpsertSession<WithAsyncMethod_DeleteSession<WithAsyncMethod_GetSessionIds<WithAsyncMethod_GetSession<WithAsyncMethod_UpsertPeer<WithAsyncMethod_GetPeerIds<WithAsyncMethod_GetPeer<WithAsyncMethod_WritePeerFile<WithAsyncMethod_GetPeerFile<WithAsyncMethod_GetPublisherFile<WithAsyncMethod_SendDirectMessage<Service > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_GetHealth : public BaseClass {
    private:
@@ -645,29 +603,12 @@ class Decentralizer final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_SetNetwork : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithGenericMethod_SetNetwork() {
-      ::grpc::Service::MarkMethodGeneric(1);
-    }
-    ~WithGenericMethod_SetNetwork() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SetNetwork(::grpc::ServerContext* context, const ::pb::RPCSetNetworkRequest* request, ::pb::RPCSetNetworkResponse* response) final override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
   class WithGenericMethod_UpsertSession : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_UpsertSession() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(1);
     }
     ~WithGenericMethod_UpsertSession() override {
       BaseClassMustBeDerivedFromService(this);
@@ -684,7 +625,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_DeleteSession() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_DeleteSession() override {
       BaseClassMustBeDerivedFromService(this);
@@ -701,7 +642,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetSessionIds() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_GetSessionIds() override {
       BaseClassMustBeDerivedFromService(this);
@@ -718,7 +659,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetSession() {
-      ::grpc::Service::MarkMethodGeneric(5);
+      ::grpc::Service::MarkMethodGeneric(4);
     }
     ~WithGenericMethod_GetSession() override {
       BaseClassMustBeDerivedFromService(this);
@@ -735,7 +676,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_UpsertPeer() {
-      ::grpc::Service::MarkMethodGeneric(6);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_UpsertPeer() override {
       BaseClassMustBeDerivedFromService(this);
@@ -752,7 +693,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetPeerIds() {
-      ::grpc::Service::MarkMethodGeneric(7);
+      ::grpc::Service::MarkMethodGeneric(6);
     }
     ~WithGenericMethod_GetPeerIds() override {
       BaseClassMustBeDerivedFromService(this);
@@ -769,7 +710,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetPeer() {
-      ::grpc::Service::MarkMethodGeneric(8);
+      ::grpc::Service::MarkMethodGeneric(7);
     }
     ~WithGenericMethod_GetPeer() override {
       BaseClassMustBeDerivedFromService(this);
@@ -786,7 +727,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_WritePeerFile() {
-      ::grpc::Service::MarkMethodGeneric(9);
+      ::grpc::Service::MarkMethodGeneric(8);
     }
     ~WithGenericMethod_WritePeerFile() override {
       BaseClassMustBeDerivedFromService(this);
@@ -803,7 +744,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetPeerFile() {
-      ::grpc::Service::MarkMethodGeneric(10);
+      ::grpc::Service::MarkMethodGeneric(9);
     }
     ~WithGenericMethod_GetPeerFile() override {
       BaseClassMustBeDerivedFromService(this);
@@ -820,7 +761,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetPublisherFile() {
-      ::grpc::Service::MarkMethodGeneric(11);
+      ::grpc::Service::MarkMethodGeneric(10);
     }
     ~WithGenericMethod_GetPublisherFile() override {
       BaseClassMustBeDerivedFromService(this);
@@ -837,7 +778,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_SendDirectMessage() {
-      ::grpc::Service::MarkMethodGeneric(12);
+      ::grpc::Service::MarkMethodGeneric(11);
     }
     ~WithGenericMethod_SendDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -869,32 +810,12 @@ class Decentralizer final {
     virtual ::grpc::Status StreamedGetHealth(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCHealthRequest,::pb::RPCHealthReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SetNetwork : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithStreamedUnaryMethod_SetNetwork() {
-      ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::StreamedUnaryHandler< ::pb::RPCSetNetworkRequest, ::pb::RPCSetNetworkResponse>(std::bind(&WithStreamedUnaryMethod_SetNetwork<BaseClass>::StreamedSetNetwork, this, std::placeholders::_1, std::placeholders::_2)));
-    }
-    ~WithStreamedUnaryMethod_SetNetwork() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status SetNetwork(::grpc::ServerContext* context, const ::pb::RPCSetNetworkRequest* request, ::pb::RPCSetNetworkResponse* response) final override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSetNetwork(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCSetNetworkRequest,::pb::RPCSetNetworkResponse>* server_unary_streamer) = 0;
-  };
-  template <class BaseClass>
   class WithStreamedUnaryMethod_UpsertSession : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_UpsertSession() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCUpsertSessionRequest, ::pb::RPCUpsertSessionResponse>(std::bind(&WithStreamedUnaryMethod_UpsertSession<BaseClass>::StreamedUpsertSession, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_UpsertSession() override {
@@ -914,7 +835,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_DeleteSession() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCDeleteSessionRequest, ::pb::RPCDeleteSessionResponse>(std::bind(&WithStreamedUnaryMethod_DeleteSession<BaseClass>::StreamedDeleteSession, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_DeleteSession() override {
@@ -934,7 +855,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetSessionIds() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCGetSessionIdsRequest, ::pb::RPCGetSessionIdsResponse>(std::bind(&WithStreamedUnaryMethod_GetSessionIds<BaseClass>::StreamedGetSessionIds, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetSessionIds() override {
@@ -954,7 +875,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetSession() {
-      ::grpc::Service::MarkMethodStreamed(5,
+      ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCGetSessionRequest, ::pb::RPCGetSessionResponse>(std::bind(&WithStreamedUnaryMethod_GetSession<BaseClass>::StreamedGetSession, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetSession() override {
@@ -974,7 +895,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_UpsertPeer() {
-      ::grpc::Service::MarkMethodStreamed(6,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCUpsertPeerRequest, ::pb::RPCUpsertPeerResponse>(std::bind(&WithStreamedUnaryMethod_UpsertPeer<BaseClass>::StreamedUpsertPeer, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_UpsertPeer() override {
@@ -994,7 +915,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetPeerIds() {
-      ::grpc::Service::MarkMethodStreamed(7,
+      ::grpc::Service::MarkMethodStreamed(6,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPeerIdsRequest, ::pb::RPCGetPeerIdsResponse>(std::bind(&WithStreamedUnaryMethod_GetPeerIds<BaseClass>::StreamedGetPeerIds, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetPeerIds() override {
@@ -1014,7 +935,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetPeer() {
-      ::grpc::Service::MarkMethodStreamed(8,
+      ::grpc::Service::MarkMethodStreamed(7,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPeerRequest, ::pb::RPCGetPeerResponse>(std::bind(&WithStreamedUnaryMethod_GetPeer<BaseClass>::StreamedGetPeer, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetPeer() override {
@@ -1034,7 +955,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_WritePeerFile() {
-      ::grpc::Service::MarkMethodStreamed(9,
+      ::grpc::Service::MarkMethodStreamed(8,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCWritePeerFileRequest, ::pb::RPCWritePeerFileResponse>(std::bind(&WithStreamedUnaryMethod_WritePeerFile<BaseClass>::StreamedWritePeerFile, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_WritePeerFile() override {
@@ -1054,7 +975,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetPeerFile() {
-      ::grpc::Service::MarkMethodStreamed(10,
+      ::grpc::Service::MarkMethodStreamed(9,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPeerFileRequest, ::pb::RPCGetPeerFileResponse>(std::bind(&WithStreamedUnaryMethod_GetPeerFile<BaseClass>::StreamedGetPeerFile, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetPeerFile() override {
@@ -1074,7 +995,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetPublisherFile() {
-      ::grpc::Service::MarkMethodStreamed(11,
+      ::grpc::Service::MarkMethodStreamed(10,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPublisherFileRequest, ::pb::RPCGetPublisherFileResponse>(std::bind(&WithStreamedUnaryMethod_GetPublisherFile<BaseClass>::StreamedGetPublisherFile, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetPublisherFile() override {
@@ -1094,7 +1015,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_SendDirectMessage() {
-      ::grpc::Service::MarkMethodStreamed(12,
+      ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCDirectMessageRequest, ::pb::RPCDirectMessageResponse>(std::bind(&WithStreamedUnaryMethod_SendDirectMessage<BaseClass>::StreamedSendDirectMessage, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_SendDirectMessage() override {
@@ -1108,9 +1029,9 @@ class Decentralizer final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSendDirectMessage(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCDirectMessageRequest,::pb::RPCDirectMessageResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_SetNetwork<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<Service > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<Service > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_SetNetwork<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<Service > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<Service > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace pb

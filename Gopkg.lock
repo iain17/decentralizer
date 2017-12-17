@@ -99,6 +99,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/grpc-ecosystem/go-grpc-middleware"
+  packages = [".","auth","recovery","util/metautils"]
+  revision = "967bee733a734780623ac3d7c8e9216e4372ea62"
+
+[[projects]]
+  branch = "master"
   name = "github.com/hashicorp/go-immutable-radix"
   packages = ["."]
   revision = "8aac2701530899b64bdea735a1de8da899815220"
@@ -111,6 +117,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/hashicorp/go-version"
+  packages = ["."]
+  revision = "4fe82ae3040f80a03d04d2cccb5606a626b8e1ee"
+
+[[projects]]
+  branch = "master"
   name = "github.com/hashicorp/golang-lru"
   packages = ["simplelru"]
   revision = "0a025b7e63adc15a622f29b0b2c4c3848243bbf6"
@@ -119,7 +131,7 @@
   branch = "master"
   name = "github.com/iain17/freeport"
   packages = ["."]
-  revision = "b2886e62b950dbf557863152a1d2c3622bdc77aa"
+  revision = "a39186c51499dad93b1b5220f04c888ff95fce8d"
 
 [[projects]]
   branch = "master"
@@ -232,6 +244,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9cd2e0c6cde306562e7121485b0fb20cfe2d0be9a55d6d6762659b7a312a492a"
+  inputs-digest = "3b3cea7602c27da845d93711b5ce6c52616beb6acc089cb9e08d64ef35818f0a"
   solver-name = "gps-cdcl"
   solver-version = 1

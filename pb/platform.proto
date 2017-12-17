@@ -5,16 +5,6 @@ import "pb/addressbook.proto";
 import "pb/storage.proto";
 import "pb/messaging.proto";
 
-message RPCSetNetworkRequest {
-    string clientVersion = 1;//Semver.
-	string networkKey = 2;
-    bool privateKey = 3;
-}
-
-message RPCSetNetworkResponse {
-	string version = 1;
-}
-
 message RPCHealthRequest {}
 
 message RPCHealthReply {
@@ -28,8 +18,6 @@ service Decentralizer {
 	//
 	// Get health of decentralizer.
 	rpc GetHealth(RPCHealthRequest) returns (RPCHealthReply) {}
-    // Set the public or private key of a network
-    rpc SetNetwork(RPCSetNetworkRequest) returns (RPCSetNetworkResponse) {}
 
 	//
 	// Matchmaking
