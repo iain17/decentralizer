@@ -89,15 +89,15 @@ namespace libdn {
 			if (!status.ok()) {
 				promise->reject(va("[Could not get session] %i: %s", status.error_code(), status.error_message().c_str()));
 			}
-			auto wtf = reply.session();
-			return PBSessionToDNSession(&wtf);
+			auto session = reply.session();
+			return PBSessionToDNSession(&session);
 		});
 		return result;
 	}
 
 
 	LIBDN_API Session* LIBDN_CALL GetSessionByIndex(int index) {
-		if (index > MAX_SESSIONS || index > context.sessions.size() - 1) {
+		if (index > context.sessions.size() - 1) {
 			return NULL;
 		}
 		auto req = GetSessionBySessionId(context.sessions.Get(index));

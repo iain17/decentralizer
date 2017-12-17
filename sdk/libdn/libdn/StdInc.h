@@ -41,14 +41,13 @@
 #include "Promise.h"
 #include "DecentralizerClient.h"
 
-const int MAX_SESSIONS = 1024;
-
 // global state
 extern struct DN_state_s {
 	libdn::DecentralizerClient* client;
 	bool initialized = false;
 	libdn::ConnectLogCB g_logCB;
 	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
+	::google::protobuf::RepeatedPtrField< ::std::string> peers;
 } context;
 
 #endif
