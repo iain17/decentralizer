@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"github.com/iain17/discovery"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
@@ -23,37 +22,37 @@ func init() {
 	}
 }
 
-func (d *Decentralizer) bootstrap() []pstore.PeerInfo {
-	logger.Info("Bootstrapping")
-	d.setInfo()
-	var peers []pstore.PeerInfo
-	for _, peer := range d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 5*time.Minute) {
-		peerInfo, err := getInfo(peer)
-		if err != nil {
-			logger.Warning(err)
-			continue
-		}
-		err = d.i.PeerHost.Connect(context.Background(), *peerInfo)
-		if err != nil {
-			logger.Warning(err)
-			continue
-		}
-		peers = append(peers, *peerInfo)
-	}
-	logger.Infof("Bootstrapped %d peers", len(peers))
-	return peers
-}
-
-func (d *Decentralizer) setInfo() {
-	ln := d.d.LocalNode
-	addrs := ""
-	for _, addr := range d.i.PeerHost.Addrs() {
-		addrs += addr.String() + DELIMITER_ADDR
-	}
-
-	ln.SetInfo("peerId", d.i.Identity.Pretty())
-	ln.SetInfo("addr", addrs)
-}
+//func (d *Decentralizer) bootstrap() []pstore.PeerInfo {
+//	logger.Info("Bootstrapping")
+//	d.setInfo()
+//	var peers []pstore.PeerInfo
+//	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 5*time.Minute) {
+//		peerInfo, err := getInfo(peer)
+//		if err != nil {
+//			logger.Warning(err)
+//			continue
+//		}
+//		err = d.i.PeerHost.Connect(context.Background(), *peerInfo)
+//		if err != nil {
+//			logger.Warning(err)
+//			continue
+//		}
+//		peers = append(peers, *peerInfo)
+//	}
+//	logger.Infof("Bootstrapped %d peers", len(peers))
+//	return peers
+//}
+//
+//func (d *Decentralizer) setInfo() {
+//	ln := d.d.LocalNode
+//	addrs := ""
+//	for _, addr := range d.i.PeerHost.Addrs() {
+//		addrs += addr.String() + DELIMITER_ADDR
+//	}
+//
+//	ln.SetInfo("peerId", d.i.Identity.Pretty())
+//	ln.SetInfo("addr", addrs)
+//}
 
 func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 	sPeerId := remoteNode.GetInfo("peerId")

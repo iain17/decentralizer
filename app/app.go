@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
-	"github.com/iain17/discovery"
+	//"github.com/iain17/discovery"
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
@@ -13,14 +13,16 @@ import (
 	"net"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"context"
+	"github.com/ccding/go-stun/stun"
 )
 
 type Decentralizer struct {
 	n *network.Network
-	d *discovery.Discovery
+	//d *discovery.Discovery
 	i *core.IpfsNode
 	b *ipfs.BitswapService
 
+	ip 					   *net.IP
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	peers			   	   *peerstore.Store
@@ -48,10 +50,10 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	d, err := discovery.New(n, MAX_DISCOVERED_PEERS)
-	if err != nil {
-		return nil, err
-	}
+	//d, err := discovery.New(n, MAX_DISCOVERED_PEERS)
+	//if err != nil {
+	//	return nil, err
+	//}
 	path, err := getIpfsPath()
 	if err != nil {
 		return nil, err
@@ -70,7 +72,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	}
 	instance := &Decentralizer{
 		n:                      n,
-		d:                      d,
+		//d:                      d,
 		i:                      i,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
@@ -83,18 +85,21 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.initAddressbook()
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
-	go instance.i.Bootstrap(core.BootstrapConfig{
-		MinPeerThreshold:  4,
-		Period:            30 * time.Second,
-		ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
-		BootstrapPeers:    instance.bootstrap,
-	})
+	//go instance.i.Bootstrap(core.BootstrapConfig{
+	//	MinPeerThreshold:  4,
+	//	Period:            30 * time.Second,
+	//	ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
+	//	BootstrapPeers:    instance.bootstrap,
+	//})
 	return instance, nil
 }
 
 func (d *Decentralizer) GetIP() net.IP {
-	if d.d != nil {
-		return d.d.GetIP()
+	if d.ip == nil {
+		client := stun.NewClient()
+		_, host, _ := client.Discover()
+		ip := net.ParseIP(host.IP())
+		d.ip = &ip
 	}
-	return net.ParseIP("127.0.0.1")
+	return *d.ip
 }
