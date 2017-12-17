@@ -21,10 +21,8 @@ namespace libdn {
 		// Container for the data we expect from the server.
 		pb::RPCHealthReply reply;
 
-		// Context for the client. It could be used to convey extra information to
-		// the server and/or tweak certain RPC behaviors.
-		grpc::ClientContext ctx;
-		grpc::Status status = context.client->stub_->GetHealth(&ctx, request, &reply);
+		auto ctx = context.client->getContext();
+		grpc::Status status = context.client->stub_->GetHealth(ctx, request, &reply);
 
 		HealthResult* result = new HealthResult();
 		if (status.ok()) {
@@ -35,4 +33,5 @@ namespace libdn {
 		}
 		return result;
 	}
+
 }

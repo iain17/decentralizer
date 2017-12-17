@@ -5,7 +5,7 @@
 // Platform global functions
 // ----------------------------------------------------------
 namespace libdn {
-	const uint64_t API_VERSION = 1;
+	extern const char * VERSION;
 	class HealthResult {
 	public:
 		bool ready;

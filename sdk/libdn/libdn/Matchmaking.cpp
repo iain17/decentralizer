@@ -10,10 +10,8 @@ namespace libdn {
 			// Container for the data we expect from the server.
 			pb::RPCUpsertSessionResponse reply;
 
-			// Context for the client. It could be used to convey extra information to
-			// the server and/or tweak certain RPC behaviors.
-			grpc::ClientContext ctx;
-			grpc::Status status = context.client->stub_->UpsertSession(&ctx, request, &reply);
+			auto ctx = context.client->getContext();
+			grpc::Status status = context.client->stub_->UpsertSession(ctx, request, &reply);
 
 			UpsertSessionResult result;
 			if (status.ok()) {
@@ -35,10 +33,8 @@ namespace libdn {
 			// Container for the data we expect from the server.
 			pb::RPCDeleteSessionResponse reply;
 
-			// Context for the client. It could be used to convey extra information to
-			// the server and/or tweak certain RPC behaviors.
-			grpc::ClientContext ctx;
-			grpc::Status status = context.client->stub_->DeleteSession(&ctx, request, &reply);
+			auto ctx = context.client->getContext();
+			grpc::Status status = context.client->stub_->DeleteSession(ctx, request, &reply);
 
 			if (status.ok()) {
 				return true;
@@ -62,10 +58,8 @@ namespace libdn {
 			// Container for the data we expect from the server.
 			pb::RPCGetSessionIdsResponse reply;
 
-			// Context for the client. It could be used to convey extra information to
-			// the server and/or tweak certain RPC behaviors.
-			grpc::ClientContext ctx;
-			grpc::Status status = context.client->stub_->GetSessionIds(&ctx, request, &reply);
+			auto ctx = context.client->getContext();
+			grpc::Status status = context.client->stub_->GetSessionIds(ctx, request, &reply);
 
 			if (status.ok()) {
 				context.sessions = reply.sessionids();
@@ -89,10 +83,8 @@ namespace libdn {
 			// Container for the data we expect from the server.
 			pb::RPCGetSessionResponse reply;
 
-			// Context for the client. It could be used to convey extra information to
-			// the server and/or tweak certain RPC behaviors.
-			grpc::ClientContext ctx;
-			grpc::Status status = context.client->stub_->GetSession(&ctx, request, &reply);
+			auto ctx = context.client->getContext();
+			grpc::Status status = context.client->stub_->GetSession(ctx, request, &reply);
 
 			if (!status.ok()) {
 				promise->reject(va("[Could not get session] %i: %s", status.error_code(), status.error_message().c_str()));

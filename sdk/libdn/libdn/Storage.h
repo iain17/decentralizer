@@ -2,7 +2,6 @@
 // ----------------------------------------------------------
 // Storage
 // ----------------------------------------------------------
-/*
 namespace libdn {
 	enum EGetFileResult {
 		GetFileResultOK = 0,
@@ -48,12 +47,11 @@ namespace libdn {
 	};
 
 	// obtains a publisher file.
-	LIBDN_API Async<GetPublisherFileResult>* LIBDN_CALL GetPublisherFile(const char* fileName, uint8_t* buffer, size_t length);
+	LIBDN_API Promise<GetPublisherFileResult>* LIBDN_CALL GetPublisherFile(const char* fileName, uint8_t* buffer, size_t length);
 
 	// obtains a file from the remote per-user storage
-	LIBDN_API Async<GetUserFileResult>* LIBDN_CALL GetUserFile(PeerID id, const char* fileName, uint8_t* buffer, size_t length);
+	LIBDN_API Promise<GetUserFileResult>* LIBDN_CALL GetUserFile(PeerID id, const char* fileName, uint8_t* buffer, size_t length);
 
 	// uploads a file to the remote per-user storage
-	LIBDN_API Async<WriteUserFileResult>* LIBDN_CALL WriteUserFile(PeerID id, const char* fileName, const uint8_t* buffer, size_t length);
+	LIBDN_API Promise<WriteUserFileResult>* LIBDN_CALL WriteUserFile(PeerID id, const char* fileName, const uint8_t* buffer, size_t length);
 }
-*/
