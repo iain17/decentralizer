@@ -3,8 +3,8 @@ package ipfs
 import (
 	"fmt"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core/corehttp"
-	"github.com/multiformats/go-multiaddr-net"
-	ma "github.com/multiformats/go-multiaddr"
+	manet "gx/ipfs/QmX3U3YXCQ6UYBxq2LVWF8dARS1hPUTEYLrSx654Qyxyw6/go-multiaddr-net"
+	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
 )
 
@@ -25,8 +25,6 @@ func serveHTTPGateway(node *core.IpfsNode) (error, <-chan error){
 	if err != nil {
 		return fmt.Errorf("serveHTTPGateway: manet.Listen(%s) failed: %s", gatewayMaddr, err), nil
 	}
-	// we might have listened to /tcp/0 - lets see what we are listing on
-	gatewayMaddr = gwLis.Multiaddr()
 
 	var opts = []corehttp.ServeOption{
 		corehttp.MetricsCollectionOption("gateway"),

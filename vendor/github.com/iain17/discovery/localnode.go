@@ -1,8 +1,8 @@
 package discovery
 
 import (
-	"github.com/iain17/decentralizer/discovery/env"
-	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/discovery/env"
+	"github.com/iain17/discovery/pb"
 	"github.com/iain17/freeport"
 	"github.com/iain17/logger"
 	"github.com/rs/xid"

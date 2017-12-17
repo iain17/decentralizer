@@ -2,7 +2,7 @@ package discovery
 
 import (
 	"github.com/anacrolix/utp"
-	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/discovery/pb"
 	"net"
 )
 

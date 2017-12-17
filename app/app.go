@@ -2,8 +2,8 @@ package app
 
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
-	"github.com/iain17/decentralizer/discovery"
-	"github.com/iain17/decentralizer/network"
+	"github.com/iain17/discovery"
+	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"

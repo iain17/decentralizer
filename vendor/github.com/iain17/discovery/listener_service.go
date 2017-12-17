@@ -5,7 +5,7 @@ import (
 	"net"
 	"context"
 	"fmt"
-	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/discovery/pb"
 	"github.com/iain17/logger"
 	"errors"
 )

@@ -2,11 +2,11 @@ package discovery
 
 import (
 	"context"
-	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/discovery/pb"
 	"github.com/iain17/logger"
 	"github.com/golang/protobuf/proto"
-	"gx/ipfs/QmVYxfoJQiZijTgPNHCHgHELvQpbsJNTg6Crmc3dQkj3yy/golang-lru"
-	"gx/ipfs/QmVmDhyTTUcQXFD1rRQ64fGLMSAoaQvNH3hwuaCFAPq2hy/errors"
+	"github.com/hashicorp/golang-lru"
+	"errors"
 	"io/ioutil"
 	"net"
 	"strconv"

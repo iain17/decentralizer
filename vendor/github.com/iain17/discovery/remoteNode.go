@@ -2,8 +2,8 @@ package discovery
 
 import (
 	"fmt"
-	"github.com/iain17/decentralizer/discovery/env"
-	"github.com/iain17/decentralizer/discovery/pb"
+	"github.com/iain17/discovery/env"
+	"github.com/iain17/discovery/pb"
 	"github.com/iain17/logger"
 	"github.com/golang/protobuf/proto"
 	"io"

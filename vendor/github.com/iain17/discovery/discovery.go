@@ -2,7 +2,7 @@ package discovery
 
 import (
 	"context"
-	"github.com/iain17/decentralizer/network"
+	"github.com/iain17/discovery/network"
 	"time"
 	"net"
 	"github.com/iain17/timeout"

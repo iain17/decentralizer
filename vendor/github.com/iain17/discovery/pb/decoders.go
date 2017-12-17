@@ -3,7 +3,7 @@ package pb
 import (
 	"errors"
 	"fmt"
-	"github.com/iain17/decentralizer/discovery/env"
+	"github.com/iain17/discovery/env"
 	"github.com/golang/protobuf/proto"
 	"io"
 	"github.com/getlantern/framed"

@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"github.com/iain17/decentralizer/discovery"
+	"github.com/iain17/discovery"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
 	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"

@@ -5,7 +5,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"testing"
 	"net"
-	"github.com/iain17/decentralizer/discovery/env"
+	"github.com/iain17/discovery/env"
 )
 
 func TestDecode(t *testing.T) {
