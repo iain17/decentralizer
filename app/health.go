@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Decentralizer) Health() (bool, error) {
-	peers := d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 15 * time.Second)
+	peers := d.d.WaitForPeers(MIN_DISCOVERED_PEERS, 5 * time.Second)
 	if len(peers) == 0 {
 		return false, errors.New("could not find any peers yet... Check your internet connection")
 	}
