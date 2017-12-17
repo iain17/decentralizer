@@ -65,7 +65,7 @@ namespace libdn {
 			grpc::Status status = context.client->stub_->GetPeer(ctx, request, &reply);
 
 			if (!status.ok()) {
-				promise->reject(va("[Could not get session] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(va("[Could not get peer] %i: %s", status.error_code(), status.error_message().c_str()));
 			}
 			auto peer = reply.peer();
 			return PBPeerToDNPeer(&peer);
