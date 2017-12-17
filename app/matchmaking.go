@@ -53,11 +53,13 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
-
-	err = d.b.Provide(getKey(sessionType))
-	if err != nil {
-		return 0, err
-	}
+	go func() {
+		err = d.b.Provide(getKey(sessionType))
+		if err != nil {
+			logger.Errorf("Could not provide with type %d session: %s", sessionType, err)
+		}
+		logger.Infof("Session provided for type %d", sessionType)
+	}()
 	return sessionId, err
 }
 
@@ -109,8 +111,12 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 
 		wg.Add(1)
 		go func(id peer.ID) {
-			logger.Infof("Request sessions from %s", id.Pretty())
+			defer wg.Done()
 			sessions, err := d.getSessionsRequest(id, sessionType)
+			if err.Error() == "protocol not supported" {
+				return
+			}
+			logger.Infof("Received sessions from %s", id.Pretty())
 			if err != nil {
 				logger.Error(err)
 				return
@@ -122,7 +128,6 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 				}
 				d.sessionIdToSessionType[sessionId] = sessionType
 			}
-			wg.Done()
 		}(provider)
 	}
 	wg.Wait()

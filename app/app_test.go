@@ -5,7 +5,7 @@ import (
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
-	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"time"
 	"github.com/iain17/decentralizer/app/peerstore"
 )
@@ -15,7 +15,7 @@ func init() {
 		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
-	logging.Configure(logging.LevelDebug)
+	//logging.Configure(logging.LevelDebug)
 }
 
 func fakeNew(node *core.IpfsNode) *Decentralizer {

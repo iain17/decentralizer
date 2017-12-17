@@ -6,6 +6,7 @@ import (
 	"github.com/iain17/logger"
 	"context"
 	"fmt"
+	"sync"
 )
 
 type Server struct {
@@ -13,6 +14,7 @@ type Server struct {
 	app *app.Decentralizer
 	grpc *grpc.Server
 	endpoint string
+	mutex sync.Mutex
 }
 
 func New(ctx context.Context, port int) (*Server, error) {

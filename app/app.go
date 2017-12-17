@@ -14,7 +14,7 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 	"context"
 	"github.com/ccding/go-stun/stun"
-	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
 
 type Decentralizer struct {
@@ -23,7 +23,7 @@ type Decentralizer struct {
 	i *core.IpfsNode
 	b *ipfs.BitswapService
 
-	ip 					   *net.IP
+	ip 					   net.IP
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	peers			   	   *peerstore.Store
@@ -31,7 +31,7 @@ type Decentralizer struct {
 }
 
 func init() {
-	logging.Configure(logging.LevelDebug)
+	//logging.Configure(logging.LevelDebug)
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -52,6 +52,11 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	} else {
 		n, err = network.Unmarshal(networkStr)
 	}
+	if err != nil {
+		return nil, err
+	}
+	client := stun.NewClient()
+	_, host, err := client.Discover()
 	if err != nil {
 		return nil, err
 	}
@@ -80,6 +85,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		//d:                      d,
 		i:                      i,
 		b:                      b,
+		ip:						net.ParseIP(host.IP()),
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		peers:				    peers,
@@ -101,13 +107,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 }
 
 func (d *Decentralizer) GetIP() net.IP {
-	if d.ip == nil {
-		client := stun.NewClient()
-		_, host, _ := client.Discover()
-		ip := net.ParseIP(host.IP())
-		d.ip = &ip
-	}
-	return *d.ip
+	return d.ip
 }
 
 func (s *Decentralizer) Stop() {

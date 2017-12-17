@@ -4,6 +4,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"context"
+	"github.com/iain17/logger"
 )
 
 //
@@ -11,6 +12,7 @@ import (
 //
 // Create or update a session. Takes session info, returns session id.
 func (s *Server) UpsertSession(ctx context.Context, request *pb.RPCUpsertSessionRequest) (*pb.RPCUpsertSessionResponse, error) {
+	logger.Infof("Upsert session request received")
 	if request.Session.Details == nil {
 		request.Session.Details = make(map[string]string)
 	}
@@ -23,6 +25,7 @@ func (s *Server) UpsertSession(ctx context.Context, request *pb.RPCUpsertSession
 
 // Delete a session. Takes session id, returns bool informing if the deletion was a success
 func (s *Server) DeleteSession(ctx context.Context, request *pb.RPCDeleteSessionRequest) (*pb.RPCDeleteSessionResponse, error) {
+	logger.Infof("Delete session request received")
 	err := s.app.DeleteSession(request.SessionId)
 	return &pb.RPCDeleteSessionResponse{
 		Result: err == nil,
@@ -31,6 +34,7 @@ func (s *Server) DeleteSession(ctx context.Context, request *pb.RPCDeleteSession
 
 // Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
 func (s *Server) GetSessionIds(ctx context.Context, request *pb.RPCGetSessionIdsRequest) (*pb.RPCGetSessionIdsResponse, error) {
+	logger.Infof("Get session ids request received")
 	var sessions []*pb.Session
 	var err error
 	if request.Key == "" && request.Value == "" {
@@ -49,6 +53,7 @@ func (s *Server) GetSessionIds(ctx context.Context, request *pb.RPCGetSessionIds
 
 // Get an individual session. Takes session id and returns session info.
 func (s *Server) GetSession(ctx context.Context, request *pb.RPCGetSessionRequest) (*pb.RPCGetSessionResponse, error) {
+	logger.Infof("Get session request received")
 	session, err := s.app.GetSession(request.SessionId)
 	return &pb.RPCGetSessionResponse{
 		Session: session,

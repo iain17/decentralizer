@@ -26,6 +26,8 @@ func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RP
 }
 
 func (s *Server) setNetwork(clientVersion string, networkKey string, isPrivateKey bool) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	if s.app != nil {
 		return errors.New("network already set")
 	}
@@ -37,6 +39,10 @@ func (s *Server) setNetwork(clientVersion string, networkKey string, isPrivateKe
 	if !versionMismatch {
 		return errors.New("please update your client")
 	}
+	logger.Info("Starting IPFS...")
 	s.app, err = app.New(s.ctx, networkKey, isPrivateKey)
+	if err == nil {
+		logger.Info("IPFS started")
+	}
 	return err
 }

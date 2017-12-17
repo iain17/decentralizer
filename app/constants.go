@@ -5,7 +5,7 @@ import "github.com/c2h5oh/datasize"
 const MAX_DISCOVERED_PEERS = 10
 const MIN_CONNECTED_PEERS = 3
 const DELIMITER_ADDR = ";;"
-const EXPIRE_TIME_SESSION = 30
+const EXPIRE_TIME_SESSION = 120
 const MAX_SESSIONS = 1000
 const MAX_CONTACTS = 1000
 const EXPIRE_TIME_CONTACT = 3600
