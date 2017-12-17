@@ -17,8 +17,9 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 )
 
-func getKey(sessionType uint64) string {
-	return fmt.Sprintf("MATCHMAKING_%d", sessionType)
+func (d *Decentralizer) getKey(sessionType uint64) string {
+	ih := d.n.InfoHash()
+	return fmt.Sprintf("%s_MATCHMAKING_%d", string(ih[:]), sessionType)
 }
 
 func (d *Decentralizer) initMatchmaking() {
@@ -54,7 +55,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
 	go func() {
-		err = d.b.Provide(getKey(sessionType))
+		err = d.b.Provide(d.getKey(sessionType))
 		if err != nil {
 			logger.Errorf("Could not provide with type %d session: %s", sessionType, err)
 		}
@@ -101,7 +102,7 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 	var wg sync.WaitGroup
 	sessionsStorage := d.getSessionStorage(sessionType)
 	seen := map[string]bool{}
-	for provider := range d.b.Find(getKey(sessionType), MAX_SESSIONS) {
+	for provider := range d.b.Find(d.getKey(sessionType), MAX_SESSIONS) {
 		//Stop any duplicates
 		id := provider.String()
 		if seen[id] {

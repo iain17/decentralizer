@@ -72,6 +72,7 @@ func (s *Store) onEvicted(key interface{}, value interface{}) {
 }
 
 func (s *Store) Insert(info *pb.Session) (uint64, error) {
+	logger.Infof("Inserting session: %v", info)
 	info.SessionId = GetId(info)
 	txn := s.db.Txn(true)
 	defer txn.Commit()
