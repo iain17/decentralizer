@@ -29,6 +29,7 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 		ExtraOpts: map[string]bool{
 		//"pubsub": true,
 		},
+		Routing: core.DHTOption,
 	}
 
 	node, err := core.NewNode(ctx, cfg)

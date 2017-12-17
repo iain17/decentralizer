@@ -5,6 +5,7 @@ import (
 	"time"
 	timeout "github.com/iain17/timeout"
 	"context"
+	"fmt"
 )
 
 func (d *Decentralizer) Health() (bool, error) {
@@ -20,9 +21,9 @@ func (d *Decentralizer) Health() (bool, error) {
 			}
 		}
 	}, 5 * time.Second)
-	peers := d.i.Peerstore.Peers()
-	if len(peers) == 0 {
-		return false, errors.New("could not find any peers yet... Check your internet connection")
+	numPeers := len(d.i.Peerstore.Peers())
+	if numPeers < MIN_CONNECTED_PEERS {
+		return false, errors.New(fmt.Sprintf("only connected to %d peers of the minimum of %d", numPeers, MIN_CONNECTED_PEERS))
 	}
 	return true, nil
 }
