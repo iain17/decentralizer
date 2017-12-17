@@ -22,7 +22,7 @@ func init() {
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	s, err := api.New(ctx, 50051)
+	s, err := api.New(ctx, 50010)
 	if err != nil {
 		panic(err)
 	}
