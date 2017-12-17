@@ -114,14 +114,14 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 		go func(id peer.ID) {
 			defer wg.Done()
 			sessions, err := d.getSessionsRequest(id, sessionType)
-			if err.Error() == "protocol not supported" {
-				return
-			}
-			logger.Infof("Received sessions from %s", id.Pretty())
 			if err != nil {
+				if err.Error() == "protocol not supported" {
+					return
+				}
 				logger.Error(err)
 				return
 			}
+			logger.Infof("Received sessions %d from %s", len(sessions), id.Pretty())
 			for _, session := range sessions {
 				sessionId, err := sessionsStorage.Insert(session)
 				if err != nil {
@@ -146,13 +146,14 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 		logger.Error(err)
 		return
 	}
+	logger.Infof("Someone requested our sessions of type %d...", request.Type)
 	sessionsStorage := d.getSessionStorage(request.Type)
 	sessions, err := sessionsStorage.FindByPeerId(d.i.Identity.Pretty())
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-
+	logger.Infof("Sending %d sessions back of type %d", len(sessions), request.Type)
 	//Response
 	response, err := proto.Marshal(&pb.DNSessionResponse{
 		Results: sessions,
