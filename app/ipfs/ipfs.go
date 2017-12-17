@@ -44,7 +44,19 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 			return
 		}
 		cfg, _ := node.Repo.Config()
-		logger.Infof("IPFS Gateway running on %s", cfg.Gateway)
+		logger.Infof("IPFS Gateway running on %s", cfg.Addresses.Gateway)
+		for err := range gwErrc {
+			logger.Warning(err)
+		}
+	}()
+	go func() {
+		err, gwErrc := serveHTTPApi(node)
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+		cfg, _ := node.Repo.Config()
+		logger.Infof("IPFS API running on %s", cfg.Addresses.API)
 		for err := range gwErrc {
 			logger.Warning(err)
 		}
@@ -91,8 +103,6 @@ func resetRepoConfigPorts(r repo.Repo, nodeIdx int) error {
 			rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
 		}
 	}
-	logger.Infof("IPFS API running on %s", rc.Addresses.API)
-	logger.Infof("IPFS Gateway running on %s", rc.Addresses.Gateway)
 	err = r.SetConfig(rc)
 	return err
 }
