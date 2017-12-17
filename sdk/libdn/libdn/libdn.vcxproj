@@ -169,15 +169,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Addressbook.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="DecentralizerClient.h" />
-    <ClInclude Include="Matchmaking.h" />
-    <ClInclude Include="Messaging.h" />
-    <ClInclude Include="Platform.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Promise.h" />
-    <ClInclude Include="Storage.h" />
     <ClInclude Include="TypeDefs.h" />
     <ClInclude Include="libdn.h" />
     <ClInclude Include="stdafx.h" />

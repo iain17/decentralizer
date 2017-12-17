@@ -11,29 +11,26 @@ void LogCB(const char* message) {
 	printf("[DN] %s\n", message);
 }
 
-using namespace libdn;
+void createSession() {
+	//Create session.
+	libdn::Session* session = new libdn::Session();
+	session->name = "Big tests";
+	session->type = 1337;
+	session->port = 8080;
+	session->details["cool"] = "yes";
+	auto request = libdn::UpsertSession(session);
+	request->fail(LogCB);
+	request->then([](libdn::UpsertSessionResult result) {
+		printf("Created session. id = %d\n", result.sessionId);
+	});
+	request->fail(LogCB);
+	request->wait();
+	delete request;
+}
 
-bool sessionCreated = false;
-void matchMakingTest() {
-	if (!sessionCreated) {
-		//Create session.
-		Session* session = new Session();
-		session->name = "Big tests";
-		session->type = 1337;
-		session->port = 8080;
-		session->details["cool"] = "yes";
-		auto request = UpsertSession(session);
-		//request->fail(LogRPC);
-		request->then([](UpsertSessionResult result) {
-			printf("session id: %d\n", result.sessionId);
-			sessionCreated = true;
-		});
-		request->fail(LogCB);
-		request->wait();
-		delete request;
-	}
+void findSessions() {
 	//Get all sessions with type 1337 and all session that are cool.
-	auto request = GetNumSessions(1337, "cool", "yes");
+	auto request = libdn::GetNumSessions(1337, "cool", "yes");
 	request->fail(LogCB);
 	if (!request->wait()) {
 		return;
@@ -41,9 +38,9 @@ void matchMakingTest() {
 	int num = request->get();
 	printf("Received %i session ids\n", num);
 	//For each session id we have received back. Fetch it.
-	for(int i = 0; i < num; i++) {
+	for (int i = 0; i < num; i++) {
 		//Fetch that session
-		auto session = GetSessionByIndex(i);
+		auto session = libdn::GetSessionByIndex(i);
 		if (session != nullptr) {
 			unsigned char address[4];
 
@@ -56,8 +53,46 @@ void matchMakingTest() {
 		}
 
 	}
+	delete request;
 	printf("-----\n");
 	Sleep(3000);
+}
+
+void matchMakingTest() {
+	createSession();
+	findSessions();
+}
+
+void writePeerFile(std::string expected) {
+	auto request = libdn::WritePeerFile("test.txt", expected);
+	request->fail(LogCB);
+	if (request->wait()) {
+		LogCB("Storage write succeeded!");
+	} else {
+		LogCB("Storage write failed!");
+	}
+	delete request;
+}
+
+void getPeerFile(std::string expected) {
+	auto request = libdn::GetPeerFile("self", "test.txt");
+	request->fail(LogCB);
+	if (request->wait()) {
+		if (request->get().compare(expected)) {
+			LogCB("Storage get failed!");
+		} else {
+			LogCB("Storage get succeeded!");
+		}
+	} else {
+		LogCB("Storage get failed!");
+	}
+	delete request;
+}
+
+void storageTest() {
+	std::string expected = "hey there";
+	writePeerFile(expected);
+	getPeerFile(expected);
 }
 
 int main() {
@@ -66,11 +101,15 @@ int main() {
 	bool status = false;
 	while (!status) {
 		status = libdn::Connect("10.1.1.34:50051", NETWORKKEY, true);
+		if (!status) {
+			status = libdn::Connect("127.0.0.1:50051", NETWORKKEY, true);
+		}
 	}
 
 	while (true) {
 		libdn::RunFrame();
 		matchMakingTest();
+		storageTest();
 		Sleep(100);
 	}
 }
