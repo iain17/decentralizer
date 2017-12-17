@@ -31,7 +31,7 @@ build:
     - apt-get -y install upx-ucl
 
     - go get -u github.com/iain17/gorep
-    - gorep -banned="iain17,github.com" -path $GOPATH/src/ > /dev/null 2>&1
+    - gorep -banned="iain17,decentralizer" -path $GOPATH/src/ > /dev/null 2>&1
     - mkdir updateDir && cd updateDir && cd .. && rm -rf updateDir
     - export REPO_BASE=$(pwd)
     - echo $REPO_BASE
