@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/Pallinder/go-randomdata"
   packages = ["."]
-  revision = "acaf3d8cb4966dde9acb023a9cfde148993fd392"
+  revision = "25d53c6523235e36ba06db792fedafd8bf27a82b"
 
 [[projects]]
   branch = "master"
@@ -239,7 +239,7 @@
   branch = "master"
   name = "golang.org/x/text"
   packages = ["collate","collate/build","internal/colltab","internal/gen","internal/tag","internal/triegen","internal/ucd","language","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable"]
-  revision = "d5a9226ed7dd70cade6ccae9d37517fe14dd9fee"
+  revision = "eb22672bea55af56d225d4e35405f4d2e9f062a0"
 
 [[projects]]
   branch = "master"
@@ -256,6 +256,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1eae6d180a5df8d112598c47f80902fdd0acfbdcff4adada8b41a17d348e2df6"
+  inputs-digest = "738a80f00fabaf3a475b20938efa1113300aa573750608fe94b21e363040b120"
   solver-name = "gps-cdcl"
   solver-version = 1
