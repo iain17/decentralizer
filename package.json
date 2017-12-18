@@ -5,11 +5,6 @@
     "dvcsimport": "github.com/iain17/decentralizer"
   },
   "gxDependencies": [
-    {
-      "hash": "QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu",
-      "name": "go-ipfs",
-      "version": "0.4.11"
-    }
   ],
   "gxVersion": "0.12.1",
   "language": "go",

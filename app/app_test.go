@@ -4,7 +4,7 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	"github.com/ipfs/go-ipfs/core"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"time"
 	"github.com/iain17/decentralizer/app/peerstore"

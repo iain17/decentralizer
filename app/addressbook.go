@@ -3,10 +3,9 @@ package app
 import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
-	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
+	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
-	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -36,7 +35,7 @@ func (d *Decentralizer) FindByPeerId(peerId string) (p *pb.Peer, err error) {
 	p, err = d.peers.FindByPeerId(peerId)
 	if err != nil {
 		var id peer.ID
-		id, err = libp2pPeer.IDB58Decode(peerId)
+		id, err = peer.IDB58Decode(peerId)
 		if err != nil {
 			return nil, err
 		}

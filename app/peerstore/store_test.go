@@ -5,7 +5,7 @@ import (
 	"time"
 	"github.com/stretchr/testify/assert"
 	"github.com/iain17/decentralizer/pb"
-	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 )
 
 func TestStore_FindByPeerId(t *testing.T) {

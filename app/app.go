@@ -6,7 +6,7 @@ import (
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
-	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
+	"github.com/ipfs/go-ipfs/core"
 	"time"
 	"errors"
 	"github.com/iain17/decentralizer/app/sessionstore"
