@@ -17,7 +17,7 @@ func init() {
 		MinLevel: logger.DEBUG, //logger.DEBUG,
 		Colored:  true,
 	})
-	logging.Configure(logging.LevelInfo)
+	logging.Configure(logging.LevelError)
 }
 
 func main() {

@@ -1,15 +1,15 @@
 {
-    "language": "en-US",
+    "language": "de",
     "messages": [
         {
             "id": "Hello world!",
             "message": "Hello world!",
-            "translation": "Hello world!"
+            "translation": "Hallo Welt!"
         },
         {
             "id": "Hello {City}!",
             "message": "Hello {City}!",
-            "translation": "Hello {City}n",
+            "translation": "Hallo {City}!",
             "placeholders": [
                 {
                     "id": "City",
@@ -24,7 +24,7 @@
         {
             "id": "{Person} is visiting {Place}!",
             "message": "{Person} is visiting {Place}!",
-            "translation": "{Person} is visiting {Place}!",
+            "translation": "{Person} besucht {Place}!",
             "placeholders": [
                 {
                     "id": "Person",
@@ -49,8 +49,7 @@
         {
             "id": "{2} files remaining!",
             "message": "{2} files remaining!",
-            "translation": "{2} files remaining!",
-            "translatorComment": "Copied from source.",
+            "translation": "Noch zwei Bestände zu gehen!",
             "placeholders": [
                 {
                     "id": "2",
@@ -60,26 +59,12 @@
                     "argNum": 1,
                     "expr": "2"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "{N} more files remaining!",
             "message": "{N} more files remaining!",
-            "translation": {
-                "select": {
-                    "feature": "plural",
-                    "arg": "N",
-                    "cases": {
-                        "one": {
-                            "msg": "One file remaining!"
-                        },
-                        "other": {
-                            "msg": "There are {N} more files remaining!"
-                        }
-                    }
-                }
-            },
+            "translation": "Noch {N} Bestände zu gehen!",
             "placeholders": [
                 {
                     "id": "N",
@@ -94,19 +79,17 @@
         {
             "id": "Use the following code for your discount: {ReferralCode}",
             "message": "Use the following code for your discount: {ReferralCode}",
-            "translation": "Use the following code for your discount: {ReferralCode}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "ReferralCode",
                     "string": "%[1]d",
-                    "type": "golang.org/x/text/cmd/gotext/examples/extract.referralCode",
+                    "type": "./testdata/test1.referralCode",
                     "underlyingType": "int",
                     "argNum": 1,
                     "expr": "c"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": [
@@ -114,8 +97,8 @@
                 "{Device} is out of order!"
             ],
             "message": "{Device} is out of order!",
-            "translation": "{Device} is out of order!",
-            "comment": "FOO\n",
+            "translation": "",
+            "comment": "This comment wins.\n",
             "placeholders": [
                 {
                     "id": "Device",
@@ -130,7 +113,7 @@
         {
             "id": "{Miles} miles traveled ({Miles_1})",
             "message": "{Miles} miles traveled ({Miles_1})",
-            "translation": "{Miles} miles traveled ({Miles_1})",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Miles",

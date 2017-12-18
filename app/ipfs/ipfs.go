@@ -7,6 +7,7 @@ import (
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo"
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo/config"
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo/fsrepo"
+	utilmain "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/cmd/ipfs/util"
 	"os"
 	"strings"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
@@ -15,6 +16,13 @@ import (
 
 func init() {
 	//logging.SetDebugLogging()
+}
+
+func patchSystem() error {
+	if err := utilmain.ManageFdLimit(); err != nil {
+		log.Errorf("setting file descriptor limit: %s", err)
+	}
+	return nil
 }
 
 func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, error) {
@@ -27,8 +35,14 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 		Online:    true,
 		Permament: true,
 		ExtraOpts: map[string]bool{
-			"pubsub": true,
+			"mplex":  true,
+			//"pubsub": true,
 		},
+	}
+
+	err = patchSystem()
+	if err != nil {
+		return nil, err
 	}
 
 	node, err := core.NewNode(ctx, buildCfg)

@@ -9,7 +9,7 @@
         {
             "id": "Hello {City}!",
             "message": "Hello {City}!",
-            "translation": "Hello {City}n",
+            "translation": "Hello {City}!",
             "placeholders": [
                 {
                     "id": "City",
@@ -100,7 +100,7 @@
                 {
                     "id": "ReferralCode",
                     "string": "%[1]d",
-                    "type": "golang.org/x/text/cmd/gotext/examples/extract.referralCode",
+                    "type": "./testdata/test1.referralCode",
                     "underlyingType": "int",
                     "argNum": 1,
                     "expr": "c"
@@ -115,7 +115,7 @@
             ],
             "message": "{Device} is out of order!",
             "translation": "{Device} is out of order!",
-            "comment": "FOO\n",
+            "comment": "This comment wins.\n",
             "placeholders": [
                 {
                     "id": "Device",

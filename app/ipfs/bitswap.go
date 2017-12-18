@@ -12,6 +12,9 @@ import (
 	"gx/ipfs/QmeSrf6pzut73u6zLQkRFQ3ygt3k6XFT2kjdYP8Tnkwwyg/go-cid"
 	"reflect"
 	"unsafe"
+	"github.com/iain17/timeout"
+	"time"
+	"context"
 )
 
 var log = logging.Logger("BitswapService")
@@ -54,7 +57,16 @@ func (b *BitswapService) Find(subject string, num int) <-chan peer.ID {
 
 func (b *BitswapService) Provide(subject string) error {
 	log.Debugf("Provide subject: %s", subject)
-	return b.network.Provide(b.node.Context(), StringToCid2(subject))
+	var err error
+	completed := false
+	timeout.Do(func(ctx context.Context) {
+		err = b.network.Provide(b.node.Context(), StringToCid2(subject))
+		completed = true
+	}, 5*time.Second)
+	//if !completed {
+	//	err = errors.New("could not provide '%s' in under 15 seconds. Check if you are connected to enough peers")
+	//}
+	return err
 }
 
 func StringToCid(value string) *cid.Cid {

@@ -57,13 +57,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
-	go func() {
-		err = d.b.Provide(d.getKey(sessionType))
-		if err != nil {
-			logger.Errorf("Could not provide with type %d session: %s", sessionType, err)
-		}
-		logger.Infof("Session provided for type %d", sessionType)
-	}()
+	err = d.b.Provide(d.getKey(sessionType))
 	return sessionId, err
 }
 

@@ -35,7 +35,7 @@ func (d *Decentralizer) FindByPeerId(peerId string) (p *pb.Peer, err error) {
 	p, err = d.peers.FindByPeerId(peerId)
 	if err != nil {
 		var id peer.ID
-		id, err = peer.IDB58Decode(peerId)
+		id, err = d.decodePeerId(peerId)
 		if err != nil {
 			return nil, err
 		}

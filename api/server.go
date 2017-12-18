@@ -40,6 +40,6 @@ func New(ctx context.Context, port int) (*Server, error) {
 
 
 func (s *Server) Stop() {
-	s.grpc.GracefulStop()
+	s.grpc.Stop()
 	s.app.Stop()
 }
