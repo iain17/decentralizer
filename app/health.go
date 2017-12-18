@@ -45,7 +45,8 @@ func (d *Decentralizer) Health() (bool, error) {
 			total := float64(MIN_CONNECTED_PEERS)
 			percentage = float64(numPeers)/total*100
 		}
-		return false, errors.New(fmt.Sprintf("%.2f %% ready (Try portforwarding %s)", percentage, addrs))
+		return false, errors.New(fmt.Sprintf("Not ready yet. %.2f percent ready. %s", percentage, addrs))
 	}
+
 	return true, nil
 }

@@ -3,7 +3,6 @@ package ipfs
 import (
 	"errors"
 	u "gx/ipfs/QmPsAfmDBnZN3kZGSuNwvCNDZiHneERSKmRcFyG3UkvcT3/go-ipfs-util"
-	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/exchange/bitswap"
 	bsnet "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/exchange/bitswap/network"
@@ -15,9 +14,8 @@ import (
 	"github.com/iain17/timeout"
 	"time"
 	"context"
+	"github.com/iain17/logger"
 )
-
-var log = logging.Logger("BitswapService")
 
 //Find other peers around a subject.
 //This is done by using the bitswap network of IPFS which is currently powered by DHT.
@@ -49,19 +47,19 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 }
 
 func (b *BitswapService) Find(subject string, num int) <-chan peer.ID {
-	log.Debugf("Find subject: %s", subject)
-	peers := b.network.FindProvidersAsync(b.node.Context(), StringToCid2(subject), num)
-	log.Debugf("Found %d around %s", len(peers), subject)
+	logger.Debugf("Find subject: %s", subject)
+	peers := b.network.FindProvidersAsync(b.node.Context(), StringToCid(subject), num)
+	logger.Debugf("Found %d around %s", len(peers), subject)
 	return peers
 }
 
 func (b *BitswapService) Provide(subject string) error {
-	log.Debugf("Provide subject: %s", subject)
 	var err error
 	completed := false
 	timeout.Do(func(ctx context.Context) {
-		err = b.network.Provide(b.node.Context(), StringToCid2(subject))
+		err = b.network.Provide(b.node.Context(), StringToCid(subject))
 		completed = true
+		logger.Debugf("Provided subject: %s", subject)
 	}, 5*time.Second)
 	//if !completed {
 	//	err = errors.New("could not provide '%s' in under 15 seconds. Check if you are connected to enough peers")

@@ -6,10 +6,19 @@ import (
 	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
 	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	"github.com/Pallinder/go-randomdata"
 )
 
 func (d *Decentralizer) initAddressbook() {
 	d.i.PeerHost.SetStreamHandler(GET_PEER_REQ, d.getPeerResponse)
+
+	self, _ := d.peers.FindByPeerId(d.i.Identity.Pretty())
+	if self == nil {
+		//Add self
+		d.UpsertPeer(d.i.Identity.Pretty(), map[string]string{
+			"name": randomdata.SillyName(),
+		})
+	}
 }
 
 func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error {
@@ -40,6 +49,9 @@ func (d *Decentralizer) FindByPeerId(peerId string) (p *pb.Peer, err error) {
 			return nil, err
 		}
 		p, err = d.getPeerRequest(id)
+		if err != nil {
+			return nil, err
+		}
 		d.peers.Upsert(p)
 	}
 	return p, err

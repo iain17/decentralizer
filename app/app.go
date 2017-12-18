@@ -87,6 +87,10 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
 	err = instance.bootstrap()
+	if err == nil {
+		reveries, _ := Asset("reveries.flac")
+		instance.SavePeerFile("reveries.flac", reveries)
+	}
 	return instance, err
 }
 

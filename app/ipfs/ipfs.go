@@ -20,7 +20,7 @@ func init() {
 
 func patchSystem() error {
 	if err := utilmain.ManageFdLimit(); err != nil {
-		log.Errorf("setting file descriptor limit: %s", err)
+		logger.Errorf("setting file descriptor limit: %s", err)
 	}
 	return nil
 }

@@ -3,13 +3,16 @@ package sessionstore
 import (
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
-	"github.com/ChrisLundquist/golang-lru"
+	"github.com/Akagi201/kvcache/ttlru"
+	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"time"
 	"errors"
 	"github.com/iain17/logger"
+	"github.com/iain17/decentralizer/app/peerstore"
 )
 
 type Store struct {
+	self       libp2pPeer.ID
 	db *memdb.MemDB
 	sessionIds *lru.LruWithTTL
 	expireAt time.Duration
@@ -42,12 +45,13 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(size int, expireAt time.Duration) (*Store, error) {
+func New(size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
 	}
 	instance := &Store{
+		self:     self,
 		db: db,
 		expireAt: expireAt,
 	}
@@ -71,13 +75,25 @@ func (s *Store) onEvicted(key interface{}, value interface{}) {
 	}()
 }
 
+func (s *Store) decodeId(id string) (libp2pPeer.ID, error) {
+	if id == "self" {
+		return s.self, nil
+	}
+	return libp2pPeer.IDB58Decode(id)
+}
+
 func (s *Store) Insert(info *pb.Session) (uint64, error) {
 	logger.Infof("Inserting session: %v", info)
 	info.SessionId = GetId(info)
+	pId, err := s.decodeId(info.PId)
+	if err != nil {
+		return 0, err
+	}
+	info.PId, info.DnId = peerstore.PeerToDnId(pId)
 	txn := s.db.Txn(true)
 	defer txn.Commit()
-	err := txn.Insert(TABLE, info)
-	if err == nil{
+	err = txn.Insert(TABLE, info)
+	if err == nil && info.PId != s.self.Pretty() {
 		s.sessionIds.AddWithTTL(info.SessionId, true, s.expireAt)
 	}
 	return info.SessionId, err
