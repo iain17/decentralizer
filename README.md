@@ -23,7 +23,7 @@ Use cases for this piece of software are endless. From games to commercial enter
 - DHT
 - IRC
 - mDNS (bonjour)
-- [IPFS](https://github.com/ipfs/go-ipfs)
+- [IPFS](https://gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs)
 - [UDP hole punching (Stun)](https://github.com/ccding/go-stun)
 - UpNp
 

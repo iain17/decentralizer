@@ -3,26 +3,24 @@ package app
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	//"github.com/iain17/discovery"
+	"context"
+	"errors"
+	"github.com/ccding/go-stun/stun"
+	"github.com/iain17/decentralizer/app/peerstore"
+	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
-	"github.com/ipfs/go-ipfs/core"
-	"time"
-	"errors"
-	"github.com/iain17/decentralizer/app/sessionstore"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
 	"net"
-	"github.com/iain17/decentralizer/app/peerstore"
-	"context"
-	"github.com/ccding/go-stun/stun"
-	api "github.com/ipfs/go-ipfs-api"
+	"time"
 )
 
 type Decentralizer struct {
 	n *network.Network
 	//d *discovery.Discovery
-	i *core.IpfsNode
-	b *ipfs.BitswapService
-	api					   *api.Shell
+	i                      *core.IpfsNode
+	b                      *ipfs.BitswapService
 	ip                     net.IP
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
@@ -64,7 +62,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	i, api, err := ipfs.OpenIPFSRepo(ctx, path, -1)
+	i, err := ipfs.OpenIPFSRepo(ctx, path, -1)
 	if err != nil {
 		return nil, err
 	}
@@ -77,16 +75,15 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		return nil, err
 	}
 	instance := &Decentralizer{
-		api:					api,
-		n:                      n,
+		n:   n,
 		//d:                      d,
 		i:                      i,
 		b:                      b,
-		ip:						net.ParseIP(host.IP()),
+		ip:                     net.ParseIP(host.IP()),
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
-		peers:				    peers,
-		directMessage: 			make(chan *DirectMessage, 10),
+		peers:         peers,
+		directMessage: make(chan *DirectMessage, 10),
 	}
 	instance.initMatchmaking()
 	instance.initMessaging()
@@ -94,7 +91,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
 	bs := core.DefaultBootstrapConfig
-	bs.BootstrapPeers = nil//instance.bootstrap
+	bs.BootstrapPeers = nil //instance.bootstrap
 	instance.i.Bootstrap(bs)
 	return instance, nil
 }

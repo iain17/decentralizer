@@ -3,25 +3,24 @@ package ipfs
 import (
 	"context"
 	"fmt"
-	"github.com/ipfs/go-ipfs/core"
-	"github.com/ipfs/go-ipfs/repo"
-	"github.com/ipfs/go-ipfs/repo/config"
-	"github.com/ipfs/go-ipfs/repo/fsrepo"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo/config"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo/fsrepo"
 	"os"
 	"strings"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"github.com/iain17/logger"
-	api "github.com/ipfs/go-ipfs-api"
 )
 
 func init() {
 	//logging.SetDebugLogging()
 }
 
-func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, *api.Shell, error) {
+func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, error) {
 	r, err := getIPFSRepo(path, portIdx)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	buildCfg := &core.BuildCfg{
 		Repo:      r,
@@ -34,12 +33,12 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 
 	node, err := core.NewNode(ctx, buildCfg)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	cfg, err := node.Repo.Config()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	//Start gateway etc..
@@ -66,8 +65,7 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 		}
 	}()
 
-	shell := api.NewShell(cfg.Addresses.API)
-	return node, shell, nil
+	return node, nil
 }
 
 func getIPFSRepo(path string, portIdx int) (repo.Repo, error) {

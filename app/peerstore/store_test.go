@@ -1,29 +1,29 @@
 package peerstore
 
 import (
+	"github.com/iain17/decentralizer/pb"
+	"github.com/stretchr/testify/assert"
+	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"testing"
 	"time"
-	"github.com/stretchr/testify/assert"
-	"github.com/iain17/decentralizer/pb"
-	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 )
 
 func TestStore_FindByPeerId(t *testing.T) {
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(10, 1 * time.Hour, self)
+	store, err := New(10, 1*time.Hour, self)
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 1,
-		PId: "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
+		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
 			"hey": "ho",
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 2,
-		PId: "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
+		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
 			"hey": "ho",
 		},
@@ -38,11 +38,11 @@ func TestStore_FindByPeerId(t *testing.T) {
 func TestStore_Expire(t *testing.T) {
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(10, 1 * time.Second, self)
+	store, err := New(10, 1*time.Second, self)
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 1,
-		PId: "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
+		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
 			"hey": "ho",
 		},
@@ -61,19 +61,19 @@ func TestStore_Expire(t *testing.T) {
 func TestStore_Limit(t *testing.T) {
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(1, 2 * time.Hour, self)
+	store, err := New(1, 2*time.Hour, self)
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 1,
-		PId: "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
+		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
 			"hey": "ho",
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 2,
-		PId: "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
+		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
 			"hey": "ho",
 		},
@@ -89,27 +89,27 @@ func TestStore_Limit(t *testing.T) {
 func TestStore_Self(t *testing.T) {
 	self, err := libp2pPeer.IDB58Decode("QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ")
 	assert.NoError(t, err)
-	store, err := New(1, 2 * time.Hour, self)
+	store, err := New(1, 2*time.Hour, self)
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 1,
-		PId: "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
+		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
 			"username": "mr.ford",
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 2,
-		PId: "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
+		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
 			"username": "dolores",
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 1,
-		PId: "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381",
+		PId:  "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381",
 		Details: map[string]string{
 			"username": "daddy",
 		},
@@ -128,19 +128,19 @@ func TestStore_Self(t *testing.T) {
 func TestStore_FindByDetails(t *testing.T) {
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(10, 1 * time.Hour, self)
+	store, err := New(10, 1*time.Hour, self)
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 1,
-		PId: "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
+		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
 			"cool": "yes",
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer {
+	err = store.Upsert(&pb.Peer{
 		DnId: 2,
-		PId: "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
+		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
 			"cool": "no",
 		},

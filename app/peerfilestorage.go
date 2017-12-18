@@ -1,17 +1,17 @@
 package app
 
 import (
-	"github.com/ipfs/go-ipfs/core/coreapi"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/coreapi"
 	//"gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	"bytes"
+	"errors"
 	"github.com/iain17/decentralizer/app/ipfs"
-	"github.com/ipfs/go-ipfs/core/coreapi/interface"
-	"github.com/ipfs/go-ipfs/core/coreunix"
-	Path "github.com/ipfs/go-ipfs/path"
+	"github.com/iain17/logger"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/coreapi/interface"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/coreunix"
+	Path "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/path"
 	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"io/ioutil"
-	"errors"
-	"github.com/iain17/logger"
 )
 
 func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
@@ -60,7 +60,7 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 
 //Path could be "/ipfs/QmQy2Dw4Wk7rdJKjThjYXzfFJNaRKRHhHP5gHHXroJMYxk"
 func (d *Decentralizer) GetFile(path string) ([]byte, error) {
-	logger.Infof("Get file", path)
+	logger.Infof("Get file: %s", path)
 	api := coreapi.NewCoreAPI(d.i)
 
 	pth := coreapi.ResolvedPath(path, nil, nil)

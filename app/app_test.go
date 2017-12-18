@@ -4,11 +4,11 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/logger"
-	"github.com/ipfs/go-ipfs/core"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
-	"time"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"net"
+	"time"
 )
 
 func init() {
@@ -29,13 +29,13 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 		panic(err)
 	}
 	instance := &Decentralizer{
-		ip:						net.ParseIP("127.0.0.1"),
+		ip:                     net.ParseIP("127.0.0.1"),
 		i:                      node,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
-		peers:					peers,
-		directMessage: 			make(chan *DirectMessage, 10),
+		peers:         peers,
+		directMessage: make(chan *DirectMessage, 10),
 	}
 	instance.initMatchmaking()
 	instance.initMessaging()

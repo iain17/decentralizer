@@ -1,15 +1,15 @@
 package app
 
 import (
+	"github.com/iain17/decentralizer/pb"
+	"github.com/iain17/logger"
+	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
 	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
-	"github.com/iain17/logger"
-	"github.com/iain17/decentralizer/pb"
-	"github.com/golang/protobuf/proto"
 )
 
 type DirectMessage struct {
-	From libp2pPeer.ID
+	From    libp2pPeer.ID
 	Message []byte
 }
 
@@ -17,7 +17,7 @@ func (d *Decentralizer) initMessaging() {
 	d.i.PeerHost.SetStreamHandler(SEND_DIRECT_MESSAGE, d.directMessageReceived)
 }
 
-func (d *Decentralizer) SendMessage(peerId string, message []byte) (error) {
+func (d *Decentralizer) SendMessage(peerId string, message []byte) error {
 	id, err := libp2pPeer.IDB58Decode(peerId)
 	if err != nil {
 		return err

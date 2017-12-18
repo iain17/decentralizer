@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/iain17/logger"
-	"github.com/iain17/decentralizer/api"
 	"context"
+	"github.com/iain17/decentralizer/api"
+	"github.com/iain17/logger"
+	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"os"
 	"os/signal"
-	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
 
 //This is the privatekey

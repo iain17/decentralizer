@@ -4,17 +4,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/logger"
 	"github.com/iain17/timeout"
-	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
+	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"sync"
 	"time"
-	"github.com/iain17/decentralizer/app/peerstore"
 )
 
 func (d *Decentralizer) getKey(sessionType uint64) string {

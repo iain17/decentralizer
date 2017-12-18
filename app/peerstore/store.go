@@ -1,23 +1,24 @@
 package peerstore
 
 import (
+	"errors"
+	"github.com/ChrisLundquist/golang-lru"
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
-	"github.com/ChrisLundquist/golang-lru"
-	"time"
-	"errors"
 	"github.com/iain17/logger"
 	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	"time"
 )
 
 type Store struct {
-	self libp2pPeer.ID
-	db *memdb.MemDB
+	self       libp2pPeer.ID
+	db         *memdb.MemDB
 	sessionIds *lru.LruWithTTL
-	expireAt time.Duration
+	expireAt   time.Duration
 }
 
 const TABLE = "peers"
+
 var schema = &memdb.DBSchema{
 	Tables: map[string]*memdb.TableSchema{
 		TABLE: {
@@ -28,12 +29,12 @@ var schema = &memdb.DBSchema{
 					Unique:  true,
 					Indexer: &memdb.StringFieldIndex{Field: "PId"},
 				},
-				"DnId":{
+				"DnId": {
 					Name:    "DnId",
 					Unique:  true,
 					Indexer: &memdb.UintFieldIndex{Field: "DnId"},
 				},
-				"details":{
+				"details": {
 					Name:    "details",
 					Unique:  false,
 					Indexer: &memdb.StringMapFieldIndex{Field: "Details"},
@@ -49,8 +50,8 @@ func New(size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
 		return nil, err
 	}
 	instance := &Store{
-		self: self,
-		db: db,
+		self:     self,
+		db:       db,
 		expireAt: expireAt,
 	}
 	instance.sessionIds, err = lru.NewTTLWithEvict(size, instance.onEvicted)

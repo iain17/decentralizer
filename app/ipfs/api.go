@@ -2,17 +2,17 @@ package ipfs
 
 import (
 	"fmt"
-	"github.com/ipfs/go-ipfs/core/corehttp"
-	manet "gx/ipfs/QmSGL5Uoa6gKHgBBwQG8u1CWKUC8ZnwaZiLgFVTFBR2bxr/go-multiaddr-net"
-	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
-	"github.com/ipfs/go-ipfs/core"
-	"net/http"
 	cmds "gx/ipfs/QmP9vZfc5WSjfGTXmwX2EcicMFzmZ6fXn7HTdKYat6ccmH/go-ipfs-cmds"
+	manet "gx/ipfs/QmSGL5Uoa6gKHgBBwQG8u1CWKUC8ZnwaZiLgFVTFBR2bxr/go-multiaddr-net"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
+	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/corehttp"
+	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
 	"net"
+	"net/http"
 )
 
-//Based on: https://sourcegraph.com/github.com/ipfs/go-ipfs@ce22b83f24f72f18318c8649ff1bed3d3e96768e/-/blob/cmd/ipfs/daemon.go#L566
-func serveHTTPApi(node *core.IpfsNode) (error, <-chan error){
+//Based on: https://sourcegraph.com/gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs@ce22b83f24f72f18318c8649ff1bed3d3e96768e/-/blob/cmd/ipfs/daemon.go#L566
+func serveHTTPApi(node *core.IpfsNode) (error, <-chan error) {
 	cfg, err := node.Repo.Config()
 	if err != nil {
 		return fmt.Errorf("serveHTTPApi: GetConfig() failed: %s", err), nil

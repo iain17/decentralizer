@@ -1,0 +1,46 @@
+{
+  "bugs": {
+    "url": "https://github.com/ipfs/go-ipfs-cmds"
+  },
+  "gx": {
+    "dvcsimport": "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs-cmds",
+    "goversion": "1.7"
+  },
+  "gxDependencies": [
+    {
+      "hash": "QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52",
+      "name": "go-log",
+      "version": "1.2.0"
+    },
+    {
+      "author": "rs",
+      "hash": "QmPG2kW5t27LuHgHnvhUwbHCNHAt2eUcb4gPHqofrESUdB",
+      "name": "cors",
+      "version": "0.0.0"
+    },
+    {
+      "author": "whyrusleeping",
+      "hash": "QmPsAfmDBnZN3kZGSuNwvCNDZiHneERSKmRcFyG3UkvcT3",
+      "name": "go-ipfs-util",
+      "version": "1.2.6"
+    },
+    {
+      "hash": "QmQp2a2Hhb7F6eK2A5hN8f9aJy4mtkEikL9Zj4cgB7d1dD",
+      "name": "go-ipfs-cmdkit",
+      "version": "0.3.6"
+    },
+    {
+      "author": "whyrusleeping",
+      "hash": "QmSvcDkiRwB8LuMhUtnvhum2C851Mproo75ZDD19jx43tD",
+      "name": "go-libp2p-loggables",
+      "version": "1.1.9"
+    }
+  ],
+  "gxVersion": "0.10.0",
+  "language": "go",
+  "license": "MIT",
+  "name": "go-ipfs-cmds",
+  "releaseCmd": "git commit -a -m \"gx publish $VERSION\"",
+  "version": "0.4.15"
+}
+
