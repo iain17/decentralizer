@@ -51,6 +51,8 @@ func (d *Decentralizer) getPeerRequest(peer peer.ID) (*pb.Peer, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer stream.Close()
+
 	//Request
 	reqData, err := proto.Marshal(&pb.DNPeerRequest{})
 	if err != nil {

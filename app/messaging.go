@@ -28,6 +28,7 @@ func (d *Decentralizer) SendMessage(peerId string, message []byte) (error) {
 	if err != nil {
 		return err
 	}
+	defer stream.Close()
 
 	//Request
 	reqData, err := proto.Marshal(&pb.DNDirectMessageRequest{

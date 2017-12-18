@@ -11,30 +11,35 @@ import (
 	"strings"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"github.com/iain17/logger"
+	api "github.com/ipfs/go-ipfs-api"
 )
 
 func init() {
 	//logging.SetDebugLogging()
 }
 
-func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, error) {
+func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, *api.Shell, error) {
 	r, err := getIPFSRepo(path, portIdx)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	cfg := &core.BuildCfg{
+	buildCfg := &core.BuildCfg{
 		Repo:      r,
 		Online:    true,
 		Permament: true,
 		ExtraOpts: map[string]bool{
-		//"pubsub": true,
+			"pubsub": true,
 		},
-		Routing: core.DHTOption,
 	}
 
-	node, err := core.NewNode(ctx, cfg)
+	node, err := core.NewNode(ctx, buildCfg)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
+	}
+
+	cfg, err := node.Repo.Config()
+	if err != nil {
+		return nil, nil, err
 	}
 
 	//Start gateway etc..
@@ -44,7 +49,6 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 			logger.Error(err)
 			return
 		}
-		cfg, _ := node.Repo.Config()
 		logger.Infof("IPFS Gateway running on %s", cfg.Addresses.Gateway)
 		for err := range gwErrc {
 			logger.Warning(err)
@@ -56,14 +60,14 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 			logger.Error(err)
 			return
 		}
-		cfg, _ := node.Repo.Config()
 		logger.Infof("IPFS API running on %s", cfg.Addresses.API)
 		for err := range gwErrc {
 			logger.Warning(err)
 		}
 	}()
 
-	return node, nil
+	shell := api.NewShell(cfg.Addresses.API)
+	return node, shell, nil
 }
 
 func getIPFSRepo(path string, portIdx int) (repo.Repo, error) {
@@ -84,7 +88,7 @@ func getIPFSRepo(path string, portIdx int) (repo.Repo, error) {
 		return nil, err
 	}
 
-	//err = resetRepoConfigPorts(r, portIdx)
+	err = resetRepoConfigPorts(r, portIdx)
 	return r, err
 }
 
@@ -104,6 +108,7 @@ func resetRepoConfigPorts(r repo.Repo, nodeIdx int) error {
 			rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
 		}
 	}
+	rc.Swarm.EnableRelayHop = true
 	err = r.SetConfig(rc)
 	return err
 }

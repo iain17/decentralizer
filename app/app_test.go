@@ -8,6 +8,7 @@ import (
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"time"
 	"github.com/iain17/decentralizer/app/peerstore"
+	"net"
 )
 
 func init() {
@@ -28,6 +29,7 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 		panic(err)
 	}
 	instance := &Decentralizer{
+		ip:						net.ParseIP("127.0.0.1"),
 		i:                      node,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),

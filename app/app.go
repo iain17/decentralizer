@@ -14,7 +14,7 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 	"context"
 	"github.com/ccding/go-stun/stun"
-	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	api "github.com/ipfs/go-ipfs-api"
 )
 
 type Decentralizer struct {
@@ -22,16 +22,12 @@ type Decentralizer struct {
 	//d *discovery.Discovery
 	i *core.IpfsNode
 	b *ipfs.BitswapService
-
-	ip 					   net.IP
+	api					   *api.Shell
+	ip                     net.IP
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
-	peers			   	   *peerstore.Store
-	directMessage		   chan *DirectMessage
-}
-
-func init() {
-	//logging.Configure(logging.LevelDebug)
+	peers                  *peerstore.Store
+	directMessage          chan *DirectMessage
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -68,7 +64,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	i, err := ipfs.OpenIPFSRepo(ctx, path, -1)
+	i, api, err := ipfs.OpenIPFSRepo(ctx, path, -1)
 	if err != nil {
 		return nil, err
 	}
@@ -81,6 +77,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		return nil, err
 	}
 	instance := &Decentralizer{
+		api:					api,
 		n:                      n,
 		//d:                      d,
 		i:                      i,
@@ -96,13 +93,9 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.initAddressbook()
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
-	instance.i.Bootstrap(core.BootstrapConfig{
-		MinPeerThreshold:  4,
-		Period:            30 * time.Second,
-		ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
-		BootstrapPeers: nil,
-		//BootstrapPeers:    instance.bootstrap,
-	})
+	bs := core.DefaultBootstrapConfig
+	bs.BootstrapPeers = nil//instance.bootstrap
+	instance.i.Bootstrap(bs)
 	return instance, nil
 }
 
@@ -111,5 +104,7 @@ func (d *Decentralizer) GetIP() net.IP {
 }
 
 func (s *Decentralizer) Stop() {
-	s.i.Close()
+	if s.i != nil {
+		s.i.Close()
+	}
 }

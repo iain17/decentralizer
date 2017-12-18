@@ -7,6 +7,7 @@ import (
 	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
 	"gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/core"
 	"net/http"
+	commands "gx/ipfs/QmNUKMfTHQQpEwE8bUdv5qmKC3ymdW7zw82LFS8D6MQXmu/go-ipfs/commands"
 	"net"
 )
 
@@ -31,9 +32,18 @@ func serveHTTPApi(node *core.IpfsNode) (error, <-chan error){
 	fmt.Printf("API server listening on %s\n", apiMaddr)
 
 	gatewayOpt := corehttp.GatewayOption(false, corehttp.WebUIPaths...)
+	req, err := commands.NewEmptyRequest()
+	if err != nil {
+		return err, nil
+	}
+	context := req.InvocContext()
+	context.ConstructNode = func() (*core.IpfsNode, error) {
+		return node, nil
+	}
 
 	var opts = []corehttp.ServeOption{
 		corehttp.MetricsCollectionOption("api"),
+		corehttp.CommandsOption(*context),
 		corehttp.WebUIOption,
 		gatewayOpt,
 		corehttp.VersionOption(),

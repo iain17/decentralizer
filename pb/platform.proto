@@ -35,7 +35,9 @@ service Decentralizer {
 		option (google.api.http) = { get: "/v1/sessions/{type}/{key}/{value}" };
 	}
 	// Get an individual session. Takes session id and returns session info.
-	rpc GetSession(RPCGetSessionRequest) returns (RPCGetSessionResponse) {}
+	rpc GetSession(RPCGetSessionRequest) returns (RPCGetSessionResponse) {
+		option (google.api.http) = { get: "/v1/session/{sessionId}" };
+	}
 
 	//
 	// Address book

@@ -6,6 +6,7 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
 
 //This is the privatekey
@@ -16,7 +17,7 @@ func init() {
 		MinLevel: logger.DEBUG, //logger.DEBUG,
 		Colored:  true,
 	})
-	//logging.Configure(logging.LevelDebug)
+	logging.Configure(logging.LevelInfo)
 }
 
 func main() {

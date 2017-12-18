@@ -18,7 +18,10 @@ import (
 )
 
 func (d *Decentralizer) getKey(sessionType uint64) string {
-	ih := d.n.InfoHash()
+	var ih [20]byte
+	if d.n != nil {
+		ih = d.n.InfoHash()
+	}
 	return fmt.Sprintf("%s_MATCHMAKING_%d", string(ih[:]), sessionType)
 }
 
@@ -102,7 +105,9 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 	var wg sync.WaitGroup
 	sessionsStorage := d.getSessionStorage(sessionType)
 	seen := map[string]bool{}
-	for provider := range d.b.Find(d.getKey(sessionType), MAX_SESSIONS) {
+	providers := d.b.Find(d.getKey(sessionType), MAX_SESSIONS)
+	logger.Infof("Found %d providers for %d", len(providers), sessionType)
+	for provider := range providers {
 		//Stop any duplicates
 		id := provider.String()
 		if seen[id] {
@@ -115,10 +120,6 @@ func (d *Decentralizer) refreshSessions(sessionType uint64) {
 			defer wg.Done()
 			sessions, err := d.getSessionsRequest(id, sessionType)
 			if err != nil {
-				if err.Error() == "protocol not supported" {
-					return
-				}
-				logger.Error(err)
 				return
 			}
 			logger.Infof("Received sessions %d from %s", len(sessions), id.Pretty())
@@ -174,6 +175,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]
 	if err != nil {
 		return nil, err
 	}
+	defer stream.Close()
 	//Request
 	reqData, err := proto.Marshal(&pb.DNSessionRequest{
 		Type: sessionType,
