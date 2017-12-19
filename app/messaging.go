@@ -18,7 +18,7 @@ func (d *Decentralizer) initMessaging() {
 }
 
 func (d *Decentralizer) SendMessage(peerId string, message []byte) error {
-	id, err := libp2pPeer.IDB58Decode(peerId)
+	id, err := d.decodePeerId(peerId)
 	if err != nil {
 		return err
 	}

@@ -32,7 +32,7 @@ func (d *Decentralizer) initMatchmaking() {
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
 	if d.sessions[sessionType] == nil {
 		var err error
-		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second))
+		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second), d.i.Identity)
 		if err != nil {
 			return nil
 		}
@@ -57,13 +57,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
-	go func() {
-		err = d.b.Provide(d.getKey(sessionType))
-		if err != nil {
-			logger.Errorf("Could not provide with type %d session: %s", sessionType, err)
-		}
-		logger.Infof("Session provided for type %d", sessionType)
-	}()
+	err = d.b.Provide(d.getKey(sessionType))
 	return sessionId, err
 }
 

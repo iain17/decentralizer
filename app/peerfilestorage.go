@@ -10,7 +10,6 @@ import (
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/coreapi/interface"
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/coreunix"
 	Path "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/path"
-	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"io/ioutil"
 )
 
@@ -34,7 +33,7 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 
 func (d *Decentralizer) GetPeerFiles(peerId string) ([]*iface.Link, error) {
 	logger.Infof("Get peer files of peer id %s", peerId)
-	id, err := libp2pPeer.IDB58Decode(peerId)
+	id, err := d.decodePeerId(peerId)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +44,7 @@ func (d *Decentralizer) GetPeerFiles(peerId string) ([]*iface.Link, error) {
 }
 
 func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) {
-	logger.Infof("Get peer file %s of per id %s", name, peerId)
+	logger.Infof("Get peer file %s of peer id %s", name, peerId)
 	files, err := d.GetPeerFiles(peerId)
 	if err != nil {
 		return nil, err

@@ -42,8 +42,13 @@ func (s *Server) GetSessionIds(ctx context.Context, request *pb.RPCGetSessionIds
 	} else {
 		sessions, err = s.app.GetSessionsByDetails(request.Type, request.Key, request.Value)
 	}
+	seen := make(map[uint64]bool)
 	var sessionIds []uint64
 	for _, session := range sessions {
+		if seen[session.SessionId] {
+			continue
+		}
+		seen[session.SessionId] = true
 		sessionIds = append(sessionIds, session.SessionId)
 	}
 	return &pb.RPCGetSessionIdsResponse{

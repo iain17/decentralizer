@@ -2,7 +2,7 @@ package peerstore
 
 import (
 	"errors"
-	"github.com/ChrisLundquist/golang-lru"
+	"github.com/Akagi201/kvcache/ttlru"
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
@@ -82,6 +82,9 @@ func (s *Store) onEvicted(key interface{}, value interface{}) {
 }
 
 func (s *Store) Upsert(info *pb.Peer) error {
+	if info == nil {
+		return errors.New("peer info not defined")
+	}
 	peerId, err := s.decodeId(info.PId)
 	if err != nil {
 		return err

@@ -28,8 +28,9 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 	if err != nil {
 		panic(err)
 	}
+	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
-		ip:                     net.ParseIP("127.0.0.1"),
+		ip:                     &ip,
 		i:                      node,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),

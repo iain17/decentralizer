@@ -5,15 +5,16 @@ import (
 	//"github.com/iain17/discovery"
 	"context"
 	"errors"
-	"github.com/ccding/go-stun/stun"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
 	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
+	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"net"
 	"time"
+	"github.com/ccding/go-stun/stun"
 )
 
 type Decentralizer struct {
@@ -21,7 +22,7 @@ type Decentralizer struct {
 	//d *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
-	ip                     net.IP
+	ip                     *net.IP
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	peers                  *peerstore.Store
@@ -46,11 +47,6 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	} else {
 		n, err = network.Unmarshal(networkStr)
 	}
-	if err != nil {
-		return nil, err
-	}
-	client := stun.NewClient()
-	_, host, err := client.Discover()
 	if err != nil {
 		return nil, err
 	}
@@ -79,25 +75,54 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		//d:                      d,
 		i:                      i,
 		b:                      b,
-		ip:                     net.ParseIP(host.IP()),
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		peers:         peers,
 		directMessage: make(chan *DirectMessage, 10),
 	}
+	instance.GetIP()
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
+	err = instance.bootstrap()
+	if err == nil {
+		reveries, _ := Asset("reveries.flac")
+		instance.SavePeerFile("reveries.flac", reveries)
+	}
+	return instance, err
+}
+
+func (s *Decentralizer) bootstrap() error {
 	bs := core.DefaultBootstrapConfig
 	bs.BootstrapPeers = nil //instance.bootstrap
-	instance.i.Bootstrap(bs)
-	return instance, nil
+	bs.MinPeerThreshold = MIN_CONNECTED_PEERS
+	return s.i.Bootstrap(bs)
+}
+
+func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
+	if id == "self" {
+		return s.i.Identity, nil
+	}
+	return libp2pPeer.IDB58Decode(id)
 }
 
 func (d *Decentralizer) GetIP() net.IP {
-	return d.ip
+	if d.ip == nil {
+		stun := stun.NewClient()
+		nat, host, err := stun.Discover()
+		if err != nil {
+			logger.Error(err)
+			time.Sleep(5 * time.Second)
+			return d.GetIP()
+		}
+		logger.Infof("NAT type: %s", nat.String())
+		ip := net.ParseIP(host.IP())
+		d.ip = &ip
+	}
+
+	return *d.ip
 }
 
 func (s *Decentralizer) Stop() {
