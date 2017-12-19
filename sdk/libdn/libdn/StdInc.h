@@ -40,6 +40,7 @@
 #include "Conversions.h"
 #include "Promise.h"
 #include "DecentralizerClient.h"
+#include "fmt/format.h"
 
 // global state
 extern struct DN_state_s {

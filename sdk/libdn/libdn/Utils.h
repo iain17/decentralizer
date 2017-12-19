@@ -1,2 +1,4 @@
 void Log_Print(const char* message, ...);
-const char* va(const char* format, ...);
+
+#include <stdarg.h>  // For va_start, etc.
+#include <memory>    // For std::unique_ptr

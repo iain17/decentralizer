@@ -17,7 +17,7 @@ namespace libdn {
 			if (status.ok()) {
 				result.sessionId = reply.sessionid();
 			} else {
-				promise->reject(va("[Could not upsert session] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not upsert session] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
 			return result;
 		});
@@ -39,7 +39,7 @@ namespace libdn {
 			if (status.ok()) {
 				return true;
 			} else {
-				promise->reject(va("[Could not delete session] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not delete session] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
 
 			return false;
@@ -66,7 +66,7 @@ namespace libdn {
 				int size = context.sessions.size();
 				return size;
 			} else {
-				promise->reject(va("[Could not get session ids] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not get session ids] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
 
 			return 0;
@@ -87,7 +87,7 @@ namespace libdn {
 			grpc::Status status = context.client->stub_->GetSession(ctx, request, &reply);
 
 			if (!status.ok()) {
-				promise->reject(va("[Could not get session] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not get session] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
 			auto session = reply.session();
 			return PBSessionToDNSession(&session);

@@ -184,6 +184,7 @@
     <ClCompile Include="Addressbook.cpp" />
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="DecentralizerClient.cpp" />
+    <ClCompile Include="fmt.cpp" />
     <ClCompile Include="Messaging.cpp" />
     <ClCompile Include="pb.cpp" />
     <ClCompile Include="Main.cpp" />

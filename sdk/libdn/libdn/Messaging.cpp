@@ -1,11 +1,12 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID pid, const uint8_t * data, uint32_t length) {
-		auto result = new Promise<bool>([pid, data, length](Promise<bool>* promise) {
+	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID& pid, std::string& data) {
+		auto result = new Promise<bool>([pid, data](Promise<bool>* promise) {
 			// Data we are sending to the server.
 			pb::RPCDirectMessageRequest request;
 			request.set_pid(pid);
+			request.set_message(data);
 
 			// Container for the data we expect from the server.
 			pb::RPCDirectMessageResponse reply;
@@ -15,7 +16,7 @@ namespace libdn {
 
 			UpsertSessionResult result;
 			if (!status.ok()) {
-				promise->reject(va("[Could not send direct message to %s] %i: %s", pid.c_str(), status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not send direct message to {0}] {1}: {2}", pid.c_str(), status.error_code(), status.error_message().c_str()));
 				return false;
 			}
 			return true;
