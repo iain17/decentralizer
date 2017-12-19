@@ -15,7 +15,7 @@ namespace libdn {
 
 			UpsertSessionResult result;
 			if (!status.ok()) {
-				promise->reject(va("[Could not upsert peer] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not upsert peer] {0}: {1}", status.error_code(), status.error_message().c_str()));
 				return false;
 			}
 			return true;
@@ -41,7 +41,7 @@ namespace libdn {
 				int size = context.peers.size();
 				return size;
 			} else {
-				promise->reject(va("[Could not get peer ids] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not get peer ids] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
 
 			return 0;
@@ -51,7 +51,7 @@ namespace libdn {
 
 	//If pId is set to "self" it will automatically resolve to the local peer id.
 	//If both are given. Perference is given to pId.
-	LIBDN_API Promise<Peer*>*LIBDN_CALL GetPeerById(DNID dId, PeerID pId) {
+	LIBDN_API Promise<Peer*>*LIBDN_CALL GetPeerById(DNID dId, PeerID& pId) {
 		auto result = new Promise<Peer*>([dId, pId](Promise<Peer*>* promise) {
 			//build request.
 			pb::RPCGetPeerRequest request;
@@ -65,7 +65,7 @@ namespace libdn {
 			grpc::Status status = context.client->stub_->GetPeer(ctx, request, &reply);
 
 			if (!status.ok()) {
-				promise->reject(va("[Could not get peer] %i: %s", status.error_code(), status.error_message().c_str()));
+				promise->reject(fmt::format("[Could not get peer] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
 			auto peer = reply.peer();
 			return PBPeerToDNPeer(&peer);
@@ -73,11 +73,18 @@ namespace libdn {
 		return result;
 	}
 
+	LIBDN_API Peer* LIBDN_CALL GetSelf() {
+		std::string pid = "self";
+		auto request = GetPeerById(0, pid);
+		return request->get();
+	}
+
 	LIBDN_API Peer *LIBDN_CALL GetPeerByIndex(int index) {
 		if (index > context.peers.size() - 1) {
 			return NULL;
 		}
-		auto req = GetPeerById(0, context.peers.Get(index));
+		std::string pid = context.peers.Get(index);
+		auto req = GetPeerById(0, pid);
 		req->fail([](std::string reason) {
 			Log_Print(reason.c_str());
 		});

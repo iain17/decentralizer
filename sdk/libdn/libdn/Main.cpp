@@ -9,6 +9,14 @@ namespace libdn {
 		context.initialized = true;
 		context.g_logCB = callback;
 		Log_Print("Initializing libdn");
+
+		//Test
+		libdn::Promise<int>* test = new libdn::Promise<int>([](libdn::Promise<int>* promise) {
+			promise->reject("Not cool");
+			return 1;
+		});
+		test->wait();
+
 	}
 
 	LIBDN_API void LIBDN_CALL Shutdown() {

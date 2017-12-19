@@ -47,10 +47,10 @@ namespace libdn {
 	LIBDN_API Promise<std::string>* LIBDN_CALL GetPublisherFile(const char* name);
 
 	// Fetches a peer file
-	LIBDN_API Promise<std::string>* LIBDN_CALL GetPeerFile(PeerID pid, const char* name);
+	LIBDN_API Promise< std::string >*LIBDN_CALL GetPeerFile(PeerID& pid, const char * name);
 
 	// Writes a peer file
-	LIBDN_API Promise<bool>*LIBDN_CALL WritePeerFile(const char * name, std::string data);
+	LIBDN_API Promise<bool>*LIBDN_CALL WritePeerFile(const char * name, std::string& data);
 
 	// ----------------------------------------------------------
 	// Addressbook service
@@ -72,14 +72,17 @@ namespace libdn {
 	LIBDN_API Peer* LIBDN_CALL GetPeerByIndex(int index);
 
 	// gets a single session's info by either peer id or decentralized id
-	LIBDN_API Promise<Peer*>* LIBDN_CALL GetPeerById(DNID dId, PeerID pId);
+	LIBDN_API Promise<Peer*>* LIBDN_CALL GetPeerById(DNID dId, PeerID& pId);
+
+	//Get yourself.
+	LIBDN_API Peer* LIBDN_CALL GetSelf();
 
 
 	// ----------------------------------------------------------
 	// Direct messaging service
 	// ----------------------------------------------------------
 	// sends direct message to another peer.
-	LIBDN_API  Promise<bool>* LIBDN_CALL SendDirectMessage(PeerID pid, const uint8_t* data, uint32_t length);
+	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID& pid, std::string& data);
 
 	// function to register a callback when a direct message has been received
 	// arguments: source peer id, data, length

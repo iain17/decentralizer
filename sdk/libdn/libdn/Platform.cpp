@@ -29,7 +29,8 @@ namespace libdn {
 			result->message = reply.message();
 			result->ready = reply.ready();
 		} else {
-			result->message = va("[RPC failed] %s: %s", status.error_code(), status.error_message());
+			result->message = fmt::format("[RPC failed: Get health] {0}: {1}", status.error_code(), status.error_message());
+			Log_Print(result->message.c_str());
 		}
 		return result;
 	}
