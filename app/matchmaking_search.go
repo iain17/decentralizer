@@ -13,6 +13,7 @@ import (
 
 type search struct {
 	running bool
+	updating bool
 	mutex sync.Mutex
 	d *Decentralizer
 	sessionType uint64
@@ -74,13 +75,21 @@ func (s *search) run(ctx context.Context) {
 //Fetches updates from existing providers.
 //If we again find sessions, we'll also become a provider.
 func (s *search) update(ctx context.Context) {
+	if s.updating {
+		return
+	}
+	s.updating = true
 	s.mutex.Lock()
-	defer s.mutex.Unlock()
+	defer func() {
+		s.mutex.Unlock()
+		s.updating = false
+	}()
 	logger.Infof("Updating search for sessions with type %d", s.sessionType)
 	var wg sync.WaitGroup
 	peers, err := s.d.GetPeersByDetails("sessionProvider", "1")
 	if err != nil {
 		logger.Warningf("Could not update session search: %v", err)
+		return
 	}
 	total := 0
 	for _, peer := range peers {
@@ -104,7 +113,7 @@ func (s *search) update(ctx context.Context) {
 	if total > 0 {
 		s.d.b.Provide(s.d.getKey(s.sessionType))
 	}
-	logger.Infof("Update search complete for sessions with type %d", s.sessionType)
+	logger.Infof("Updated %d sessions of type %d", total, s.sessionType)
 }
 
 func (s *search) request(id Peer.ID) (int, error) {
