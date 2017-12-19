@@ -15,10 +15,12 @@ import (
 	"net"
 	"time"
 	"github.com/ccding/go-stun/stun"
+	"github.com/robfig/cron"
 )
 
 type Decentralizer struct {
 	n *network.Network
+	cron				   *cron.Cron
 	//d *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
@@ -27,6 +29,7 @@ type Decentralizer struct {
 	sessionIdToSessionType map[uint64]uint64
 	peers                  *peerstore.Store
 	directMessage          chan *DirectMessage
+	addressBookChanged     bool
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -71,6 +74,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		return nil, err
 	}
 	instance := &Decentralizer{
+		cron: 				   cron.New(),
 		n:   n,
 		//d:                      d,
 		i:                      i,
@@ -84,6 +88,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
+	instance.cron.Start()
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
 	err = instance.bootstrap()
@@ -126,6 +131,7 @@ func (d *Decentralizer) GetIP() net.IP {
 }
 
 func (s *Decentralizer) Stop() {
+	s.cron.Stop()
 	if s.i != nil {
 		s.i.Close()
 	}

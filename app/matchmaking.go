@@ -15,6 +15,7 @@ import (
 	peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"sync"
 	"time"
+	"encoding/hex"
 )
 
 func (d *Decentralizer) getKey(sessionType uint64) string {
@@ -22,7 +23,7 @@ func (d *Decentralizer) getKey(sessionType uint64) string {
 	if d.n != nil {
 		ih = d.n.InfoHash()
 	}
-	return fmt.Sprintf("%s_MATCHMAKING_%d", string(ih[:]), sessionType)
+	return fmt.Sprintf("%s_MATCHMAKING_%d", hex.EncodeToString(ih[:]), sessionType)
 }
 
 func (d *Decentralizer) initMatchmaking() {
