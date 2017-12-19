@@ -16,12 +16,13 @@ import (
 	"time"
 	"github.com/ccding/go-stun/stun"
 	"github.com/robfig/cron"
+	"github.com/iain17/discovery"
 )
 
 type Decentralizer struct {
 	n *network.Network
 	cron				   *cron.Cron
-	//d *discovery.Discovery
+	d					   *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
@@ -53,10 +54,13 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	//d, err := discovery.New(n, MAX_DISCOVERED_PEERS)
-	//if err != nil {
-	//	return nil, err
-	//}
+	var d *discovery.Discovery
+	if USE_OWN_BOOTSTRAPPING {
+		d, err = discovery.New(n, MAX_DISCOVERED_PEERS)
+		if err != nil {
+			return nil, err
+		}
+	}
 	path, err := getIpfsPath()
 	if err != nil {
 		return nil, err
@@ -75,8 +79,8 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	}
 	instance := &Decentralizer{
 		cron: 				   cron.New(),
-		n:   n,
-		//d:                      d,
+		n:   					n,
+		d:                      d,
 		i:                      i,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
@@ -99,13 +103,6 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	return instance, err
 }
 
-func (s *Decentralizer) bootstrap() error {
-	bs := core.DefaultBootstrapConfig
-	bs.BootstrapPeers = nil //instance.bootstrap
-	bs.MinPeerThreshold = MIN_CONNECTED_PEERS
-	return s.i.Bootstrap(bs)
-}
-
 func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 	if id == "self" {
 		return s.i.Identity, nil
@@ -114,6 +111,9 @@ func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 }
 
 func (d *Decentralizer) GetIP() net.IP {
+	if d.d != nil {
+		return d.d.GetIP()
+	}
 	if d.ip == nil {
 		stun := stun.NewClient()
 		nat, host, err := stun.Discover()
