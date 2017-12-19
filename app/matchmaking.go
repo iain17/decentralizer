@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"github.com/iain17/decentralizer/app/peerstore"
@@ -9,11 +8,9 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/logger"
-	"github.com/iain17/timeout"
 	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
 	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
-	"sync"
 	"time"
 	"encoding/hex"
 )
@@ -35,10 +32,23 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 		var err error
 		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second), d.i.Identity)
 		if err != nil {
+			logger.Warningf("Could not get session storage: %v", err)
 			return nil
 		}
 	}
 	return d.sessions[sessionType]
+}
+
+func (d *Decentralizer) getSessionSearch(sessionType uint64) *search {
+	if d.searches[sessionType] == nil {
+		var err error
+		d.searches[sessionType], err = d.newSearch(d.i.Context(), sessionType)
+		if err != nil {
+			logger.Warningf("Could not start session search: %v", err)
+			return nil
+		}
+	}
+	return d.searches[sessionType]
 }
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
@@ -53,6 +63,8 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		Port:    port,
 		Details: details,
 	}
+	//Also look for other sessions. So we can become a provider for more than just ourselves.
+	go d.getSessionSearch(sessionType)
 	sessionId, err := sessions.Insert(info)
 	if err != nil {
 		return 0, err
@@ -81,53 +93,21 @@ func (d *Decentralizer) GetSession(sessionId uint64) (*pb.Session, error) {
 }
 
 func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.Session, error) {
-	sessions := d.getSessionStorage(sessionType)
-	timeout.Do(func(ctx context.Context) {
-		d.refreshSessions(sessionType)
-	}, 10*time.Second)
-	return sessions.FindAll()
+	search := d.getSessionSearch(sessionType)
+	if search != nil {
+		storage := search.fetch()
+		return storage.FindAll()
+	}
+	return nil, errors.New("could not get session search")
 }
 
 func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value string) ([]*pb.Session, error) {
-	sessions := d.getSessionStorage(sessionType)
-	timeout.Do(func(ctx context.Context) {
-		d.refreshSessions(sessionType)
-	}, 10*time.Second)
-	return sessions.FindByDetails(key, value)
-}
-
-func (d *Decentralizer) refreshSessions(sessionType uint64) {
-	var wg sync.WaitGroup
-	sessionsStorage := d.getSessionStorage(sessionType)
-	seen := map[string]bool{}
-	providers := d.b.Find(d.getKey(sessionType), MAX_SESSIONS)
-	logger.Infof("Found %d providers for %d", len(providers), sessionType)
-	for provider := range providers {
-		//Stop any duplicates
-		id := provider.String()
-		if seen[id] {
-			continue
-		}
-		seen[id] = true
-
-		wg.Add(1)
-		go func(id peer.ID) {
-			defer wg.Done()
-			sessions, err := d.getSessionsRequest(id, sessionType)
-			if err != nil {
-				return
-			}
-			logger.Infof("Received sessions %d from %s", len(sessions), id.Pretty())
-			for _, session := range sessions {
-				sessionId, err := sessionsStorage.Insert(session)
-				if err != nil {
-					return
-				}
-				d.sessionIdToSessionType[sessionId] = sessionType
-			}
-		}(provider)
+	search := d.getSessionSearch(sessionType)
+	if search != nil {
+		storage := search.fetch()
+		return storage.FindByDetails(key, value)
 	}
-	wg.Wait()
+	return nil, errors.New("could not get session search")
 }
 
 func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
@@ -170,6 +150,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]
 	if err != nil {
 		return nil, err
 	}
+	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
 	defer stream.Close()
 	//Request
 	reqData, err := proto.Marshal(&pb.DNSessionRequest{

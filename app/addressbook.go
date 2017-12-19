@@ -9,13 +9,14 @@ import (
 	"github.com/Pallinder/go-randomdata"
 	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
 	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
+	"time"
 )
 
 func (d *Decentralizer) initAddressbook() {
 	d.i.PeerHost.SetStreamHandler(GET_PEER_REQ, d.getPeerResponse)
 	d.downloadPeers()
 	d.saveSelf()
-	d.connectPreviousPeers()
+	go d.connectPreviousPeers()
 	d.cron.AddFunc("30 * * * * *", d.uploadPeers)
 }
 
@@ -68,6 +69,12 @@ func (d *Decentralizer) uploadPeers() {
 
 //Connect to our previous peers
 func (d *Decentralizer) connectPreviousPeers() error {
+	for {
+		if len(d.i.PeerHost.Network().Peers()) < 3 {
+			time.Sleep(1 * time.Second)
+		}
+	}
+	logger.Info("Connecting to previous peers...")
 	peers, err := d.peers.FindAll()
 	if err != nil {
 		return err

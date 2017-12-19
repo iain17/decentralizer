@@ -26,11 +26,18 @@ type Decentralizer struct {
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
+
+	//Matchmaking
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
+	searches 			   map[uint64]*search
+
+	//addressbook
 	peers                  *peerstore.Store
-	directMessage          chan *DirectMessage
 	addressBookChanged     bool
+
+	//messaging
+	directMessage          chan *DirectMessage
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -85,9 +92,16 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
+		searches:				make(map[uint64]*search),
 		peers:         peers,
 		directMessage: make(chan *DirectMessage, 10),
 	}
+	err = instance.bootstrap()
+	if err == nil {
+		reveries, _ := Asset("reveries.flac")
+		instance.SavePeerFile("reveries.flac", reveries)
+	}
+
 	instance.GetIP()
 	instance.initMatchmaking()
 	instance.initMessaging()
@@ -95,11 +109,6 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.cron.Start()
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
-	err = instance.bootstrap()
-	if err == nil {
-		reveries, _ := Asset("reveries.flac")
-		instance.SavePeerFile("reveries.flac", reveries)
-	}
 	return instance, err
 }
 
