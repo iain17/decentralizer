@@ -2,6 +2,7 @@ image: golang:1.9.2
 stages:
   - test
   - build
+  - pack
 
 cache:
   paths:
@@ -10,6 +11,7 @@ cache:
     - /go/src/golang.org
     - /go/src/google.golang.org
     - /go/src/gopkg.in
+    - $CI_PROJECT_DIR/binaries
 
 variables:
   REPO_BASE: github.com/iain17/decentralizer
@@ -31,19 +33,32 @@ build:
   artifacts:
     paths:
       - binaries/
-  only:
-    - master
-    - develop
   script:
-    - apt-get -y update
-    - apt-get -y install upx-ucl
-
     - go get -u github.com/iain17/gorep
     - gorep -banned="iain17,decentralizer" -path $GOPATH/src/ > /dev/null 2>&1
     - mkdir updateDir && cd updateDir && cd .. && rm -rf updateDir
     - export REPO_BASE=$(pwd)
     - echo $REPO_BASE
 
+    - cd $REPO_BASE
+    - chmod +x $REPO_BASE/build.sh
+    - ./build.sh
+    - mkdir -p $CI_PROJECT_DIR/binaries
+    - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/binaries
+
+pack:
+  stage: pack
+  only:
+    - master
+    - develop
+  artifacts:
+    paths:
+      - binaries/
+  script:
+    - apt-get -y update
+    - apt-get -y install upx-ucl
+
+    - cp -r $CI_PROJECT_DIR/binaries/* $REPO_BASE/bin/
     - cd $REPO_BASE
     - chmod +x $REPO_BASE/build.sh
     - ./build.sh

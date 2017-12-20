@@ -4,8 +4,8 @@ FAIL=0
 
 echo "starting"
 
-make ARCH=windows TARGET=adna.exe build &
-make ARCH=linux build &
+make ARCH=windows TARGET=adna.exe pack &
+make ARCH=linux pack &
 #make ARCH=darwin pack &
 
 for job in `jobs -p`
@@ -18,7 +18,7 @@ echo $FAIL
 
 if [ "$FAIL" == "0" ];
 then
-    echo "Built!"
+    echo "YAY!"
 else
-    echo "Failed to build! ($FAIL)"
+    echo "FAIL! ($FAIL)"
 fi
