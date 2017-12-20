@@ -42,6 +42,8 @@
 #include "DecentralizerClient.h"
 #include "fmt/format.h"
 
+extern const char * VERSION;
+
 // global state
 extern struct DN_state_s {
 	libdn::DecentralizerClient* client;

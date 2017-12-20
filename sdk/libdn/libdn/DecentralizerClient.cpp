@@ -12,6 +12,7 @@ namespace libdn {
 		if (result) {
 			context.client = new DecentralizerClient(channel, networkKey, isPrivateKey);
 			Log_Print("Connected. Waiting until ready");
+			Sleep(1000);
 			WaitUntilReady();
 			Log_Print("Ready");
 		}

@@ -104,9 +104,8 @@
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>if "%COMPUTERNAME%" == "DESKTOP-QOO0SV2" (
-   copy /y "$(TargetPath)" "D:\V2\V2IW4 - Dev\libconnect.dll"
-)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,8 +145,12 @@
       <AdditionalDependencies>ssl.lib;zlib.lib;crypto.lib;decrepit.lib;libprotobuf.lib;ws2_32.lib;grpc.lib;gpr.lib;grpc++.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if "%COMPUTERNAME%" == "DESKTOP-QOO0SV2" (
-   copy /y "$(TargetPath)" "D:\V2\V2IW4 - Dev\libconnect.dll"
+      <Command>if "%COMPUTERNAME%" == "DESKTOP-7VJ8QSF" (
+   copy /y "$(SolutionDir)libdn\*.h" "F:\Visual Studio projects\t5\deps\include\libdn"
+   copy /y "$(SolutionDir)Release\libdn.lib" "F:\Visual Studio projects\t5\deps\lib"
+
+
+   copy /y "$(TargetPath)" "F:\Program Files (x86)\Atlas\Call of Duty Black Ops\libdn.dll"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

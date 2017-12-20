@@ -2,11 +2,15 @@
 
 namespace libdn {
 	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID& pid, std::string& data) {
-		auto result = new Promise<bool>([pid, data](Promise<bool>* promise) {
+		return SendDirectMessageLegacy(pid, data.c_str(), data.size());
+	}
+
+	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(PeerID& pid, const void* data, size_t size) {
+		auto result = new Promise<bool>([pid, data, size](Promise<bool>* promise) {
 			// Data we are sending to the server.
 			pb::RPCDirectMessageRequest request;
 			request.set_pid(pid);
-			request.set_message(data);
+			request.set_message(data, size);
 
 			// Container for the data we expect from the server.
 			pb::RPCDirectMessageResponse reply;

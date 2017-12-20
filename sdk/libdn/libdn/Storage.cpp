@@ -41,15 +41,15 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFile(const char * name, std::string& data) {
-		auto result = new Promise<bool>([name, data](Promise<bool>* promise) {
+	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFileLegacy(const char * name, const void* data, size_t size) {
+		auto result = new Promise<bool>([name, data, size](Promise<bool>* promise) {
 			// Data we are sending to the server.
 			pb::RPCWritePeerFileRequest request;
 			request.set_name(name);
-			request.set_file(data);
+			request.set_file(data, size);
 
-			// Container for the data we expect from the server.
-			pb::RPCWritePeerFileResponse reply;
+				// Container for the data we expect from the server.
+				pb::RPCWritePeerFileResponse reply;
 
 			auto ctx = context.client->getContext();
 			grpc::Status status = context.client->stub_->WritePeerFile(ctx, request, &reply);
@@ -62,5 +62,9 @@ namespace libdn {
 			return false;
 		});
 		return result;
+	}
+
+	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFile(const char * name, std::string& data) {
+		return WritePeerFileLegacy(name, data.c_str(), data.size());
 	}
 }

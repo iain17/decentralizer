@@ -22,7 +22,7 @@ void createSession() {
 	session->details["cool"] = "yes";
 	auto request = libdn::UpsertSession(session);
 	request->then([](libdn::UpsertSessionResult result) {
-		printf("Created session. id = %lli\n", result.sessionId);
+		printf("Created session. id = %llx\n", result.sessionId);
 	});
 	request->wait();
 }
@@ -94,7 +94,22 @@ void getSelf() {
 		if (self == nullptr) {
 			LogCB("Could not get self?!?");
 		} else {
-			printf("Self peer id = '%s' decentralized id = '%llx' and name is %s\n", self->pId.c_str(), self->dnId, self->details["name"].c_str());
+
+			//Update my name
+			self->details["name"] = "iain17";
+			auto request = libdn::UpsertPeer(self);
+			request->wait();
+			self = libdn::GetSelf();
+
+			printf("Self peer id = '%s' decentralized id = '%16llX' and name is %s\n", self->pId.c_str(), self->dnId, self->details["name"].c_str());
+		
+			//Resolve my decentralized id.
+			libdn::PeerID* peerId = libdn::ResolveDecentralizedId(self->dnId);
+			if (!peerId->empty()) {
+				printf("Resolving works %s\n", peerId->c_str());
+			} else {
+				printf("Resolving is fucked\n");
+			}
 		}
 	}
 }
