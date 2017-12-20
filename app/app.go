@@ -15,17 +15,28 @@ import (
 	"net"
 	"time"
 	"github.com/ccding/go-stun/stun"
+	"github.com/robfig/cron"
+	"github.com/iain17/discovery"
 )
 
 type Decentralizer struct {
 	n *network.Network
-	//d *discovery.Discovery
+	cron				   *cron.Cron
+	d					   *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
+
+	//Matchmaking
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
+	searches 			   map[uint64]*search
+
+	//addressbook
 	peers                  *peerstore.Store
+	addressBookChanged     bool
+
+	//messaging
 	directMessage          chan *DirectMessage
 }
 
@@ -50,10 +61,13 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	//d, err := discovery.New(n, MAX_DISCOVERED_PEERS)
-	//if err != nil {
-	//	return nil, err
-	//}
+	var d *discovery.Discovery
+	if USE_OWN_BOOTSTRAPPING {
+		d, err = discovery.New(n, MAX_DISCOVERED_PEERS)
+		if err != nil {
+			return nil, err
+		}
+	}
 	path, err := getIpfsPath()
 	if err != nil {
 		return nil, err
@@ -71,34 +85,31 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		return nil, err
 	}
 	instance := &Decentralizer{
-		n:   n,
-		//d:                      d,
+		cron: 				   cron.New(),
+		n:   					n,
+		d:                      d,
 		i:                      i,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
+		searches:				make(map[uint64]*search),
 		peers:         peers,
 		directMessage: make(chan *DirectMessage, 10),
 	}
-	instance.GetIP()
-	instance.initMatchmaking()
-	instance.initMessaging()
-	instance.initAddressbook()
-	_, dnID := peerstore.PeerToDnId(i.Identity)
-	logger.Infof("Our dnID is: %v", dnID)
 	err = instance.bootstrap()
 	if err == nil {
 		reveries, _ := Asset("reveries.flac")
 		instance.SavePeerFile("reveries.flac", reveries)
 	}
-	return instance, err
-}
 
-func (s *Decentralizer) bootstrap() error {
-	bs := core.DefaultBootstrapConfig
-	bs.BootstrapPeers = nil //instance.bootstrap
-	bs.MinPeerThreshold = MIN_CONNECTED_PEERS
-	return s.i.Bootstrap(bs)
+	instance.GetIP()
+	instance.initMatchmaking()
+	instance.initMessaging()
+	instance.initAddressbook()
+	instance.cron.Start()
+	_, dnID := peerstore.PeerToDnId(i.Identity)
+	logger.Infof("Our dnID is: %v", dnID)
+	return instance, err
 }
 
 func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
@@ -109,6 +120,9 @@ func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 }
 
 func (d *Decentralizer) GetIP() net.IP {
+	if d.d != nil {
+		return d.d.GetIP()
+	}
 	if d.ip == nil {
 		stun := stun.NewClient()
 		nat, host, err := stun.Discover()
@@ -126,6 +140,7 @@ func (d *Decentralizer) GetIP() net.IP {
 }
 
 func (s *Decentralizer) Stop() {
+	s.cron.Stop()
 	if s.i != nil {
 		s.i.Close()
 	}

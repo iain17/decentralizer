@@ -39,7 +39,7 @@ namespace protobuf_pb_2faddressbook_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[10];
+  static const ::google::protobuf::internal::ParseTable schema[11];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -53,6 +53,8 @@ void InitDefaultsDNPeerResponseImpl();
 void InitDefaultsDNPeerResponse();
 void InitDefaultsDNPeerRequestImpl();
 void InitDefaultsDNPeerRequest();
+void InitDefaultsDNAddressbookImpl();
+void InitDefaultsDNAddressbook();
 void InitDefaultsRPCUpsertPeerRequestImpl();
 void InitDefaultsRPCUpsertPeerRequest();
 void InitDefaultsRPCUpsertPeerResponseImpl();
@@ -70,6 +72,7 @@ inline void InitDefaults() {
   InitDefaultsPeer();
   InitDefaultsDNPeerResponse();
   InitDefaultsDNPeerRequest();
+  InitDefaultsDNAddressbook();
   InitDefaultsRPCUpsertPeerRequest();
   InitDefaultsRPCUpsertPeerResponse();
   InitDefaultsRPCGetPeerIdsRequest();
@@ -79,6 +82,9 @@ inline void InitDefaults() {
 }
 }  // namespace protobuf_pb_2faddressbook_2eproto
 namespace pb {
+class DNAddressbook;
+class DNAddressbookDefaultTypeInternal;
+extern DNAddressbookDefaultTypeInternal _DNAddressbook_default_instance_;
 class DNPeerRequest;
 class DNPeerRequestDefaultTypeInternal;
 extern DNPeerRequestDefaultTypeInternal _DNPeerRequest_default_instance_;
@@ -227,6 +233,28 @@ class Peer : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_details();
 
+  // repeated string addrs = 4;
+  int addrs_size() const;
+  void clear_addrs();
+  static const int kAddrsFieldNumber = 4;
+  const ::std::string& addrs(int index) const;
+  ::std::string* mutable_addrs(int index);
+  void set_addrs(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_addrs(int index, ::std::string&& value);
+  #endif
+  void set_addrs(int index, const char* value);
+  void set_addrs(int index, const char* value, size_t size);
+  ::std::string* add_addrs();
+  void add_addrs(const ::std::string& value);
+  #if LANG_CXX11
+  void add_addrs(::std::string&& value);
+  #endif
+  void add_addrs(const char* value);
+  void add_addrs(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& addrs() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_addrs();
+
   // string pId = 1;
   void clear_pid();
   static const int kPIdFieldNumber = 1;
@@ -257,6 +285,7 @@ class Peer : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       0 > details_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> addrs_;
   ::google::protobuf::internal::ArenaStringPtr pid_;
   ::google::protobuf::uint64 dnid_;
   mutable int _cached_size_;
@@ -459,6 +488,111 @@ class DNPeerRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
+class DNAddressbook : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNAddressbook) */ {
+ public:
+  DNAddressbook();
+  virtual ~DNAddressbook();
+
+  DNAddressbook(const DNAddressbook& from);
+
+  inline DNAddressbook& operator=(const DNAddressbook& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DNAddressbook(DNAddressbook&& from) noexcept
+    : DNAddressbook() {
+    *this = ::std::move(from);
+  }
+
+  inline DNAddressbook& operator=(DNAddressbook&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DNAddressbook& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DNAddressbook* internal_default_instance() {
+    return reinterpret_cast<const DNAddressbook*>(
+               &_DNAddressbook_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    4;
+
+  void Swap(DNAddressbook* other);
+  friend void swap(DNAddressbook& a, DNAddressbook& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DNAddressbook* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DNAddressbook* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DNAddressbook& from);
+  void MergeFrom(const DNAddressbook& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DNAddressbook* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .pb.Peer peers = 1;
+  int peers_size() const;
+  void clear_peers();
+  static const int kPeersFieldNumber = 1;
+  const ::pb::Peer& peers(int index) const;
+  ::pb::Peer* mutable_peers(int index);
+  ::pb::Peer* add_peers();
+  ::google::protobuf::RepeatedPtrField< ::pb::Peer >*
+      mutable_peers();
+  const ::google::protobuf::RepeatedPtrField< ::pb::Peer >&
+      peers() const;
+
+  // @@protoc_insertion_point(class_scope:pb.DNAddressbook)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::pb::Peer > peers_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_pb_2faddressbook_2eproto::TableStruct;
+  friend void ::protobuf_pb_2faddressbook_2eproto::InitDefaultsDNAddressbookImpl();
+};
+// -------------------------------------------------------------------
+
 class RPCUpsertPeerRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCUpsertPeerRequest) */ {
  public:
   RPCUpsertPeerRequest();
@@ -494,7 +628,7 @@ class RPCUpsertPeerRequest : public ::google::protobuf::Message /* @@protoc_inse
                &_RPCUpsertPeerRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
+    5;
 
   void Swap(RPCUpsertPeerRequest* other);
   friend void swap(RPCUpsertPeerRequest& a, RPCUpsertPeerRequest& b) {
@@ -596,7 +730,7 @@ class RPCUpsertPeerResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_RPCUpsertPeerResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
+    6;
 
   void Swap(RPCUpsertPeerResponse* other);
   friend void swap(RPCUpsertPeerResponse& a, RPCUpsertPeerResponse& b) {
@@ -688,7 +822,7 @@ class RPCGetPeerIdsRequest : public ::google::protobuf::Message /* @@protoc_inse
                &_RPCGetPeerIdsRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(RPCGetPeerIdsRequest* other);
   friend void swap(RPCGetPeerIdsRequest& a, RPCGetPeerIdsRequest& b) {
@@ -810,7 +944,7 @@ class RPCGetPeerIdsResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_RPCGetPeerIdsResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    8;
 
   void Swap(RPCGetPeerIdsResponse* other);
   friend void swap(RPCGetPeerIdsResponse& a, RPCGetPeerIdsResponse& b) {
@@ -925,7 +1059,7 @@ class RPCGetPeerRequest : public ::google::protobuf::Message /* @@protoc_inserti
                &_RPCGetPeerRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
+    9;
 
   void Swap(RPCGetPeerRequest* other);
   friend void swap(RPCGetPeerRequest& a, RPCGetPeerRequest& b) {
@@ -1039,7 +1173,7 @@ class RPCGetPeerResponse : public ::google::protobuf::Message /* @@protoc_insert
                &_RPCGetPeerResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
+    10;
 
   void Swap(RPCGetPeerResponse* other);
   friend void swap(RPCGetPeerResponse& a, RPCGetPeerResponse& b) {
@@ -1202,6 +1336,75 @@ Peer::mutable_details() {
   return details_.MutableMap();
 }
 
+// repeated string addrs = 4;
+inline int Peer::addrs_size() const {
+  return addrs_.size();
+}
+inline void Peer::clear_addrs() {
+  addrs_.Clear();
+}
+inline const ::std::string& Peer::addrs(int index) const {
+  // @@protoc_insertion_point(field_get:pb.Peer.addrs)
+  return addrs_.Get(index);
+}
+inline ::std::string* Peer::mutable_addrs(int index) {
+  // @@protoc_insertion_point(field_mutable:pb.Peer.addrs)
+  return addrs_.Mutable(index);
+}
+inline void Peer::set_addrs(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:pb.Peer.addrs)
+  addrs_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void Peer::set_addrs(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:pb.Peer.addrs)
+  addrs_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void Peer::set_addrs(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  addrs_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:pb.Peer.addrs)
+}
+inline void Peer::set_addrs(int index, const char* value, size_t size) {
+  addrs_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pb.Peer.addrs)
+}
+inline ::std::string* Peer::add_addrs() {
+  // @@protoc_insertion_point(field_add_mutable:pb.Peer.addrs)
+  return addrs_.Add();
+}
+inline void Peer::add_addrs(const ::std::string& value) {
+  addrs_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:pb.Peer.addrs)
+}
+#if LANG_CXX11
+inline void Peer::add_addrs(::std::string&& value) {
+  addrs_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:pb.Peer.addrs)
+}
+#endif
+inline void Peer::add_addrs(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  addrs_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:pb.Peer.addrs)
+}
+inline void Peer::add_addrs(const char* value, size_t size) {
+  addrs_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:pb.Peer.addrs)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+Peer::addrs() const {
+  // @@protoc_insertion_point(field_list:pb.Peer.addrs)
+  return addrs_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+Peer::mutable_addrs() {
+  // @@protoc_insertion_point(field_mutable_list:pb.Peer.addrs)
+  return &addrs_;
+}
+
 // -------------------------------------------------------------------
 
 // DNPeerResponse
@@ -1259,6 +1462,40 @@ inline void DNPeerResponse::set_allocated_peer(::pb::Peer* peer) {
 // -------------------------------------------------------------------
 
 // DNPeerRequest
+
+// -------------------------------------------------------------------
+
+// DNAddressbook
+
+// repeated .pb.Peer peers = 1;
+inline int DNAddressbook::peers_size() const {
+  return peers_.size();
+}
+inline void DNAddressbook::clear_peers() {
+  peers_.Clear();
+}
+inline const ::pb::Peer& DNAddressbook::peers(int index) const {
+  // @@protoc_insertion_point(field_get:pb.DNAddressbook.peers)
+  return peers_.Get(index);
+}
+inline ::pb::Peer* DNAddressbook::mutable_peers(int index) {
+  // @@protoc_insertion_point(field_mutable:pb.DNAddressbook.peers)
+  return peers_.Mutable(index);
+}
+inline ::pb::Peer* DNAddressbook::add_peers() {
+  // @@protoc_insertion_point(field_add:pb.DNAddressbook.peers)
+  return peers_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::pb::Peer >*
+DNAddressbook::mutable_peers() {
+  // @@protoc_insertion_point(field_mutable_list:pb.DNAddressbook.peers)
+  return &peers_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::pb::Peer >&
+DNAddressbook::peers() const {
+  // @@protoc_insertion_point(field_list:pb.DNAddressbook.peers)
+  return peers_;
+}
 
 // -------------------------------------------------------------------
 
@@ -1629,6 +1866,8 @@ inline void RPCGetPeerResponse::set_allocated_peer(::pb::Peer* peer) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

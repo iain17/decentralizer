@@ -36,10 +36,6 @@ func (d *Decentralizer) Health() (bool, error) {
 			}
 			addrs += ", "+addr.String()
 		}
-		err := d.bootstrap()
-		if err != nil {
-			return false, err
-		}
 		percentage := 0.0
 		if numPeers > 0 {
 			total := float64(MIN_CONNECTED_PEERS)

@@ -8,6 +8,7 @@ import (
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"net"
+	"github.com/robfig/cron"
 	"time"
 )
 
@@ -30,11 +31,13 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 	}
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
+		cron:					cron.New(),
 		ip:                     &ip,
 		i:                      node,
 		b:                      b,
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
+		searches:				make(map[uint64]*search),
 		peers:         peers,
 		directMessage: make(chan *DirectMessage, 10),
 	}

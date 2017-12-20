@@ -12,7 +12,8 @@ import (
 	Path "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/path"
 	"io/ioutil"
 )
-
+//See: https://github.com/ipfs/go-ipfs/blob/master/core/commands/files/files.go
+//that is also what is called from the http api.
 func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	logger.Infof("Saving peer file %s", name)
 	location, path, err := coreunix.AddWrapped(d.i, bytes.NewBuffer(data), name)
