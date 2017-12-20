@@ -10,6 +10,8 @@ import (
 	"net"
 	"github.com/robfig/cron"
 	"time"
+	"github.com/shibukawa/configdir"
+	"os"
 )
 
 func init() {
@@ -18,6 +20,8 @@ func init() {
 		Colored:  true,
 	})
 	//logging.Configure(logging.LevelDebug)
+	configPath = configdir.New("ECorp", "Decentralizer-test")
+	os.RemoveAll(configPath.QueryCacheFolder().Path)
 }
 
 func fakeNew(node *core.IpfsNode) *Decentralizer {

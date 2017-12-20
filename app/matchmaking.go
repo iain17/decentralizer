@@ -15,7 +15,7 @@ import (
 	"encoding/hex"
 )
 
-func (d *Decentralizer) getKey(sessionType uint64) string {
+func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 	var ih [20]byte
 	if d.n != nil {
 		ih = d.n.InfoHash()
@@ -70,7 +70,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
-	err = d.b.Provide(d.getKey(sessionType))
+	err = d.b.Provide(d.getMatchmakingKey(sessionType))
 	return sessionId, err
 }
 

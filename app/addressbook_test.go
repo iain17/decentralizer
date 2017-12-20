@@ -61,3 +61,29 @@ func TestDecentralizer_FindByPeerIdAndUpdate(t *testing.T) {
 	assert.NotNil(t, peer)
 	assert.Equal(t, "these violent delights have violent beginnings", peer.Details["quote"])
 }
+
+func TestDecentralizer_FindUnknownId(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
+	app1 := fakeNew(nodes[0])
+	assert.NotNil(t, app1)
+	app2 := fakeNew(nodes[1])
+	assert.NotNil(t, app2)
+
+	err := app2.UpsertPeer("self", map[string]string{
+		"quote": "these violent delights have violent ends",
+	})
+	assert.NoError(t, err)
+
+	peer, err := app2.FindByPeerId("self")
+	assert.NoError(t, err)
+	assert.NotNil(t, peer)
+
+	DnId := peer.DnId
+	//Now have app2 find us with just DnId.
+	peer, err = app1.FindByDecentralizedId(DnId)
+	assert.NoError(t, err)
+	assert.NotNil(t, peer)
+	assert.Equal(t, peer.Details["quote"], "these violent delights have violent ends")
+}

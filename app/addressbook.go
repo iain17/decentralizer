@@ -17,7 +17,9 @@ func (d *Decentralizer) initAddressbook() {
 	d.downloadPeers()
 	d.saveSelf()
 	go d.connectPreviousPeers()
+	d.provideSelf()
 	d.cron.AddFunc("30 * * * * *", d.uploadPeers)
+	d.cron.AddFunc("* 5 * * * *", d.provideSelf)
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -40,6 +42,16 @@ func (d *Decentralizer) downloadPeers() {
 		}
 	}
 	logger.Info("Restored address book")
+}
+
+func (d *Decentralizer) provideSelf() {
+	peer, err := d.FindByPeerId("self")
+	if err != nil {
+		logger.Warningf("Could not provide self: %v", err)
+		return
+	}
+	d.b.Provide(getDecentralizedIdKey(peer.DnId))
+	logger.Debug("Provided self")
 }
 
 func (d *Decentralizer) uploadPeers() {
@@ -193,7 +205,15 @@ func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 }
 
 func (d *Decentralizer) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer, error) {
-	return d.peers.FindByDecentralizedId(decentralizedId)
+	peer, err := d.peers.FindByDecentralizedId(decentralizedId)
+	if err != nil || peer == nil {
+		peerId, err := d.resolveDecentralizedId(decentralizedId)
+		if err != nil {
+			return nil, err
+		}
+		return d.FindByPeerId(peerId.Pretty())
+	}
+	return peer, err
 }
 
 func (d *Decentralizer) getPeerResponse(stream inet.Stream) {

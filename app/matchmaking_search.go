@@ -50,7 +50,7 @@ func (s *search) run(ctx context.Context) {
 	defer s.mutex.Unlock()
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
 	var wg sync.WaitGroup
-	providers := s.d.b.Find(s.d.getKey(s.sessionType), MAX_SESSIONS)
+	providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), MAX_SESSIONS)
 	for provider := range providers {
 		//Stop any duplicates
 		id := provider.String()
@@ -111,7 +111,7 @@ func (s *search) update(ctx context.Context) {
 	wg.Wait()
 	//Become a provider.
 	if total > 0 {
-		s.d.b.Provide(s.d.getKey(s.sessionType))
+		s.d.b.Provide(s.d.getMatchmakingKey(s.sessionType))
 	}
 	logger.Infof("Updated %d sessions of type %d", total, s.sessionType)
 }
