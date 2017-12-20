@@ -13,6 +13,8 @@ import (
 	peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
 	"time"
 	"encoding/hex"
+	"github.com/iain17/timeout"
+	"context"
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
@@ -70,7 +72,9 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
-	err = d.b.Provide(d.getMatchmakingKey(sessionType))
+	timeout.Do(func(ctx context.Context) {
+		d.b.Provide(d.getMatchmakingKey(sessionType))
+	}, 3*time.Second)
 	return sessionId, err
 }
 

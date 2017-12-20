@@ -140,9 +140,9 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 			peer, _ := s.d.FindByPeerId(from.Pretty())
 			if peer != nil {
 				peer.Details["sessionProvider"] = "1"
+				logger.Infof("Added %s to our addressbook as a session provider", peer.PId)
+				s.d.peers.Upsert(peer)
 			}
-			logger.Infof("Added %s to our addressbook as a session provider", peer.PId)
-			s.d.peers.Upsert(peer)
 		}()
 	}
 	return nil

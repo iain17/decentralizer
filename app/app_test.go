@@ -25,6 +25,7 @@ func init() {
 }
 
 func fakeNew(node *core.IpfsNode) *Decentralizer {
+	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	b, err := ipfs.NewBitSwap(node)
 	if err != nil {
 		panic(err)
