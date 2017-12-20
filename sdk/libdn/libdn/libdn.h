@@ -25,7 +25,6 @@ namespace libdn {
 	// ----------------------------------------------------------
 	// Platform global functions
 	// ----------------------------------------------------------
-	extern const char * VERSION;
 	class HealthResult {
 	public:
 		bool ready;
@@ -50,6 +49,7 @@ namespace libdn {
 	LIBDN_API Promise< std::string >*LIBDN_CALL GetPeerFile(PeerID& pid, const char * name);
 
 	// Writes a peer file
+	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFileLegacy(const char * name, const void* data, size_t size);
 	LIBDN_API Promise<bool>*LIBDN_CALL WritePeerFile(const char * name, std::string& data);
 
 	// ----------------------------------------------------------
@@ -77,12 +77,16 @@ namespace libdn {
 	//Get yourself.
 	LIBDN_API Peer* LIBDN_CALL GetSelf();
 
+	//Resolve a decentralized id to a peer id
+	LIBDN_API PeerID* LIBDN_CALL ResolveDecentralizedId(DNID dId);
+
 
 	// ----------------------------------------------------------
 	// Direct messaging service
 	// ----------------------------------------------------------
 	// sends direct message to another peer.
 	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID& pid, std::string& data);
+	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(PeerID& pid, const void* data, size_t size);
 
 	// function to register a callback when a direct message has been received
 	// arguments: source peer id, data, length

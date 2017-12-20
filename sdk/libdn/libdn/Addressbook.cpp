@@ -93,4 +93,17 @@ namespace libdn {
 		}
 		return NULL;
 	}
+
+	LIBDN_API PeerID* LIBDN_CALL ResolveDecentralizedId(DNID dId) {
+		std::string empty = "";
+		auto request = GetPeerById(dId, empty);
+		request->fail([](const char* reason) {
+			Log_Print("Could not resolve DecentralizedId: %s", reason);
+		});
+		if (request->wait()) {
+			PeerID* peerId = (PeerID*) new std::string(request->get()->pId);
+			return peerId;
+		}
+		return new std::string("");
+	}
 }

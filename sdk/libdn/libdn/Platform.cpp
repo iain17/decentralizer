@@ -3,9 +3,8 @@
 namespace libdn {
 	//Will hang until we are connected and DN is ready.
 	LIBDN_API void LIBDN_CALL WaitUntilReady() {
-		HealthResult* health;
-		health->ready = false;
-		while (health == nullptr || !health->ready) {
+		HealthResult* health = Health();
+		while (!health || !health->ready) {
 			health = Health();
 			if (health != nullptr && health->ready) {
 				break;

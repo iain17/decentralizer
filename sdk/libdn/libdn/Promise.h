@@ -14,7 +14,7 @@ namespace libdn {
 		std::vector<resultCallback> _resultCBs;
 		std::vector<failCallback> _failCBs;
 		std::vector<finallyCallback> _finallyCBs;
-		int state = 0;
+		int state;
 
 		void callFinallyCBs() {
 			for (auto const& cb : this->_finallyCBs) {
@@ -38,6 +38,7 @@ namespace libdn {
 
 	public:
 		Promise(Job job) {
+			this->state = 0;
 			this->_promise = std::async(std::launch::async, [&](Job job, Promise* self) {
 				Sleep(1);
 				T result = job(self);
