@@ -37,10 +37,10 @@ It has these top-level messages:
 	RPCGetSessionResponse
 	DNDirectMessageResponse
 	DNDirectMessageRequest
-	RPCDirectMessageResponse
-	RPCDirectMessageRequest
+	RPCDirectMessage
 	RPCHealthRequest
 	RPCHealthReply
+	Empty
 	PublisherDefinition
 	PublisherUpdate
 	DNPublisherUpdateRequest

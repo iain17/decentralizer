@@ -14,6 +14,8 @@ message RPCHealthReply {
 	string message = 2;
 }
 
+message empty {}
+
 service Decentralizer {
 	//
 	// Platform
@@ -65,8 +67,8 @@ service Decentralizer {
 	// Messaging
 	//
 	// Send another peer a direct message. Takes a peer id and the data it should send
-	rpc SendDirectMessage(RPCDirectMessageRequest) returns (RPCDirectMessageResponse) {}
-
+	rpc SendDirectMessage(RPCDirectMessage) returns (empty) {}
+	rpc ReceiveDirectMessage(empty) returns (stream RPCDirectMessage) {}
 
 	//
 	// Publisher

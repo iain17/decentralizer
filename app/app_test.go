@@ -13,6 +13,7 @@ import (
 	"github.com/shibukawa/configdir"
 	"os"
 	"github.com/iain17/discovery/network"
+	"github.com/iain17/decentralizer/pb"
 )
 
 var testNetwork *network.Network
@@ -59,8 +60,8 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		searches:				make(map[uint64]*search),
-		peers:         peers,
-		directMessage: make(chan *DirectMessage, 10),
+		peers:         			peers,
+		DirectMessage: 			make(chan *pb.RPCDirectMessage, 10),
 	}
 	instance.initMatchmaking()
 	instance.initMessaging()
