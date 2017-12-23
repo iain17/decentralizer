@@ -50,6 +50,7 @@ func (d *Decentralizer) savePublisherUpdate() {
 	if err != nil {
 		logger.Error(err)
 	}
+	d.runPublisherInstructions()
 }
 
 func (d *Decentralizer) verifyPublisherUpdate(update *pb.PublisherUpdate) error {

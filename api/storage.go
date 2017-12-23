@@ -26,6 +26,9 @@ func (s *Server) GetPeerFile(ctx context.Context, request *pb.RPCGetPeerFileRequ
 }
 
 // Get a publisher file.
-func (s *Server) GetPublisherFile(context.Context, *pb.RPCGetPublisherFileRequest) (*pb.RPCGetPublisherFileResponse, error) {
-	return nil, errors.New("Unimplemented")
+func (s *Server) GetPublisherFile(ctx context.Context, req *pb.RPCGetPublisherFileRequest) (*pb.RPCGetPublisherFileResponse, error) {
+	file, err := s.app.GetPublisherFile(req.Name)
+	return &pb.RPCGetPublisherFileResponse{
+		File: file,
+	}, err
 }

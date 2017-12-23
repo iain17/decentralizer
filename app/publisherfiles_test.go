@@ -92,3 +92,25 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	}
 	assert.True(t, refreshes < 4, "It should take less than 4 refreshes to get all nodes updated")
 }
+
+//If the publisher has set the network to status false. Stop the process.
+func TestDecentralizer_publishStopper(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx,1)
+	app1 := fakeNew(nodes[0], false)
+	assert.NotNil(t, app1)
+	publisherUpdate := &pb.PublisherUpdate{
+		Definition: &pb.PublisherDefinition{
+			Status: false,
+		},
+	}
+	////Mocked publisher update
+	app1.publisherUpdate = publisherUpdate
+	app1.runPublisherInstructions()
+}
