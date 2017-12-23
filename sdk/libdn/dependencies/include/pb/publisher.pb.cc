@@ -25,16 +25,36 @@ class PublisherDefinition_FilesEntry_DoNotUseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<PublisherDefinition_FilesEntry_DoNotUse>
       _instance;
 } _PublisherDefinition_FilesEntry_DoNotUse_default_instance_;
-class PublisherDefinition_InstructionsEntry_DoNotUseDefaultTypeInternal {
+class PublisherDefinition_LinksEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<PublisherDefinition_InstructionsEntry_DoNotUse>
+  ::google::protobuf::internal::ExplicitlyConstructed<PublisherDefinition_LinksEntry_DoNotUse>
       _instance;
-} _PublisherDefinition_InstructionsEntry_DoNotUse_default_instance_;
+} _PublisherDefinition_LinksEntry_DoNotUse_default_instance_;
+class PublisherDefinition_DetailsEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<PublisherDefinition_DetailsEntry_DoNotUse>
+      _instance;
+} _PublisherDefinition_DetailsEntry_DoNotUse_default_instance_;
 class PublisherDefinitionDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<PublisherDefinition>
       _instance;
 } _PublisherDefinition_default_instance_;
+class PublisherUpdateDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<PublisherUpdate>
+      _instance;
+} _PublisherUpdate_default_instance_;
+class DNPublisherUpdateRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DNPublisherUpdateRequest>
+      _instance;
+} _DNPublisherUpdateRequest_default_instance_;
+class DNPublisherUpdateResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DNPublisherUpdateResponse>
+      _instance;
+} _DNPublisherUpdateResponse_default_instance_;
 }  // namespace pb
 namespace protobuf_pb_2fpublisher_2eproto {
 void InitDefaultsPublisherDefinition_FilesEntry_DoNotUseImpl() {
@@ -57,7 +77,7 @@ void InitDefaultsPublisherDefinition_FilesEntry_DoNotUse() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPublisherDefinition_FilesEntry_DoNotUseImpl);
 }
 
-void InitDefaultsPublisherDefinition_InstructionsEntry_DoNotUseImpl() {
+void InitDefaultsPublisherDefinition_LinksEntry_DoNotUseImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -66,15 +86,35 @@ void InitDefaultsPublisherDefinition_InstructionsEntry_DoNotUseImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::pb::_PublisherDefinition_InstructionsEntry_DoNotUse_default_instance_;
-    new (ptr) ::pb::PublisherDefinition_InstructionsEntry_DoNotUse();
+    void* ptr = &::pb::_PublisherDefinition_LinksEntry_DoNotUse_default_instance_;
+    new (ptr) ::pb::PublisherDefinition_LinksEntry_DoNotUse();
   }
-  ::pb::PublisherDefinition_InstructionsEntry_DoNotUse::InitAsDefaultInstance();
+  ::pb::PublisherDefinition_LinksEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-void InitDefaultsPublisherDefinition_InstructionsEntry_DoNotUse() {
+void InitDefaultsPublisherDefinition_LinksEntry_DoNotUse() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPublisherDefinition_InstructionsEntry_DoNotUseImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPublisherDefinition_LinksEntry_DoNotUseImpl);
+}
+
+void InitDefaultsPublisherDefinition_DetailsEntry_DoNotUseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_PublisherDefinition_DetailsEntry_DoNotUse_default_instance_;
+    new (ptr) ::pb::PublisherDefinition_DetailsEntry_DoNotUse();
+  }
+  ::pb::PublisherDefinition_DetailsEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+void InitDefaultsPublisherDefinition_DetailsEntry_DoNotUse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPublisherDefinition_DetailsEntry_DoNotUseImpl);
 }
 
 void InitDefaultsPublisherDefinitionImpl() {
@@ -86,7 +126,8 @@ void InitDefaultsPublisherDefinitionImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherDefinition_FilesEntry_DoNotUse();
-  protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherDefinition_InstructionsEntry_DoNotUse();
+  protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherDefinition_LinksEntry_DoNotUse();
+  protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherDefinition_DetailsEntry_DoNotUse();
   {
     void* ptr = &::pb::_PublisherDefinition_default_instance_;
     new (ptr) ::pb::PublisherDefinition();
@@ -100,7 +141,72 @@ void InitDefaultsPublisherDefinition() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPublisherDefinitionImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[3];
+void InitDefaultsPublisherUpdateImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherDefinition();
+  {
+    void* ptr = &::pb::_PublisherUpdate_default_instance_;
+    new (ptr) ::pb::PublisherUpdate();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::PublisherUpdate::InitAsDefaultInstance();
+}
+
+void InitDefaultsPublisherUpdate() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPublisherUpdateImpl);
+}
+
+void InitDefaultsDNPublisherUpdateRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_DNPublisherUpdateRequest_default_instance_;
+    new (ptr) ::pb::DNPublisherUpdateRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::DNPublisherUpdateRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsDNPublisherUpdateRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNPublisherUpdateRequestImpl);
+}
+
+void InitDefaultsDNPublisherUpdateResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherUpdate();
+  {
+    void* ptr = &::pb::_DNPublisherUpdateResponse_default_instance_;
+    new (ptr) ::pb::DNPublisherUpdateResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::DNPublisherUpdateResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsDNPublisherUpdateResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNPublisherUpdateResponseImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[7];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_FilesEntry_DoNotUse, _has_bits_),
@@ -112,13 +218,22 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_FilesEntry_DoNotUse, value_),
   0,
   1,
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_InstructionsEntry_DoNotUse, _has_bits_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_InstructionsEntry_DoNotUse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_LinksEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_LinksEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_InstructionsEntry_DoNotUse, key_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_InstructionsEntry_DoNotUse, value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_LinksEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_LinksEntry_DoNotUse, value_),
+  0,
+  1,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_DetailsEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_DetailsEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_DetailsEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_DetailsEntry_DoNotUse, value_),
   0,
   1,
   ~0u,  // no _has_bits_
@@ -126,22 +241,48 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, hash_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, signature_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, files_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, instructions_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, links_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, details_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, status_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, created_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, signature_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, definition_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNPublisherUpdateRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNPublisherUpdateResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNPublisherUpdateResponse, update_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::pb::PublisherDefinition_FilesEntry_DoNotUse)},
-  { 9, 16, sizeof(::pb::PublisherDefinition_InstructionsEntry_DoNotUse)},
-  { 18, -1, sizeof(::pb::PublisherDefinition)},
+  { 9, 16, sizeof(::pb::PublisherDefinition_LinksEntry_DoNotUse)},
+  { 18, 25, sizeof(::pb::PublisherDefinition_DetailsEntry_DoNotUse)},
+  { 27, -1, sizeof(::pb::PublisherDefinition)},
+  { 36, -1, sizeof(::pb::PublisherUpdate)},
+  { 44, -1, sizeof(::pb::DNPublisherUpdateRequest)},
+  { 49, -1, sizeof(::pb::DNPublisherUpdateResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_PublisherDefinition_FilesEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_PublisherDefinition_InstructionsEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_PublisherDefinition_LinksEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_PublisherDefinition_DetailsEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_PublisherDefinition_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_PublisherUpdate_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNPublisherUpdateRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNPublisherUpdateResponse_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -160,23 +301,30 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 3);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 7);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\022pb/publisher.proto\022\002pb\"\235\002\n\023PublisherDe"
-      "finition\022\014\n\004hash\030\001 \001(\t\022\021\n\tsignature\030\002 \001("
-      "\t\0221\n\005files\030\003 \003(\0132\".pb.PublisherDefinitio"
-      "n.FilesEntry\022\?\n\014instructions\030\004 \003(\0132).pb."
-      "PublisherDefinition.InstructionsEntry\022\016\n"
-      "\006status\030\005 \001(\010\032,\n\nFilesEntry\022\013\n\003key\030\001 \001(\t"
-      "\022\r\n\005value\030\002 \001(\t:\0028\001\0323\n\021InstructionsEntry"
-      "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001b\006proto3"
+      "\n\022pb/publisher.proto\022\002pb\"\316\002\n\023PublisherDe"
+      "finition\0221\n\005files\030\001 \003(\0132\".pb.PublisherDe"
+      "finition.FilesEntry\0221\n\005links\030\002 \003(\0132\".pb."
+      "PublisherDefinition.LinksEntry\0225\n\007detail"
+      "s\030\003 \003(\0132$.pb.PublisherDefinition.Details"
+      "Entry\022\016\n\006status\030\004 \001(\010\032,\n\nFilesEntry\022\013\n\003k"
+      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\032,\n\nLinksEntr"
+      "y\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032.\n\014Det"
+      "ailsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028"
+      "\001\"b\n\017PublisherUpdate\022\017\n\007created\030\001 \001(\003\022\021\n"
+      "\tsignature\030\002 \001(\014\022+\n\ndefinition\030\003 \001(\0132\027.p"
+      "b.PublisherDefinition\"\032\n\030DNPublisherUpda"
+      "teRequest\"@\n\031DNPublisherUpdateResponse\022#"
+      "\n\006update\030\001 \001(\0132\023.pb.PublisherUpdateb\006pro"
+      "to3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 320);
+      descriptor, 563);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/publisher.proto", &protobuf_RegisterTypes);
 }
@@ -213,16 +361,33 @@ void PublisherDefinition_FilesEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-PublisherDefinition_InstructionsEntry_DoNotUse::PublisherDefinition_InstructionsEntry_DoNotUse() {}
-PublisherDefinition_InstructionsEntry_DoNotUse::PublisherDefinition_InstructionsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
-void PublisherDefinition_InstructionsEntry_DoNotUse::MergeFrom(const PublisherDefinition_InstructionsEntry_DoNotUse& other) {
+PublisherDefinition_LinksEntry_DoNotUse::PublisherDefinition_LinksEntry_DoNotUse() {}
+PublisherDefinition_LinksEntry_DoNotUse::PublisherDefinition_LinksEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void PublisherDefinition_LinksEntry_DoNotUse::MergeFrom(const PublisherDefinition_LinksEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::google::protobuf::Metadata PublisherDefinition_InstructionsEntry_DoNotUse::GetMetadata() const {
+::google::protobuf::Metadata PublisherDefinition_LinksEntry_DoNotUse::GetMetadata() const {
   ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[1];
 }
-void PublisherDefinition_InstructionsEntry_DoNotUse::MergeFrom(
+void PublisherDefinition_LinksEntry_DoNotUse::MergeFrom(
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+PublisherDefinition_DetailsEntry_DoNotUse::PublisherDefinition_DetailsEntry_DoNotUse() {}
+PublisherDefinition_DetailsEntry_DoNotUse::PublisherDefinition_DetailsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void PublisherDefinition_DetailsEntry_DoNotUse::MergeFrom(const PublisherDefinition_DetailsEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::google::protobuf::Metadata PublisherDefinition_DetailsEntry_DoNotUse::GetMetadata() const {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[2];
+}
+void PublisherDefinition_DetailsEntry_DoNotUse::MergeFrom(
     const ::google::protobuf::Message& other) {
   ::google::protobuf::Message::MergeFrom(other);
 }
@@ -233,10 +398,9 @@ void PublisherDefinition_InstructionsEntry_DoNotUse::MergeFrom(
 void PublisherDefinition::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PublisherDefinition::kHashFieldNumber;
-const int PublisherDefinition::kSignatureFieldNumber;
 const int PublisherDefinition::kFilesFieldNumber;
-const int PublisherDefinition::kInstructionsFieldNumber;
+const int PublisherDefinition::kLinksFieldNumber;
+const int PublisherDefinition::kDetailsFieldNumber;
 const int PublisherDefinition::kStatusFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -254,22 +418,13 @@ PublisherDefinition::PublisherDefinition(const PublisherDefinition& from)
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   files_.MergeFrom(from.files_);
-  instructions_.MergeFrom(from.instructions_);
-  hash_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.hash().size() > 0) {
-    hash_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.hash_);
-  }
-  signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.signature().size() > 0) {
-    signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
-  }
+  links_.MergeFrom(from.links_);
+  details_.MergeFrom(from.details_);
   status_ = from.status_;
   // @@protoc_insertion_point(copy_constructor:pb.PublisherDefinition)
 }
 
 void PublisherDefinition::SharedCtor() {
-  hash_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   status_ = false;
   _cached_size_ = 0;
 }
@@ -280,8 +435,6 @@ PublisherDefinition::~PublisherDefinition() {
 }
 
 void PublisherDefinition::SharedDtor() {
-  hash_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  signature_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void PublisherDefinition::SetCachedSize(int size) const {
@@ -314,9 +467,8 @@ void PublisherDefinition::Clear() {
   (void) cached_has_bits;
 
   files_.Clear();
-  instructions_.Clear();
-  hash_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  links_.Clear();
+  details_.Clear();
   status_ = false;
   _internal_metadata_.Clear();
 }
@@ -331,47 +483,15 @@ bool PublisherDefinition::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string hash = 1;
+      // map<string, bytes> files = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_hash()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->hash().data(), static_cast<int>(this->hash().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.PublisherDefinition.hash"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string signature = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_signature()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->signature().data(), static_cast<int>(this->signature().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.PublisherDefinition.signature"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // map<string, string> files = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           PublisherDefinition_FilesEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
               PublisherDefinition_FilesEntry_DoNotUse,
               ::std::string, ::std::string,
               ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              ::google::protobuf::internal::WireFormatLite::TYPE_BYTES,
               0 >,
             ::google::protobuf::Map< ::std::string, ::std::string > > parser(&files_);
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
@@ -380,47 +500,70 @@ bool PublisherDefinition::MergePartialFromCodedStream(
             parser.key().data(), static_cast<int>(parser.key().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "pb.PublisherDefinition.FilesEntry.key"));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            parser.value().data(), static_cast<int>(parser.value().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.PublisherDefinition.FilesEntry.value"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // map<string, string> instructions = 4;
-      case 4: {
+      // map<string, string> links = 2;
+      case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
-          PublisherDefinition_InstructionsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
-              PublisherDefinition_InstructionsEntry_DoNotUse,
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          PublisherDefinition_LinksEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              PublisherDefinition_LinksEntry_DoNotUse,
               ::std::string, ::std::string,
               ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
               ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
               0 >,
-            ::google::protobuf::Map< ::std::string, ::std::string > > parser(&instructions_);
+            ::google::protobuf::Map< ::std::string, ::std::string > > parser(&links_);
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
               input, &parser));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             parser.key().data(), static_cast<int>(parser.key().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.PublisherDefinition.InstructionsEntry.key"));
+            "pb.PublisherDefinition.LinksEntry.key"));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             parser.value().data(), static_cast<int>(parser.value().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.PublisherDefinition.InstructionsEntry.value"));
+            "pb.PublisherDefinition.LinksEntry.value"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // bool status = 5;
-      case 5: {
+      // map<string, string> details = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          PublisherDefinition_DetailsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              PublisherDefinition_DetailsEntry_DoNotUse,
+              ::std::string, ::std::string,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              0 >,
+            ::google::protobuf::Map< ::std::string, ::std::string > > parser(&details_);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, &parser));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.key().data(), static_cast<int>(parser.key().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.PublisherDefinition.DetailsEntry.key"));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.value().data(), static_cast<int>(parser.value().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.PublisherDefinition.DetailsEntry.value"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool status = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -457,27 +600,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string hash = 1;
-  if (this->hash().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->hash().data(), static_cast<int>(this->hash().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.PublisherDefinition.hash");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->hash(), output);
-  }
-
-  // string signature = 2;
-  if (this->signature().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->signature().data(), static_cast<int>(this->signature().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.PublisherDefinition.signature");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->signature(), output);
-  }
-
-  // map<string, string> files = 3;
+  // map<string, bytes> files = 1;
   if (!this->files().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -489,10 +612,6 @@ void PublisherDefinition::SerializeWithCachedSizes(
           p->first.data(), static_cast<int>(p->first.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
           "pb.PublisherDefinition.FilesEntry.key");
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          p->second.data(), static_cast<int>(p->second.length()),
-          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.PublisherDefinition.FilesEntry.value");
       }
     };
 
@@ -513,7 +632,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(files_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            3, *entry, output);
+            1, *entry, output);
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
@@ -524,14 +643,14 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(files_.NewEntryWrapper(
             it->first, it->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            3, *entry, output);
+            1, *entry, output);
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // map<string, string> instructions = 4;
-  if (!this->instructions().empty()) {
+  // map<string, string> links = 2;
+  if (!this->links().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
     typedef ConstPtr SortItem;
@@ -541,51 +660,104 @@ void PublisherDefinition::SerializeWithCachedSizes(
         ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.PublisherDefinition.InstructionsEntry.key");
+          "pb.PublisherDefinition.LinksEntry.key");
         ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->second.data(), static_cast<int>(p->second.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.PublisherDefinition.InstructionsEntry.value");
+          "pb.PublisherDefinition.LinksEntry.value");
       }
     };
 
     if (output->IsSerializationDeterministic() &&
-        this->instructions().size() > 1) {
+        this->links().size() > 1) {
       ::google::protobuf::scoped_array<SortItem> items(
-          new SortItem[this->instructions().size()]);
+          new SortItem[this->links().size()]);
       typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
       size_type n = 0;
       for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-          it = this->instructions().begin();
-          it != this->instructions().end(); ++it, ++n) {
+          it = this->links().begin();
+          it != this->links().end(); ++it, ++n) {
         items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
-      ::google::protobuf::scoped_ptr<PublisherDefinition_InstructionsEntry_DoNotUse> entry;
+      ::google::protobuf::scoped_ptr<PublisherDefinition_LinksEntry_DoNotUse> entry;
       for (size_type i = 0; i < n; i++) {
-        entry.reset(instructions_.NewEntryWrapper(
+        entry.reset(links_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            4, *entry, output);
+            2, *entry, output);
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
-      ::google::protobuf::scoped_ptr<PublisherDefinition_InstructionsEntry_DoNotUse> entry;
+      ::google::protobuf::scoped_ptr<PublisherDefinition_LinksEntry_DoNotUse> entry;
       for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-          it = this->instructions().begin();
-          it != this->instructions().end(); ++it) {
-        entry.reset(instructions_.NewEntryWrapper(
+          it = this->links().begin();
+          it != this->links().end(); ++it) {
+        entry.reset(links_.NewEntryWrapper(
             it->first, it->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            4, *entry, output);
+            2, *entry, output);
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // bool status = 5;
+  // map<string, string> details = 3;
+  if (!this->details().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "pb.PublisherDefinition.DetailsEntry.key");
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->second.data(), static_cast<int>(p->second.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "pb.PublisherDefinition.DetailsEntry.value");
+      }
+    };
+
+    if (output->IsSerializationDeterministic() &&
+        this->details().size() > 1) {
+      ::google::protobuf::scoped_array<SortItem> items(
+          new SortItem[this->details().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->details().begin();
+          it != this->details().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::google::protobuf::scoped_ptr<PublisherDefinition_DetailsEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(details_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            3, *entry, output);
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::google::protobuf::scoped_ptr<PublisherDefinition_DetailsEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->details().begin();
+          it != this->details().end(); ++it) {
+        entry.reset(details_.NewEntryWrapper(
+            it->first, it->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            3, *entry, output);
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  // bool status = 4;
   if (this->status() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->status(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->status(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -602,29 +774,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string hash = 1;
-  if (this->hash().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->hash().data(), static_cast<int>(this->hash().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.PublisherDefinition.hash");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->hash(), target);
-  }
-
-  // string signature = 2;
-  if (this->signature().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->signature().data(), static_cast<int>(this->signature().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.PublisherDefinition.signature");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->signature(), target);
-  }
-
-  // map<string, string> files = 3;
+  // map<string, bytes> files = 1;
   if (!this->files().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -636,10 +786,6 @@ void PublisherDefinition::SerializeWithCachedSizes(
           p->first.data(), static_cast<int>(p->first.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
           "pb.PublisherDefinition.FilesEntry.key");
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          p->second.data(), static_cast<int>(p->second.length()),
-          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.PublisherDefinition.FilesEntry.value");
       }
     };
 
@@ -661,7 +807,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       3, *entry, deterministic, target);
+                       1, *entry, deterministic, target);
 ;
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
@@ -674,15 +820,15 @@ void PublisherDefinition::SerializeWithCachedSizes(
             it->first, it->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       3, *entry, deterministic, target);
+                       1, *entry, deterministic, target);
 ;
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // map<string, string> instructions = 4;
-  if (!this->instructions().empty()) {
+  // map<string, string> links = 2;
+  if (!this->links().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
     typedef ConstPtr SortItem;
@@ -692,55 +838,112 @@ void PublisherDefinition::SerializeWithCachedSizes(
         ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.PublisherDefinition.InstructionsEntry.key");
+          "pb.PublisherDefinition.LinksEntry.key");
         ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->second.data(), static_cast<int>(p->second.length()),
           ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-          "pb.PublisherDefinition.InstructionsEntry.value");
+          "pb.PublisherDefinition.LinksEntry.value");
       }
     };
 
     if (deterministic &&
-        this->instructions().size() > 1) {
+        this->links().size() > 1) {
       ::google::protobuf::scoped_array<SortItem> items(
-          new SortItem[this->instructions().size()]);
+          new SortItem[this->links().size()]);
       typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
       size_type n = 0;
       for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-          it = this->instructions().begin();
-          it != this->instructions().end(); ++it, ++n) {
+          it = this->links().begin();
+          it != this->links().end(); ++it, ++n) {
         items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
-      ::google::protobuf::scoped_ptr<PublisherDefinition_InstructionsEntry_DoNotUse> entry;
+      ::google::protobuf::scoped_ptr<PublisherDefinition_LinksEntry_DoNotUse> entry;
       for (size_type i = 0; i < n; i++) {
-        entry.reset(instructions_.NewEntryWrapper(
+        entry.reset(links_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       4, *entry, deterministic, target);
+                       2, *entry, deterministic, target);
 ;
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
-      ::google::protobuf::scoped_ptr<PublisherDefinition_InstructionsEntry_DoNotUse> entry;
+      ::google::protobuf::scoped_ptr<PublisherDefinition_LinksEntry_DoNotUse> entry;
       for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-          it = this->instructions().begin();
-          it != this->instructions().end(); ++it) {
-        entry.reset(instructions_.NewEntryWrapper(
+          it = this->links().begin();
+          it != this->links().end(); ++it) {
+        entry.reset(links_.NewEntryWrapper(
             it->first, it->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       4, *entry, deterministic, target);
+                       2, *entry, deterministic, target);
 ;
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // bool status = 5;
+  // map<string, string> details = 3;
+  if (!this->details().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "pb.PublisherDefinition.DetailsEntry.key");
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->second.data(), static_cast<int>(p->second.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "pb.PublisherDefinition.DetailsEntry.value");
+      }
+    };
+
+    if (deterministic &&
+        this->details().size() > 1) {
+      ::google::protobuf::scoped_array<SortItem> items(
+          new SortItem[this->details().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->details().begin();
+          it != this->details().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::google::protobuf::scoped_ptr<PublisherDefinition_DetailsEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(details_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       3, *entry, deterministic, target);
+;
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::google::protobuf::scoped_ptr<PublisherDefinition_DetailsEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->details().begin();
+          it != this->details().end(); ++it) {
+        entry.reset(details_.NewEntryWrapper(
+            it->first, it->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       3, *entry, deterministic, target);
+;
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  // bool status = 4;
   if (this->status() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->status(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -760,7 +963,7 @@ size_t PublisherDefinition::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // map<string, string> files = 3;
+  // map<string, bytes> files = 1;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->files_size());
   {
@@ -774,35 +977,35 @@ size_t PublisherDefinition::ByteSizeLong() const {
     }
   }
 
-  // map<string, string> instructions = 4;
+  // map<string, string> links = 2;
   total_size += 1 *
-      ::google::protobuf::internal::FromIntSize(this->instructions_size());
+      ::google::protobuf::internal::FromIntSize(this->links_size());
   {
-    ::google::protobuf::scoped_ptr<PublisherDefinition_InstructionsEntry_DoNotUse> entry;
+    ::google::protobuf::scoped_ptr<PublisherDefinition_LinksEntry_DoNotUse> entry;
     for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
-        it = this->instructions().begin();
-        it != this->instructions().end(); ++it) {
-      entry.reset(instructions_.NewEntryWrapper(it->first, it->second));
+        it = this->links().begin();
+        it != this->links().end(); ++it) {
+      entry.reset(links_.NewEntryWrapper(it->first, it->second));
       total_size += ::google::protobuf::internal::WireFormatLite::
           MessageSizeNoVirtual(*entry);
     }
   }
 
-  // string hash = 1;
-  if (this->hash().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->hash());
+  // map<string, string> details = 3;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->details_size());
+  {
+    ::google::protobuf::scoped_ptr<PublisherDefinition_DetailsEntry_DoNotUse> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->details().begin();
+        it != this->details().end(); ++it) {
+      entry.reset(details_.NewEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
+    }
   }
 
-  // string signature = 2;
-  if (this->signature().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->signature());
-  }
-
-  // bool status = 5;
+  // bool status = 4;
   if (this->status() != 0) {
     total_size += 1 + 1;
   }
@@ -837,15 +1040,8 @@ void PublisherDefinition::MergeFrom(const PublisherDefinition& from) {
   (void) cached_has_bits;
 
   files_.MergeFrom(from.files_);
-  instructions_.MergeFrom(from.instructions_);
-  if (from.hash().size() > 0) {
-
-    hash_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.hash_);
-  }
-  if (from.signature().size() > 0) {
-
-    signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
-  }
+  links_.MergeFrom(from.links_);
+  details_.MergeFrom(from.details_);
   if (from.status() != 0) {
     set_status(from.status());
   }
@@ -876,15 +1072,791 @@ void PublisherDefinition::Swap(PublisherDefinition* other) {
 void PublisherDefinition::InternalSwap(PublisherDefinition* other) {
   using std::swap;
   files_.Swap(&other->files_);
-  instructions_.Swap(&other->instructions_);
-  hash_.Swap(&other->hash_);
-  signature_.Swap(&other->signature_);
+  links_.Swap(&other->links_);
+  details_.Swap(&other->details_);
   swap(status_, other->status_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata PublisherDefinition::GetMetadata() const {
+  protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void PublisherUpdate::InitAsDefaultInstance() {
+  ::pb::_PublisherUpdate_default_instance_._instance.get_mutable()->definition_ = const_cast< ::pb::PublisherDefinition*>(
+      ::pb::PublisherDefinition::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PublisherUpdate::kCreatedFieldNumber;
+const int PublisherUpdate::kSignatureFieldNumber;
+const int PublisherUpdate::kDefinitionFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PublisherUpdate::PublisherUpdate()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherUpdate();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.PublisherUpdate)
+}
+PublisherUpdate::PublisherUpdate(const PublisherUpdate& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.signature().size() > 0) {
+    signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
+  }
+  if (from.has_definition()) {
+    definition_ = new ::pb::PublisherDefinition(*from.definition_);
+  } else {
+    definition_ = NULL;
+  }
+  created_ = from.created_;
+  // @@protoc_insertion_point(copy_constructor:pb.PublisherUpdate)
+}
+
+void PublisherUpdate::SharedCtor() {
+  signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&definition_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&created_) -
+      reinterpret_cast<char*>(&definition_)) + sizeof(created_));
+  _cached_size_ = 0;
+}
+
+PublisherUpdate::~PublisherUpdate() {
+  // @@protoc_insertion_point(destructor:pb.PublisherUpdate)
+  SharedDtor();
+}
+
+void PublisherUpdate::SharedDtor() {
+  signature_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete definition_;
+}
+
+void PublisherUpdate::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PublisherUpdate::descriptor() {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const PublisherUpdate& PublisherUpdate::default_instance() {
+  ::protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherUpdate();
+  return *internal_default_instance();
+}
+
+PublisherUpdate* PublisherUpdate::New(::google::protobuf::Arena* arena) const {
+  PublisherUpdate* n = new PublisherUpdate;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PublisherUpdate::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.PublisherUpdate)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && definition_ != NULL) {
+    delete definition_;
+  }
+  definition_ = NULL;
+  created_ = GOOGLE_LONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+bool PublisherUpdate::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.PublisherUpdate)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int64 created = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &created_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bytes signature = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_signature()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .pb.PublisherDefinition definition = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_definition()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.PublisherUpdate)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.PublisherUpdate)
+  return false;
+#undef DO_
+}
+
+void PublisherUpdate::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.PublisherUpdate)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 created = 1;
+  if (this->created() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->created(), output);
+  }
+
+  // bytes signature = 2;
+  if (this->signature().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      2, this->signature(), output);
+  }
+
+  // .pb.PublisherDefinition definition = 3;
+  if (this->has_definition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, *this->definition_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.PublisherUpdate)
+}
+
+::google::protobuf::uint8* PublisherUpdate::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.PublisherUpdate)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 created = 1;
+  if (this->created() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->created(), target);
+  }
+
+  // bytes signature = 2;
+  if (this->signature().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->signature(), target);
+  }
+
+  // .pb.PublisherDefinition definition = 3;
+  if (this->has_definition()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        3, *this->definition_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.PublisherUpdate)
+  return target;
+}
+
+size_t PublisherUpdate::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.PublisherUpdate)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // bytes signature = 2;
+  if (this->signature().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->signature());
+  }
+
+  // .pb.PublisherDefinition definition = 3;
+  if (this->has_definition()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->definition_);
+  }
+
+  // int64 created = 1;
+  if (this->created() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->created());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PublisherUpdate::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.PublisherUpdate)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PublisherUpdate* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PublisherUpdate>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.PublisherUpdate)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.PublisherUpdate)
+    MergeFrom(*source);
+  }
+}
+
+void PublisherUpdate::MergeFrom(const PublisherUpdate& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.PublisherUpdate)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.signature().size() > 0) {
+
+    signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
+  }
+  if (from.has_definition()) {
+    mutable_definition()->::pb::PublisherDefinition::MergeFrom(from.definition());
+  }
+  if (from.created() != 0) {
+    set_created(from.created());
+  }
+}
+
+void PublisherUpdate::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.PublisherUpdate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PublisherUpdate::CopyFrom(const PublisherUpdate& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.PublisherUpdate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PublisherUpdate::IsInitialized() const {
+  return true;
+}
+
+void PublisherUpdate::Swap(PublisherUpdate* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PublisherUpdate::InternalSwap(PublisherUpdate* other) {
+  using std::swap;
+  signature_.Swap(&other->signature_);
+  swap(definition_, other->definition_);
+  swap(created_, other->created_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PublisherUpdate::GetMetadata() const {
+  protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void DNPublisherUpdateRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DNPublisherUpdateRequest::DNPublisherUpdateRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherUpdateRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.DNPublisherUpdateRequest)
+}
+DNPublisherUpdateRequest::DNPublisherUpdateRequest(const DNPublisherUpdateRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:pb.DNPublisherUpdateRequest)
+}
+
+void DNPublisherUpdateRequest::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+DNPublisherUpdateRequest::~DNPublisherUpdateRequest() {
+  // @@protoc_insertion_point(destructor:pb.DNPublisherUpdateRequest)
+  SharedDtor();
+}
+
+void DNPublisherUpdateRequest::SharedDtor() {
+}
+
+void DNPublisherUpdateRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DNPublisherUpdateRequest::descriptor() {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DNPublisherUpdateRequest& DNPublisherUpdateRequest::default_instance() {
+  ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherUpdateRequest();
+  return *internal_default_instance();
+}
+
+DNPublisherUpdateRequest* DNPublisherUpdateRequest::New(::google::protobuf::Arena* arena) const {
+  DNPublisherUpdateRequest* n = new DNPublisherUpdateRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DNPublisherUpdateRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNPublisherUpdateRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
+}
+
+bool DNPublisherUpdateRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.DNPublisherUpdateRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.DNPublisherUpdateRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.DNPublisherUpdateRequest)
+  return false;
+#undef DO_
+}
+
+void DNPublisherUpdateRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.DNPublisherUpdateRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.DNPublisherUpdateRequest)
+}
+
+::google::protobuf::uint8* DNPublisherUpdateRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNPublisherUpdateRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNPublisherUpdateRequest)
+  return target;
+}
+
+size_t DNPublisherUpdateRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNPublisherUpdateRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DNPublisherUpdateRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNPublisherUpdateRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNPublisherUpdateRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNPublisherUpdateRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNPublisherUpdateRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNPublisherUpdateRequest)
+    MergeFrom(*source);
+  }
+}
+
+void DNPublisherUpdateRequest::MergeFrom(const DNPublisherUpdateRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNPublisherUpdateRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void DNPublisherUpdateRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNPublisherUpdateRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DNPublisherUpdateRequest::CopyFrom(const DNPublisherUpdateRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNPublisherUpdateRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DNPublisherUpdateRequest::IsInitialized() const {
+  return true;
+}
+
+void DNPublisherUpdateRequest::Swap(DNPublisherUpdateRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DNPublisherUpdateRequest::InternalSwap(DNPublisherUpdateRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DNPublisherUpdateRequest::GetMetadata() const {
+  protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void DNPublisherUpdateResponse::InitAsDefaultInstance() {
+  ::pb::_DNPublisherUpdateResponse_default_instance_._instance.get_mutable()->update_ = const_cast< ::pb::PublisherUpdate*>(
+      ::pb::PublisherUpdate::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DNPublisherUpdateResponse::kUpdateFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DNPublisherUpdateResponse::DNPublisherUpdateResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherUpdateResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.DNPublisherUpdateResponse)
+}
+DNPublisherUpdateResponse::DNPublisherUpdateResponse(const DNPublisherUpdateResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_update()) {
+    update_ = new ::pb::PublisherUpdate(*from.update_);
+  } else {
+    update_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:pb.DNPublisherUpdateResponse)
+}
+
+void DNPublisherUpdateResponse::SharedCtor() {
+  update_ = NULL;
+  _cached_size_ = 0;
+}
+
+DNPublisherUpdateResponse::~DNPublisherUpdateResponse() {
+  // @@protoc_insertion_point(destructor:pb.DNPublisherUpdateResponse)
+  SharedDtor();
+}
+
+void DNPublisherUpdateResponse::SharedDtor() {
+  if (this != internal_default_instance()) delete update_;
+}
+
+void DNPublisherUpdateResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DNPublisherUpdateResponse::descriptor() {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DNPublisherUpdateResponse& DNPublisherUpdateResponse::default_instance() {
+  ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherUpdateResponse();
+  return *internal_default_instance();
+}
+
+DNPublisherUpdateResponse* DNPublisherUpdateResponse::New(::google::protobuf::Arena* arena) const {
+  DNPublisherUpdateResponse* n = new DNPublisherUpdateResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DNPublisherUpdateResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNPublisherUpdateResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && update_ != NULL) {
+    delete update_;
+  }
+  update_ = NULL;
+  _internal_metadata_.Clear();
+}
+
+bool DNPublisherUpdateResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.DNPublisherUpdateResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .pb.PublisherUpdate update = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_update()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.DNPublisherUpdateResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.DNPublisherUpdateResponse)
+  return false;
+#undef DO_
+}
+
+void DNPublisherUpdateResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.DNPublisherUpdateResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .pb.PublisherUpdate update = 1;
+  if (this->has_update()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->update_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.DNPublisherUpdateResponse)
+}
+
+::google::protobuf::uint8* DNPublisherUpdateResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNPublisherUpdateResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .pb.PublisherUpdate update = 1;
+  if (this->has_update()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->update_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNPublisherUpdateResponse)
+  return target;
+}
+
+size_t DNPublisherUpdateResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNPublisherUpdateResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .pb.PublisherUpdate update = 1;
+  if (this->has_update()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->update_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DNPublisherUpdateResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNPublisherUpdateResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNPublisherUpdateResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNPublisherUpdateResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNPublisherUpdateResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNPublisherUpdateResponse)
+    MergeFrom(*source);
+  }
+}
+
+void DNPublisherUpdateResponse::MergeFrom(const DNPublisherUpdateResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNPublisherUpdateResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_update()) {
+    mutable_update()->::pb::PublisherUpdate::MergeFrom(from.update());
+  }
+}
+
+void DNPublisherUpdateResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNPublisherUpdateResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DNPublisherUpdateResponse::CopyFrom(const DNPublisherUpdateResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNPublisherUpdateResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DNPublisherUpdateResponse::IsInitialized() const {
+  return true;
+}
+
+void DNPublisherUpdateResponse::Swap(DNPublisherUpdateResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DNPublisherUpdateResponse::InternalSwap(DNPublisherUpdateResponse* other) {
+  using std::swap;
+  swap(update_, other->update_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DNPublisherUpdateResponse::GetMetadata() const {
   protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
 }

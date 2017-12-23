@@ -1,7 +1,5 @@
 #!/bin/bash
 CPP="././sdk/libdn/dependencies/include/pb/"
-echo "Compiling protocol buffers for discovery";
-protoc --go_out=. discovery/pb/protocol.proto
 
 echo "Compiling protocol buffers for API";
 protoc -I. -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc:./ pb/*.proto

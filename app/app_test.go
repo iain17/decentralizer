@@ -49,5 +49,6 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
+	instance.initPublisherFiles()
 	return instance
 }

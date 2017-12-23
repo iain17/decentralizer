@@ -170,6 +170,7 @@ func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 	if err != nil {
 		return nil, err
 	}
+	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
 	defer stream.Close()
 
 	//Request

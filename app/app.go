@@ -17,9 +17,11 @@ import (
 	"github.com/ccding/go-stun/stun"
 	"github.com/robfig/cron"
 	"github.com/iain17/discovery"
+	"github.com/iain17/decentralizer/pb"
 )
 
 type Decentralizer struct {
+	ctx 				   context.Context
 	n *network.Network
 	cron				   *cron.Cron
 	d					   *discovery.Discovery
@@ -38,6 +40,9 @@ type Decentralizer struct {
 
 	//messaging
 	directMessage          chan *DirectMessage
+
+	//Publisher files
+	publisherUpdate  	   *pb.PublisherUpdate
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -85,6 +90,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		return nil, err
 	}
 	instance := &Decentralizer{
+		ctx:					ctx,
 		cron: 				   cron.New(),
 		n:   					n,
 		d:                      d,
@@ -106,6 +112,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
+	instance.initPublisherFiles()
 	instance.cron.Start()
 	_, dnID := peerstore.PeerToDnId(i.Identity)
 	logger.Infof("Our dnID is: %v", dnID)
