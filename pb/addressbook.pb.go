@@ -41,6 +41,9 @@ It has these top-level messages:
 	RPCHealthRequest
 	RPCHealthReply
 	PublisherDefinition
+	PublisherUpdate
+	DNPublisherUpdateRequest
+	DNPublisherUpdateResponse
 	RPCWritePeerFileRequest
 	RPCWritePeerFileResponse
 	RPCGetPeerFileRequest

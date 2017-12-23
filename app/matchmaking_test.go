@@ -11,9 +11,9 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0])
+	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1])
+	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
 	sessId, err := app1.UpsertSession(1337, "App 1 session :D", 303, map[string]string{

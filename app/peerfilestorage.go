@@ -29,7 +29,7 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return location, nil
+	return "/ipfs/"+location, nil
 }
 
 func (d *Decentralizer) GetPeerFiles(peerId string) ([]*iface.Link, error) {

@@ -25,7 +25,7 @@ func (d *Decentralizer) initAddressbook() {
 func (d *Decentralizer) downloadPeers() {
 	data, err := configPath.QueryCacheFolder().ReadFile(ADDRESS_BOOK_FILE)
 	if err != nil {
-		logger.Warningf("Could not restore address book: %v", err)
+		//logger.Warningf("Could not restore address book: %v", err)
 		return
 	}
 	var addressbook pb.DNAddressbook
@@ -82,9 +82,11 @@ func (d *Decentralizer) uploadPeers() {
 //Connect to our previous peers
 func (d *Decentralizer) connectPreviousPeers() error {
 	for {
-		if len(d.i.PeerHost.Network().Peers()) < 3 {
-			time.Sleep(1 * time.Second)
+		lenPeers := len(d.i.PeerHost.Network().Peers())
+		if lenPeers >= 3 {
+			break
 		}
+		time.Sleep(1 * time.Second)
 	}
 	logger.Info("Connecting to previous peers...")
 	peers, err := d.peers.FindAll()
@@ -170,6 +172,7 @@ func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 	if err != nil {
 		return nil, err
 	}
+	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
 	defer stream.Close()
 
 	//Request

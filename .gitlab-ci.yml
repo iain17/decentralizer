@@ -61,6 +61,6 @@ pack:
     - cp -r $CI_PROJECT_DIR/binaries/* $REPO_BASE/bin/
     - cd $REPO_BASE
     - chmod +x $REPO_BASE/build.sh
-    - ./build.sh
+    - ./pack.sh
     - mkdir -p $CI_PROJECT_DIR/binaries
     - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/binaries

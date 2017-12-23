@@ -14,5 +14,6 @@ const GET_PEER_REQ = "/decentralizer/peers/1.0.0/get"
 const GET_SESSION_REQ = "/decentralizer/sessions/1.0.0/get"
 const SEND_DIRECT_MESSAGE = "/decentralizer/dm/1.0.0/sent"
 const ADDRESS_BOOK_FILE = "addressbook.dat"
-const PUBLISHER_TOPIC_FILES = "/decentralizer/publisher/files"
+const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
+const GET_PUBLISHER_UPDATE = "/decentralizer/publisher/1.0.0/get"
 const MAX_SIZE = int64(3 * datasize.MB)

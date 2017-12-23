@@ -12,19 +12,25 @@ import (
 	"time"
 	"github.com/shibukawa/configdir"
 	"os"
+	"github.com/iain17/discovery/network"
 )
+
+var testNetwork *network.Network
+var testSlaveNetwork *network.Network//just the public key
 
 func init() {
 	logger.AddOutput(logger.Stdout{
-		MinLevel: logger.INFO, //logger.DEBUG,
+		MinLevel: logger.DEBUG, //logger.DEBUG,
 		Colored:  true,
 	})
 	//logging.Configure(logging.LevelDebug)
 	configPath = configdir.New("ECorp", "Decentralizer-test")
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
+	testNetwork, _ = network.New()
+	testSlaveNetwork, _ = network.Unmarshal(testNetwork.Marshal())
 }
 
-func fakeNew(node *core.IpfsNode) *Decentralizer {
+func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	b, err := ipfs.NewBitSwap(node)
 	if err != nil {
@@ -34,9 +40,19 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 	if err != nil {
 		panic(err)
 	}
+
+	//Build a new network.
+	var n *network.Network
+	if master {
+		n = testNetwork
+	} else {
+		n = testSlaveNetwork
+	}
+
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
 		cron:					cron.New(),
+		n:						n ,
 		ip:                     &ip,
 		i:                      node,
 		b:                      b,
@@ -49,5 +65,6 @@ func fakeNew(node *core.IpfsNode) *Decentralizer {
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
+	instance.initPublisherFiles()
 	return instance
 }

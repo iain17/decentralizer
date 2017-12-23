@@ -28,18 +28,22 @@ func (ns *Network) Decrypt(data []byte) ([]byte, error) {
 	return rsa.DecryptOAEP(hash, rand.Reader, ns.privateKey, data, []byte(""))
 }
 
-func (ns *Network) Sign(data []byte) (hash []byte, signature []byte, err error) {
+func (ns *Network) Sign(data []byte) (signature []byte, err error) {
 	if ns.privateKey == nil {
-		return nil, nil, errors.New("no private key set")
+		return nil, errors.New("no private key set")
 	}
 	newhash := crypto.SHA256
 	pssh := newhash.New()
 	pssh.Write(data)
-	hash = pssh.Sum(nil)
+	hash := pssh.Sum(nil)
 	signature, err = rsa.SignPSS(rand.Reader, ns.privateKey, newhash, hash, &opts)
 	return
 }
 
-func (ns *Network) Verify(hash []byte, signature []byte) error {
+func (ns *Network) Verify(data []byte, signature []byte) error {
+	newhash := crypto.SHA256
+	pssh := newhash.New()
+	pssh.Write(data)
+	hash := pssh.Sum(nil)
 	return rsa.VerifyPSS(ns.publicKey, crypto.SHA256, hash, signature, &opts)
 }

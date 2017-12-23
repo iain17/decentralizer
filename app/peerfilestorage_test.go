@@ -12,9 +12,9 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0])
+	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1])
+	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
 	message := []byte("Hey ho this is cool.")
@@ -33,9 +33,9 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0])
+	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1])
+	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
 	message := []byte("Hey ho this is cool.")
