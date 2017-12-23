@@ -18,10 +18,7 @@ import (
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
-	var ih [20]byte
-	if d.n != nil {
-		ih = d.n.InfoHash()
-	}
+	ih := d.n.InfoHash()
 	return fmt.Sprintf("%s_MATCHMAKING_%d", hex.EncodeToString(ih[:]), sessionType)
 }
 

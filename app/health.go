@@ -44,7 +44,7 @@ func (d *Decentralizer) Health() (bool, error) {
 		return false, errors.New(fmt.Sprintf("Not ready yet. %.2f percent ready. %s", percentage, addrs))
 	}
 
-	if d.publisherUpdate.Created == 0 {
+	if d.publisherUpdate == nil {
 		return false, errors.New(fmt.Sprintf("Not ready yet. Downloading publisher file..."))
 	}
 

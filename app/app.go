@@ -22,7 +22,7 @@ import (
 
 type Decentralizer struct {
 	ctx 				   context.Context
-	n *network.Network
+	n 					   *network.Network
 	cron				   *cron.Cron
 	d					   *discovery.Discovery
 	i                      *core.IpfsNode

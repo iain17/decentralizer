@@ -11,7 +11,7 @@ func TestDecentralizer_FindSelf(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0])
+	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
 
 	err := app1.UpsertPeer("self", map[string]string{
@@ -29,9 +29,9 @@ func TestDecentralizer_FindByPeerIdAndUpdate(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0])
+	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1])
+	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
 	//Simple set
@@ -66,9 +66,9 @@ func TestDecentralizer_FindUnknownId(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0])
+	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1])
+	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
 	err := app2.UpsertPeer("self", map[string]string{
