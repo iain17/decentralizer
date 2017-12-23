@@ -95,7 +95,7 @@ func (d *Decentralizer) signDefinition(definition *pb.PublisherDefinition) (*pb.
 	}, nil
 }
 
-func (d *Decentralizer) publishPublisherUpdate(definition *pb.PublisherDefinition) error {
+func (d *Decentralizer) PublishPublisherUpdate(definition *pb.PublisherDefinition) error {
 	update, err := d.signDefinition(definition)
 	if err != nil {
 		return err

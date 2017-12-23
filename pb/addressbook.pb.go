@@ -45,6 +45,7 @@ It has these top-level messages:
 	PublisherUpdate
 	DNPublisherUpdateRequest
 	DNPublisherUpdateResponse
+	RPCPublishPublisherUpdateRequest
 	RPCWritePeerFileRequest
 	RPCWritePeerFileResponse
 	RPCGetPeerFileRequest

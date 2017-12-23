@@ -160,7 +160,7 @@ void AddDescriptorsImpl() {
       "proto\032\022pb/messaging.proto\032\022pb/publisher."
       "proto\032\034google/api/annotations.proto\"\022\n\020R"
       "PCHealthRequest\"0\n\016RPCHealthReply\022\r\n\005rea"
-      "dy\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\"\007\n\005empty2\354\010\n\rD"
+      "dy\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\"\007\n\005empty2\271\t\n\rD"
       "ecentralizer\022I\n\tGetHealth\022\024.pb.RPCHealth"
       "Request\032\022.pb.RPCHealthReply\"\022\202\323\344\223\002\014\022\n/v1"
       "/health\022L\n\rUpsertSession\022\033.pb.RPCUpsertS"
@@ -189,10 +189,12 @@ void AddDescriptorsImpl() {
       "leResponse\"\000\0226\n\021SendDirectMessage\022\024.pb.R"
       "PCDirectMessage\032\t.pb.empty\"\000\022;\n\024ReceiveD"
       "irectMessage\022\t.pb.empty\032\024.pb.RPCDirectMe"
-      "ssage\"\0000\001b\006proto3"
+      "ssage\"\0000\001\022K\n\026publishPublisherUpdate\022$.pb"
+      ".RPCPublishPublisherUpdateRequest\032\t.pb.e"
+      "mpty\"\000b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1377);
+      descriptor, 1454);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/platform.proto", &protobuf_RegisterTypes);
   ::protobuf_pb_2fmatchmaking_2eproto::AddDescriptors();

@@ -19,3 +19,8 @@ message DNPublisherUpdateRequest {}
 message DNPublisherUpdateResponse {
     PublisherUpdate update = 1;
 }
+
+//RPC
+message RPCPublishPublisherUpdateRequest {
+    PublisherDefinition definition = 1;
+}

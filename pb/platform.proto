@@ -73,4 +73,5 @@ service Decentralizer {
 	//
 	// Publisher
 	//
+	rpc publishPublisherUpdate(RPCPublishPublisherUpdateRequest) returns (empty) {}
 }

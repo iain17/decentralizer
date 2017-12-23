@@ -23,7 +23,7 @@ func TestDecentralizer_updatePublisherDefinition(t *testing.T) {
 			"hello.txt": []byte("Hard work, by these words guarded. Please don't steal."),
 		},
 	}
-	err := master.publishPublisherUpdate(definition)
+	err := master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
 	assert.NotNil(t, master.publisherUpdate)
 
@@ -49,7 +49,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 			"cool": "1",
 		},
 	}
-	err := master.publishPublisherUpdate(definition)
+	err := master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
 
 	//Now start the slaves. Master got an update.
@@ -60,7 +60,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 		slaves = append(slaves, slave)
 	}
 	//A slave can't publish.
-	err = slaves[0].publishPublisherUpdate(definition)
+	err = slaves[0].PublishPublisherUpdate(definition)
 	assert.Error(t, err)
 
 	for i := 0; i < num - 1; i++ {
@@ -76,7 +76,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 			"cool": "2",
 		},
 	}
-	err = master.publishPublisherUpdate(definition)
+	err = master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
 
 	//Check the rolling update
