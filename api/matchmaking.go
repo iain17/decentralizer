@@ -32,16 +32,7 @@ func (s *Server) DeleteSession(ctx context.Context, request *pb.RPCDeleteSession
 	}, err
 }
 
-// Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
-func (s *Server) GetSessionIds(ctx context.Context, request *pb.RPCGetSessionIdsRequest) (*pb.RPCGetSessionIdsResponse, error) {
-	logger.Infof("Get session ids request received")
-	var sessions []*pb.Session
-	var err error
-	if request.Key == "" && request.Value == "" {
-		sessions, err = s.app.GetSessions(request.Type)
-	} else {
-		sessions, err = s.app.GetSessionsByDetails(request.Type, request.Key, request.Value)
-	}
+func mapToIds(sessions []*pb.Session) []uint64 {
 	seen := make(map[uint64]bool)
 	var sessionIds []uint64
 	for _, session := range sessions {
@@ -51,9 +42,39 @@ func (s *Server) GetSessionIds(ctx context.Context, request *pb.RPCGetSessionIds
 		seen[session.SessionId] = true
 		sessionIds = append(sessionIds, session.SessionId)
 	}
+	return sessionIds
+}
+
+// Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
+func (s *Server) GetSessionIdsByDetails(ctx context.Context, request *pb.RPCGetSessionIdsByDetailsRequest) (*pb.RPCGetSessionIdsResponse, error) {
+	logger.Infof("Get session ids request received")
+	var sessions []*pb.Session
+	var err error
+	if request.Key == "" && request.Value == "" {
+		sessions, err = s.app.GetSessions(request.Type)
+	} else {
+		sessions, err = s.app.GetSessionsByDetails(request.Type, request.Key, request.Value)
+	}
+
 	return &pb.RPCGetSessionIdsResponse{
-		SessionIds: sessionIds,
+		SessionIds: mapToIds(sessions),
 	}, err
+}
+
+// Get session ids. Takes peer ids. Returns session ids
+func (s *Server) GetSessionIdsByPeerIds(ctx context.Context, req *pb.RPCGetSessionIdsByPeerIdsRequest) (*pb.RPCGetSessionIdsResponse, error) {
+	var sessions []*pb.Session
+	for _, peerId := range req.PeerIds {
+		s, err := s.app.GetSessionsByPeer(peerId)
+		if err != nil {
+			logger.Warning(err)
+			continue
+		}
+		sessions = append(sessions, s...)
+	}
+	return &pb.RPCGetSessionIdsResponse{
+		SessionIds: mapToIds(sessions),
+	}, nil
 }
 
 // Get an individual session. Takes session id and returns session info.

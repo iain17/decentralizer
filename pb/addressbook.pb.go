@@ -30,7 +30,8 @@ It has these top-level messages:
 	RPCUpsertSessionResponse
 	RPCDeleteSessionRequest
 	RPCDeleteSessionResponse
-	RPCGetSessionIdsRequest
+	RPCGetSessionIdsByDetailsRequest
+	RPCGetSessionIdsByPeerIdsRequest
 	RPCGetSessionIdsResponse
 	RPCGetSessionRequest
 	RPCGetSessionResponse

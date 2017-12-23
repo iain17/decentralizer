@@ -19,7 +19,8 @@ static const char* Decentralizer_method_names[] = {
   "/pb.Decentralizer/GetHealth",
   "/pb.Decentralizer/UpsertSession",
   "/pb.Decentralizer/DeleteSession",
-  "/pb.Decentralizer/GetSessionIds",
+  "/pb.Decentralizer/GetSessionIdsByDetails",
+  "/pb.Decentralizer/GetSessionIdsByPeerIds",
   "/pb.Decentralizer/GetSession",
   "/pb.Decentralizer/UpsertPeer",
   "/pb.Decentralizer/GetPeerIds",
@@ -39,15 +40,16 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   : channel_(channel), rpcmethod_GetHealth_(Decentralizer_method_names[0], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_UpsertSession_(Decentralizer_method_names[1], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_DeleteSession_(Decentralizer_method_names[2], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetSessionIds_(Decentralizer_method_names[3], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetSession_(Decentralizer_method_names[4], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_UpsertPeer_(Decentralizer_method_names[5], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetPeerIds_(Decentralizer_method_names[6], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetPeer_(Decentralizer_method_names[7], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_WritePeerFile_(Decentralizer_method_names[8], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetPeerFile_(Decentralizer_method_names[9], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetPublisherFile_(Decentralizer_method_names[10], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SendDirectMessage_(Decentralizer_method_names[11], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetSessionIdsByDetails_(Decentralizer_method_names[3], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetSessionIdsByPeerIds_(Decentralizer_method_names[4], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetSession_(Decentralizer_method_names[5], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UpsertPeer_(Decentralizer_method_names[6], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPeerIds_(Decentralizer_method_names[7], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPeer_(Decentralizer_method_names[8], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_WritePeerFile_(Decentralizer_method_names[9], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPeerFile_(Decentralizer_method_names[10], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPublisherFile_(Decentralizer_method_names[11], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SendDirectMessage_(Decentralizer_method_names[12], ::grpc::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status Decentralizer::Stub::GetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::pb::RPCHealthReply* response) {
@@ -86,16 +88,28 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   return ::grpc::ClientAsyncResponseReader< ::pb::RPCDeleteSessionResponse>::Create(channel_.get(), cq, rpcmethod_DeleteSession_, context, request, false);
 }
 
-::grpc::Status Decentralizer::Stub::GetSessionIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::pb::RPCGetSessionIdsResponse* response) {
-  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetSessionIds_, context, request, response);
+::grpc::Status Decentralizer::Stub::GetSessionIdsByDetails(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsByDetailsRequest& request, ::pb::RPCGetSessionIdsResponse* response) {
+  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetSessionIdsByDetails_, context, request, response);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* Decentralizer::Stub::AsyncGetSessionIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>::Create(channel_.get(), cq, rpcmethod_GetSessionIds_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* Decentralizer::Stub::AsyncGetSessionIdsByDetailsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsByDetailsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>::Create(channel_.get(), cq, rpcmethod_GetSessionIdsByDetails_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* Decentralizer::Stub::PrepareAsyncGetSessionIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>::Create(channel_.get(), cq, rpcmethod_GetSessionIds_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* Decentralizer::Stub::PrepareAsyncGetSessionIdsByDetailsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsByDetailsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>::Create(channel_.get(), cq, rpcmethod_GetSessionIdsByDetails_, context, request, false);
+}
+
+::grpc::Status Decentralizer::Stub::GetSessionIdsByPeerIds(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsByPeerIdsRequest& request, ::pb::RPCGetSessionIdsResponse* response) {
+  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetSessionIdsByPeerIds_, context, request, response);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* Decentralizer::Stub::AsyncGetSessionIdsByPeerIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsByPeerIdsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>::Create(channel_.get(), cq, rpcmethod_GetSessionIdsByPeerIds_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>* Decentralizer::Stub::PrepareAsyncGetSessionIdsByPeerIdsRaw(::grpc::ClientContext* context, const ::pb::RPCGetSessionIdsByPeerIdsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetSessionIdsResponse>::Create(channel_.get(), cq, rpcmethod_GetSessionIdsByPeerIds_, context, request, false);
 }
 
 ::grpc::Status Decentralizer::Stub::GetSession(::grpc::ClientContext* context, const ::pb::RPCGetSessionRequest& request, ::pb::RPCGetSessionResponse* response) {
@@ -213,45 +227,50 @@ Decentralizer::Service::Service() {
   AddMethod(new ::grpc::RpcServiceMethod(
       Decentralizer_method_names[3],
       ::grpc::RpcMethod::NORMAL_RPC,
-      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetSessionIdsRequest, ::pb::RPCGetSessionIdsResponse>(
-          std::mem_fn(&Decentralizer::Service::GetSessionIds), this)));
+      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetSessionIdsByDetailsRequest, ::pb::RPCGetSessionIdsResponse>(
+          std::mem_fn(&Decentralizer::Service::GetSessionIdsByDetails), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
       Decentralizer_method_names[4],
+      ::grpc::RpcMethod::NORMAL_RPC,
+      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetSessionIdsByPeerIdsRequest, ::pb::RPCGetSessionIdsResponse>(
+          std::mem_fn(&Decentralizer::Service::GetSessionIdsByPeerIds), this)));
+  AddMethod(new ::grpc::RpcServiceMethod(
+      Decentralizer_method_names[5],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetSessionRequest, ::pb::RPCGetSessionResponse>(
           std::mem_fn(&Decentralizer::Service::GetSession), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[5],
+      Decentralizer_method_names[6],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCUpsertPeerRequest, ::pb::RPCUpsertPeerResponse>(
           std::mem_fn(&Decentralizer::Service::UpsertPeer), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[6],
+      Decentralizer_method_names[7],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPeerIdsRequest, ::pb::RPCGetPeerIdsResponse>(
           std::mem_fn(&Decentralizer::Service::GetPeerIds), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[7],
+      Decentralizer_method_names[8],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPeerRequest, ::pb::RPCGetPeerResponse>(
           std::mem_fn(&Decentralizer::Service::GetPeer), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[8],
+      Decentralizer_method_names[9],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCWritePeerFileRequest, ::pb::RPCWritePeerFileResponse>(
           std::mem_fn(&Decentralizer::Service::WritePeerFile), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[9],
+      Decentralizer_method_names[10],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPeerFileRequest, ::pb::RPCGetPeerFileResponse>(
           std::mem_fn(&Decentralizer::Service::GetPeerFile), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[10],
+      Decentralizer_method_names[11],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPublisherFileRequest, ::pb::RPCGetPublisherFileResponse>(
           std::mem_fn(&Decentralizer::Service::GetPublisherFile), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[11],
+      Decentralizer_method_names[12],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCDirectMessageRequest, ::pb::RPCDirectMessageResponse>(
           std::mem_fn(&Decentralizer::Service::SendDirectMessage), this)));
@@ -281,7 +300,14 @@ Decentralizer::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Decentralizer::Service::GetSessionIds(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsRequest* request, ::pb::RPCGetSessionIdsResponse* response) {
+::grpc::Status Decentralizer::Service::GetSessionIdsByDetails(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsByDetailsRequest* request, ::pb::RPCGetSessionIdsResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Decentralizer::Service::GetSessionIdsByPeerIds(::grpc::ServerContext* context, const ::pb::RPCGetSessionIdsByPeerIdsRequest* request, ::pb::RPCGetSessionIdsResponse* response) {
   (void) context;
   (void) request;
   (void) response;

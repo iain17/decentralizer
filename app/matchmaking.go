@@ -111,6 +111,20 @@ func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value stri
 	return nil, errors.New("could not get session search")
 }
 
+func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) {
+	var result []*pb.Session
+	for _, search := range d.searches {
+		storage := search.fetch()
+		peers, err := storage.FindByPeerId(peerId)
+		if err != nil {
+			logger.Warning(err)
+			continue
+		}
+		result = append(result, peers...)
+	}
+	return result, nil
+}
+
 func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 	reqData, err := Read(stream)
 	if err != nil {

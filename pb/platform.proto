@@ -30,10 +30,12 @@ service Decentralizer {
 	rpc UpsertSession(RPCUpsertSessionRequest) returns (RPCUpsertSessionResponse) {}
 	// Delete a session. Takes session id, returns bool informing if the deletion was a success
 	rpc DeleteSession(RPCDeleteSessionRequest) returns (RPCDeleteSessionResponse) {}
-	// Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply  and all will be fetched.
-	rpc GetSessionIds(RPCGetSessionIdsRequest) returns (RPCGetSessionIdsResponse) {
+	// Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply and all will be fetched.
+	rpc GetSessionIdsByDetails(RPCGetSessionIdsByDetailsRequest) returns (RPCGetSessionIdsResponse) {
 		option (google.api.http) = { get: "/v1/sessions/{type}/{key}/{value}" };
 	}
+	// Get session ids. Takes peer ids. Returns session ids
+	rpc GetSessionIdsByPeerIds(RPCGetSessionIdsByPeerIdsRequest) returns (RPCGetSessionIdsResponse) {}
 	// Get an individual session. Takes session id and returns session info.
 	rpc GetSession(RPCGetSessionRequest) returns (RPCGetSessionResponse) {
 		option (google.api.http) = { get: "/v1/session/{sessionId}" };
