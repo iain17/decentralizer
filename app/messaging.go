@@ -60,6 +60,8 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 		logger.Error(err)
 		return
 	}
+	from := stream.Conn().RemotePeer()
+	logger.Infof("Received direct message from %s", from.Pretty())
 	var request pb.DNDirectMessageRequest
 	err = proto.Unmarshal(reqData, &request)
 	if err != nil {
@@ -67,7 +69,8 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 		return
 	}
 
-	d.directMessage <- &DirectMessage{
+	d.DirectMessage <- &pb.RPCDirectMessage{
+		PId: from.Pretty(),
 		Message: request.Message,
 	}
 

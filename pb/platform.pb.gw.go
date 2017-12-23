@@ -37,8 +37,8 @@ func request_Decentralizer_GetHealth_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func request_Decentralizer_GetSessionIds_0(ctx context.Context, marshaler runtime.Marshaler, client DecentralizerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RPCGetSessionIdsRequest
+func request_Decentralizer_GetSessionIdsByDetails_0(ctx context.Context, marshaler runtime.Marshaler, client DecentralizerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RPCGetSessionIdsByDetailsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -81,7 +81,7 @@ func request_Decentralizer_GetSessionIds_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "value", err)
 	}
 
-	msg, err := client.GetSessionIds(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetSessionIdsByDetails(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
@@ -180,7 +180,7 @@ func RegisterDecentralizerHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_Decentralizer_GetSessionIds_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Decentralizer_GetSessionIdsByDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -198,14 +198,14 @@ func RegisterDecentralizerHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Decentralizer_GetSessionIds_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Decentralizer_GetSessionIdsByDetails_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Decentralizer_GetSessionIds_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Decentralizer_GetSessionIdsByDetails_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -244,7 +244,7 @@ func RegisterDecentralizerHandlerClient(ctx context.Context, mux *runtime.ServeM
 var (
 	pattern_Decentralizer_GetHealth_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "health"}, ""))
 
-	pattern_Decentralizer_GetSessionIds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "sessions", "type", "key", "value"}, ""))
+	pattern_Decentralizer_GetSessionIdsByDetails_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "sessions", "type", "key", "value"}, ""))
 
 	pattern_Decentralizer_GetSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "session", "sessionId"}, ""))
 )
@@ -252,7 +252,7 @@ var (
 var (
 	forward_Decentralizer_GetHealth_0 = runtime.ForwardResponseMessage
 
-	forward_Decentralizer_GetSessionIds_0 = runtime.ForwardResponseMessage
+	forward_Decentralizer_GetSessionIdsByDetails_0 = runtime.ForwardResponseMessage
 
 	forward_Decentralizer_GetSession_0 = runtime.ForwardResponseMessage
 )

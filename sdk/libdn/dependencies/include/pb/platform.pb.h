@@ -42,7 +42,7 @@ namespace protobuf_pb_2fplatform_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[3];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -52,9 +52,12 @@ void InitDefaultsRPCHealthRequestImpl();
 void InitDefaultsRPCHealthRequest();
 void InitDefaultsRPCHealthReplyImpl();
 void InitDefaultsRPCHealthReply();
+void InitDefaultsemptyImpl();
+void InitDefaultsempty();
 inline void InitDefaults() {
   InitDefaultsRPCHealthRequest();
   InitDefaultsRPCHealthReply();
+  InitDefaultsempty();
 }
 }  // namespace protobuf_pb_2fplatform_2eproto
 namespace pb {
@@ -64,6 +67,9 @@ extern RPCHealthReplyDefaultTypeInternal _RPCHealthReply_default_instance_;
 class RPCHealthRequest;
 class RPCHealthRequestDefaultTypeInternal;
 extern RPCHealthRequestDefaultTypeInternal _RPCHealthRequest_default_instance_;
+class empty;
+class emptyDefaultTypeInternal;
+extern emptyDefaultTypeInternal _empty_default_instance_;
 }  // namespace pb
 namespace pb {
 
@@ -273,6 +279,98 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
   friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthReplyImpl();
 };
+// -------------------------------------------------------------------
+
+class empty : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.empty) */ {
+ public:
+  empty();
+  virtual ~empty();
+
+  empty(const empty& from);
+
+  inline empty& operator=(const empty& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  empty(empty&& from) noexcept
+    : empty() {
+    *this = ::std::move(from);
+  }
+
+  inline empty& operator=(empty&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const empty& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const empty* internal_default_instance() {
+    return reinterpret_cast<const empty*>(
+               &_empty_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    2;
+
+  void Swap(empty* other);
+  friend void swap(empty& a, empty& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline empty* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  empty* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const empty& from);
+  void MergeFrom(const empty& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(empty* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pb.empty)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
+  friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsemptyImpl();
+};
 // ===================================================================
 
 
@@ -355,9 +453,15 @@ inline void RPCHealthReply::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:pb.RPCHealthReply.message)
 }
 
+// -------------------------------------------------------------------
+
+// empty
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

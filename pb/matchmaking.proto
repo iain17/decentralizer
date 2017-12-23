@@ -43,10 +43,14 @@ message RPCDeleteSessionResponse {
 }
 
 //Get session ids
-message RPCGetSessionIdsRequest {
+message RPCGetSessionIdsByDetailsRequest {
     uint64 type = 1;
     string key = 2;
     string value = 3;
+}
+
+message RPCGetSessionIdsByPeerIdsRequest {
+    repeated string peerIds = 1;
 }
 
 message RPCGetSessionIdsResponse {

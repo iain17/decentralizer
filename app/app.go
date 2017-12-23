@@ -39,7 +39,7 @@ type Decentralizer struct {
 	addressBookChanged     bool
 
 	//messaging
-	directMessage          chan *DirectMessage
+	DirectMessage          chan *pb.RPCDirectMessage
 
 	//Publisher files
 	publisherUpdate  	   *pb.PublisherUpdate
@@ -99,8 +99,8 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		searches:				make(map[uint64]*search),
-		peers:         peers,
-		directMessage: make(chan *DirectMessage, 10),
+		peers:         			peers,
+		DirectMessage: 			make(chan *pb.RPCDirectMessage, 10),
 	}
 	err = instance.bootstrap()
 	if err == nil {

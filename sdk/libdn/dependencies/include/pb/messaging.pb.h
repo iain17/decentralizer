@@ -36,7 +36,7 @@ namespace protobuf_pb_2fmessaging_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[3];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -46,15 +46,12 @@ void InitDefaultsDNDirectMessageResponseImpl();
 void InitDefaultsDNDirectMessageResponse();
 void InitDefaultsDNDirectMessageRequestImpl();
 void InitDefaultsDNDirectMessageRequest();
-void InitDefaultsRPCDirectMessageResponseImpl();
-void InitDefaultsRPCDirectMessageResponse();
-void InitDefaultsRPCDirectMessageRequestImpl();
-void InitDefaultsRPCDirectMessageRequest();
+void InitDefaultsRPCDirectMessageImpl();
+void InitDefaultsRPCDirectMessage();
 inline void InitDefaults() {
   InitDefaultsDNDirectMessageResponse();
   InitDefaultsDNDirectMessageRequest();
-  InitDefaultsRPCDirectMessageResponse();
-  InitDefaultsRPCDirectMessageRequest();
+  InitDefaultsRPCDirectMessage();
 }
 }  // namespace protobuf_pb_2fmessaging_2eproto
 namespace pb {
@@ -64,12 +61,9 @@ extern DNDirectMessageRequestDefaultTypeInternal _DNDirectMessageRequest_default
 class DNDirectMessageResponse;
 class DNDirectMessageResponseDefaultTypeInternal;
 extern DNDirectMessageResponseDefaultTypeInternal _DNDirectMessageResponse_default_instance_;
-class RPCDirectMessageRequest;
-class RPCDirectMessageRequestDefaultTypeInternal;
-extern RPCDirectMessageRequestDefaultTypeInternal _RPCDirectMessageRequest_default_instance_;
-class RPCDirectMessageResponse;
-class RPCDirectMessageResponseDefaultTypeInternal;
-extern RPCDirectMessageResponseDefaultTypeInternal _RPCDirectMessageResponse_default_instance_;
+class RPCDirectMessage;
+class RPCDirectMessageDefaultTypeInternal;
+extern RPCDirectMessageDefaultTypeInternal _RPCDirectMessage_default_instance_;
 }  // namespace pb
 namespace pb {
 
@@ -281,24 +275,24 @@ class DNDirectMessageRequest : public ::google::protobuf::Message /* @@protoc_in
 };
 // -------------------------------------------------------------------
 
-class RPCDirectMessageResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCDirectMessageResponse) */ {
+class RPCDirectMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCDirectMessage) */ {
  public:
-  RPCDirectMessageResponse();
-  virtual ~RPCDirectMessageResponse();
+  RPCDirectMessage();
+  virtual ~RPCDirectMessage();
 
-  RPCDirectMessageResponse(const RPCDirectMessageResponse& from);
+  RPCDirectMessage(const RPCDirectMessage& from);
 
-  inline RPCDirectMessageResponse& operator=(const RPCDirectMessageResponse& from) {
+  inline RPCDirectMessage& operator=(const RPCDirectMessage& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RPCDirectMessageResponse(RPCDirectMessageResponse&& from) noexcept
-    : RPCDirectMessageResponse() {
+  RPCDirectMessage(RPCDirectMessage&& from) noexcept
+    : RPCDirectMessage() {
     *this = ::std::move(from);
   }
 
-  inline RPCDirectMessageResponse& operator=(RPCDirectMessageResponse&& from) noexcept {
+  inline RPCDirectMessage& operator=(RPCDirectMessage&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -308,30 +302,30 @@ class RPCDirectMessageResponse : public ::google::protobuf::Message /* @@protoc_
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCDirectMessageResponse& default_instance();
+  static const RPCDirectMessage& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCDirectMessageResponse* internal_default_instance() {
-    return reinterpret_cast<const RPCDirectMessageResponse*>(
-               &_RPCDirectMessageResponse_default_instance_);
+  static inline const RPCDirectMessage* internal_default_instance() {
+    return reinterpret_cast<const RPCDirectMessage*>(
+               &_RPCDirectMessage_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     2;
 
-  void Swap(RPCDirectMessageResponse* other);
-  friend void swap(RPCDirectMessageResponse& a, RPCDirectMessageResponse& b) {
+  void Swap(RPCDirectMessage* other);
+  friend void swap(RPCDirectMessage& a, RPCDirectMessage& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RPCDirectMessageResponse* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline RPCDirectMessage* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  RPCDirectMessageResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  RPCDirectMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCDirectMessageResponse& from);
-  void MergeFrom(const RPCDirectMessageResponse& from);
+  void CopyFrom(const RPCDirectMessage& from);
+  void MergeFrom(const RPCDirectMessage& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -347,99 +341,7 @@ class RPCDirectMessageResponse : public ::google::protobuf::Message /* @@protoc_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCDirectMessageResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:pb.RPCDirectMessageResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fmessaging_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmessaging_2eproto::InitDefaultsRPCDirectMessageResponseImpl();
-};
-// -------------------------------------------------------------------
-
-class RPCDirectMessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCDirectMessageRequest) */ {
- public:
-  RPCDirectMessageRequest();
-  virtual ~RPCDirectMessageRequest();
-
-  RPCDirectMessageRequest(const RPCDirectMessageRequest& from);
-
-  inline RPCDirectMessageRequest& operator=(const RPCDirectMessageRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCDirectMessageRequest(RPCDirectMessageRequest&& from) noexcept
-    : RPCDirectMessageRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCDirectMessageRequest& operator=(RPCDirectMessageRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCDirectMessageRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCDirectMessageRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCDirectMessageRequest*>(
-               &_RPCDirectMessageRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
-
-  void Swap(RPCDirectMessageRequest* other);
-  friend void swap(RPCDirectMessageRequest& a, RPCDirectMessageRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCDirectMessageRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCDirectMessageRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCDirectMessageRequest& from);
-  void MergeFrom(const RPCDirectMessageRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCDirectMessageRequest* other);
+  void InternalSwap(RPCDirectMessage* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -483,7 +385,7 @@ class RPCDirectMessageRequest : public ::google::protobuf::Message /* @@protoc_i
   ::std::string* release_message();
   void set_allocated_message(::std::string* message);
 
-  // @@protoc_insertion_point(class_scope:pb.RPCDirectMessageRequest)
+  // @@protoc_insertion_point(class_scope:pb.RPCDirectMessage)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -491,7 +393,7 @@ class RPCDirectMessageRequest : public ::google::protobuf::Message /* @@protoc_i
   ::google::protobuf::internal::ArenaStringPtr message_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fmessaging_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fmessaging_2eproto::InitDefaultsRPCDirectMessageRequestImpl();
+  friend void ::protobuf_pb_2fmessaging_2eproto::InitDefaultsRPCDirectMessageImpl();
 };
 // ===================================================================
 
@@ -577,123 +479,117 @@ inline void DNDirectMessageRequest::set_allocated_message(::std::string* message
 
 // -------------------------------------------------------------------
 
-// RPCDirectMessageResponse
-
-// -------------------------------------------------------------------
-
-// RPCDirectMessageRequest
+// RPCDirectMessage
 
 // string pId = 1;
-inline void RPCDirectMessageRequest::clear_pid() {
+inline void RPCDirectMessage::clear_pid() {
   pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCDirectMessageRequest::pid() const {
-  // @@protoc_insertion_point(field_get:pb.RPCDirectMessageRequest.pId)
+inline const ::std::string& RPCDirectMessage::pid() const {
+  // @@protoc_insertion_point(field_get:pb.RPCDirectMessage.pId)
   return pid_.GetNoArena();
 }
-inline void RPCDirectMessageRequest::set_pid(const ::std::string& value) {
+inline void RPCDirectMessage::set_pid(const ::std::string& value) {
   
   pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCDirectMessageRequest.pId)
+  // @@protoc_insertion_point(field_set:pb.RPCDirectMessage.pId)
 }
 #if LANG_CXX11
-inline void RPCDirectMessageRequest::set_pid(::std::string&& value) {
+inline void RPCDirectMessage::set_pid(::std::string&& value) {
   
   pid_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCDirectMessageRequest.pId)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCDirectMessage.pId)
 }
 #endif
-inline void RPCDirectMessageRequest::set_pid(const char* value) {
+inline void RPCDirectMessage::set_pid(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCDirectMessageRequest.pId)
+  // @@protoc_insertion_point(field_set_char:pb.RPCDirectMessage.pId)
 }
-inline void RPCDirectMessageRequest::set_pid(const char* value, size_t size) {
+inline void RPCDirectMessage::set_pid(const char* value, size_t size) {
   
   pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCDirectMessageRequest.pId)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCDirectMessage.pId)
 }
-inline ::std::string* RPCDirectMessageRequest::mutable_pid() {
+inline ::std::string* RPCDirectMessage::mutable_pid() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCDirectMessageRequest.pId)
+  // @@protoc_insertion_point(field_mutable:pb.RPCDirectMessage.pId)
   return pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCDirectMessageRequest::release_pid() {
-  // @@protoc_insertion_point(field_release:pb.RPCDirectMessageRequest.pId)
+inline ::std::string* RPCDirectMessage::release_pid() {
+  // @@protoc_insertion_point(field_release:pb.RPCDirectMessage.pId)
   
   return pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCDirectMessageRequest::set_allocated_pid(::std::string* pid) {
+inline void RPCDirectMessage::set_allocated_pid(::std::string* pid) {
   if (pid != NULL) {
     
   } else {
     
   }
   pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), pid);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCDirectMessageRequest.pId)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCDirectMessage.pId)
 }
 
 // bytes message = 2;
-inline void RPCDirectMessageRequest::clear_message() {
+inline void RPCDirectMessage::clear_message() {
   message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& RPCDirectMessageRequest::message() const {
-  // @@protoc_insertion_point(field_get:pb.RPCDirectMessageRequest.message)
+inline const ::std::string& RPCDirectMessage::message() const {
+  // @@protoc_insertion_point(field_get:pb.RPCDirectMessage.message)
   return message_.GetNoArena();
 }
-inline void RPCDirectMessageRequest::set_message(const ::std::string& value) {
+inline void RPCDirectMessage::set_message(const ::std::string& value) {
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCDirectMessageRequest.message)
+  // @@protoc_insertion_point(field_set:pb.RPCDirectMessage.message)
 }
 #if LANG_CXX11
-inline void RPCDirectMessageRequest::set_message(::std::string&& value) {
+inline void RPCDirectMessage::set_message(::std::string&& value) {
   
   message_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCDirectMessageRequest.message)
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCDirectMessage.message)
 }
 #endif
-inline void RPCDirectMessageRequest::set_message(const char* value) {
+inline void RPCDirectMessage::set_message(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCDirectMessageRequest.message)
+  // @@protoc_insertion_point(field_set_char:pb.RPCDirectMessage.message)
 }
-inline void RPCDirectMessageRequest::set_message(const void* value, size_t size) {
+inline void RPCDirectMessage::set_message(const void* value, size_t size) {
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCDirectMessageRequest.message)
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCDirectMessage.message)
 }
-inline ::std::string* RPCDirectMessageRequest::mutable_message() {
+inline ::std::string* RPCDirectMessage::mutable_message() {
   
-  // @@protoc_insertion_point(field_mutable:pb.RPCDirectMessageRequest.message)
+  // @@protoc_insertion_point(field_mutable:pb.RPCDirectMessage.message)
   return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* RPCDirectMessageRequest::release_message() {
-  // @@protoc_insertion_point(field_release:pb.RPCDirectMessageRequest.message)
+inline ::std::string* RPCDirectMessage::release_message() {
+  // @@protoc_insertion_point(field_release:pb.RPCDirectMessage.message)
   
   return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void RPCDirectMessageRequest::set_allocated_message(::std::string* message) {
+inline void RPCDirectMessage::set_allocated_message(::std::string* message) {
   if (message != NULL) {
     
   } else {
     
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCDirectMessageRequest.message)
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCDirectMessage.message)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

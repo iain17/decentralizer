@@ -11,10 +11,7 @@ message DNDirectMessageRequest {
 }
 
 //RPC messages
-
-message RPCDirectMessageResponse {}
-
-message RPCDirectMessageRequest {
+message RPCDirectMessage {
     string pId = 1;
     bytes message = 2;
 }

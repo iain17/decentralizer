@@ -30,16 +30,17 @@ It has these top-level messages:
 	RPCUpsertSessionResponse
 	RPCDeleteSessionRequest
 	RPCDeleteSessionResponse
-	RPCGetSessionIdsRequest
+	RPCGetSessionIdsByDetailsRequest
+	RPCGetSessionIdsByPeerIdsRequest
 	RPCGetSessionIdsResponse
 	RPCGetSessionRequest
 	RPCGetSessionResponse
 	DNDirectMessageResponse
 	DNDirectMessageRequest
-	RPCDirectMessageResponse
-	RPCDirectMessageRequest
+	RPCDirectMessage
 	RPCHealthRequest
 	RPCHealthReply
+	Empty
 	PublisherDefinition
 	PublisherUpdate
 	DNPublisherUpdateRequest

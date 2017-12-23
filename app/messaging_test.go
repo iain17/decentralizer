@@ -16,11 +16,16 @@ func TestDecentralizer_SendMessage(t *testing.T) {
 	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
+	ready := make(chan bool)
 	go func() {
-		msg := <- app2.directMessage
-		assert.Equal(t, msg.Message, []byte("hello"))
+		msg := <- app2.DirectMessage
+		assert.Equal(t, []byte("hello"), msg.Message)
+		assert.Equal(t, app1.i.Identity.Pretty(), msg.PId)
+		ready <- true
 	}()
 
 	err := app1.SendMessage(app2.i.Identity.Pretty(), []byte("hello"))
 	assert.NoError(t, err)
+
+	<-ready
 }
