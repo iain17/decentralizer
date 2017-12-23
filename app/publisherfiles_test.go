@@ -18,6 +18,7 @@ func TestDecentralizer_updatePublisherDefinition(t *testing.T) {
 	assert.NotNil(t, master)
 
 	definition := &pb.PublisherDefinition{
+		Status: true,
 		Files: map[string][]byte{
 			"hello.txt": []byte("Hard work, by these words guarded. Please don't steal."),
 		},
@@ -43,6 +44,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	assert.NotNil(t, master)
 
 	definition := &pb.PublisherDefinition{
+		Status: true,
 		Details: map[string]string{
 			"cool": "1",
 		},
@@ -69,6 +71,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	time.Sleep(1 * time.Second)
 	//Do a update
 	definition = &pb.PublisherDefinition{
+		Status: true,
 		Details: map[string]string{
 			"cool": "2",
 		},

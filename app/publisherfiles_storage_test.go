@@ -19,6 +19,7 @@ func TestDecentralizer_GetPublisherFile(t *testing.T) {
 	//Mocked publisher update
 	app1.publisherUpdate = &pb.PublisherUpdate{
 		Definition: &pb.PublisherDefinition{
+			Status: true,
 			Files: map[string][]byte {
 				"test.txt": expected,
 			},
@@ -47,6 +48,7 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 
 	publisherUpdate := &pb.PublisherUpdate{
 		Definition: &pb.PublisherDefinition{
+			Status: true,
 			Links: map[string]string {
 				filename: ipfsPath,
 			},

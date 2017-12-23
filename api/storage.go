@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"github.com/iain17/decentralizer/pb"
-	"errors"
 )
 
 //
