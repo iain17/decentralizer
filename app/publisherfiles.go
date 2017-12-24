@@ -37,7 +37,7 @@ func (d *Decentralizer) downloadPublisherDefinition() {
 }
 
 func (d *Decentralizer) savePublisherUpdate() {
-	if d.publisherUpdate.Created == 0 {
+	if d.publisherUpdate == nil {
 		logger.Warning("could not save publisher definition because it wasn't initialized")
 		return
 	}
@@ -53,33 +53,32 @@ func (d *Decentralizer) savePublisherUpdate() {
 	d.runPublisherInstructions()
 }
 
-func (d *Decentralizer) verifyPublisherUpdate(update *pb.PublisherUpdate) error {
-	if d.publisherUpdate != nil && d.publisherUpdate.Created >= update.Created {
-		return errors.New("definition is older")
-	}
-
-	data, err := proto.Marshal(update.Definition)
+func (d *Decentralizer) unmarshalPublisherDefinition(update *pb.PublisherUpdate) (*pb.PublisherDefinition, error) {
+	var definition pb.PublisherDefinition
+	err := proto.Unmarshal(update.Definition, &definition)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	err = d.n.Verify(data, update.Signature)
-	if err != nil {
-		return err
+	if d.publisherUpdate != nil && d.publisherDefinition.Created >= definition.Created {
+		return nil, errors.New("definition is older")
 	}
-	return nil
+	err = d.n.Verify(update.Definition, update.Signature)
+	return &definition, err
 }
 
 func (d *Decentralizer) loadNewPublisherUpdate(update *pb.PublisherUpdate) error {
-	err := d.verifyPublisherUpdate(update)
+	definition, err := d.unmarshalPublisherDefinition(update)
 	if err != nil {
 		return err
 	}
 	d.publisherUpdate = update
+	d.publisherDefinition = definition
 	d.savePublisherUpdate()
 	return nil
 }
 
 func (d *Decentralizer) signDefinition(definition *pb.PublisherDefinition) (*pb.PublisherUpdate, error) {
+	definition.Created = time.Now().Unix()
 	data, err := proto.Marshal(definition)
 	if err != nil {
 		return nil, err
@@ -89,9 +88,8 @@ func (d *Decentralizer) signDefinition(definition *pb.PublisherDefinition) (*pb.
 		return nil, err
 	}
 	return &pb.PublisherUpdate{
-		Created: time.Now().Unix(),
 		Signature: signature,
-		Definition: definition,
+		Definition: data,
 	}, nil
 }
 
@@ -111,11 +109,11 @@ func (d *Decentralizer) PublishPublisherUpdate(definition *pb.PublisherDefinitio
 //Called when the publisher file has been loaded
 func (d *Decentralizer) runPublisherInstructions() {
 	//If the publisher file told us to stop. Stop!
-	if !d.publisherUpdate.Definition.Status {
+	if !d.publisherDefinition.Status {
 		panic("Publisher has closed this network!")
 		return
 	}
-	logger.Infof("Publisher instructions loaded: %s", time.Unix(d.publisherUpdate.Created, 0).Format(time.RFC822))
+	logger.Infof("Publisher instructions loaded: %s", time.Unix(d.publisherDefinition.Created, 0).Format(time.RFC822))
 }
 
 //Will go through each connected peer and try and connect. Find out what publisher update they are running.

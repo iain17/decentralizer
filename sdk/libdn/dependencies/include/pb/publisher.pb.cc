@@ -154,7 +154,6 @@ void InitDefaultsPublisherUpdateImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherDefinition();
   {
     void* ptr = &::pb::_PublisherUpdate_default_instance_;
     new (ptr) ::pb::PublisherUpdate();
@@ -268,6 +267,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, created_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, files_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, links_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition, details_),
@@ -277,7 +277,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, created_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, signature_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherUpdate, definition_),
   ~0u,  // no _has_bits_
@@ -303,7 +302,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 9, 16, sizeof(::pb::PublisherDefinition_LinksEntry_DoNotUse)},
   { 18, 25, sizeof(::pb::PublisherDefinition_DetailsEntry_DoNotUse)},
   { 27, -1, sizeof(::pb::PublisherDefinition)},
-  { 36, -1, sizeof(::pb::PublisherUpdate)},
+  { 37, -1, sizeof(::pb::PublisherUpdate)},
   { 44, -1, sizeof(::pb::DNPublisherUpdateRequest)},
   { 49, -1, sizeof(::pb::DNPublisherUpdateResponse)},
   { 55, -1, sizeof(::pb::RPCPublishPublisherUpdateRequest)},
@@ -342,26 +341,25 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\022pb/publisher.proto\022\002pb\"\316\002\n\023PublisherDe"
-      "finition\0221\n\005files\030\001 \003(\0132\".pb.PublisherDe"
-      "finition.FilesEntry\0221\n\005links\030\002 \003(\0132\".pb."
-      "PublisherDefinition.LinksEntry\0225\n\007detail"
-      "s\030\003 \003(\0132$.pb.PublisherDefinition.Details"
-      "Entry\022\016\n\006status\030\004 \001(\010\032,\n\nFilesEntry\022\013\n\003k"
-      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\032,\n\nLinksEntr"
-      "y\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032.\n\014Det"
-      "ailsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028"
-      "\001\"b\n\017PublisherUpdate\022\017\n\007created\030\001 \001(\003\022\021\n"
-      "\tsignature\030\002 \001(\014\022+\n\ndefinition\030\003 \001(\0132\027.p"
-      "b.PublisherDefinition\"\032\n\030DNPublisherUpda"
-      "teRequest\"@\n\031DNPublisherUpdateResponse\022#"
-      "\n\006update\030\001 \001(\0132\023.pb.PublisherUpdate\"O\n R"
-      "PCPublishPublisherUpdateRequest\022+\n\ndefin"
-      "ition\030\001 \001(\0132\027.pb.PublisherDefinitionb\006pr"
-      "oto3"
+      "\n\022pb/publisher.proto\022\002pb\"\337\002\n\023PublisherDe"
+      "finition\022\017\n\007created\030\001 \001(\003\0221\n\005files\030\002 \003(\013"
+      "2\".pb.PublisherDefinition.FilesEntry\0221\n\005"
+      "links\030\003 \003(\0132\".pb.PublisherDefinition.Lin"
+      "ksEntry\0225\n\007details\030\004 \003(\0132$.pb.PublisherD"
+      "efinition.DetailsEntry\022\016\n\006status\030\005 \001(\010\032,"
+      "\n\nFilesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014"
+      ":\0028\001\032,\n\nLinksEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value"
+      "\030\002 \001(\t:\0028\001\032.\n\014DetailsEntry\022\013\n\003key\030\001 \001(\t\022"
+      "\r\n\005value\030\002 \001(\t:\0028\001\"8\n\017PublisherUpdate\022\021\n"
+      "\tsignature\030\002 \001(\014\022\022\n\ndefinition\030\003 \001(\014\"\032\n\030"
+      "DNPublisherUpdateRequest\"@\n\031DNPublisherU"
+      "pdateResponse\022#\n\006update\030\001 \001(\0132\023.pb.Publi"
+      "sherUpdate\"O\n RPCPublishPublisherUpdateR"
+      "equest\022+\n\ndefinition\030\001 \001(\0132\027.pb.Publishe"
+      "rDefinitionb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 644);
+      descriptor, 619);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/publisher.proto", &protobuf_RegisterTypes);
 }
@@ -435,6 +433,7 @@ void PublisherDefinition_DetailsEntry_DoNotUse::MergeFrom(
 void PublisherDefinition::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PublisherDefinition::kCreatedFieldNumber;
 const int PublisherDefinition::kFilesFieldNumber;
 const int PublisherDefinition::kLinksFieldNumber;
 const int PublisherDefinition::kDetailsFieldNumber;
@@ -457,12 +456,16 @@ PublisherDefinition::PublisherDefinition(const PublisherDefinition& from)
   files_.MergeFrom(from.files_);
   links_.MergeFrom(from.links_);
   details_.MergeFrom(from.details_);
-  status_ = from.status_;
+  ::memcpy(&created_, &from.created_,
+    static_cast<size_t>(reinterpret_cast<char*>(&status_) -
+    reinterpret_cast<char*>(&created_)) + sizeof(status_));
   // @@protoc_insertion_point(copy_constructor:pb.PublisherDefinition)
 }
 
 void PublisherDefinition::SharedCtor() {
-  status_ = false;
+  ::memset(&created_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&status_) -
+      reinterpret_cast<char*>(&created_)) + sizeof(status_));
   _cached_size_ = 0;
 }
 
@@ -506,7 +509,9 @@ void PublisherDefinition::Clear() {
   files_.Clear();
   links_.Clear();
   details_.Clear();
-  status_ = false;
+  ::memset(&created_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&status_) -
+      reinterpret_cast<char*>(&created_)) + sizeof(status_));
   _internal_metadata_.Clear();
 }
 
@@ -520,10 +525,24 @@ bool PublisherDefinition::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // map<string, bytes> files = 1;
+      // int64 created = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &created_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // map<string, bytes> files = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           PublisherDefinition_FilesEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
               PublisherDefinition_FilesEntry_DoNotUse,
               ::std::string, ::std::string,
@@ -543,10 +562,10 @@ bool PublisherDefinition::MergePartialFromCodedStream(
         break;
       }
 
-      // map<string, string> links = 2;
-      case 2: {
+      // map<string, string> links = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           PublisherDefinition_LinksEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
               PublisherDefinition_LinksEntry_DoNotUse,
               ::std::string, ::std::string,
@@ -570,10 +589,10 @@ bool PublisherDefinition::MergePartialFromCodedStream(
         break;
       }
 
-      // map<string, string> details = 3;
-      case 3: {
+      // map<string, string> details = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           PublisherDefinition_DetailsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
               PublisherDefinition_DetailsEntry_DoNotUse,
               ::std::string, ::std::string,
@@ -597,10 +616,10 @@ bool PublisherDefinition::MergePartialFromCodedStream(
         break;
       }
 
-      // bool status = 4;
-      case 4: {
+      // bool status = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -637,7 +656,12 @@ void PublisherDefinition::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // map<string, bytes> files = 1;
+  // int64 created = 1;
+  if (this->created() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->created(), output);
+  }
+
+  // map<string, bytes> files = 2;
   if (!this->files().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -669,7 +693,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(files_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            1, *entry, output);
+            2, *entry, output);
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
@@ -680,13 +704,13 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(files_.NewEntryWrapper(
             it->first, it->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            1, *entry, output);
+            2, *entry, output);
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // map<string, string> links = 2;
+  // map<string, string> links = 3;
   if (!this->links().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -722,7 +746,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(links_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            2, *entry, output);
+            3, *entry, output);
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
@@ -733,13 +757,13 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(links_.NewEntryWrapper(
             it->first, it->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            2, *entry, output);
+            3, *entry, output);
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // map<string, string> details = 3;
+  // map<string, string> details = 4;
   if (!this->details().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -775,7 +799,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(details_.NewEntryWrapper(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            3, *entry, output);
+            4, *entry, output);
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
     } else {
@@ -786,15 +810,15 @@ void PublisherDefinition::SerializeWithCachedSizes(
         entry.reset(details_.NewEntryWrapper(
             it->first, it->second));
         ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-            3, *entry, output);
+            4, *entry, output);
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // bool status = 4;
+  // bool status = 5;
   if (this->status() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->status(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->status(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -811,7 +835,12 @@ void PublisherDefinition::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // map<string, bytes> files = 1;
+  // int64 created = 1;
+  if (this->created() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->created(), target);
+  }
+
+  // map<string, bytes> files = 2;
   if (!this->files().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -844,7 +873,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       1, *entry, deterministic, target);
+                       2, *entry, deterministic, target);
 ;
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
@@ -857,14 +886,14 @@ void PublisherDefinition::SerializeWithCachedSizes(
             it->first, it->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       1, *entry, deterministic, target);
+                       2, *entry, deterministic, target);
 ;
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // map<string, string> links = 2;
+  // map<string, string> links = 3;
   if (!this->links().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -901,7 +930,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       2, *entry, deterministic, target);
+                       3, *entry, deterministic, target);
 ;
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
@@ -914,14 +943,14 @@ void PublisherDefinition::SerializeWithCachedSizes(
             it->first, it->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       2, *entry, deterministic, target);
+                       3, *entry, deterministic, target);
 ;
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // map<string, string> details = 3;
+  // map<string, string> details = 4;
   if (!this->details().empty()) {
     typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
@@ -958,7 +987,7 @@ void PublisherDefinition::SerializeWithCachedSizes(
             items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       3, *entry, deterministic, target);
+                       4, *entry, deterministic, target);
 ;
         Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
       }
@@ -971,16 +1000,16 @@ void PublisherDefinition::SerializeWithCachedSizes(
             it->first, it->second));
         target = ::google::protobuf::internal::WireFormatLite::
                    InternalWriteMessageNoVirtualToArray(
-                       3, *entry, deterministic, target);
+                       4, *entry, deterministic, target);
 ;
         Utf8Check::Check(&*it);
       }
     }
   }
 
-  // bool status = 4;
+  // bool status = 5;
   if (this->status() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->status(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1000,7 +1029,7 @@ size_t PublisherDefinition::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // map<string, bytes> files = 1;
+  // map<string, bytes> files = 2;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->files_size());
   {
@@ -1014,7 +1043,7 @@ size_t PublisherDefinition::ByteSizeLong() const {
     }
   }
 
-  // map<string, string> links = 2;
+  // map<string, string> links = 3;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->links_size());
   {
@@ -1028,7 +1057,7 @@ size_t PublisherDefinition::ByteSizeLong() const {
     }
   }
 
-  // map<string, string> details = 3;
+  // map<string, string> details = 4;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->details_size());
   {
@@ -1042,7 +1071,14 @@ size_t PublisherDefinition::ByteSizeLong() const {
     }
   }
 
-  // bool status = 4;
+  // int64 created = 1;
+  if (this->created() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->created());
+  }
+
+  // bool status = 5;
   if (this->status() != 0) {
     total_size += 1 + 1;
   }
@@ -1079,6 +1115,9 @@ void PublisherDefinition::MergeFrom(const PublisherDefinition& from) {
   files_.MergeFrom(from.files_);
   links_.MergeFrom(from.links_);
   details_.MergeFrom(from.details_);
+  if (from.created() != 0) {
+    set_created(from.created());
+  }
   if (from.status() != 0) {
     set_status(from.status());
   }
@@ -1111,6 +1150,7 @@ void PublisherDefinition::InternalSwap(PublisherDefinition* other) {
   files_.Swap(&other->files_);
   links_.Swap(&other->links_);
   details_.Swap(&other->details_);
+  swap(created_, other->created_);
   swap(status_, other->status_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
@@ -1125,11 +1165,8 @@ void PublisherDefinition::InternalSwap(PublisherDefinition* other) {
 // ===================================================================
 
 void PublisherUpdate::InitAsDefaultInstance() {
-  ::pb::_PublisherUpdate_default_instance_._instance.get_mutable()->definition_ = const_cast< ::pb::PublisherDefinition*>(
-      ::pb::PublisherDefinition::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PublisherUpdate::kCreatedFieldNumber;
 const int PublisherUpdate::kSignatureFieldNumber;
 const int PublisherUpdate::kDefinitionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -1151,20 +1188,16 @@ PublisherUpdate::PublisherUpdate(const PublisherUpdate& from)
   if (from.signature().size() > 0) {
     signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
   }
-  if (from.has_definition()) {
-    definition_ = new ::pb::PublisherDefinition(*from.definition_);
-  } else {
-    definition_ = NULL;
+  definition_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.definition().size() > 0) {
+    definition_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.definition_);
   }
-  created_ = from.created_;
   // @@protoc_insertion_point(copy_constructor:pb.PublisherUpdate)
 }
 
 void PublisherUpdate::SharedCtor() {
   signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&definition_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&created_) -
-      reinterpret_cast<char*>(&definition_)) + sizeof(created_));
+  definition_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -1175,7 +1208,7 @@ PublisherUpdate::~PublisherUpdate() {
 
 void PublisherUpdate::SharedDtor() {
   signature_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) delete definition_;
+  definition_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void PublisherUpdate::SetCachedSize(int size) const {
@@ -1208,11 +1241,7 @@ void PublisherUpdate::Clear() {
   (void) cached_has_bits;
 
   signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (GetArenaNoVirtual() == NULL && definition_ != NULL) {
-    delete definition_;
-  }
-  definition_ = NULL;
-  created_ = GOOGLE_LONGLONG(0);
+  definition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -1226,20 +1255,6 @@ bool PublisherUpdate::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int64 created = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &created_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
       // bytes signature = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
@@ -1252,12 +1267,12 @@ bool PublisherUpdate::MergePartialFromCodedStream(
         break;
       }
 
-      // .pb.PublisherDefinition definition = 3;
+      // bytes definition = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_definition()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_definition()));
         } else {
           goto handle_unusual;
         }
@@ -1290,21 +1305,16 @@ void PublisherUpdate::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 created = 1;
-  if (this->created() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->created(), output);
-  }
-
   // bytes signature = 2;
   if (this->signature().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       2, this->signature(), output);
   }
 
-  // .pb.PublisherDefinition definition = 3;
-  if (this->has_definition()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->definition_, output);
+  // bytes definition = 3;
+  if (this->definition().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      3, this->definition(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1321,11 +1331,6 @@ void PublisherUpdate::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 created = 1;
-  if (this->created() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->created(), target);
-  }
-
   // bytes signature = 2;
   if (this->signature().size() > 0) {
     target =
@@ -1333,11 +1338,11 @@ void PublisherUpdate::SerializeWithCachedSizes(
         2, this->signature(), target);
   }
 
-  // .pb.PublisherDefinition definition = 3;
-  if (this->has_definition()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        3, *this->definition_, deterministic, target);
+  // bytes definition = 3;
+  if (this->definition().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        3, this->definition(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1364,18 +1369,11 @@ size_t PublisherUpdate::ByteSizeLong() const {
         this->signature());
   }
 
-  // .pb.PublisherDefinition definition = 3;
-  if (this->has_definition()) {
+  // bytes definition = 3;
+  if (this->definition().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *this->definition_);
-  }
-
-  // int64 created = 1;
-  if (this->created() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->created());
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->definition());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1411,11 +1409,9 @@ void PublisherUpdate::MergeFrom(const PublisherUpdate& from) {
 
     signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
   }
-  if (from.has_definition()) {
-    mutable_definition()->::pb::PublisherDefinition::MergeFrom(from.definition());
-  }
-  if (from.created() != 0) {
-    set_created(from.created());
+  if (from.definition().size() > 0) {
+
+    definition_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.definition_);
   }
 }
 
@@ -1444,8 +1440,7 @@ void PublisherUpdate::Swap(PublisherUpdate* other) {
 void PublisherUpdate::InternalSwap(PublisherUpdate* other) {
   using std::swap;
   signature_.Swap(&other->signature_);
-  swap(definition_, other->definition_);
-  swap(created_, other->created_);
+  definition_.Swap(&other->definition_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

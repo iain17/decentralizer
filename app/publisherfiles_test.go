@@ -8,6 +8,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"github.com/iain17/logger"
+	"github.com/golang/protobuf/proto"
 )
 
 func TestDecentralizer_updatePublisherDefinition(t *testing.T) {
@@ -22,6 +23,9 @@ func TestDecentralizer_updatePublisherDefinition(t *testing.T) {
 		Files: map[string][]byte{
 			"hello.txt": []byte("Hard work, by these words guarded. Please don't steal."),
 		},
+		Details: map[string]string{
+			"data": "wtf",
+		},
 	}
 	err := master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
@@ -32,7 +36,7 @@ func TestDecentralizer_updatePublisherDefinition(t *testing.T) {
 	assert.NotNil(t, slave)
 	time.Sleep(3 * time.Second)
 	assert.NotNil(t, slave.publisherUpdate)
-	assert.Equal(t, []byte("Hard work, by these words guarded. Please don't steal."), slave.publisherUpdate.Definition.Files["hello.txt"])
+	assert.Equal(t, []byte("Hard work, by these words guarded. Please don't steal."), slave.publisherDefinition.Files["hello.txt"])
 }
 
 func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
@@ -86,7 +90,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 		numNodesOnOldUpdate = 0
 		for i := 0; i < num - 1; i++ {
 			slaves[i].updatePublisherDefinition()
-			if slaves[i].publisherUpdate.Definition.Details["cool"] == "1" {
+			if slaves[i].publisherDefinition.Details["cool"] == "1" {
 				numNodesOnOldUpdate++
 			}
 		}
@@ -108,10 +112,12 @@ func TestDecentralizer_publishStopper(t *testing.T) {
 	nodes := ipfs.FakeNewIPFSNodes(ctx,1)
 	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
+	data, err := proto.Marshal(&pb.PublisherDefinition{
+		Status: false,
+	})
+	assert.NoError(t, err)
 	publisherUpdate := &pb.PublisherUpdate{
-		Definition: &pb.PublisherDefinition{
-			Status: false,
-		},
+		Definition: data,
 	}
 	////Mocked publisher update
 	app1.publisherUpdate = publisherUpdate

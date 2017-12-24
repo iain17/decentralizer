@@ -248,36 +248,42 @@ class PublisherDefinition : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // map<string, bytes> files = 1;
+  // map<string, bytes> files = 2;
   int files_size() const;
   void clear_files();
-  static const int kFilesFieldNumber = 1;
+  static const int kFilesFieldNumber = 2;
   const ::google::protobuf::Map< ::std::string, ::std::string >&
       files() const;
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_files();
 
-  // map<string, string> links = 2;
+  // map<string, string> links = 3;
   int links_size() const;
   void clear_links();
-  static const int kLinksFieldNumber = 2;
+  static const int kLinksFieldNumber = 3;
   const ::google::protobuf::Map< ::std::string, ::std::string >&
       links() const;
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_links();
 
-  // map<string, string> details = 3;
+  // map<string, string> details = 4;
   int details_size() const;
   void clear_details();
-  static const int kDetailsFieldNumber = 3;
+  static const int kDetailsFieldNumber = 4;
   const ::google::protobuf::Map< ::std::string, ::std::string >&
       details() const;
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_details();
 
-  // bool status = 4;
+  // int64 created = 1;
+  void clear_created();
+  static const int kCreatedFieldNumber = 1;
+  ::google::protobuf::int64 created() const;
+  void set_created(::google::protobuf::int64 value);
+
+  // bool status = 5;
   void clear_status();
-  static const int kStatusFieldNumber = 4;
+  static const int kStatusFieldNumber = 5;
   bool status() const;
   void set_status(bool value);
 
@@ -303,6 +309,7 @@ class PublisherDefinition : public ::google::protobuf::Message /* @@protoc_inser
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       0 > details_;
+  ::google::protobuf::int64 created_;
   bool status_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
@@ -406,28 +413,26 @@ class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_signature();
   void set_allocated_signature(::std::string* signature);
 
-  // .pb.PublisherDefinition definition = 3;
-  bool has_definition() const;
+  // bytes definition = 3;
   void clear_definition();
   static const int kDefinitionFieldNumber = 3;
-  const ::pb::PublisherDefinition& definition() const;
-  ::pb::PublisherDefinition* release_definition();
-  ::pb::PublisherDefinition* mutable_definition();
-  void set_allocated_definition(::pb::PublisherDefinition* definition);
-
-  // int64 created = 1;
-  void clear_created();
-  static const int kCreatedFieldNumber = 1;
-  ::google::protobuf::int64 created() const;
-  void set_created(::google::protobuf::int64 value);
+  const ::std::string& definition() const;
+  void set_definition(const ::std::string& value);
+  #if LANG_CXX11
+  void set_definition(::std::string&& value);
+  #endif
+  void set_definition(const char* value);
+  void set_definition(const void* value, size_t size);
+  ::std::string* mutable_definition();
+  ::std::string* release_definition();
+  void set_allocated_definition(::std::string* definition);
 
   // @@protoc_insertion_point(class_scope:pb.PublisherUpdate)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr signature_;
-  ::pb::PublisherDefinition* definition_;
-  ::google::protobuf::int64 created_;
+  ::google::protobuf::internal::ArenaStringPtr definition_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
   friend void ::protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherUpdateImpl();
@@ -745,7 +750,21 @@ class RPCPublishPublisherUpdateRequest : public ::google::protobuf::Message /* @
 
 // PublisherDefinition
 
-// map<string, bytes> files = 1;
+// int64 created = 1;
+inline void PublisherDefinition::clear_created() {
+  created_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 PublisherDefinition::created() const {
+  // @@protoc_insertion_point(field_get:pb.PublisherDefinition.created)
+  return created_;
+}
+inline void PublisherDefinition::set_created(::google::protobuf::int64 value) {
+  
+  created_ = value;
+  // @@protoc_insertion_point(field_set:pb.PublisherDefinition.created)
+}
+
+// map<string, bytes> files = 2;
 inline int PublisherDefinition::files_size() const {
   return files_.size();
 }
@@ -763,7 +782,7 @@ PublisherDefinition::mutable_files() {
   return files_.MutableMap();
 }
 
-// map<string, string> links = 2;
+// map<string, string> links = 3;
 inline int PublisherDefinition::links_size() const {
   return links_.size();
 }
@@ -781,7 +800,7 @@ PublisherDefinition::mutable_links() {
   return links_.MutableMap();
 }
 
-// map<string, string> details = 3;
+// map<string, string> details = 4;
 inline int PublisherDefinition::details_size() const {
   return details_.size();
 }
@@ -799,7 +818,7 @@ PublisherDefinition::mutable_details() {
   return details_.MutableMap();
 }
 
-// bool status = 4;
+// bool status = 5;
 inline void PublisherDefinition::clear_status() {
   status_ = false;
 }
@@ -816,20 +835,6 @@ inline void PublisherDefinition::set_status(bool value) {
 // -------------------------------------------------------------------
 
 // PublisherUpdate
-
-// int64 created = 1;
-inline void PublisherUpdate::clear_created() {
-  created_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 PublisherUpdate::created() const {
-  // @@protoc_insertion_point(field_get:pb.PublisherUpdate.created)
-  return created_;
-}
-inline void PublisherUpdate::set_created(::google::protobuf::int64 value) {
-  
-  created_ = value;
-  // @@protoc_insertion_point(field_set:pb.PublisherUpdate.created)
-}
 
 // bytes signature = 2;
 inline void PublisherUpdate::clear_signature() {
@@ -884,53 +889,56 @@ inline void PublisherUpdate::set_allocated_signature(::std::string* signature) {
   // @@protoc_insertion_point(field_set_allocated:pb.PublisherUpdate.signature)
 }
 
-// .pb.PublisherDefinition definition = 3;
-inline bool PublisherUpdate::has_definition() const {
-  return this != internal_default_instance() && definition_ != NULL;
-}
+// bytes definition = 3;
 inline void PublisherUpdate::clear_definition() {
-  if (GetArenaNoVirtual() == NULL && definition_ != NULL) {
-    delete definition_;
-  }
-  definition_ = NULL;
+  definition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::pb::PublisherDefinition& PublisherUpdate::definition() const {
-  const ::pb::PublisherDefinition* p = definition_;
+inline const ::std::string& PublisherUpdate::definition() const {
   // @@protoc_insertion_point(field_get:pb.PublisherUpdate.definition)
-  return p != NULL ? *p : *reinterpret_cast<const ::pb::PublisherDefinition*>(
-      &::pb::_PublisherDefinition_default_instance_);
+  return definition_.GetNoArena();
 }
-inline ::pb::PublisherDefinition* PublisherUpdate::release_definition() {
+inline void PublisherUpdate::set_definition(const ::std::string& value) {
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.PublisherUpdate.definition)
+}
+#if LANG_CXX11
+inline void PublisherUpdate::set_definition(::std::string&& value) {
+  
+  definition_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.PublisherUpdate.definition)
+}
+#endif
+inline void PublisherUpdate::set_definition(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.PublisherUpdate.definition)
+}
+inline void PublisherUpdate::set_definition(const void* value, size_t size) {
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.PublisherUpdate.definition)
+}
+inline ::std::string* PublisherUpdate::mutable_definition() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.PublisherUpdate.definition)
+  return definition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PublisherUpdate::release_definition() {
   // @@protoc_insertion_point(field_release:pb.PublisherUpdate.definition)
   
-  ::pb::PublisherDefinition* temp = definition_;
-  definition_ = NULL;
-  return temp;
+  return definition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::pb::PublisherDefinition* PublisherUpdate::mutable_definition() {
-  
-  if (definition_ == NULL) {
-    definition_ = new ::pb::PublisherDefinition;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.PublisherUpdate.definition)
-  return definition_;
-}
-inline void PublisherUpdate::set_allocated_definition(::pb::PublisherDefinition* definition) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete definition_;
-  }
-  if (definition) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      definition = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, definition, submessage_arena);
-    }
+inline void PublisherUpdate::set_allocated_definition(::std::string* definition) {
+  if (definition != NULL) {
     
   } else {
     
   }
-  definition_ = definition;
+  definition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), definition);
   // @@protoc_insertion_point(field_set_allocated:pb.PublisherUpdate.definition)
 }
 

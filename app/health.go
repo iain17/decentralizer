@@ -48,7 +48,7 @@ func (d *Decentralizer) Health() (bool, error) {
 		return false, errors.New(fmt.Sprintf("Not ready yet. Downloading publisher file..."))
 	}
 
-	if !d.publisherUpdate.Definition.Status {
+	if !d.publisherDefinition.Status {
 		return false, errors.New("closed")
 	}
 

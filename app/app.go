@@ -43,6 +43,7 @@ type Decentralizer struct {
 
 	//Publisher files
 	publisherUpdate  	   *pb.PublisherUpdate
+	publisherDefinition	   *pb.PublisherDefinition
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")

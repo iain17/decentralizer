@@ -16,13 +16,13 @@ func TestDecentralizer_GetPublisherFile(t *testing.T) {
 	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
 	expected := []byte("Ok")
+
 	//Mocked publisher update
-	app1.publisherUpdate = &pb.PublisherUpdate{
-		Definition: &pb.PublisherDefinition{
-			Status: true,
-			Files: map[string][]byte {
-				"test.txt": expected,
-			},
+	app1.publisherUpdate = &pb.PublisherUpdate{}
+	app1.publisherDefinition = &pb.PublisherDefinition{
+		Status: true,
+		Files: map[string][]byte {
+			"test.txt": expected,
 		},
 	}
 
@@ -46,18 +46,19 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 	ipfsPath, err := app2.SavePeerFile(filename, expected)
 	assert.NoError(t, err)
 
-	publisherUpdate := &pb.PublisherUpdate{
-		Definition: &pb.PublisherDefinition{
-			Status: true,
-			Links: map[string]string {
-				filename: ipfsPath,
-			},
+	publisherUpdate := &pb.PublisherUpdate{}
+	definition := &pb.PublisherDefinition{
+		Status: true,
+		Links: map[string]string {
+			filename: ipfsPath,
 		},
 	}
 	//
 	////Mocked publisher update
 	app1.publisherUpdate = publisherUpdate
+	app1.publisherDefinition = definition
 	app2.publisherUpdate = publisherUpdate
+	app2.publisherDefinition = definition
 
 	data, err := app1.GetPublisherFile(filename)
 	assert.NoError(t, err)

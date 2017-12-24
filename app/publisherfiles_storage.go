@@ -12,15 +12,15 @@ func (d * Decentralizer) GetPublisherFile(name string) ([]byte, error) {
 	}
 	var result []byte
 	//First check the files
-	if d.publisherUpdate.Definition.Files[name] != nil {
-		result = d.publisherUpdate.Definition.Files[name]
+	if d.publisherDefinition.Files[name] != nil {
+		result = d.publisherDefinition.Files[name]
 	}
 	//Try links
 	if result == nil {
 
 		//Fetch from IPFS
-		if d.publisherUpdate.Definition.Links[name] != "" {
-			path := d.publisherUpdate.Definition.Links[name]
+		if d.publisherDefinition.Links[name] != "" {
+			path := d.publisherDefinition.Links[name]
 			pth := coreapi.ResolvedPath(path, nil, nil)
 			api := coreapi.NewCoreAPI(d.i)
 			r, err := api.Unixfs().Cat(d.i.Context(), pth)

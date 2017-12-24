@@ -3,16 +3,16 @@ package pb;
 
 //DN
 message PublisherDefinition {
-    map<string, bytes> files = 1;//name, data: Essential to the network. Every peer will have them.
-    map<string, string> links = 2;//name, ipfs path: Can be larger files. Updates or extra downloadable content.
-    map<string, string> details = 3;//Anything at all
-    bool status = 4;//Network alive or not. This gives the publisher the power to kill a network.
+    int64 created = 1;
+    map<string, bytes> files = 2;//name, data: Essential to the network. Every peer will have them.
+    map<string, string> links = 3;//name, ipfs path: Can be larger files. Updates or extra downloadable content.
+    map<string, string> details = 4;//Anything at all
+    bool status = 5;//Network alive or not. This gives the publisher the power to kill a network.
 }
 
 message PublisherUpdate {
-    int64 created = 1;
     bytes signature = 2;
-    PublisherDefinition definition = 3;
+    bytes definition = 3;
 }
 
 message DNPublisherUpdateRequest {}

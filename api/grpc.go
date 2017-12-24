@@ -68,12 +68,14 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 	}
 
 	//Check health
-	ready, err := s.app.Health()
-	if err != nil {
-		return ctx, err
-	}
-	if !ready {
-		return ctx, errors.New("not ready yet. check health check")
+	if len(meta["health"]) == 0 {
+		ready, err := s.app.Health()
+		if err != nil {
+			return ctx, err
+		}
+		if !ready {
+			return ctx, errors.New("not ready yet. check health check")
+		}
 	}
 
 	return ctx, nil
