@@ -39,7 +39,6 @@ func (s *Server) initGRPC(port int) error {
 	return nil
 }
 
-
 func (s *Server) auth(ctx context.Context) (context.Context, error) {
 	var clientVersion string
 	var networkKey string
@@ -58,9 +57,13 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 		isPrivateKey = meta["privkey"][0] == "1"
 	}
 	if s.app == nil && networkKey != "" {
+		logger.Info("Joining network...")
 		err := s.setNetwork(clientVersion, networkKey, isPrivateKey)
 		if err != nil {
+			logger.Warningf("Failed to join network: %v", err)
 			return ctx, err
+		} else {
+			logger.Info("Joined network.")
 		}
 	}
 	if s.app == nil {

@@ -12,7 +12,7 @@ import (
 //
 // Create or update a session. Takes session info, returns session id.
 func (s *Server) UpsertSession(ctx context.Context, request *pb.RPCUpsertSessionRequest) (*pb.RPCUpsertSessionResponse, error) {
-	logger.Infof("Upsert session request received")
+	logger.Infof("Upsert session request received for type: %d", request.Session.Type)
 	if request.Session.Details == nil {
 		request.Session.Details = make(map[string]string)
 	}
@@ -72,6 +72,7 @@ func (s *Server) GetSessionIdsByPeerIds(ctx context.Context, req *pb.RPCGetSessi
 		}
 		sessions = append(sessions, s...)
 	}
+	logger.Infof("Returning %d session ids for search of type '%d'", len(sessions))
 	return &pb.RPCGetSessionIdsResponse{
 		SessionIds: mapToIds(sessions),
 	}, nil

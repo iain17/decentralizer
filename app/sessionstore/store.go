@@ -125,6 +125,7 @@ func (s *Store) FindAll() (result []*pb.Session, err error) {
 }
 
 func (s *Store) FindByDetails(key, value string) (result []*pb.Session, err error) {
+	logger.Infof("Find sessions by '%s' = '%s'", key, value)
 	txn := s.db.Txn(false)
 	defer txn.Abort()
 	p, err := txn.Get(TABLE, "details", key, value)

@@ -18,6 +18,7 @@ import (
 	"github.com/robfig/cron"
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
+	"os"
 )
 
 type Decentralizer struct {
@@ -28,6 +29,9 @@ type Decentralizer struct {
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
+
+	//Peer ids that did not respond to our queries.
+	ignore 				   map[string]bool
 
 	//Matchmaking
 	sessions               map[uint64]*sessionstore.Store
@@ -44,16 +48,22 @@ type Decentralizer struct {
 	//Publisher files
 	publisherUpdate  	   *pb.PublisherUpdate
 	publisherDefinition	   *pb.PublisherDefinition
+	searchingForPublisherUpdate bool
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
 
-func getIpfsPath() (string, error) {
+func getIpfsPath() string {
 	paths := configPath.QueryFolders(configdir.Global)
 	if len(paths) == 0 {
-		return "", errors.New("queryFolder request failed")
+		panic(errors.New("queryFolder request failed"))
 	}
-	return paths[0].Path, nil
+	return paths[0].Path
+}
+
+func Reset() {
+	os.RemoveAll(configPath.QueryCacheFolder().Path)
+	os.RemoveAll(getIpfsPath())
 }
 
 func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralizer, error) {
@@ -74,11 +84,10 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 			return nil, err
 		}
 	}
-	path, err := getIpfsPath()
-	if err != nil {
-		return nil, err
-	}
-	i, err := ipfs.OpenIPFSRepo(ctx, path, -1)
+	ipfsPath := getIpfsPath()
+	logger.Info("IPFS path: %s", ipfsPath)
+	logger.Info("Cache path: %s", configPath.QueryCacheFolder().Path)
+	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, -1)
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +111,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		searches:				make(map[uint64]*search),
 		peers:         			peers,
 		DirectMessage: 			make(chan *pb.RPCDirectMessage, 10),
+		ignore:					make(map[string]bool),
 	}
 	err = instance.bootstrap()
 	if err == nil {

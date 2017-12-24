@@ -11,10 +11,10 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-func TestDecentralizer_updatePublisherDefinition(t *testing.T) {
+func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	nodes := ipfs.FakeNewIPFSNodes(ctx,6)
+	nodes := ipfs.FakeNewIPFSNodes(ctx,MIN_CONNECTED_PEERS + 2)
 	master := fakeNew(nodes[0], true)
 	assert.NotNil(t, master)
 

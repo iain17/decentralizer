@@ -8,28 +8,48 @@ import (
 	"github.com/golang/protobuf/proto"
 	"errors"
 	"time"
+	"io/ioutil"
 )
 
 func (d *Decentralizer) initPublisherFiles() {
 	d.i.PeerHost.SetStreamHandler(GET_PUBLISHER_UPDATE, d.getPublisherUpdateResponse)
 	d.downloadPublisherDefinition()
-	go d.updatePublisherDefinition()
+	go func() {
+		//Wait until we've got enough connections.
+		for {
+			lenPeers := len(d.i.PeerHost.Network().Peers())
+			if lenPeers >= MIN_CONNECTED_PEERS {
+				break
+			}
+			time.Sleep(1 * time.Second)
+		}
+		d.updatePublisherDefinition()
+	}()
 	d.cron.AddFunc("* 30 * * * *", d.updatePublisherDefinition)
 }
 
-func (d *Decentralizer) downloadPublisherDefinition() {
+func (d *Decentralizer) readPublisherUpdateFromDisk() ([]byte, error) {
 	data, err := configPath.QueryCacheFolder().ReadFile(PUBLISHER_DEFINITION_FILE)
 	if err != nil {
-		//logger.Warningf("Could not restore publisher file: %v", err)
+		//Check if publisher file is in the same director as us
+		data, err = ioutil.ReadFile("./" + PUBLISHER_DEFINITION_FILE)
+	}
+	return data, err
+}
+
+func (d *Decentralizer) downloadPublisherDefinition() {
+	data, err := d.readPublisherUpdateFromDisk()
+	if err != nil {
+		logger.Warningf("Could not read publisher file: %v", err)
 		return
 	}
-	var definition pb.PublisherUpdate
-	err = proto.Unmarshal(data, &definition)
+	var update pb.PublisherUpdate
+	err = proto.Unmarshal(data, &update)
 	if err != nil {
 		logger.Warningf("Could not restore publisher file: %v", err)
 		return
 	}
-	err = d.loadNewPublisherUpdate(&definition)
+	err = d.loadNewPublisherUpdate(&update)
 	if err != nil {
 		logger.Warningf("Could not restore publisher file: %v", err)
 		return
@@ -119,30 +139,45 @@ func (d *Decentralizer) runPublisherInstructions() {
 //Will go through each connected peer and try and connect. Find out what publisher update they are running.
 //If we've got 3 responses we'll stop trying. And take that this is the latest
 func (d *Decentralizer) updatePublisherDefinition() {
-	//Wait until we've got enough connections.
-	for {
-		lenPeers := len(d.i.PeerHost.Network().Peers())
-		if lenPeers >= 3 {
-			break
-		}
-		time.Sleep(1 * time.Second)
+	if d.searchingForPublisherUpdate {
+		return
 	}
+	d.searchingForPublisherUpdate = true
+	defer func() {
+		d.searchingForPublisherUpdate = false
+	}()
+	logger.Info("Looking for a updated publisher definition.")
 	checked := 0
 	for _, peer := range d.i.PeerHost.Network().Peers() {
-		if checked >= 3 {
+		if d.publisherDefinition != nil && checked >= MIN_CONNECTED_PEERS {
 			break
+		}
+		id := peer.Pretty()
+		if d.ignore[id] {
+			continue
 		}
 		definition, err := d.getPublisherUpdateRequest(peer)
 		if err != nil {
-			logger.Debugf("Could not get publisher update: %v", err)
+			if err.Error() == "i/o deadline reached" {
+				continue
+			}
+			if err.Error() == "protocol not supported" {
+				d.ignore[id] = true
+				continue
+			}
+			logger.Warningf("Could not get publisher update: %v", err)
 			continue
 		}
 		checked++
 		err = d.loadNewPublisherUpdate(definition)
-		//We've updated.
-		if err == nil {
-			break
+		if err != nil {
+			logger.Warningf("Could not load new publisher update: %v", err)
 		}
+	}
+	if d.publisherDefinition == nil {
+		logger.Warning("Could not find publisher definition. Retrying....")
+		d.searchingForPublisherUpdate = false
+		d.updatePublisherDefinition()
 	}
 }
 
@@ -151,7 +186,7 @@ func (d *Decentralizer) getPublisherUpdateRequest(peer peer.ID) (*pb.PublisherUp
 	if err != nil {
 		return nil, err
 	}
-	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
+	stream.SetDeadline(time.Now().Add(1 * time.Second))
 	defer stream.Close()
 	logger.Infof("Requesting %s for their publisher file.", peer.Pretty())
 

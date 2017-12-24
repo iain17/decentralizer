@@ -52,8 +52,11 @@ func (s *search) run(ctx context.Context) {
 	var wg sync.WaitGroup
 	providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), MAX_SESSIONS)
 	for provider := range providers {
-		//Stop any duplicates
+		//Stop any duplicate queries and peers that are known to not respond to our app.
 		id := provider.String()
+		if s.d.ignore[id] {
+			continue
+		}
 		if s.seen[id] {
 			continue
 		}
@@ -103,7 +106,14 @@ func (s *search) update(ctx context.Context) {
 			defer wg.Done()
 			num, err := s.request(id)
 			if err != nil {
-				logger.Infof("Failed to save sessions received from %s: %v", id.Pretty(), err)
+				if err.Error() == "i/o deadline reached" {
+					return
+				}
+				if err.Error() == "protocol not supported" {
+					s.d.ignore[id.Pretty()] = true
+					return
+				}
+				logger.Debugf("Failed to get sessions from %s: %v", id.Pretty(), err)
 			}
 			total += num
 		}(provider)
@@ -119,8 +129,7 @@ func (s *search) update(ctx context.Context) {
 func (s *search) request(id Peer.ID) (int, error) {
 	sessions, err := s.d.getSessionsRequest(id, s.sessionType)
 	if err != nil {
-		logger.Debugf("Failed to get sessions from %s: %v", id.Pretty(), err)
-		return 0, nil
+		return 0, err
 	}
 	return len(sessions), s.add(sessions, id)
 }
