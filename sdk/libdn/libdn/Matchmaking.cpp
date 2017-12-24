@@ -50,7 +50,7 @@ namespace libdn {
 	LIBDN_API Promise<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value) {
 		auto result = new Promise<int>([type, key, value](Promise<int>* promise) {
 			//build request.
-			pb::RPCGetSessionIdsRequest request;
+			pb::RPCGetSessionIdsByDetailsRequest request;
 			request.set_type(type);
 			request.set_key(key);
 			request.set_value(value);
@@ -59,7 +59,7 @@ namespace libdn {
 			pb::RPCGetSessionIdsResponse reply;
 
 			auto ctx = context.client->getContext();
-			grpc::Status status = context.client->stub_->GetSessionIds(ctx, request, &reply);
+			grpc::Status status = context.client->stub_->GetSessionIdsByDetails(ctx, request, &reply);
 
 			if (status.ok()) {
 				context.sessions = reply.sessionids();
@@ -73,6 +73,35 @@ namespace libdn {
 		});
 		return result;
 	}
+
+	/*
+	LIBDN_API Promise<int>* LIBDN_CALL GetNumSessionsByPeerIds(uint32_t type, []PeerID ids) {
+		auto result = new Promise<int>([type, ids](Promise<int>* promise) {
+			//build request.
+			pb::RPCGetSessionIdsByPeerIdsRequest request;
+			for (auto const peerId : ids) {
+				request.add_peerids(peerId);
+			}
+
+			// Container for the data we expect from the server.
+			pb::RPCGetSessionIdsResponse reply;
+
+			auto ctx = context.client->getContext();
+			grpc::Status status = context.client->stub_->GetSessionIdsByDetails(ctx, request, &reply);
+
+			if (status.ok()) {
+				context.sessions = reply.sessionids();
+				int size = context.sessions.size();
+				return size;
+			} else {
+				promise->reject(fmt::format("[Could not get session ids] {0}: {1}", status.error_code(), status.error_message().c_str()));
+			}
+
+			return 0;
+		});
+		return result;
+	}
+	*/
 
 	LIBDN_API Promise<libdn::Session*>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId) {
 		auto result = new Promise<libdn::Session*>([sessionId](Promise<libdn::Session*>* promise) {

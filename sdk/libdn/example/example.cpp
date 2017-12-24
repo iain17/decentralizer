@@ -12,12 +12,16 @@ void LogCB(const char* message) {
 	printf("[DN] %s\n", message);
 }
 
+void MessageCB(libdn::PeerID from, const uint8_t* data, uint32_t size) {
+	printf("[DN] Received direct message from %s with a size of %i\n", from.c_str(), size);
+}
+
 void createSession() {
 	LogCB("createSession");
 	//Create session.
 	libdn::Session* session = new libdn::Session();
 	session->name = "Big tests";
-	session->type = 1337;
+	session->type = 2117;
 	session->port = 8080;
 	session->details["cool"] = "yes";
 	auto request = libdn::UpsertSession(session);
@@ -30,7 +34,7 @@ void createSession() {
 void findSessions() {
 	LogCB("findSessions");
 	//Get all sessions with type 1337 and all session that are cool.
-	auto request = libdn::GetNumSessions(1337, "cool", "yes");
+	auto request = libdn::GetNumSessions(2117, "cool", "yes");
 	if (request->wait()) {
 		int num = request->get();
 		printf("Received %i session ids\n", num);
@@ -121,12 +125,19 @@ void storageTest() {
 	getPeerFile(expected);
 }
 
+void messagingTest() {
+	std::string to = "self";
+	std::string data = "Cool";
+	auto req = libdn::SendDirectMessage(to, data);
+	req->wait();
+}
+
 int main() {
 	printf("DN_Init()\n");
-	libdn::Init(LogCB);
+	libdn::Init(LogCB, MessageCB);
 	bool status = false;
 	while (!status) {
-		status = libdn::Connect("s1.imunro.nl:50010", NETWORKKEY, true);
+		status = libdn::Connect("10.1.1.34:50010", NETWORKKEY, true);
 	}
 	getSelf();
 
@@ -135,6 +146,7 @@ int main() {
 		libdn::RunFrame();
 		matchMakingTest();
 		storageTest();
+		messagingTest();
 		Sleep(100);
 	}
 }

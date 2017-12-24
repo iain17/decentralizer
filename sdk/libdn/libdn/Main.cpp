@@ -2,28 +2,25 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API void LIBDN_CALL Init(ConnectLogCB callback) {
+	LIBDN_API void LIBDN_CALL Init(LogCB logCallback, DirectMessageCB directMessageCallback) {
 		if (context.initialized) {
 			return;
 		}
 		context.initialized = true;
-		context.g_logCB = callback;
+		context.g_logCB = logCallback;
+		context.g_dmCB = directMessageCallback;
 		Log_Print("Initializing libdn");
-
-		//Test
-		libdn::Promise<int>* test = new libdn::Promise<int>([](libdn::Promise<int>* promise) {
-			promise->reject("Not cool");
-			return 1;
-		});
-		test->wait();
-
 	}
 
 	LIBDN_API void LIBDN_CALL Shutdown() {
 		return;
 	}
 
+	void ListenToDirectMessages();
 	LIBDN_API void LIBDN_CALL RunFrame() {
+		if (!context.DMListening) {
+			ListenToDirectMessages();
+		}
 		return;
 	}
 }

@@ -11,7 +11,7 @@ namespace libdn {
 	// ----------------------------------------------------------
 
 	// starts up the network platform functions
-	LIBDN_API void LIBDN_CALL Init(ConnectLogCB callback);
+	LIBDN_API void LIBDN_CALL Init(LogCB logCallback, DirectMessageCB directMessageCallback);
 
 	// cleans up and shuts down the network platform
 	LIBDN_API void LIBDN_CALL Shutdown();
@@ -87,10 +87,6 @@ namespace libdn {
 	// sends direct message to another peer.
 	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID& pid, std::string& data);
 	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(PeerID& pid, const void* data, size_t size);
-
-	// function to register a callback when a direct message has been received
-	// arguments: source peer id, data, length
-	LIBDN_API void LIBDN_CALL RegisterDirectMessageCallback(void(__cdecl * callback)(PeerID, const uint8_t*, uint32_t));
 
 	/// ---------------------------------------------------------
 	// Matchmaking service

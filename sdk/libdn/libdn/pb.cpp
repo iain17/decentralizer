@@ -12,3 +12,6 @@
 
 #include "pb/messaging.grpc.pb.cc"
 #include "pb/messaging.pb.cc"
+
+#include "pb/publisher.grpc.pb.cc"
+#include "pb/publisher.pb.cc"
