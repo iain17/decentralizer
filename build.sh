@@ -18,6 +18,10 @@ echo $FAIL
 
 if [ "$FAIL" == "0" ];
 then
+    if [ "$HOSTNAME" = "Iains-MacBook.local" ]; then
+       cp bin/linux/unpacked-adna /Users/iain17/work/src/gitlab.com/atlascorporation/publisher/bin/adna
+    fi
+
     echo "Built!"
 else
     echo "Failed to build! ($FAIL)"

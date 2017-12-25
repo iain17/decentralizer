@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/stretchr/testify/assert"
+	"sync"
 )
 
 func TestDecentralizer_SendMessage(t *testing.T) {
@@ -16,16 +17,17 @@ func TestDecentralizer_SendMessage(t *testing.T) {
 	app2 := fakeNew(nodes[1], false)
 	assert.NotNil(t, app2)
 
-	ready := make(chan bool)
+	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
 		msg := <- app2.DirectMessage
 		assert.Equal(t, []byte("hello"), msg.Message)
 		assert.Equal(t, app1.i.Identity.Pretty(), msg.PId)
-		ready <- true
+		wg.Done()
 	}()
 
 	err := app1.SendMessage(app2.i.Identity.Pretty(), []byte("hello"))
 	assert.NoError(t, err)
 
-	<-ready
+	wg.Wait()
 }

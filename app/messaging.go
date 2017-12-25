@@ -6,6 +6,7 @@ import (
 	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
 	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
 	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	"github.com/iain17/framed"
 )
 
 type DirectMessage struct {
@@ -36,13 +37,13 @@ func (d *Decentralizer) SendMessage(peerId string, message []byte) error {
 	if err != nil {
 		return err
 	}
-	err = Write(stream, reqData)
+	err = framed.Write(stream, reqData)
 	if err != nil {
 		return err
 	}
 
 	//Response
-	resData, err := Read(stream)
+	resData, err := framed.Read(stream)
 	if err != nil {
 		return err
 	}
@@ -55,7 +56,7 @@ func (d *Decentralizer) SendMessage(peerId string, message []byte) error {
 }
 
 func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
-	reqData, err := Read(stream)
+	reqData, err := framed.Read(stream)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -82,7 +83,7 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 		logger.Error(err)
 		return
 	}
-	err = Write(stream, response)
+	err = framed.Write(stream, response)
 	if err != nil {
 		logger.Error(err)
 		return

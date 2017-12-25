@@ -10,6 +10,7 @@ import (
 	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
 	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
 	"time"
+	"github.com/iain17/framed"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -180,13 +181,13 @@ func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = Write(stream, reqData)
+	err = framed.Write(stream, reqData)
 	if err != nil {
 		return nil, err
 	}
 
 	//Response
-	resData, err := Read(stream)
+	resData, err := framed.Read(stream)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +221,7 @@ func (d *Decentralizer) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer,
 }
 
 func (d *Decentralizer) getPeerResponse(stream inet.Stream) {
-	reqData, err := Read(stream)
+	reqData, err := framed.Read(stream)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -245,7 +246,7 @@ func (d *Decentralizer) getPeerResponse(stream inet.Stream) {
 		logger.Error(err)
 		return
 	}
-	err = Write(stream, response)
+	err = framed.Write(stream, response)
 	if err != nil {
 		logger.Error(err)
 		return

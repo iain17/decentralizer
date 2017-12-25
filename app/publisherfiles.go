@@ -9,6 +9,9 @@ import (
 	"errors"
 	"time"
 	"io/ioutil"
+	"strings"
+	"io"
+	"github.com/iain17/framed"
 )
 
 func (d *Decentralizer) initPublisherFiles() {
@@ -139,45 +142,59 @@ func (d *Decentralizer) runPublisherInstructions() {
 //Will go through each connected peer and try and connect. Find out what publisher update they are running.
 //If we've got 3 responses we'll stop trying. And take that this is the latest
 func (d *Decentralizer) updatePublisherDefinition() {
-	if d.searchingForPublisherUpdate {
+	select {
+	case <-d.ctx.Done():
 		return
-	}
-	d.searchingForPublisherUpdate = true
-	defer func() {
-		d.searchingForPublisherUpdate = false
-	}()
-	logger.Info("Looking for a updated publisher definition.")
-	checked := 0
-	for _, peer := range d.i.PeerHost.Network().Peers() {
-		if d.publisherDefinition != nil && checked >= MIN_CONNECTED_PEERS {
+	default:
+		if d.searchingForPublisherUpdate {
+			return
+		}
+		d.searchingForPublisherUpdate = true
+		defer func() {
+			d.searchingForPublisherUpdate = false
+		}()
+		logger.Info("Looking for a updated publisher definition.")
+		checked := 0
+		for _, peer := range d.i.PeerHost.Network().Peers() {
+			if d.publisherDefinition != nil && checked >= MIN_CONNECTED_PEERS {
+				break
+			}
+			id := peer.Pretty()
+			if d.ignore[id] {
+				continue
+			}
+			definition, err := d.getPublisherUpdateRequest(peer)
+			if err != nil {
+				if err.Error() == "i/o deadline reached" {
+					continue
+				}
+				if err.Error() == "protocol not supported" {
+					d.ignore[id] = true
+					continue
+				}
+				if strings.Contains(err.Error(), "dial attempt failed") {
+					d.ignore[id] = true
+					continue
+				}
+				if err == io.EOF {
+					continue
+				}
+				logger.Warningf("Could not get publisher update: %v", err)
+				continue
+			}
+			checked++
+			err = d.loadNewPublisherUpdate(definition)
+			if err != nil {
+				logger.Warningf("Could not load new publisher update: %v", err)
+			}
+		}
+		if d.publisherDefinition == nil {
+			logger.Warning("Could not find publisher definition. Retrying....")
+			time.Sleep(10 * time.Second)
+			d.searchingForPublisherUpdate = false
+		} else {
 			break
 		}
-		id := peer.Pretty()
-		if d.ignore[id] {
-			continue
-		}
-		definition, err := d.getPublisherUpdateRequest(peer)
-		if err != nil {
-			if err.Error() == "i/o deadline reached" {
-				continue
-			}
-			if err.Error() == "protocol not supported" {
-				d.ignore[id] = true
-				continue
-			}
-			logger.Warningf("Could not get publisher update: %v", err)
-			continue
-		}
-		checked++
-		err = d.loadNewPublisherUpdate(definition)
-		if err != nil {
-			logger.Warningf("Could not load new publisher update: %v", err)
-		}
-	}
-	if d.publisherDefinition == nil {
-		logger.Warning("Could not find publisher definition. Retrying....")
-		d.searchingForPublisherUpdate = false
-		d.updatePublisherDefinition()
 	}
 }
 
@@ -195,13 +212,13 @@ func (d *Decentralizer) getPublisherUpdateRequest(peer peer.ID) (*pb.PublisherUp
 	if err != nil {
 		return nil, err
 	}
-	err = Write(stream, reqData)
+	err = framed.Write(stream, reqData)
 	if err != nil {
 		return nil, err
 	}
 
 	//Response
-	resData, err := Read(stream)
+	resData, err := framed.Read(stream)
 	if err != nil {
 		return nil, err
 	}
@@ -216,13 +233,12 @@ func (d *Decentralizer) getPublisherUpdateRequest(peer peer.ID) (*pb.PublisherUp
 
 func (d *Decentralizer) getPublisherUpdateResponse(stream inet.Stream) {
 	if d.publisherUpdate == nil {
-		logger.Info("Someone asked for our publisher update. But we ourselves don't have it yet.")
-		stream.Conn().Close()
+		framed.Write(stream, []byte("NOP"))
 		return
 	}
 	logger.Info("Responding with our publisher update.")
 
-	reqData, err := Read(stream)
+	reqData, err := framed.Read(stream)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -242,7 +258,7 @@ func (d *Decentralizer) getPublisherUpdateResponse(stream inet.Stream) {
 		logger.Error(err)
 		return
 	}
-	err = Write(stream, response)
+	err = framed.Write(stream, response)
 	if err != nil {
 		logger.Error(err)
 		return

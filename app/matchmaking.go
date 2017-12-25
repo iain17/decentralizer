@@ -15,6 +15,7 @@ import (
 	"encoding/hex"
 	"github.com/iain17/timeout"
 	"context"
+	"github.com/iain17/framed"
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
@@ -126,7 +127,7 @@ func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) 
 }
 
 func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
-	reqData, err := Read(stream)
+	reqData, err := framed.Read(stream)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -153,7 +154,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 		logger.Error(err)
 		return
 	}
-	err = Write(stream, response)
+	err = framed.Write(stream, response)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -174,13 +175,13 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]
 	if err != nil {
 		return nil, err
 	}
-	err = Write(stream, reqData)
+	err = framed.Write(stream, reqData)
 	if err != nil {
 		return nil, err
 	}
 
 	//Response
-	resData, err := Read(stream)
+	resData, err := framed.Read(stream)
 	if err != nil {
 		return nil, err
 	}

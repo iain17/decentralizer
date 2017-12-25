@@ -52,6 +52,7 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
+		ctx:					node.Context(),
 		cron:					cron.New(),
 		n:						n ,
 		ip:                     &ip,
