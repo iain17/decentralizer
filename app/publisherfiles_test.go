@@ -68,6 +68,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	assert.Error(t, err)
 
 	for i := 0; i < num - 1; i++ {
+		slaves[i].searchingForPublisherUpdate = false//goroutine might be running. then just run 2.
 		slaves[i].updatePublisherDefinition()
 		assert.NotNil(t, slaves[i].publisherUpdate)
 	}
@@ -89,6 +90,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	for numNodesOnOldUpdate > 0 {
 		numNodesOnOldUpdate = 0
 		for i := 0; i < num - 1; i++ {
+			slaves[i].searchingForPublisherUpdate = false//goroutine might be running. then just run 2.
 			slaves[i].updatePublisherDefinition()
 			if slaves[i].publisherDefinition.Details["cool"] == "1" {
 				numNodesOnOldUpdate++
