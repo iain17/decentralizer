@@ -17,7 +17,7 @@
   branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [".","assert","inproc","pproffd"]
-  revision = "7bdb34b592536f72bf50c709a0ac3d12abbc5adc"
+  revision = "b41e3843fdeafb3c2840cb36fe9199c9beabf8ff"
 
 [[projects]]
   branch = "master"
@@ -106,8 +106,8 @@
 [[projects]]
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = ["runtime","runtime/internal","utilities"]
-  revision = "8cc3a55af3bcf171a1c23a90c4df9cf591706104"
-  version = "v1.3.0"
+  revision = "07f5e79768022f9a3265235f0db4ac8c3f675fec"
+  version = "v1.3.1"
 
 [[projects]]
   branch = "master"
@@ -137,7 +137,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "b715f03ab0f4db0ba8a0f8d631b0903f36232a7d"
+  revision = "6d4050595b33ef1486dd0a46efdbb34c564fe27d"
 
 [[projects]]
   branch = "master"
@@ -172,8 +172,8 @@
 [[projects]]
   name = "github.com/miekg/dns"
   packages = ["."]
-  revision = "9271f6595be6734763aaf4b7923f8f1b7a6cc559"
-  version = "v1.0.0"
+  revision = "787fb05a250f045a0c3e676c8c499ed412633f45"
+  version = "v1.0.1"
 
 [[projects]]
   branch = "master"
@@ -239,7 +239,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
+  revision = "d585fd2cc9195196078f516b69daff6744ef5e84"
 
 [[projects]]
   branch = "master"

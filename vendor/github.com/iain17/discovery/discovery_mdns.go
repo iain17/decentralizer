@@ -54,8 +54,14 @@ func (d *DiscoveryMDNS) Run() {
 			if !ok {
 				return
 			}
-			ip := entry.AddrIPv4[0]
-			if ip == nil {
+			if entry == nil {
+				return
+			}
+			var ip net.IP
+			if len(entry.AddrIPv4) > 0 {
+				ip = entry.AddrIPv4[0]
+			}
+			if ip == nil && len(entry.AddrIPv6) > 0  {
 				ip = entry.AddrIPv6[0]
 			}
 			addr := &net.UDPAddr{

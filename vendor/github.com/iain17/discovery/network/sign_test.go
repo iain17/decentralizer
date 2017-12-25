@@ -20,28 +20,37 @@ func init() {
 	}
 }
 
+// Funnily enough both a private key user and a public key user can encrypt data
+// But only the private key user can sign and decrypt
+// The private key itself cannot encrypt. It can only encrypt because it also holds the public key
 func TestNetwork_Encrypt(t *testing.T) {
 	message := []byte("the code must be like a piece of music")
 	ciphertext, err := slave.Encrypt(message)//Yes a slave can encrypt data.
 	assert.NoError(t, err)
 	assert.NotNil(t, ciphertext)
+
+	ciphertext2, err := master.Encrypt(message)//Yes a slave can encrypt data.
+	assert.NoError(t, err)
+	assert.NotNil(t, ciphertext)
+	assert.Equal(t, ciphertext, ciphertext2)
 }
 
-//func TestNetwork_Sign_Verify(t *testing.T) {
-//	message := []byte("This message was signed by the creator.")
-//	ciphertext, err := master.Encrypt(message)
-//	assert.NoError(t, err)
-//	assert.NotNil(t, ciphertext)
-//	//Only a master can sign it.
-//	_, signature, err := slave.Sign(ciphertext)
-//	assert.Error(t, err)
-//	//So let us try that again. This time with the master
-//	hash, signature, err := master.Sign(ciphertext)
-//	assert.NoError(t, err)
-//	//Now a slave can verify if that was sent by a master
-//	err = slave.Verify(hash, signature)
-//	assert.NoError(t, err)
-//	//Sadly only a master can decrypt the message
-//	_, err = slave.Decrypt(ciphertext)
-//	assert.NoError(t, err)
-//}
+// In this test case the message has been written by the creator.
+// By simply signing the data we can ensure no other slave is able to change it. because each slave will check if the hash of the message is compatible with the signature.
+// Only the creator (master) can create a signature.
+func TestNetwork_Sign_Verify(t *testing.T) {
+	message := []byte("the code must be like a piece of music. ~creator")
+	signature, err := master.Sign(message)
+	assert.NoError(t, err)
+	assert.NotNil(t, signature)
+	//Only a master can sign it.
+	_, err = slave.Sign(message)
+	assert.Error(t, err)
+
+	//Slave verifies that this message was written by the master
+	err = slave.Verify(message, signature)
+	assert.NoError(t, err)
+	//If the message was changed for whatever reason. It won't check out
+	err = slave.Verify([]byte("the code must be like a piece of music. ~evil slave"), signature)
+	assert.Error(t, err)
+}

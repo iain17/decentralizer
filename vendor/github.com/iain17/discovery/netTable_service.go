@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"sync"
 )
 
 type NetTableService struct {
@@ -22,6 +23,8 @@ type NetTableService struct {
 	blackList *lru.Cache
 	seen      *lru.Cache
 	peers     *lru.Cache
+	connected map[string]bool
+	mutex 	  sync.Mutex
 
 	heartbeatTicker <-chan time.Time
 
@@ -32,6 +35,7 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.logger = logger.New("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
+	nt.connected = make(map[string]bool)
 	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION*2)
 	var err error
 	nt.blackList, err = lru.New(1000)
@@ -154,6 +158,9 @@ func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
 	if nt.seen.Contains(key) {
 		return
 	}
+	if nt.peers.Contains(key) {
+		return
+	}
 	nt.seen.Add(key, true)
 	nt.logger.Debugf("new potential peer %q discovered", addr)
 	nt.newConn <- addr
@@ -170,8 +177,15 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 	}
 }
 
-func (nt *NetTableService) RemoveRemoteNode(addr net.Addr) {
-	nt.peers.Remove(addr.String())
+func (nt *NetTableService) isConnected(id string) bool {
+	nt.mutex.Lock()
+	defer nt.mutex.Unlock()
+	return nt.connected[id]
+}
+
+func (nt *NetTableService) RemoveRemoteNode(rn *RemoteNode) {
+	nt.peers.Remove(rn.conn.RemoteAddr().String())
+	nt.connected[rn.id] = false
 }
 
 func (nt *NetTableService) GetPeers() []*RemoteNode {

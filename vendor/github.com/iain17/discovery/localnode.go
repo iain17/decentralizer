@@ -13,7 +13,6 @@ import (
 type LocalNode struct {
 	Node
 	discovery *Discovery
-	id        string //To figure out if its us
 	ip        string //Gets filled in by stun service.
 	port      int
 	//Services
@@ -30,10 +29,10 @@ type LocalNode struct {
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	instance := &LocalNode{
 		Node: Node{
+			id:        xid.New().String(),
 			logger: logger.New("LocalNode"),
 			info:   map[string]string{},
 		},
-		id:        xid.New().String(),
 		discovery: discovery,
 		port:      freeport.GetPortRange("udp", 10),
 	}

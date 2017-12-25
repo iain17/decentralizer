@@ -71,6 +71,10 @@ func (l *ListenerService) process(c net.Conn) error {
 	if peerInfo.Id == l.localNode.id {
 		return errors.New("we can't add ourselves")
 	}
+	if l.localNode.netTableService.isConnected(peerInfo.Id) {
+		logger.Debug("We are already connected to %s", peerInfo.Id)
+		return nil
+	}
 	rn.logger.Debug("Received peer info...")
 
 	rn.logger.Debug("Sending our peer info...")
