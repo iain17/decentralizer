@@ -75,7 +75,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		}
 		rn.logger.Debug("Stopping with listening.")
 		rn.conn.Close()
-		ln.netTableService.RemoveRemoteNode(rn)
+		ln.netTableService.RemoveRemoteNode(rn.conn.RemoteAddr())
 	}()
 	rn.SharePeers()
 

@@ -3,9 +3,9 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/ChrisLundquist/golang-lru"
-  packages = ["."]
-  revision = "002c9cfb5d200997ab697c8d6f7c104ef3982fd6"
+  name = "github.com/Akagi201/kvcache"
+  packages = ["ttlru"]
+  revision = "5fd51d2119f6807795d27235981abb66bd816441"
 
 [[projects]]
   branch = "master"
@@ -141,6 +141,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/iain17/framed"
+  packages = ["."]
+  revision = "89d391c9e037b3e26186779264ccc69a1036566e"
+
+[[projects]]
+  branch = "master"
   name = "github.com/iain17/freeport"
   packages = ["."]
   revision = "a39186c51499dad93b1b5220f04c888ff95fce8d"
@@ -192,6 +198,12 @@
   packages = ["difflib"]
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/robfig/cron"
+  packages = ["."]
+  revision = "b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4"
+  version = "v1"
 
 [[projects]]
   name = "github.com/rs/xid"
@@ -256,6 +268,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "738a80f00fabaf3a475b20938efa1113300aa573750608fe94b21e363040b120"
+  inputs-digest = "0c19a53c2c22b2b9cea22aef08e7d8397f536bca00077fbffe6e85de63c5fe96"
   solver-name = "gps-cdcl"
   solver-version = 1

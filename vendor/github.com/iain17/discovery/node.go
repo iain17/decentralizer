@@ -6,7 +6,6 @@ import (
 )
 
 type Node struct {
-	id        string //Unique random string identifier
 	info map[string]string
 	logger        *logger.Logger
 }
