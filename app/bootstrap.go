@@ -9,7 +9,6 @@ import (
 	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
 	"strings"
 	"time"
-	"context"
 )
 
 func init() {
@@ -25,15 +24,16 @@ func init() {
 	}
 }
 
-func (s *Decentralizer) bootstrap() error {
+func (d *Decentralizer) bootstrap() error {
+	d.setInfo()
 	bs := core.DefaultBootstrapConfig
 	if USE_OWN_BOOTSTRAPPING {
-		bs.BootstrapPeers = s.discover
+		bs.BootstrapPeers = d.discover
 	} else {
 		bs.BootstrapPeers = nil
 	}
 	bs.MinPeerThreshold = MIN_CONNECTED_PEERS
-	return s.i.Bootstrap(bs)
+	return d.i.Bootstrap(bs)
 }
 
 func (d *Decentralizer) discover() []pstore.PeerInfo {
@@ -45,11 +45,6 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	var peers []pstore.PeerInfo
 	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 5*time.Minute) {
 		peerInfo, err := getInfo(peer)
-		if err != nil {
-			logger.Warning(err)
-			continue
-		}
-		err = d.i.PeerHost.Connect(context.Background(), *peerInfo)
 		if err != nil {
 			logger.Warning(err)
 			continue

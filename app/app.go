@@ -85,8 +85,8 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		}
 	}
 	ipfsPath := getIpfsPath()
-	logger.Info("IPFS path: %s", ipfsPath)
-	logger.Info("Cache path: %s", configPath.QueryCacheFolder().Path)
+	logger.Infof("IPFS path: %s", ipfsPath)
+	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
 	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, -1)
 	if err != nil {
 		return nil, err
