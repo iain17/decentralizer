@@ -17,7 +17,28 @@ import (
 func (d *Decentralizer) initPublisherFiles() {
 	d.i.PeerHost.SetStreamHandler(GET_PUBLISHER_UPDATE, d.getPublisherUpdateResponse)
 	d.downloadPublisherDefinition()
-	go d.updatePublisherDefinition()
+	go func() {
+		d.WaitTilEnoughPeers()
+		tries := 0
+		select {
+		case <-d.ctx.Done():
+			return
+		default:
+			d.updatePublisherDefinition()
+			if d.publisherUpdate == nil || d.publisherDefinition == nil {
+				tries++
+				if tries > 2 {
+					logger.Warning("Could not find publisher definition. Giving up")
+					return
+				}
+				logger.Warning("Could not find publisher definition. Retrying....")
+				time.Sleep(2 * time.Second)
+			} else {
+				logger.Info("Finished")
+				return
+			}
+		}
+	}()
 	d.cron.AddFunc("* 30 * * * *", d.updatePublisherDefinition)
 }
 
@@ -132,73 +153,48 @@ func (d *Decentralizer) runPublisherInstructions() {
 //Will go through each connected peer and try and connect. Find out what publisher update they are running.
 //If we've got 3 responses we'll stop trying. And take that this is the latest
 func (d *Decentralizer) updatePublisherDefinition() {
-	if d.searchingForPublisherUpdate {
-		return
-	}
-	d.searchingForPublisherUpdate = true
-	defer func() {
-		d.searchingForPublisherUpdate = false
-	}()
-
-	select {
-	case <-d.ctx.Done():
-		break
-	default:
-		peers := d.i.PeerHost.Network().Peers()
-		if len(peers) == 0 {
-			logger.Info("Can't look for publisher definition. Not enough connected peers.")
-			time.Sleep(10 * time.Second)
-		} else {
-			logger.Info("Looking for a updated publisher definition.")
-			checked := 0
-			for _, peer := range peers {
-				if d.publisherDefinition != nil && checked >= MIN_CONNECTED_PEERS {
-					break
-				}
-				id := peer.Pretty()
-				if d.ignore[id] {
-					continue
-				}
-				definition, err := d.getPublisherUpdateRequest(peer)
-				if err != nil {
-					if err.Error() == "i/o deadline reached" {
-						continue
-					}
-					if err.Error() == "protocol not supported" {
-						d.ignore[id] = true
-						continue
-					}
-					if strings.Contains(err.Error(), "dial attempt failed") {
-						d.ignore[id] = true
-						continue
-					}
-					if err == io.EOF {
-						continue
-					}
-					logger.Warningf("Could not get publisher update: %v", err)
-					continue
-				}
-				checked++
-				err = d.loadNewPublisherUpdate(definition)
-				if err != nil {
-					if err.Error() == "definition is older" {
-						continue
-					}
-					logger.Warningf("Could not load new publisher update: %v", err)
-				} else {
-					break //updated.
-				}
-			}
-			if d.publisherUpdate == nil || d.publisherDefinition == nil {
-				logger.Warning("Could not find publisher definition. Retrying....")
-				time.Sleep(10 * time.Second)
-			} else {
-				break
-			}
+	d.searchingForPublisherUpdate.Lock()
+	defer d.searchingForPublisherUpdate.Unlock()
+	checked := 0
+	for _, peer := range d.i.PeerHost.Network().Peers() {
+		if d.publisherDefinition != nil && checked >= MIN_CONNECTED_PEERS {
+			break
 		}
-	}
-	if d.publisherDefinition == nil {
-		logger.Info("ok wtf.")
+		id := peer.Pretty()
+		if d.ignore[id] {
+			continue
+		}
+		definition, err := d.getPublisherUpdateRequest(peer)
+		if err != nil {
+			logger.Debug(err)
+			if err.Error() == "i/o deadline reached" {
+				continue
+			}
+			if err.Error() == "protocol not supported" {
+				d.ignore[id] = true
+				continue
+			}
+			if strings.Contains(err.Error(), "dial attempt failed") {
+				d.ignore[id] = true
+				continue
+			}
+			if err == io.EOF {
+				continue
+			}
+			logger.Warningf("Could not get publisher update: %v", err)
+			continue
+		}
+		checked++
+
+		err = d.loadNewPublisherUpdate(definition)
+		if err != nil {
+			if err.Error() == "definition is older" {
+				continue
+			}
+			logger.Warningf("Could not load new publisher update: %v", err)
+		} else {
+			break //updated.
+		}
 	}
 }
 

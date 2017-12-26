@@ -14,7 +14,7 @@ import (
 func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	nodes := ipfs.FakeNewIPFSNodes(ctx,MIN_CONNECTED_PEERS + 2)
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
 	master := fakeNew(nodes[0], true)
 	assert.NotNil(t, master)
 
@@ -34,7 +34,7 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	//Now start the slave
 	slave := fakeNew(nodes[1], false)
 	assert.NotNil(t, slave)
-	time.Sleep(3 * time.Second)
+	slave.updatePublisherDefinition()
 	assert.NotNil(t, slave.publisherUpdate)
 	assert.Equal(t, []byte("Hard work, by these words guarded. Please don't steal."), slave.publisherDefinition.Files["hello.txt"])
 }
@@ -68,7 +68,6 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	assert.Error(t, err)
 
 	for i := 0; i < num - 1; i++ {
-		slaves[i].searchingForPublisherUpdate = false//goroutine might be running. then just run 2.
 		slaves[i].updatePublisherDefinition()
 		assert.NotNil(t, slaves[i].publisherUpdate)
 	}
@@ -90,7 +89,6 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	for numNodesOnOldUpdate > 0 {
 		numNodesOnOldUpdate = 0
 		for i := 0; i < num - 1; i++ {
-			slaves[i].searchingForPublisherUpdate = false//goroutine might be running. then just run 2.
 			slaves[i].updatePublisherDefinition()
 			if slaves[i].publisherDefinition.Details["cool"] == "1" {
 				numNodesOnOldUpdate++

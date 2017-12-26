@@ -23,7 +23,7 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 	assert.True(t, sessId > 0)
 
 
-	sessId, err = app2.UpsertSession(1337, "App 2 session :D", 303, map[string]string{
+	sessId, err = app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{
 		"cool": "no",
 	})
 	assert.NoError(t, err)

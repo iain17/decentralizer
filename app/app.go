@@ -19,6 +19,7 @@ import (
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
 	"os"
+	"sync"
 )
 
 type Decentralizer struct {
@@ -43,12 +44,12 @@ type Decentralizer struct {
 	addressBookChanged     bool
 
 	//messaging
-	DirectMessage          chan *pb.RPCDirectMessage
+	directMessageChannels  map[uint32]chan *pb.RPCDirectMessage
 
 	//Publisher files
 	publisherUpdate  	   *pb.PublisherUpdate
 	publisherDefinition	   *pb.PublisherDefinition
-	searchingForPublisherUpdate bool
+	searchingForPublisherUpdate sync.Mutex
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -110,7 +111,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		sessionIdToSessionType: make(map[uint64]uint64),
 		searches:				make(map[uint64]*search),
 		peers:         			peers,
-		DirectMessage: 			make(chan *pb.RPCDirectMessage, 10),
+		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					make(map[string]bool),
 	}
 	err = instance.bootstrap()
@@ -155,6 +156,16 @@ func (d *Decentralizer) GetIP() net.IP {
 	}
 
 	return *d.ip
+}
+
+func (d *Decentralizer) WaitTilEnoughPeers() {
+	for {
+		lenPeers := len(d.i.PeerHost.Network().Peers())
+		if lenPeers >= MIN_CONNECTED_PEERS {
+			break
+		}
+		time.Sleep(300 * time.Millisecond)
+	}
 }
 
 func (s *Decentralizer) Stop() {

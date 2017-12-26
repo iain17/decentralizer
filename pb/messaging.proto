@@ -7,11 +7,17 @@ message DNDirectMessageResponse {
 }
 
 message DNDirectMessageRequest {
-    bytes message = 1;
+    uint32 channel = 1;
+    bytes message = 2;
 }
 
 //RPC messages
+message RPCReceiveDirectMessageRequest {
+    uint32 channel = 1;
+}
+
 message RPCDirectMessage {
-    string pId = 1;
-    bytes message = 2;
+    uint32 channel = 1;
+    string pId = 2;
+    bytes message = 3;
 }

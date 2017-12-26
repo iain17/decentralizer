@@ -37,6 +37,7 @@ It has these top-level messages:
 	RPCGetSessionResponse
 	DNDirectMessageResponse
 	DNDirectMessageRequest
+	RPCReceiveDirectMessageRequest
 	RPCDirectMessage
 	RPCHealthRequest
 	RPCHealthReply

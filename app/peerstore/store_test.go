@@ -79,7 +79,7 @@ func TestStore_Limit(t *testing.T) {
 		},
 	})
 	assert.NoError(t, err)
-	time.Sleep(1 * time.Second)
+	time.Sleep(2 * time.Second)
 	sessions, err := store.FindAll()
 	assert.NoError(t, err)
 	assert.True(t, len(sessions) == 1)

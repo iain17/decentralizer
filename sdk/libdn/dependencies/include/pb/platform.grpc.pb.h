@@ -153,13 +153,13 @@ class Decentralizer final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>> PrepareAsyncSendDirectMessage(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>>(PrepareAsyncSendDirectMessageRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::RPCDirectMessage>> ReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::empty& request) {
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::RPCDirectMessage>> ReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::RPCDirectMessage>>(ReceiveDirectMessageRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>> AsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq, void* tag) {
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>> AsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>>(AsyncReceiveDirectMessageRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>> PrepareAsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>> PrepareAsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>>(PrepareAsyncReceiveDirectMessageRaw(context, request, cq));
     }
     //
@@ -199,9 +199,9 @@ class Decentralizer final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>* PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* AsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* PrepareAsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderInterface< ::pb::RPCDirectMessage>* ReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::empty& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>* AsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>* PrepareAsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::pb::RPCDirectMessage>* ReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>* AsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>* PrepareAsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* AsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -299,13 +299,13 @@ class Decentralizer final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::empty>> PrepareAsyncSendDirectMessage(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::empty>>(PrepareAsyncSendDirectMessageRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReader< ::pb::RPCDirectMessage>> ReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::empty& request) {
+    std::unique_ptr< ::grpc::ClientReader< ::pb::RPCDirectMessage>> ReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::pb::RPCDirectMessage>>(ReceiveDirectMessageRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>> AsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq, void* tag) {
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>> AsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>>(AsyncReceiveDirectMessageRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>> PrepareAsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>> PrepareAsyncReceiveDirectMessage(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>>(PrepareAsyncReceiveDirectMessageRaw(context, request, cq));
     }
     ::grpc::Status publishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::pb::empty* response) override;
@@ -344,9 +344,9 @@ class Decentralizer final {
     ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* AsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* PrepareAsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReader< ::pb::RPCDirectMessage>* ReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::empty& request) override;
-    ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>* AsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>* PrepareAsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::empty& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::pb::RPCDirectMessage>* ReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request) override;
+    ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>* AsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>* PrepareAsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* AsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::RpcMethod rpcmethod_GetHealth_;
@@ -412,7 +412,7 @@ class Decentralizer final {
     //
     // Send another peer a direct message. Takes a peer id and the data it should send
     virtual ::grpc::Status SendDirectMessage(::grpc::ServerContext* context, const ::pb::RPCDirectMessage* request, ::pb::empty* response);
-    virtual ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::empty* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer);
+    virtual ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::RPCReceiveDirectMessageRequest* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer);
     //
     // Publisher
     //
@@ -690,11 +690,11 @@ class Decentralizer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::empty* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer) final override {
+    ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::RPCReceiveDirectMessageRequest* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestReceiveDirectMessage(::grpc::ServerContext* context, ::pb::empty* request, ::grpc::ServerAsyncWriter< ::pb::RPCDirectMessage>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestReceiveDirectMessage(::grpc::ServerContext* context, ::pb::RPCReceiveDirectMessageRequest* request, ::grpc::ServerAsyncWriter< ::pb::RPCDirectMessage>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(13, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
@@ -952,7 +952,7 @@ class Decentralizer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::empty* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer) final override {
+    ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::RPCReceiveDirectMessageRequest* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1262,18 +1262,18 @@ class Decentralizer final {
    public:
     WithSplitStreamingMethod_ReceiveDirectMessage() {
       ::grpc::Service::MarkMethodStreamed(13,
-        new ::grpc::SplitServerStreamingHandler< ::pb::empty, ::pb::RPCDirectMessage>(std::bind(&WithSplitStreamingMethod_ReceiveDirectMessage<BaseClass>::StreamedReceiveDirectMessage, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::SplitServerStreamingHandler< ::pb::RPCReceiveDirectMessageRequest, ::pb::RPCDirectMessage>(std::bind(&WithSplitStreamingMethod_ReceiveDirectMessage<BaseClass>::StreamedReceiveDirectMessage, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithSplitStreamingMethod_ReceiveDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::empty* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer) final override {
+    ::grpc::Status ReceiveDirectMessage(::grpc::ServerContext* context, const ::pb::RPCReceiveDirectMessageRequest* request, ::grpc::ServerWriter< ::pb::RPCDirectMessage>* writer) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedReceiveDirectMessage(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::pb::empty,::pb::RPCDirectMessage>* server_split_streamer) = 0;
+    virtual ::grpc::Status StreamedReceiveDirectMessage(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::pb::RPCReceiveDirectMessageRequest,::pb::RPCDirectMessage>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_ReceiveDirectMessage<Service > SplitStreamedService;
   typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIdsByDetails<WithStreamedUnaryMethod_GetSessionIdsByPeerIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<WithSplitStreamingMethod_ReceiveDirectMessage<WithStreamedUnaryMethod_publishPublisherUpdate<Service > > > > > > > > > > > > > > > StreamedService;

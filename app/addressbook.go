@@ -17,7 +17,10 @@ func (d *Decentralizer) initAddressbook() {
 	d.i.PeerHost.SetStreamHandler(GET_PEER_REQ, d.getPeerResponse)
 	d.downloadPeers()
 	d.saveSelf()
-	go d.connectPreviousPeers()
+	go func() {
+		d.WaitTilEnoughPeers()
+		d.connectPreviousPeers()
+	}()
 	d.provideSelf()
 	d.cron.AddFunc("30 * * * * *", d.uploadPeers)
 	d.cron.AddFunc("* 5 * * * *", d.provideSelf)
@@ -82,13 +85,6 @@ func (d *Decentralizer) uploadPeers() {
 
 //Connect to our previous peers
 func (d *Decentralizer) connectPreviousPeers() error {
-	for {
-		lenPeers := len(d.i.PeerHost.Network().Peers())
-		if lenPeers >= 3 {
-			break
-		}
-		time.Sleep(1 * time.Second)
-	}
 	logger.Info("Connecting to previous peers...")
 	peers, err := d.peers.FindAll()
 	if err != nil {

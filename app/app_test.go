@@ -62,7 +62,7 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 		sessionIdToSessionType: make(map[uint64]uint64),
 		searches:				make(map[uint64]*search),
 		peers:         			peers,
-		DirectMessage: 			make(chan *pb.RPCDirectMessage, 10),
+		directMessageChannels: 	make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					make(map[string]bool),
 	}
 	instance.initMatchmaking()

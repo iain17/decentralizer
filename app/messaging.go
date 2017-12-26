@@ -18,10 +18,26 @@ func (d *Decentralizer) initMessaging() {
 	d.i.PeerHost.SetStreamHandler(SEND_DIRECT_MESSAGE, d.directMessageReceived)
 }
 
-func (d *Decentralizer) SendMessage(peerId string, message []byte) error {
+func (d *Decentralizer) GetMessagingChan(channel uint32) chan *pb.RPCDirectMessage {
+	if d.directMessageChannels[channel] == nil {
+		d.directMessageChannels[channel] = make(chan *pb.RPCDirectMessage, 10)
+	}
+	return d.directMessageChannels[channel]
+}
+
+func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byte) error {
 	id, err := d.decodePeerId(peerId)
 	if err != nil {
 		return err
+	}
+	messageChannel := d.GetMessagingChan(channel)
+
+	if id.Pretty() == d.i.Identity.Pretty() {
+		messageChannel <- &pb.RPCDirectMessage{
+			PId: id.Pretty(),
+			Message: message,
+		}
+		return nil
 	}
 
 	stream, err := d.i.PeerHost.NewStream(d.i.Context(), id, SEND_DIRECT_MESSAGE)
@@ -70,7 +86,8 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 		return
 	}
 
-	d.DirectMessage <- &pb.RPCDirectMessage{
+	messageChannel := d.GetMessagingChan(request.Channel)
+	messageChannel <- &pb.RPCDirectMessage{
 		PId: from.Pretty(),
 		Message: request.Message,
 	}

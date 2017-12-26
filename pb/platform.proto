@@ -68,7 +68,7 @@ service Decentralizer {
 	//
 	// Send another peer a direct message. Takes a peer id and the data it should send
 	rpc SendDirectMessage(RPCDirectMessage) returns (empty) {}
-	rpc ReceiveDirectMessage(empty) returns (stream RPCDirectMessage) {}
+	rpc ReceiveDirectMessage(RPCReceiveDirectMessageRequest) returns (stream RPCDirectMessage) {}
 
 	//
 	// Publisher
