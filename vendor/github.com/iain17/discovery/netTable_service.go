@@ -168,6 +168,10 @@ func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
 
 func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 	addr := rn.conn.RemoteAddr().String()
+	if rn.id == "" || nt.connected[rn.id] {
+		rn.conn.Close()
+		return
+	}
 	nt.peers.Add(addr, rn)
 	nt.logger.Infof("Connected to %s", addr)
 	go rn.listen(nt.localNode)
