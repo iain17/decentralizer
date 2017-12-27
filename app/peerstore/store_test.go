@@ -3,7 +3,7 @@ package peerstore
 import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/stretchr/testify/assert"
-	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"testing"
 	"time"
 )

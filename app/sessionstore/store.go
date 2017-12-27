@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/Akagi201/kvcache/ttlru"
-	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"time"
 	"errors"
 	"github.com/iain17/logger"

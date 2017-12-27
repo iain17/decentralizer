@@ -3,15 +3,15 @@ package app
 import (
 	"github.com/iain17/discovery"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
-	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
-	"gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
-	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
 	"strings"
 	"time"
 	"net"
 	"errors"
-	"gx/ipfs/QmSGL5Uoa6gKHgBBwQG8u1CWKUC8ZnwaZiLgFVTFBR2bxr/go-multiaddr-net"
+	"gx/ipfs/QmX3U3YXCQ6UYBxq2LVWF8dARS1hPUTEYLrSx654Qyxyw6/go-multiaddr-net"
 )
 
 func init() {
@@ -114,6 +114,17 @@ func (d *Decentralizer) setInfo() {
 	ln.SetInfo("addr", addrs)
 }
 
+func ping(host string) bool {
+	conn, err := net.DialTimeout("tcp", host, 1*time.Second)
+	if err != nil {
+		return false
+	}
+	defer conn.Close()
+
+	// log success
+	return true
+}
+
 func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 	sPeerId := remoteNode.GetInfo("peerId")
 	peerId, err := peer.IDB58Decode(sPeerId)
@@ -125,8 +136,19 @@ func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 	rawAddr := strings.Split(addrText, DELIMITER_ADDR)
 	for _, strAddr := range rawAddr {
 		addr, err := ma.NewMultiaddr(strAddr)
+		if err != nil && addr != nil {
+			logger.Warning(err)
+			continue
+		}
+		if len(addr.Protocols()) == 0 {
+			continue
+		}
+		netAddr, err := manet.ToNetAddr(addr)
 		if err != nil {
 			logger.Warning(err)
+			continue
+		}
+		if !ping(netAddr.String()) {
 			continue
 		}
 		addrs = append(addrs, addr)

@@ -10,8 +10,8 @@ import (
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
-	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"net"
 	"time"
 	"github.com/ccding/go-stun/stun"
@@ -115,8 +115,8 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		ignore:					make(map[string]bool),
 	}
 	instance.bootstrap()
-	reveries, _ := Asset("reveries.flac")
-	go instance.SavePeerFile("reveries.flac", reveries)
+	//reveries, _ := Asset("reveries.flac")
+	//go instance.SavePeerFile("reveries.flac", reveries)
 
 	instance.initMatchmaking()
 	instance.initMessaging()

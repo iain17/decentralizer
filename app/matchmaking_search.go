@@ -5,7 +5,7 @@ import (
 	"github.com/iain17/decentralizer/app/sessionstore"
 	"sync"
 	"github.com/iain17/logger"
-	Peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	Peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/timeout"
 	"time"
