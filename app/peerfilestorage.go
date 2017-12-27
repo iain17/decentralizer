@@ -12,8 +12,31 @@ import (
 	Path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 	"io/ioutil"
 )
-//See: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blob/master/core/commands/files/files.go
-//that is also what is called from the http api.
+
+func (d *Decentralizer) initStorage() {
+	//Spawn some workers
+	for i := 0; i < CONCURRENT_PUBLISH; i++ {
+		go d.processPublication()
+	}
+	reveries, _ := Asset("reveries.flac")
+	d.SavePeerFile("reveries.flac", reveries)
+	d.GetPeerFile("self", "reveries.flac")
+}
+
+func (d *Decentralizer) processPublication() {
+	for {
+		select {
+		case <-d.ctx.Done():
+			return
+		case path, ok := <-d.newPathToPublish:
+			if !ok {
+				return
+			}
+			ipfs.FilePublish(d.i, path)
+		}
+	}
+}
+
 func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	logger.Infof("Saving peer file %s", name)
 	location, path, err := coreunix.AddWrapped(d.i, bytes.NewBuffer(data), name)
@@ -24,11 +47,7 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	logger.Infof("Path %s", ph)
-	err = ipfs.FilePublish(d.i, ph)
-	if err != nil {
-		return "", err
-	}
+	d.newPathToPublish <- ph
 	return "/ipfs/"+location, nil
 }
 
@@ -38,10 +57,9 @@ func (d *Decentralizer) GetPeerFiles(peerId string) ([]*iface.Link, error) {
 	if err != nil {
 		return nil, err
 	}
-	api := coreapi.NewCoreAPI(d.i)
 	rawPath := "/ipns/" + id.Pretty()
 	pth := coreapi.ResolvedPath(rawPath, nil, nil)
-	return api.Unixfs().Ls(d.i.Context(), pth)
+	return d.api.Unixfs().Ls(d.i.Context(), pth)
 }
 
 func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) {
@@ -61,14 +79,13 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 //Path could be "/ipfs/QmQy2Dw4Wk7rdJKjThjYXzfFJNaRKRHhHP5gHHXroJMYxk"
 func (d *Decentralizer) GetFile(path string) ([]byte, error) {
 	logger.Infof("Get file: %s", path)
-	api := coreapi.NewCoreAPI(d.i)
 
 	pth := coreapi.ResolvedPath(path, nil, nil)
-	_, err := api.ResolvePath(d.i.Context(), pth)
+	_, err := d.api.ResolvePath(d.i.Context(), pth)
 	if err != nil {
 		return nil, err
 	}
-	r, err := api.Unixfs().Cat(d.i.Context(), pth)
+	r, err := d.api.Unixfs().Cat(d.i.Context(), pth)
 	if err != nil {
 		return nil, err
 	}

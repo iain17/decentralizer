@@ -26,6 +26,8 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 
 	cfg := dht.NewConfig()
 	cfg.Port = d.localNode.port+10
+	cfg.NumTargetPeers = d.localNode.discovery.max
+	cfg.MaxNodes = 100
 	d.node, err = dht.New(cfg)
 
 	ih := d.localNode.discovery.network.InfoHash()
@@ -54,8 +56,8 @@ func (d *DiscoveryDHT) process() {
 		case <-d.context.Done():
 			return
 		default:
-			go d.request()
-			time.Sleep(60 * time.Second)
+			time.Sleep(10 * time.Second)//Give us time to find peers on other ways.
+			d.request()
 		}
 	}
 }
@@ -100,5 +102,5 @@ func (d *DiscoveryDHT) Run() {
 
 func (d *DiscoveryDHT) request() {
 	d.logger.Debugf("sending request '%s'", d.ih.String())
-	d.node.PeersRequest(string(d.ih), true)
+	d.node.PeersRequest(string(d.ih), !d.localNode.netTableService.isEnoughPeers())
 }

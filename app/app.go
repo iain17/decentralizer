@@ -19,7 +19,10 @@ import (
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
 	"os"
+	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
 	"sync"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 )
 
 type Decentralizer struct {
@@ -30,9 +33,13 @@ type Decentralizer struct {
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
+	api 				   coreiface.CoreAPI
 
 	//Peer ids that did not respond to our queries.
 	ignore 				   map[string]bool
+
+	//Storage
+	newPathToPublish       chan path.Path
 
 	//Matchmaking
 	sessions               map[uint64]*sessionstore.Store
@@ -102,11 +109,13 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	}
 	instance := &Decentralizer{
 		ctx:					ctx,
-		cron: 				   cron.New(),
+		cron: 				    cron.New(),
 		n:   					n,
 		d:                      d,
 		i:                      i,
 		b:                      b,
+		api:					coreapi.NewCoreAPI(i),
+		newPathToPublish: 	make(chan path.Path, CONCURRENT_PUBLISH*2),
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		searches:				make(map[uint64]*search),
@@ -115,9 +124,8 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		ignore:					make(map[string]bool),
 	}
 	instance.bootstrap()
-	//reveries, _ := Asset("reveries.flac")
-	//go instance.SavePeerFile("reveries.flac", reveries)
 
+	instance.initStorage()
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()

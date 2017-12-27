@@ -166,7 +166,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]
 	if err != nil {
 		return nil, err
 	}
-	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
+	stream.SetDeadline(time.Now().Add(1 * time.Second))
 	defer stream.Close()
 	//Request
 	reqData, err := proto.Marshal(&pb.DNSessionRequest{

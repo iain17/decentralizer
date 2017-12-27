@@ -41,7 +41,7 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	if err != nil {
 		return err
 	}
-	nt.seen, err = ttlru.NewTTL(1000)
+	nt.seen, err = ttlru.NewTTL(4096)
 	if err != nil {
 		return err
 	}
@@ -157,10 +157,7 @@ func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
 	if nt.seen.Contains(key) {
 		return
 	}
-	if nt.peers.Contains(key) {
-		return
-	}
-	nt.seen.AddWithTTL(key, true, 60 * time.Second)
+	nt.seen.AddWithTTL(key, true, 15 * time.Minute)
 	nt.logger.Debugf("new potential peer %q discovered", addr)
 	nt.newConn <- addr
 }
@@ -174,8 +171,9 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 		return
 	}
 
-	addr := rn.conn.RemoteAddr().String()
 	nt.peers.Add(rn.id, rn)
+
+	addr := rn.conn.RemoteAddr().String()
 	nt.logger.Infof("Connected to %s: %s", addr, rn.id)
 	go rn.listen(nt.localNode)
 	err := nt.Save()
@@ -185,14 +183,10 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 }
 
 func (nt *NetTableService) isConnected(id string) bool {
-	nt.mutex.Lock()
-	defer nt.mutex.Unlock()
 	return nt.peers.Contains(id)
 }
 
 func (nt *NetTableService) RemoveRemoteNode(rn *RemoteNode) {
-	nt.mutex.Lock()
-	defer nt.mutex.Unlock()
 	nt.peers.Remove(rn.id)
 }
 

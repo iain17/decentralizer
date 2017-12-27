@@ -22,8 +22,7 @@ func (d * Decentralizer) GetPublisherFile(name string) ([]byte, error) {
 		if d.publisherDefinition.Links[name] != "" {
 			path := d.publisherDefinition.Links[name]
 			pth := coreapi.ResolvedPath(path, nil, nil)
-			api := coreapi.NewCoreAPI(d.i)
-			r, err := api.Unixfs().Cat(d.i.Context(), pth)
+			r, err := d.api.Unixfs().Cat(d.i.Context(), pth)
 			if err != nil {
 				return nil, err
 			}

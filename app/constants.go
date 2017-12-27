@@ -6,8 +6,8 @@ import (
 )
 
 const USE_OWN_BOOTSTRAPPING = false//If set to false. We join the public IPFS network.
-const MAX_DISCOVERED_PEERS = 40
-const MIN_CONNECTED_PEERS = 40//40
+const MAX_DISCOVERED_PEERS = 2
+const MIN_CONNECTED_PEERS = 4//40
 const DELIMITER_ADDR = ";;"
 const EXPIRE_TIME_SESSION = 120
 const MAX_SESSIONS = 1000
@@ -20,6 +20,7 @@ const ADDRESS_BOOK_FILE = "addressbook.dat"
 const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
 const GET_PUBLISHER_UPDATE = "/decentralizer/publisher/1.0.0/get"
 const MAX_SIZE = int64(10 * datasize.MB)
+const CONCURRENT_PUBLISH = 2
 
 func init() {
 	framed.MAX_SIZE = MAX_SIZE
