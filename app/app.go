@@ -114,13 +114,10 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					make(map[string]bool),
 	}
-	err = instance.bootstrap()
-	if err == nil {
-		reveries, _ := Asset("reveries.flac")
-		instance.SavePeerFile("reveries.flac", reveries)
-	}
+	instance.bootstrap()
+	reveries, _ := Asset("reveries.flac")
+	go instance.SavePeerFile("reveries.flac", reveries)
 
-	instance.GetIP()
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
@@ -169,7 +166,9 @@ func (d *Decentralizer) WaitTilEnoughPeers() {
 }
 
 func (s *Decentralizer) Stop() {
-	s.cron.Stop()
+	if s.cron != nil {
+		s.cron.Stop()
+	}
 	if s.i != nil {
 		s.i.Close()
 	}

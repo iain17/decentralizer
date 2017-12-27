@@ -3,6 +3,7 @@ package discovery
 import (
 	"fmt"
 	"github.com/iain17/logger"
+	"github.com/iain17/discovery/pb"
 )
 
 type Node struct {
@@ -21,4 +22,9 @@ func (n *Node) SetInfo(key string, value string) {
 
 func (n *Node) GetInfo(key string) string {
 	return n.info[key]
+}
+
+func (n *Node) Initialize(info *pb.DPeerInfo) {
+	n.id = info.Id
+	n.info = info.Info
 }

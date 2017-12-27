@@ -32,8 +32,7 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 		return nil, err
 	}
 	rn.logger.Debug("Received peer info...")
-	rn.info = peerInfo.Info
-	rn.id = peerInfo.Id
+	rn.Initialize(peerInfo)
 
 	rn.logger.Info("connected!")
 	return rn, nil

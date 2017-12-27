@@ -29,8 +29,8 @@ func main() {
 	signal.Notify(c, os.Interrupt)
 	defer func() {
 		signal.Stop(c)
-		s.Stop()
 		cancel()
+		s.Stop()
 	}()
 
 	select {

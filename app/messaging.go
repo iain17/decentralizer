@@ -31,9 +31,11 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 		return err
 	}
 	messageChannel := d.GetMessagingChan(channel)
+	logger.Infof("Sending direct message (to: %s:%d)", id.Pretty(), channel)
 
 	if id.Pretty() == d.i.Identity.Pretty() {
 		messageChannel <- &pb.RPCDirectMessage{
+			Channel: channel,
 			PId: id.Pretty(),
 			Message: message,
 		}
@@ -48,6 +50,7 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 
 	//Request
 	reqData, err := proto.Marshal(&pb.DNDirectMessageRequest{
+		Channel: channel,
 		Message: message,
 	})
 	if err != nil {
@@ -88,6 +91,7 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 
 	messageChannel := d.GetMessagingChan(request.Channel)
 	messageChannel <- &pb.RPCDirectMessage{
+		Channel: request.Channel,
 		PId: from.Pretty(),
 		Message: request.Message,
 	}

@@ -9,12 +9,14 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/timeout"
 	"time"
+	"io"
 )
 
 type search struct {
 	running bool
 	updating bool
 	mutex sync.Mutex
+	fetching sync.Mutex
 	d *Decentralizer
 	sessionType uint64
 	ctx context.Context
@@ -67,6 +69,16 @@ func (s *search) run(ctx context.Context) {
 			defer wg.Done()
 			_, err := s.request(id)
 			if err != nil {
+				if err == io.EOF {
+					return
+				}
+				if err.Error() == "i/o deadline reached" {
+					return
+				}
+				if err.Error() == "protocol not supported" {
+					s.d.ignore[id.Pretty()] = true
+					return
+				}
 				logger.Infof("Failed to save sessions received from %s: %v", id.Pretty(), err)
 			}
 		}(provider)
@@ -158,6 +170,8 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 }
 
 func (s *search) fetch() *sessionstore.Store {
+	s.fetching.Lock()
+	defer s.fetching.Unlock()
 	timeout.Do(s.update, 5*time.Second)
 	return s.storage
 }

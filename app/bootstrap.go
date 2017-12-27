@@ -9,6 +9,9 @@ import (
 	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
 	"strings"
 	"time"
+	"net"
+	"errors"
+	"gx/ipfs/QmSGL5Uoa6gKHgBBwQG8u1CWKUC8ZnwaZiLgFVTFBR2bxr/go-multiaddr-net"
 )
 
 func init() {
@@ -25,7 +28,6 @@ func init() {
 }
 
 func (d *Decentralizer) bootstrap() error {
-	d.setInfo()
 	bs := core.DefaultBootstrapConfig
 	if USE_OWN_BOOTSTRAPPING {
 		bs.BootstrapPeers = d.discover
@@ -43,7 +45,7 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	logger.Info("Bootstrapping")
 	d.setInfo()
 	var peers []pstore.PeerInfo
-	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 5*time.Minute) {
+	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := getInfo(peer)
 		if err != nil {
 			logger.Warning(err)
@@ -55,6 +57,30 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	return peers
 }
 
+func isPrivate(IP net.IP) error {
+	var err error
+	private := false
+	if IP == nil {
+		err = errors.New("invalid ip")
+	} else {
+		if !IP.IsGlobalUnicast() {
+			return errors.New("multicast or loopback")
+		}
+		_, privateIPV61BitBlock, _ := net.ParseCIDR("2aa1::1/32")
+		_, privateIPV62BitBlock, _ := net.ParseCIDR("fc00::/7")
+		_, privateNineBitBlock, _ := net.ParseCIDR("9.0.0.0/8")
+		_, privateLocalBitBlock, _ := net.ParseCIDR("127.0.0.0/8")
+		_, private24BitBlock, _ := net.ParseCIDR("10.0.0.0/8")
+		_, private20BitBlock, _ := net.ParseCIDR("172.16.0.0/12")
+		_, private16BitBlock, _ := net.ParseCIDR("192.168.0.0/16")
+		private = privateIPV61BitBlock.Contains(IP) || privateIPV62BitBlock.Contains(IP) || privateNineBitBlock.Contains(IP) || privateLocalBitBlock.Contains(IP) || private24BitBlock.Contains(IP) || private20BitBlock.Contains(IP) || private16BitBlock.Contains(IP)
+	}
+	if private {
+		err = errors.New("private ip")
+	}
+	return err
+}
+
 func (d *Decentralizer) setInfo() {
 	if d.d == nil {
 		return
@@ -62,10 +88,29 @@ func (d *Decentralizer) setInfo() {
 	ln := d.d.LocalNode
 	addrs := ""
 	for _, addr := range d.i.PeerHost.Addrs() {
-		addrs += addr.String() + DELIMITER_ADDR
+		addrText := addr.String()
+		netAddr, err := manet.ToNetAddr(addr)
+		if err != nil {
+			continue
+		}
+		netAddrText := netAddr.String()
+		var ip net.IP
+		if value, ok := netAddr.(*net.TCPAddr); ok {
+			ip = value.IP
+		}
+		if value, ok := netAddr.(*net.UDPAddr); ok {
+			ip = value.IP
+		}
+		err = isPrivate(ip)
+		if err != nil {
+			logger.Debugf("Ignored: '%s': %s", netAddrText, err)
+			continue
+		}
+		addrs += addrText + DELIMITER_ADDR
 	}
 
 	ln.SetInfo("peerId", d.i.Identity.Pretty())
+	logger.Infof("Broadcasting: %s", addrs)
 	ln.SetInfo("addr", addrs)
 }
 
@@ -76,13 +121,18 @@ func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 		return nil, err
 	}
 	var addrs []ma.Multiaddr
-	for _, strAddr := range strings.Split(remoteNode.GetInfo("addr"), DELIMITER_ADDR) {
+	addrText := remoteNode.GetInfo("addr")
+	rawAddr := strings.Split(addrText, DELIMITER_ADDR)
+	for _, strAddr := range rawAddr {
 		addr, err := ma.NewMultiaddr(strAddr)
 		if err != nil {
 			logger.Warning(err)
 			continue
 		}
 		addrs = append(addrs, addr)
+	}
+	if len(addrs) == 0 {
+		return nil, errors.New("no addr set")
 	}
 	return &pstore.PeerInfo{
 		ID:    peerId,

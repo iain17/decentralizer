@@ -71,7 +71,7 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 }
 
 func (d *DiscoveryIRC) Stop() {
-	if d.connection != nil {
+	if d.connection != nil && d.connection.Connected() {
 		d.connection.Disconnect()
 	}
 }

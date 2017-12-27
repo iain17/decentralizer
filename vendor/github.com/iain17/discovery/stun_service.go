@@ -52,7 +52,7 @@ func (s *StunService) process() (err error) {
 	}
 
 	if host != nil {
-		s.logger.Infof("processed, family %d, host %q, port %d", host.Family(), host.IP(), host.Port())
+		s.logger.Debugf("processed, family %d, host %q, port %d", host.Family(), host.IP(), host.Port())
 		s.localNode.ip = host.IP()
 	}
 
