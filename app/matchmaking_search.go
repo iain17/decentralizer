@@ -7,14 +7,17 @@ import (
 	"github.com/iain17/logger"
 	Peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/decentralizer/pb"
-	"github.com/iain17/timeout"
 	"time"
 	"github.com/Akagi201/kvcache/ttlru"
+	"github.com/jeffchao/backoff"
+	"github.com/pkg/errors"
+	"fmt"
 )
 
 type search struct {
 	running bool
 	updating bool
+	backoff *backoff.FibonacciBackoff
 	mutex sync.Mutex
 	fetching sync.Mutex
 	d *Decentralizer
@@ -30,22 +33,26 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 	if err != nil {
 		return nil, err
 	}
+	f := backoff.Fibonacci()
+	f.Interval = 1 * time.Second
+	f.Delay = 3 * time.Second
 	instance := &search{
 		d: d,
+		backoff: f,
 		sessionType: sessionType,
 		ctx: ctx,
 		storage: storage,
 		seen: seen,
 	}
-	timeout.Do(instance.run, 10*time.Second)//Initial search will last 15 seconds max. 10 here + 5 fetch.
-	d.cron.Every(30).Seconds().Do(instance.run)
+	instance.run()
+	d.cron.Every(30).Seconds().Do(instance.update)
 	return instance, nil
 }
 
 //Looks for new providers. Ran at the start of a search and on a set interval.
-func (s *search) run(ctx context.Context) {
+func (s *search) run() error {
 	if s.running {
-		return
+		return nil
 	}
 	s.mutex.Lock()
 	s.running = true
@@ -73,13 +80,14 @@ func (s *search) run(ctx context.Context) {
 		queried++
 	}
 	logger.Infof("Queried %d of the %d for sessions of type %d", queried, len(providers), s.sessionType)
+	return nil
 }
 
 //Fetches updates from existing providers.
 //If we again find sessions, we'll also become a provider.
-func (s *search) update(ctx context.Context) {
+func (s *search) update() error {
 	if s.updating {
-		return
+		return nil
 	}
 	s.updating = true
 	s.mutex.Lock()
@@ -90,8 +98,7 @@ func (s *search) update(ctx context.Context) {
 	logger.Infof("Updating search for sessions with type %d", s.sessionType)
 	peers, err := s.d.GetPeersByDetails("sessionProvider", "1")
 	if err != nil {
-		logger.Warningf("Could not update session search: %v", err)
-		return
+		return errors.New(fmt.Sprintf("Could not update session search: %s", err.Error()))
 	}
 	for _, peer := range peers {
 		provider, err := s.d.decodePeerId(peer.PId)
@@ -107,6 +114,7 @@ func (s *search) update(ctx context.Context) {
 	//Become a provider.
 	s.d.b.Provide(s.d.getMatchmakingKey(s.sessionType))
 	logger.Infof("Finished updating sessions of type %d", s.sessionType)
+	return nil
 }
 
 func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
@@ -133,8 +141,6 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 }
 
 func (s *search) fetch() *sessionstore.Store {
-	s.fetching.Lock()
-	defer s.fetching.Unlock()
-	timeout.Do(s.update, 5*time.Second)
+	s.backoff.Retry(s.update)
 	return s.storage
 }

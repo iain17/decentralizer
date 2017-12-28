@@ -11,6 +11,7 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"fmt"
 	"encoding/hex"
+	"github.com/jeffchao/backoff"
 	"strings"
 )
 
@@ -20,15 +21,31 @@ func (d *Decentralizer) getPublisherTopic() string {
 }
 
 func (d *Decentralizer) initPublisherFiles() {
-	_, err := ipfs.Subscribe(d.i, d.getPublisherTopic(), d.receivedUpdate)
+	f := backoff.Fibonacci()
+	f.Interval = 1 * time.Second
+	_, err := ipfs.Subscribe(d.i, d.getPublisherTopic(), func(peer peer.ID, data []byte) {
+		call := func() error {
+			return d.receivedUpdate(peer, data)
+		}
+		err := f.Retry(call)
+		if err != nil {
+			logger.Warning(err)
+		}
+	})
 	if err != nil {
 		logger.Fatal(err)
 	}
 	d.downloadPublisherDefinition()
-	go func() {
-		d.WaitTilEnoughPeers()
+	d.cron.Every(10).Minutes().Do(func() {
+		if d.i == nil {
+			return
+		}
+		lenPeers := len(d.i.PeerHost.Network().Peers())
+		if lenPeers <= MIN_CONNECTED_PEERS {
+			return
+		}
 		d.PushPublisherUpdate()
-	}()
+	})
 }
 
 func (d *Decentralizer) readPublisherUpdateFromDisk() ([]byte, error) {
@@ -157,25 +174,25 @@ func (d *Decentralizer) runPublisherInstructions() {
 }
 
 //Pick 3 random peers
-func (d *Decentralizer) receivedUpdate(peer peer.ID, data []byte) {
+func (d *Decentralizer) receivedUpdate(peer peer.ID, data []byte) error {
 	pId := peer.Pretty()
 	if d.ignore.Contains(pId) {
-		return
+		return errors.New("on ignore list")
 	}
 	var update pb.PublisherUpdate
 	err := proto.Unmarshal(data, &update)
 	if err != nil {
-		logger.Warning(err)
 		d.ignore.Add(pId, true)
-		return
+		return err
 	}
 	err = d.loadNewPublisherUpdate(&update)
 	if err != nil {
 		if strings.Contains(err.Error(), "signature verification failed") {
 			d.ignore.Add(pId, true)
-			return
+			return err
 		}
 	} else {
-		d.PushPublisherUpdate()//means it updated. we'll republish.
+		return d.PushPublisherUpdate()//means it updated. we'll republish.
 	}
+	return nil
 }
