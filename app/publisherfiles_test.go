@@ -17,6 +17,8 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
 	master := fakeNew(nodes[0], true)
 	assert.NotNil(t, master)
+	slave := fakeNew(nodes[1], false)
+	assert.NotNil(t, slave)
 
 	definition := &pb.PublisherDefinition{
 		Status: true,
@@ -27,25 +29,33 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 			"data": "wtf",
 		},
 	}
+
 	err := master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
 	assert.NotNil(t, master.publisherUpdate)
+	time.Sleep(2 * time.Second)
 
-	//Now start the slave
-	slave := fakeNew(nodes[1], false)
-	assert.NotNil(t, slave)
-	slave.updatePublisherDefinition()
 	assert.NotNil(t, slave.publisherUpdate)
-	assert.Equal(t, []byte("Hard work, by these words guarded. Please don't steal."), slave.publisherDefinition.Files["hello.txt"])
+	if slave.publisherUpdate != nil {
+		assert.Equal(t, []byte("Hard work, by these words guarded. Please don't steal."), slave.publisherDefinition.Files["hello.txt"])
+	}
 }
 
 func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
-	const num = 5
+	const num = 20
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, num)
 	master := fakeNew(nodes[0], true)
 	assert.NotNil(t, master)
+
+	//Start slaves
+	var slaves []*Decentralizer
+	for i := 1; i < num; i++ {
+		slave := fakeNew(nodes[i], false)
+		assert.NotNil(t, slave)
+		slaves = append(slaves, slave)
+	}
 
 	definition := &pb.PublisherDefinition{
 		Status: true,
@@ -53,26 +63,36 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 			"cool": "1",
 		},
 	}
+	//start master
 	err := master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
 
-	//Now start the slaves. Master got an update.
-	var slaves []*Decentralizer
-	for i := 1; i < num; i++ {
-		slave := fakeNew(nodes[i], false)
-		assert.NotNil(t, slave)
-		slaves = append(slaves, slave)
-	}
 	//A slave can't publish.
 	err = slaves[0].PublishPublisherUpdate(definition)
 	assert.Error(t, err)
 
-	for i := 0; i < num - 1; i++ {
-		slaves[i].updatePublisherDefinition()
-		assert.NotNil(t, slaves[i].publisherUpdate)
+	//Check the rolling update
+	numNodesOnOldUpdate := num
+	refreshes := 0
+	for numNodesOnOldUpdate > 0 {
+		numNodesOnOldUpdate = 0
+		for i := 0; i < num - 1; i++ {
+			if slaves[i].publisherDefinition == nil {
+				numNodesOnOldUpdate++
+			} else {
+				//Emulate that a updated node rejoins
+				slaves[i].PushPublisherUpdate()
+			}
+		}
+		if numNodesOnOldUpdate == 0 {
+			break
+		}
+		logger.Infof("Number of nodes still on old update %d", numNodesOnOldUpdate)
+		refreshes++
+		time.Sleep(1 * time.Second)
 	}
+	assert.True(t, refreshes < 10, "It should take less than 10 (actual=%d) refreshes to get all nodes updated", refreshes)
 
-	time.Sleep(1 * time.Second)
 	//Do a update
 	definition = &pb.PublisherDefinition{
 		Status: true,
@@ -84,18 +104,24 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	assert.NoError(t, err)
 
 	//Check the rolling update
-	numNodesOnOldUpdate := num
-	refreshes := 0
+	numNodesOnOldUpdate = num
+	refreshes = 0
 	for numNodesOnOldUpdate > 0 {
 		numNodesOnOldUpdate = 0
 		for i := 0; i < num - 1; i++ {
-			slaves[i].updatePublisherDefinition()
 			if slaves[i].publisherDefinition.Details["cool"] == "1" {
 				numNodesOnOldUpdate++
+			} else {
+				//Emulate that a updated node rejoins
+				slaves[i].PushPublisherUpdate()
 			}
+		}
+		if numNodesOnOldUpdate == 0 {
+			break
 		}
 		logger.Infof("Number of nodes still on old update %d", numNodesOnOldUpdate)
 		refreshes++
+		time.Sleep(1 * time.Second)
 	}
 	assert.True(t, refreshes < 10, "It should take less than 10 (actual=%d) refreshes to get all nodes updated", refreshes)
 }
@@ -109,7 +135,7 @@ func TestDecentralizer_publishStopper(t *testing.T) {
 	}()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	nodes := ipfs.FakeNewIPFSNodes(ctx,1)
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
 	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
 	data, err := proto.Marshal(&pb.PublisherDefinition{

@@ -59,7 +59,6 @@ type Decentralizer struct {
 	//Publisher files
 	publisherUpdate  	   *pb.PublisherUpdate
 	publisherDefinition	   *pb.PublisherDefinition
-	searchingForPublisherUpdate sync.Mutex
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")

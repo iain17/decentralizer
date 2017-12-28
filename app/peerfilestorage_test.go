@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"context"
 	"github.com/iain17/decentralizer/app/ipfs"
+	"time"
 )
 
 //One user saves a file. The other gets it by its hash.
@@ -47,6 +48,8 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 
 	_, err = app1.SavePeerFile(filename, updatedMessage)
 	assert.NoError(t, err)
+
+	time.Sleep(2 * time.Second)
 
 	file, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)

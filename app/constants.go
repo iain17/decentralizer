@@ -18,7 +18,6 @@ const GET_SESSION_REQ = "/decentralizer/sessions/1.0.0/get"
 const SEND_DIRECT_MESSAGE = "/decentralizer/dm/1.0.0/sent"
 const ADDRESS_BOOK_FILE = "addressbook.dat"
 const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
-const GET_PUBLISHER_UPDATE = "/decentralizer/publisher/1.0.0/get"
 const MAX_SIZE = int64(10 * datasize.MB)
 const CONCURRENT_PUBLISH = 2
 const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
