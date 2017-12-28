@@ -2,7 +2,7 @@ package app
 
 import (
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
-	//"gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 	"bytes"
 	"errors"
 	"github.com/iain17/decentralizer/app/ipfs"
@@ -14,10 +14,17 @@ import (
 )
 
 func (d *Decentralizer) initStorage() {
+	d.newPathToPublish = make(chan path.Path, CONCURRENT_PUBLISH*2)
 	//Spawn some workers
+	logger.Debugf("Running %d user file publish workers", CONCURRENT_PUBLISH)
 	for i := 0; i < CONCURRENT_PUBLISH; i++ {
 		go d.processPublication()
 	}
+	go d.dellos()
+}
+
+func (d *Decentralizer) dellos() {
+	d.WaitTilEnoughPeers()
 	reveries, _ := Asset("reveries.flac")
 	d.SavePeerFile("reveries.flac", reveries)
 	d.GetPeerFile("self", "reveries.flac")
@@ -32,7 +39,10 @@ func (d *Decentralizer) processPublication() {
 			if !ok {
 				return
 			}
-			ipfs.FilePublish(d.i, path)
+			err := ipfs.FilePublish(d.i, path)
+			if err != nil {
+				logger.Warningf("Failed to publish %s: %s", path, err)
+			}
 		}
 	}
 }

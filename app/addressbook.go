@@ -11,9 +11,15 @@ import (
 	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
 	"time"
 	"github.com/iain17/framed"
+	"github.com/iain17/decentralizer/app/peerstore"
 )
 
 func (d *Decentralizer) initAddressbook() {
+	var err error
+	d.peers, err = peerstore.New(MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity)
+	if err != nil {
+		logger.Fatal(err)
+	}
 	d.i.PeerHost.SetStreamHandler(GET_PEER_REQ, d.getPeerResponse)
 	d.downloadPeers()
 	d.saveSelf()
@@ -22,8 +28,8 @@ func (d *Decentralizer) initAddressbook() {
 		d.connectPreviousPeers()
 	}()
 	d.provideSelf()
-	d.cron.AddFunc("30 * * * * *", d.uploadPeers)
-	d.cron.AddFunc("* 5 * * * *", d.provideSelf)
+	d.cron.Every(30).Seconds().Do(d.uploadPeers)
+	d.cron.Every(5).Minutes().Do(d.provideSelf)
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -49,6 +55,7 @@ func (d *Decentralizer) downloadPeers() {
 }
 
 func (d *Decentralizer) provideSelf() {
+	d.WaitTilEnoughPeers()
 	peer, err := d.FindByPeerId("self")
 	if err != nil {
 		logger.Warningf("Could not provide self: %v", err)
@@ -79,7 +86,7 @@ func (d *Decentralizer) uploadPeers() {
 		logger.Warningf("Could not save address book: %v", err)
 		return
 	}
-	d.addressBookChanged = true
+	d.addressBookChanged = false
 	logger.Info("Saved address book")
 }
 

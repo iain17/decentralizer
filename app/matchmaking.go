@@ -16,6 +16,7 @@ import (
 	"github.com/iain17/timeout"
 	"context"
 	"github.com/iain17/framed"
+	"github.com/Akagi201/kvcache/ttlru"
 )
 
 type sessionRequest struct{
@@ -29,9 +30,18 @@ func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 }
 
 func (d *Decentralizer) initMatchmaking() {
+	d.sessionQueries 			= make(chan sessionRequest, CONCURRENT_SESSION_REQUEST)
+	d.sessions 					= make(map[uint64]*sessionstore.Store)
+	d.sessionIdToSessionType	= make(map[uint64]uint64)
+	var err error
+	d.searches, err = lru.NewTTL(MAX_SESSION_SEARCHES)
+	if err != nil {
+		logger.Fatal(err)
+	}
 	d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
 
 	//Spawn some workers
+	logger.Debugf("Running %d session request workers", CONCURRENT_SESSION_REQUEST)
 	for i := 0; i < CONCURRENT_SESSION_REQUEST; i++ {
 		go d.processSessionRequest()
 	}
@@ -43,27 +53,32 @@ func (d *Decentralizer) processSessionRequest() {
 		case <-d.ctx.Done():
 			return
 		case req, ok := <-d.sessionQueries:
+			logger.Info("Received query request")
 			if !ok {
 				return
 			}
 			search := d.getSessionSearch(req.sessionType)
 			sessions, err := d.getSessionsRequest(req.peer, req.sessionType)
 			if err != nil {
+				logger.Debug(err)
 				if err.Error() == "i/o deadline reached" {
-					return
+					continue
 				}
 				if err.Error() == "protocol not supported" {
 					d.ignore.Add(req.peer, true)
-					return
+					continue
 				}
 				logger.Debugf("Failed to get sessions from %s: %v", req.peer, err)
+			} else {
+				search.add(sessions, req.peer)
 			}
-			search.add(sessions, req.peer)
 		}
 	}
 }
 
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
+	d.matchmakingMutex.Lock()
+	defer d.matchmakingMutex.Unlock()
 	if d.sessions[sessionType] == nil {
 		var err error
 		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second), d.i.Identity)
@@ -75,16 +90,25 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 	return d.sessions[sessionType]
 }
 
-func (d *Decentralizer) getSessionSearch(sessionType uint64) *search {
-	if d.searches[sessionType] == nil {
+func (d *Decentralizer) getSessionSearch(sessionType uint64) (result *search) {
+	d.searchMutex.Lock()
+	defer d.searchMutex.Unlock()
+	if !d.searches.Contains(sessionType) {
 		var err error
-		d.searches[sessionType], err = d.newSearch(d.i.Context(), sessionType)
+		result, err = d.newSearch(d.i.Context(), sessionType)
+		d.searches.Add(sessionType, result)
 		if err != nil {
 			logger.Warningf("Could not start session search: %v", err)
 			return nil
 		}
+	} else {
+		value, ok := d.searches.Get(sessionType)
+		if !ok {
+			return nil
+		}
+		result = value.(*search)
 	}
-	return d.searches[sessionType]
+	return result
 }
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
@@ -110,6 +134,12 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		d.b.Provide(d.getMatchmakingKey(sessionType))
 	}, 3*time.Second)
 	return sessionId, err
+}
+
+func (d *Decentralizer) setSessionIdToType(sessionId uint64, sessionType uint64) {
+	d.matchmakingMutex.Lock()
+	defer d.matchmakingMutex.Unlock()
+	d.sessionIdToSessionType[sessionId] = sessionType
 }
 
 func (d *Decentralizer) DeleteSession(sessionId uint64) error {
@@ -150,8 +180,12 @@ func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value stri
 
 func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) {
 	var result []*pb.Session
-	for _, search := range d.searches {
-		storage := search.fetch()
+	for _, key := range d.searches.Keys() {
+		value, ok := d.searches.Get(key)
+		if ! ok {
+			continue
+		}
+		storage := value.(*search).fetch()
 		peers, err := storage.FindByPeerId(peerId)
 		if err != nil {
 			logger.Warning(err)
@@ -162,6 +196,7 @@ func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) 
 	return result, nil
 }
 
+//Receive a request to give our sessions for a certain type
 func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 	reqData, err := framed.Read(stream)
 	if err != nil {
@@ -205,6 +240,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]
 	}
 	stream.SetDeadline(time.Now().Add(1 * time.Second))
 	defer stream.Close()
+	logger.Debugf("Requesting %s for any sessions", peer.Pretty())
 	//Request
 	reqData, err := proto.Marshal(&pb.DNSessionRequest{
 		Type: sessionType,

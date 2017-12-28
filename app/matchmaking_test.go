@@ -5,6 +5,7 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"context"
 	"github.com/getlantern/testify/assert"
+	"time"
 )
 
 func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
@@ -28,6 +29,8 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
+
+	time.Sleep(1 * time.Second)
 
 	//App 2 gets all sessions.
 	sessions, err := app2.GetSessions(1337)//All

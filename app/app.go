@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
-	//"github.com/iain17/discovery"
 	"context"
 	"errors"
 	"github.com/iain17/decentralizer/app/peerstore"
@@ -15,7 +14,7 @@ import (
 	"net"
 	"time"
 	"github.com/ccding/go-stun/stun"
-	"github.com/robfig/cron"
+	"github.com/jasonlvhit/gocron"
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
 	"os"
@@ -29,7 +28,7 @@ import (
 type Decentralizer struct {
 	ctx 				   context.Context
 	n 					   *network.Network
-	cron				   *cron.Cron
+	cron				   *gocron.Scheduler
 	d					   *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
@@ -43,10 +42,12 @@ type Decentralizer struct {
 	newPathToPublish       chan path.Path
 
 	//Matchmaking
+	matchmakingMutex	   sync.Mutex
+	searchMutex			   sync.Mutex
 	sessionQueries		   chan sessionRequest
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
-	searches 			   map[uint64]*search
+	searches 			   *lru.LruWithTTL
 
 	//addressbook
 	peers                  *peerstore.Store
@@ -105,28 +106,18 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	peers, err := peerstore.New(MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), i.Identity)
-	if err != nil {
-		return nil, err
-	}
 	ignore, err := lru.NewTTL(MAX_IGNORE)
 	if err != nil {
 		return nil, err
 	}
 	instance := &Decentralizer{
 		ctx:					ctx,
-		cron: 				    cron.New(),
+		cron: 				    gocron.NewScheduler(),
 		n:   					n,
 		d:                      d,
 		i:                      i,
 		b:                      b,
 		api:					coreapi.NewCoreAPI(i),
-		newPathToPublish: 		make(chan path.Path, CONCURRENT_PUBLISH*2),
-		sessionQueries:			make(chan sessionRequest, CONCURRENT_SESSION_REQUEST),
-		sessions:               make(map[uint64]*sessionstore.Store),
-		sessionIdToSessionType: make(map[uint64]uint64),
-		searches:				make(map[uint64]*search),
-		peers:         			peers,
 		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					ignore,
 	}
@@ -138,8 +129,6 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.initAddressbook()
 	instance.initPublisherFiles()
 	instance.cron.Start()
-	_, dnID := peerstore.PeerToDnId(i.Identity)
-	logger.Infof("Our dnID is: %v", dnID)
 	return instance, err
 }
 
@@ -182,7 +171,7 @@ func (d *Decentralizer) WaitTilEnoughPeers() {
 
 func (s *Decentralizer) Stop() {
 	if s.cron != nil {
-		s.cron.Stop()
+		s.cron.Clear()
 	}
 	if s.i != nil {
 		s.i.Close()

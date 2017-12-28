@@ -38,24 +38,24 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		seen: seen,
 	}
 	timeout.Do(instance.run, 10*time.Second)//Initial search will last 15 seconds max. 10 here + 5 fetch.
-	d.cron.AddFunc("30 * * * * *", func() {
-		//Just wrap another function around it. because we can't check if the mutex is blocked and if the run takes more than 30 seconds, it'll slowly build up the cron go routines.
-		if instance.running {
-			return
-		}
-		instance.running = true
-		timeout.Do(instance.run, EXPIRE_TIME_SESSION*time.Second)
-		instance.running = false
-	})
+	d.cron.Every(30).Seconds().Do(instance.run)
 	return instance, nil
 }
 
 //Looks for new providers. Ran at the start of a search and on a set interval.
 func (s *search) run(ctx context.Context) {
+	if s.running {
+		return
+	}
 	s.mutex.Lock()
-	defer s.mutex.Unlock()
+	s.running = true
+	defer func() {
+		s.running = false
+		s.mutex.Unlock()
+	}()
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
 	providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), MAX_SESSIONS)
+	queried := 0
 	for provider := range providers {
 		//Stop any duplicate queries and peers that are known to not respond to our app.
 		id := provider.String()
@@ -70,8 +70,9 @@ func (s *search) run(ctx context.Context) {
 			peer: provider,
 			sessionType: s.sessionType,
 		}
+		queried++
 	}
-	logger.Infof("Search complete for sessions with type %d", s.sessionType)
+	logger.Infof("Queried %d of the %d for sessions of type %d", queried, len(providers), s.sessionType)
 }
 
 //Fetches updates from existing providers.
@@ -106,14 +107,6 @@ func (s *search) update(ctx context.Context) {
 	//Become a provider.
 	s.d.b.Provide(s.d.getMatchmakingKey(s.sessionType))
 	logger.Infof("Finished updating sessions of type %d", s.sessionType)
-}
-
-func (s *search) request(id Peer.ID) (int, error) {
-	sessions, err := s.d.getSessionsRequest(id, s.sessionType)
-	if err != nil {
-		return 0, err
-	}
-	return len(sessions), s.add(sessions, id)
 }
 
 func (s *search) add(sessions []*pb.Session, from Peer.ID) error {

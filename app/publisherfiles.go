@@ -39,7 +39,7 @@ func (d *Decentralizer) initPublisherFiles() {
 			}
 		}
 	}()
-	d.cron.AddFunc("* 30 * * * *", d.updatePublisherDefinition)
+	d.cron.Every(30).Minutes().Do( d.updatePublisherDefinition)
 }
 
 func (d *Decentralizer) readPublisherUpdateFromDisk() ([]byte, error) {

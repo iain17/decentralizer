@@ -55,6 +55,12 @@ func (s *Server) GetSessionIdsByDetails(ctx context.Context, request *pb.RPCGetS
 	} else {
 		sessions, err = s.app.GetSessionsByDetails(request.Type, request.Key, request.Value)
 	}
+	if err != nil {
+		logger.Warning(err)
+	}
+	if len(sessions) == 0 {
+		logger.Warning("No sessions found by supplied criteria")
+	}
 
 	return &pb.RPCGetSessionIdsResponse{
 		SessionIds: mapToIds(sessions),
@@ -82,6 +88,9 @@ func (s *Server) GetSessionIdsByPeerIds(ctx context.Context, req *pb.RPCGetSessi
 func (s *Server) GetSession(ctx context.Context, request *pb.RPCGetSessionRequest) (*pb.RPCGetSessionResponse, error) {
 	logger.Infof("Get session request received")
 	session, err := s.app.GetSession(request.SessionId)
+	if err != nil {
+		logger.Warning(err)
+	}
 	return &pb.RPCGetSessionResponse{
 		Session: session,
 	}, err

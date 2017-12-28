@@ -12,7 +12,7 @@ import (
 func TestDecentralizer_GetPublisherFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	nodes := ipfs.FakeNewIPFSNodes(ctx,1)
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
 	app1 := fakeNew(nodes[0], false)
 	assert.NotNil(t, app1)
 	expected := []byte("Ok")
