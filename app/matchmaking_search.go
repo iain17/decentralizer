@@ -9,7 +9,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/timeout"
 	"time"
-	"io"
+	"github.com/Akagi201/kvcache/ttlru"
 )
 
 type search struct {
@@ -21,17 +21,21 @@ type search struct {
 	sessionType uint64
 	ctx context.Context
 	storage *sessionstore.Store
-	seen map[string]bool
+	seen *lru.LruWithTTL
 }
 
 func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*search, error) {
 	storage := d.getSessionStorage(sessionType)
+	seen, err := lru.NewTTL(MAX_IGNORE)
+	if err != nil {
+		return nil, err
+	}
 	instance := &search{
 		d: d,
 		sessionType: sessionType,
 		ctx: ctx,
 		storage: storage,
-		seen: make(map[string]bool),
+		seen: seen,
 	}
 	timeout.Do(instance.run, 10*time.Second)//Initial search will last 15 seconds max. 10 here + 5 fetch.
 	d.cron.AddFunc("30 * * * * *", func() {
@@ -51,39 +55,22 @@ func (s *search) run(ctx context.Context) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	var wg sync.WaitGroup
 	providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), MAX_SESSIONS)
 	for provider := range providers {
 		//Stop any duplicate queries and peers that are known to not respond to our app.
 		id := provider.String()
-		if s.d.ignore[id] {
+		if s.seen.Contains(id) {
 			continue
 		}
-		if s.seen[id] {
+		s.seen.Add(id, true)
+		if s.d.ignore.Contains(id) {
 			continue
 		}
-		s.seen[id] = true
-
-		wg.Add(1)
-		go func(id Peer.ID) {
-			defer wg.Done()
-			_, err := s.request(id)
-			if err != nil {
-				if err == io.EOF {
-					return
-				}
-				if err.Error() == "i/o deadline reached" {
-					return
-				}
-				if err.Error() == "protocol not supported" {
-					s.d.ignore[id.Pretty()] = true
-					return
-				}
-				logger.Infof("Failed to save sessions received from %s: %v", id.Pretty(), err)
-			}
-		}(provider)
+		s.d.sessionQueries <- sessionRequest{
+			peer: provider,
+			sessionType: s.sessionType,
+		}
 	}
-	wg.Wait()
 	logger.Infof("Search complete for sessions with type %d", s.sessionType)
 }
 
@@ -100,42 +87,25 @@ func (s *search) update(ctx context.Context) {
 		s.updating = false
 	}()
 	logger.Infof("Updating search for sessions with type %d", s.sessionType)
-	var wg sync.WaitGroup
 	peers, err := s.d.GetPeersByDetails("sessionProvider", "1")
 	if err != nil {
 		logger.Warningf("Could not update session search: %v", err)
 		return
 	}
-	total := 0
 	for _, peer := range peers {
 		provider, err := s.d.decodePeerId(peer.PId)
 		if err != nil {
 			logger.Warningf("Failed to decode peer id %s: %v", peer.PId, err)
 			continue
 		}
-		wg.Add(1)
-		go func(id Peer.ID) {
-			defer wg.Done()
-			num, err := s.request(id)
-			if err != nil {
-				if err.Error() == "i/o deadline reached" {
-					return
-				}
-				if err.Error() == "protocol not supported" {
-					s.d.ignore[id.Pretty()] = true
-					return
-				}
-				logger.Debugf("Failed to get sessions from %s: %v", id.Pretty(), err)
-			}
-			total += num
-		}(provider)
+		s.d.sessionQueries <- sessionRequest{
+			peer: provider,
+			sessionType: s.sessionType,
+		}
 	}
-	wg.Wait()
 	//Become a provider.
-	if total > 0 {
-		s.d.b.Provide(s.d.getMatchmakingKey(s.sessionType))
-	}
-	logger.Infof("Updated %d sessions of type %d", total, s.sessionType)
+	s.d.b.Provide(s.d.getMatchmakingKey(s.sessionType))
+	logger.Infof("Finished updating sessions of type %d", s.sessionType)
 }
 
 func (s *search) request(id Peer.ID) (int, error) {
@@ -161,7 +131,7 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 			peer, _ := s.d.FindByPeerId(from.Pretty())
 			if peer != nil {
 				peer.Details["sessionProvider"] = "1"
-				logger.Infof("Added %s to our addressbook as a session provider", peer.PId)
+				logger.Infof("Added %s to our address book as a session provider", peer.PId)
 				s.d.peers.Upsert(peer)
 			}
 		}()

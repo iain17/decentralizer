@@ -161,7 +161,7 @@ func (d *Decentralizer) updatePublisherDefinition() {
 			break
 		}
 		id := peer.Pretty()
-		if d.ignore[id] {
+		if d.ignore.Contains(id) {
 			continue
 		}
 		definition, err := d.getPublisherUpdateRequest(peer)
@@ -171,11 +171,11 @@ func (d *Decentralizer) updatePublisherDefinition() {
 				continue
 			}
 			if err.Error() == "protocol not supported" {
-				d.ignore[id] = true
+				d.ignore.Add(id, true)
 				continue
 			}
 			if strings.Contains(err.Error(), "dial attempt failed") {
-				d.ignore[id] = true
+				d.ignore.Add(id, true)
 				continue
 			}
 			if err == io.EOF {

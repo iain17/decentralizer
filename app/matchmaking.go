@@ -18,6 +18,11 @@ import (
 	"github.com/iain17/framed"
 )
 
+type sessionRequest struct{
+	peer peer.ID
+	sessionType uint64
+}
+
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 	ih := d.n.InfoHash()
 	return fmt.Sprintf("%s_MATCHMAKING_%d", hex.EncodeToString(ih[:]), sessionType)
@@ -25,6 +30,37 @@ func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 
 func (d *Decentralizer) initMatchmaking() {
 	d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
+
+	//Spawn some workers
+	for i := 0; i < CONCURRENT_SESSION_REQUEST; i++ {
+		go d.processSessionRequest()
+	}
+}
+
+func (d *Decentralizer) processSessionRequest() {
+	for {
+		select {
+		case <-d.ctx.Done():
+			return
+		case req, ok := <-d.sessionQueries:
+			if !ok {
+				return
+			}
+			search := d.getSessionSearch(req.sessionType)
+			sessions, err := d.getSessionsRequest(req.peer, req.sessionType)
+			if err != nil {
+				if err.Error() == "i/o deadline reached" {
+					return
+				}
+				if err.Error() == "protocol not supported" {
+					d.ignore.Add(req.peer, true)
+					return
+				}
+				logger.Debugf("Failed to get sessions from %s: %v", req.peer, err)
+			}
+			search.add(sessions, req.peer)
+		}
+	}
 }
 
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
@@ -161,6 +197,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 	}
 }
 
+// Get in contact with a peer and ask it for session of a certain type
 func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]*pb.Session, error) {
 	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
 	if err != nil {

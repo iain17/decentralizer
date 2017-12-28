@@ -21,6 +21,8 @@ const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
 const GET_PUBLISHER_UPDATE = "/decentralizer/publisher/1.0.0/get"
 const MAX_SIZE = int64(10 * datasize.MB)
 const CONCURRENT_PUBLISH = 2
+const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
+const CONCURRENT_SESSION_REQUEST = 10
 
 func init() {
 	framed.MAX_SIZE = MAX_SIZE

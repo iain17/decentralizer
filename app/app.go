@@ -23,6 +23,7 @@ import (
 	"sync"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	"github.com/Akagi201/kvcache/ttlru"
 )
 
 type Decentralizer struct {
@@ -36,12 +37,13 @@ type Decentralizer struct {
 	api 				   coreiface.CoreAPI
 
 	//Peer ids that did not respond to our queries.
-	ignore 				   map[string]bool
+	ignore 				   *lru.LruWithTTL
 
 	//Storage
 	newPathToPublish       chan path.Path
 
 	//Matchmaking
+	sessionQueries		   chan sessionRequest
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	searches 			   map[uint64]*search
@@ -107,6 +109,10 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
+	ignore, err := lru.NewTTL(MAX_IGNORE)
+	if err != nil {
+		return nil, err
+	}
 	instance := &Decentralizer{
 		ctx:					ctx,
 		cron: 				    cron.New(),
@@ -115,13 +121,14 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 		i:                      i,
 		b:                      b,
 		api:					coreapi.NewCoreAPI(i),
-		newPathToPublish: 	make(chan path.Path, CONCURRENT_PUBLISH*2),
+		newPathToPublish: 		make(chan path.Path, CONCURRENT_PUBLISH*2),
+		sessionQueries:			make(chan sessionRequest, CONCURRENT_SESSION_REQUEST),
 		sessions:               make(map[uint64]*sessionstore.Store),
 		sessionIdToSessionType: make(map[uint64]uint64),
 		searches:				make(map[uint64]*search),
 		peers:         			peers,
 		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
-		ignore:					make(map[string]bool),
+		ignore:					ignore,
 	}
 	instance.bootstrap()
 

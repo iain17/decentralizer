@@ -14,6 +14,7 @@ import (
 	"os"
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/decentralizer/pb"
+	"github.com/Akagi201/kvcache/ttlru"
 )
 
 var testNetwork *network.Network
@@ -49,6 +50,10 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 	} else {
 		n = testSlaveNetwork
 	}
+	ignore, err := lru.NewTTL(MAX_IGNORE)
+	if err != nil {
+		panic(err)
+	}
 
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
@@ -63,7 +68,7 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 		searches:				make(map[uint64]*search),
 		peers:         			peers,
 		directMessageChannels: 	make(map[uint32]chan *pb.RPCDirectMessage),
-		ignore:					make(map[string]bool),
+		ignore:					ignore,
 	}
 	instance.initMatchmaking()
 	instance.initMessaging()
