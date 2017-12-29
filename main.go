@@ -7,6 +7,7 @@ import (
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"os"
 	"os/signal"
+	"syscall"
 )
 
 func init() {
@@ -25,17 +26,22 @@ func main() {
 		panic(err)
 	}
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	defer func() {
-		signal.Stop(c)
-		cancel()
-		s.Stop()
+	go func() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c,    syscall.SIGHUP,
+			syscall.SIGINT,
+			syscall.SIGTERM,
+			syscall.SIGQUIT)
+		select {
+		case <-c:
+			logger.Info("Stopping")
+			cancel()
+			s.Stop()
+		}
 	}()
 
 	select {
-	case <-c:
-		cancel()
 	case <-ctx.Done():
+		break
 	}
 }

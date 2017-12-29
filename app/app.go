@@ -26,6 +26,7 @@ import (
 )
 
 type Decentralizer struct {
+	mutex				   sync.Mutex
 	ctx 				   context.Context
 	n 					   *network.Network
 	cron				   *gocron.Scheduler
@@ -128,6 +129,10 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	instance.initAddressbook()
 	instance.initPublisherFiles()
 	instance.cron.Start()
+
+	self, err := instance.peers.FindByPeerId(instance.i.Identity.Pretty())
+	logger.Infof("Initialized: PeerID '%s', decentralized id '%d': %v", self.PId, self.DnId, self.Details)
+
 	return instance, err
 }
 
@@ -139,8 +144,11 @@ func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 }
 
 func (d *Decentralizer) GetIP() net.IP {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 	if d.d != nil {
-		return d.d.GetIP()
+		ip := d.d.GetIP()
+		d.ip = &ip
 	}
 	if d.ip == nil {
 		stun := stun.NewClient()

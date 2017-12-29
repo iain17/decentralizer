@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"net/http"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
+	"net/http"
+	_ "net/http/pprof"
 )
 
 func (s *Server) initHTTP(port int) error {
@@ -18,5 +19,8 @@ func (s *Server) initHTTP(port int) error {
 	if err != nil {
 		return err
 	}
+	go func() {
+		logger.Info(http.ListenAndServe("localhost:9090", nil))
+	}()
 	return http.ListenAndServe(address, mux)
 }

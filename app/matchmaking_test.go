@@ -11,11 +11,16 @@ import (
 func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0], false)
-	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1], false)
-	assert.NotNil(t, app2)
+	const num = 100
+	nodes := ipfs.FakeNewIPFSNodes(ctx, num)
+	var apps []*Decentralizer
+	for i := 0; i < num; i++ {
+		app := fakeNew(nodes[i], false)
+		assert.NotNil(t, app)
+		apps = append(apps, app)
+	}
+	app1 := apps[35]//Somewhere in near middle
+	app2 := apps[99]//At the end
 
 	sessId, err := app1.UpsertSession(1337, "App 1 session :D", 303, map[string]string{
 		"cool": "yes",

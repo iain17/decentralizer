@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/c2h5oh/datasize"
 	"github.com/iain17/framed"
+	"time"
 )
 
 const USE_OWN_BOOTSTRAPPING = false//If set to false. We join the public IPFS network.
@@ -21,8 +22,9 @@ const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
 const MAX_SIZE = int64(10 * datasize.MB)
 const CONCURRENT_PUBLISH = 2
 const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
-const CONCURRENT_SESSION_REQUEST = 10
+const CONCURRENT_SESSION_REQUEST = 100
 const MAX_SESSION_SEARCHES = 10
+const MESSAGE_DEADLINE = time.Minute * 10
 
 func init() {
 	framed.MAX_SIZE = MAX_SIZE

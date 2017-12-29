@@ -9,17 +9,15 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"github.com/Akagi201/kvcache/ttlru"
-	"github.com/jeffchao/backoff"
+	"github.com/cenkalti/backoff"
 	"github.com/pkg/errors"
 	"fmt"
 )
 
 type search struct {
 	running bool
-	updating bool
-	backoff *backoff.FibonacciBackoff
+	backoff *backoff.ExponentialBackOff
 	mutex sync.Mutex
-	fetching sync.Mutex
 	d *Decentralizer
 	sessionType uint64
 	ctx context.Context
@@ -33,9 +31,7 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 	if err != nil {
 		return nil, err
 	}
-	f := backoff.Fibonacci()
-	f.Interval = 1 * time.Second
-	f.Delay = 3 * time.Second
+	f := backoff.NewExponentialBackOff()
 	instance := &search{
 		d: d,
 		backoff: f,
@@ -51,64 +47,107 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 
 //Looks for new providers. Ran at the start of a search and on a set interval.
 func (s *search) run() error {
+	logger.Debug("Trying to lock mutex")
+	s.mutex.Lock()
 	if s.running {
+		logger.Debug("Search run is already running...")
+		logger.Debug("Unlocking mutex")
+		s.mutex.Unlock()
 		return nil
 	}
-	s.mutex.Lock()
 	s.running = true
+	logger.Debug("Unlocking mutex")
+	s.mutex.Unlock()
+
 	defer func() {
 		s.running = false
-		s.mutex.Unlock()
 	}()
-	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), MAX_SESSIONS)
-	queried := 0
-	for provider := range providers {
-		//Stop any duplicate queries and peers that are known to not respond to our app.
-		id := provider.String()
-		if s.seen.Contains(id) {
-			continue
+	//Keeps looking until we've found at least 1!
+	for {
+		select {
+		case <-s.d.ctx.Done():
+			return nil
+		default:
+			logger.Infof("Searching for sessions with type %d", s.sessionType)
+			providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), 512)
+			queried := 0
+			total := len(providers)
+			for provider := range providers {
+				info := s.d.i.Peerstore.PeerInfo(provider)//Fetched because bitwise will only save the addrs temp: pstore.TempAddrTTL
+				if len(info.Addrs) == 0 {
+					logger.Debug("We forgot already how to find this peer")
+					continue
+				}
+
+				//Stop any duplicate queries and peers that are known to not respond to our app.
+				id := provider.String()
+				if s.seen.Contains(id) {
+					continue
+				}
+				s.seen.Add(id, true)
+				if s.d.ignore.Contains(id) {
+					continue
+				}
+				s.d.sessionQueries <- sessionRequest{
+					search: s,
+					peer: info,
+				}
+				queried++
+			}
+			logger.Infof("Queried %d of the %d for sessions of type %d", queried, total, s.sessionType)
+			sessions, err := s.storage.FindAll()
+			if err != nil {
+				logger.Warning(err)
+			} else {
+				if len(sessions) > 0 {
+					return nil//Done
+				}
+			}
 		}
-		s.seen.Add(id, true)
-		if s.d.ignore.Contains(id) {
-			continue
-		}
-		s.d.sessionQueries <- sessionRequest{
-			peer: provider,
-			sessionType: s.sessionType,
-		}
-		queried++
 	}
-	logger.Infof("Queried %d of the %d for sessions of type %d", queried, len(providers), s.sessionType)
 	return nil
 }
 
 //Fetches updates from existing providers.
 //If we again find sessions, we'll also become a provider.
 func (s *search) update() error {
-	if s.updating {
+	logger.Debug("Trying to lock mutex")
+	s.mutex.Lock()
+	if s.running {
+		logger.Debug("Search run is already running...")
+		logger.Debug("Unlocking mutex")
+		s.mutex.Unlock()
 		return nil
 	}
-	s.updating = true
-	s.mutex.Lock()
+	s.running = true
+	logger.Debug("Unlocking mutex")
+	s.mutex.Unlock()
+
 	defer func() {
-		s.mutex.Unlock()
-		s.updating = false
+		s.running = false
 	}()
-	logger.Infof("Updating search for sessions with type %d", s.sessionType)
 	peers, err := s.d.GetPeersByDetails("sessionProvider", "1")
 	if err != nil {
 		return errors.New(fmt.Sprintf("Could not update session search: %s", err.Error()))
 	}
+	if len(peers) == 0 {
+		return nil
+	}
+	logger.Infof("Updating search for sessions with type %d", s.sessionType)
 	for _, peer := range peers {
 		provider, err := s.d.decodePeerId(peer.PId)
 		if err != nil {
 			logger.Warningf("Failed to decode peer id %s: %v", peer.PId, err)
 			continue
 		}
+		info := s.d.i.Peerstore.PeerInfo(provider)
+		if len(info.Addrs) == 0 {
+			logger.Debug("We forgot already how to find this peer")
+			continue
+		}
 		s.d.sessionQueries <- sessionRequest{
-			peer: provider,
-			sessionType: s.sessionType,
+			search: s,
+			peer: info,
 		}
 	}
 	//Become a provider.
@@ -141,6 +180,10 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 }
 
 func (s *search) fetch() *sessionstore.Store {
-	s.backoff.Retry(s.update)
+	duration := s.backoff.NextBackOff()
+	if duration != backoff.Stop {
+		s.run()
+		time.Sleep(duration)
+	}
 	return s.storage
 }

@@ -43,5 +43,7 @@ func New(ctx context.Context, port int) (*Server, error) {
 
 func (s *Server) Stop() {
 	s.grpc.Stop()
-	s.app.Stop()
+	if s.app != nil {
+		s.app.Stop()
+	}
 }

@@ -27,7 +27,7 @@ func (d *Decentralizer) initAddressbook() {
 		d.WaitTilEnoughPeers()
 		d.connectPreviousPeers()
 	}()
-	d.provideSelf()
+	go d.provideSelf()
 	d.cron.Every(30).Seconds().Do(d.uploadPeers)
 	d.cron.Every(5).Minutes().Do(d.provideSelf)
 }
@@ -171,12 +171,13 @@ func (d *Decentralizer) FindByPeerId(peerId string) (p *pb.Peer, err error) {
 	return p, err
 }
 
+//Request peer info from an external peer.
 func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_PEER_REQ)
 	if err != nil {
 		return nil, err
 	}
-	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
+	stream.SetDeadline(time.Now().Add(MESSAGE_DEADLINE))
 	defer stream.Close()
 
 	//Request
@@ -207,6 +208,7 @@ func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 		for _, addr := range info.Addrs {
 			response.Peer.Addrs = append(response.Peer.Addrs, addr.String())
 		}
+		d.i.Peerstore.AddAddrs(peer, ma.Split(stream.Conn().RemoteMultiaddr()), 3 * 24 * time.Hour)//Save it for 3 days.
 	}
 	return response.Peer, nil
 }
@@ -223,6 +225,7 @@ func (d *Decentralizer) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer,
 	return peer, err
 }
 
+//Called when an external peer asks for our peer info.
 func (d *Decentralizer) getPeerResponse(stream inet.Stream) {
 	reqData, err := framed.Read(stream)
 	if err != nil {
