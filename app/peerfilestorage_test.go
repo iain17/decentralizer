@@ -24,7 +24,7 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, cid)
 
-	data, err := app1.GetFile(cid)
+	data, err := app1.getIPFSFile(cid)
 	assert.NoError(t, err)
 	assert.Equal(t, string(message), string(data))
 }

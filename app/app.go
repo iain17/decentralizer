@@ -21,8 +21,8 @@ import (
 	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
 	"sync"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 	"github.com/iain17/kvcache/lttlru"
+	"github.com/spf13/afero"
 )
 
 type Decentralizer struct {
@@ -40,7 +40,8 @@ type Decentralizer struct {
 	ignore 				   *lttlru.LruWithTTL
 
 	//Storage
-	newPathToPublish       chan path.Path
+	filesApi       		   *ipfs.FilesAPI
+	ufs					   afero.Fs
 
 	//Matchmaking
 	matchmakingMutex	   sync.Mutex

@@ -1,103 +1,106 @@
 package app
 
 import (
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
-	"bytes"
-	"errors"
 	"github.com/iain17/decentralizer/app/ipfs"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreunix"
-	Path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	"github.com/spf13/afero"
+	"time"
+	"fmt"
 	"io/ioutil"
+	"github.com/pkg/errors"
+	"os"
+	"github.com/shibukawa/configdir"
 )
 
 func (d *Decentralizer) initStorage() {
-	d.newPathToPublish = make(chan path.Path, CONCURRENT_PUBLISH*2)
-	//Spawn some workers
-	logger.Debugf("Running %d user file publish workers", CONCURRENT_PUBLISH)
-	for i := 0; i < CONCURRENT_PUBLISH; i++ {
-		go d.processPublication()
+	var err error
+	d.filesApi, err = ipfs.NewFilesAPI(d.ctx, d.i, d.api)
+	if err != nil {
+		logger.Fatalf("Could not start filesapi: %s", err.Error())
 	}
-	go d.dellos()
+	paths := configPath.QueryFolders(configdir.Global)
+	if len(paths) == 0 {
+		logger.Fatal("Could not resolve config path")
+	}
+	base := afero.NewBasePathFs(afero.NewOsFs(), paths[0].Path+"/peer-data")
+	layer := afero.NewMemMapFs()
+	d.ufs = afero.NewCacheOnReadFs(base, layer, 100 * time.Second)
+
+
+	go d.restorePeerFiles()
 }
 
-func (d *Decentralizer) dellos() {
+func (d *Decentralizer) restorePeerFiles() {
 	d.WaitTilEnoughPeers()
 	reveries, _ := Asset("reveries.flac")
 	d.SavePeerFile("reveries.flac", reveries)
 	d.GetPeerFile("self", "reveries.flac")
 }
 
-func (d *Decentralizer) processPublication() {
-	for {
-		select {
-		case <-d.ctx.Done():
-			return
-		case path, ok := <-d.newPathToPublish:
-			if !ok {
-				return
-			}
-			err := ipfs.FilePublish(d.i, path)
-			if err != nil {
-				logger.Warningf("Failed to publish %s: %s", path, err)
-			}
-		}
+func (d *Decentralizer) getPeerFilePath(owner libp2pPeer.ID, name string) string {
+	basePath := "/"+owner.Pretty()
+	_, err := d.ufs.Stat(basePath)
+	if os.IsNotExist(err) {
+		d.ufs.MkdirAll(basePath, 0777)
 	}
+	return fmt.Sprintf("%s/%s", basePath, name)
 }
 
+//Save our peer file
 func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
-	logger.Infof("Saving peer file %s", name)
-	location, path, err := coreunix.AddWrapped(d.i, bytes.NewBuffer(data), name)
+	id := d.i.Identity
+	path := d.getPeerFilePath(id, name)
+	err := d.writeFile(path, data)
 	if err != nil {
 		return "", err
 	}
-	ph := Path.FromCid(path.Cid())
-	if err != nil {
-		return "", err
-	}
-	d.newPathToPublish <- ph
-	return "/ipfs/"+location, nil
+	return d.filesApi.SavePeerFile(name, data)
 }
 
-func (d *Decentralizer) GetPeerFiles(peerId string) ([]*iface.Link, error) {
-	logger.Infof("Get peer files of peer id %s", peerId)
+func (d *Decentralizer) writeFile(path string, data []byte) error {
+	f, err := d.ufs.Create(path)
+	if err != nil {
+		return err
+	}
+	n, err := f.Write(data)
+	if n != len(data) {
+		return errors.New("partial write")
+	}
+	return err
+}
+
+func (d *Decentralizer) getFile(path string) ([]byte, error) {
+	f, err := d.ufs.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	return ioutil.ReadAll(f)
+}
+
+func (d *Decentralizer) getIPFSFile(path string) ([]byte, error) {
+	return d.filesApi.GetFile(path)
+}
+
+//Get a particular peer file from someone.
+func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) {
+	var result []byte
 	id, err := d.decodePeerId(peerId)
 	if err != nil {
 		return nil, err
 	}
-	rawPath := "/ipns/" + id.Pretty()
-	pth := coreapi.ResolvedPath(rawPath, nil, nil)
-	return d.api.Unixfs().Ls(d.i.Context(), pth)
-}
-
-func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) {
-	logger.Infof("Get peer file %s of peer id %s", name, peerId)
-	files, err := d.GetPeerFiles(peerId)
-	if err != nil {
-		return nil, err
-	}
-	for _, file := range files {
-		if file.Name == name {
-			return d.GetFile(file.Cid.String())
+	path := d.getPeerFilePath(id, name)
+	info, err := d.ufs.Stat(path)
+	if err != nil || info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
+		//Time to get a fresh copy
+		result, err = d.filesApi.GetPeerFile(id, name)
+		if err != nil && result != nil {
+			d.writeFile(path, result)
 		}
 	}
-	return nil, errors.New("could not find peer file")
-}
-
-//Path could be "/ipfs/QmQy2Dw4Wk7rdJKjThjYXzfFJNaRKRHhHP5gHHXroJMYxk"
-func (d *Decentralizer) GetFile(path string) ([]byte, error) {
-	logger.Infof("Get file: %s", path)
-
-	pth := coreapi.ResolvedPath(path, nil, nil)
-	_, err := d.api.ResolvePath(d.i.Context(), pth)
-	if err != nil {
-		return nil, err
+	//No result yet?
+	if result == nil {
+		result, err = d.getFile(path)
 	}
-	r, err := d.api.Unixfs().Cat(d.i.Context(), pth)
-	if err != nil {
-		return nil, err
-	}
-	return ioutil.ReadAll(r)
+	return result, err
 }

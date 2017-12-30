@@ -12,6 +12,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/kvcache/lttlru"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
+	"github.com/spf13/afero"
 )
 
 var testNetwork *network.Network
@@ -67,5 +68,9 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 	instance.initMessaging()
 	instance.initAddressbook()
 	instance.initPublisherFiles()
+
+	//Mock UFS
+	instance.ufs = afero.NewMemMapFs()
+
 	return instance
 }
