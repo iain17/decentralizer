@@ -94,8 +94,8 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	if err != nil || info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
 		//Time to get a fresh copy
 		result, err = d.filesApi.GetPeerFile(id, name)
-		if err != nil && result != nil {
-			d.writeFile(path, result)
+		if err == nil && result != nil {
+			err = d.writeFile(path, result)
 		}
 	}
 	//No result yet?

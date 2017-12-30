@@ -106,17 +106,22 @@ func TestDecentralizer_Cache(t *testing.T) {
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
+	time.Sleep(1 * time.Second)
+
+	result, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
+	assert.NoError(t, err)
+	assert.Equal(t, string(message), string(result), "Not yet updated")
+
 	_, err = app1.SavePeerFile(filename, updatedMessage)
 	assert.NoError(t, err)
 
 	time.Sleep(1 * time.Second)
 
-	var result []byte
 	for i:= 0; i < 10; i++ {
 		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 		assert.NoError(t, err)
 		time.Sleep(100 * time.Millisecond)
 	}
-	assert.Equal(t, string(message), string(result))//Not updated! Cuz it was cached.
+	assert.Equal(t, string(message), string(result), "Not updated! Cuz it was cached." )
 }
 
