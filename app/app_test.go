@@ -10,7 +10,7 @@ import (
 	"os"
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/decentralizer/pb"
-	"github.com/Akagi201/kvcache/ttlru"
+	"github.com/iain17/kvcache/lttlru"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 )
 
@@ -44,7 +44,7 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 	} else {
 		n = testSlaveNetwork
 	}
-	ignore, err := lru.NewTTL(MAX_IGNORE)
+	ignore, err := lttlru.NewTTL(MAX_IGNORE)
 	if err != nil {
 		panic(err)
 	}

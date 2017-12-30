@@ -19,7 +19,7 @@ import (
 
 //Find other peers around a subject.
 //This is done by using the bitswap network of IPFS which is currently powered by DHT.
-
+//TODO: d.i.Routing?!?!
 type BitswapService struct {
 	node    *core.IpfsNode
 	network bsnet.BitSwapNetwork

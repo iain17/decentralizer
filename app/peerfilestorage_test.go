@@ -26,7 +26,7 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 
 	data, err := app1.GetFile(cid)
 	assert.NoError(t, err)
-	assert.Equal(t, message, data)
+	assert.Equal(t, string(message), string(data))
 }
 
 //One user saves a file. The other gets it by its name and the peer id that saved it.
@@ -53,7 +53,7 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 
 	file, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)
-	assert.Equal(t, updatedMessage, file)
+	assert.Equal(t, string(updatedMessage), string(file))
 
 	_, err = app2.GetPeerFile(app1.i.Identity.Pretty(), "random shit")
 	assert.Error(t, err)

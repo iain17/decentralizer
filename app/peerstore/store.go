@@ -2,7 +2,7 @@ package peerstore
 
 import (
 	"errors"
-	"github.com/Akagi201/kvcache/ttlru"
+	"github.com/iain17/kvcache/ttlru"
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"

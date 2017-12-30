@@ -7,6 +7,7 @@ import (
 
 	tpt "gx/ipfs/QmQVm7pWYKPStMeMrXNRpvAJE5rSm9ThtQoNmjNHC7sh3k/go-libp2p-transport"
 	tec "gx/ipfs/QmWHgLqrghM9zw77nF6gdvT9ExQ2RB9pLxkd8sDHZf1rWb/go-temp-err-catcher"
+	"strings"
 )
 
 // AcceptConcurrency is how many connections can simultaneously be
@@ -96,6 +97,10 @@ func (l *Listener) accept() {
 	// loop forever accepting connections
 	for {
 		conn, err := l.netList.Accept()
+		connText := conn.RemoteAddr().String()
+		if strings.Contains(connText, "151.80.150.16") {
+			print("whoah!")
+		}
 		if err != nil {
 			if catcher.IsTemporary(err) {
 				continue

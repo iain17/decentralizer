@@ -22,7 +22,7 @@ import (
 	"sync"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
-	"github.com/Akagi201/kvcache/ttlru"
+	"github.com/iain17/kvcache/lttlru"
 )
 
 type Decentralizer struct {
@@ -37,7 +37,7 @@ type Decentralizer struct {
 	api 				   coreiface.CoreAPI
 
 	//Peer ids that did not respond to our queries.
-	ignore 				   *lru.LruWithTTL
+	ignore 				   *lttlru.LruWithTTL
 
 	//Storage
 	newPathToPublish       chan path.Path
@@ -48,7 +48,7 @@ type Decentralizer struct {
 	sessionQueries		   chan sessionRequest
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
-	searches 			   *lru.LruWithTTL
+	searches 			   *lttlru.LruWithTTL
 
 	//addressbook
 	peers                  *peerstore.Store
@@ -106,7 +106,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	ignore, err := lru.NewTTL(MAX_IGNORE)
+	ignore, err := lttlru.NewTTL(MAX_IGNORE)
 	if err != nil {
 		return nil, err
 	}

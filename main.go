@@ -12,7 +12,7 @@ import (
 
 func init() {
 	logger.AddOutput(logger.Stdout{
-		MinLevel: logger.DEBUG, //logger.DEBUG,
+		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
 	logging.Configure(logging.LevelError)

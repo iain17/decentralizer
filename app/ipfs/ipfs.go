@@ -33,10 +33,10 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 	buildCfg := &core.BuildCfg{
 		Repo:      r,
 		Online:    true,
-		Permament: true,
+		Permament: false,
 		ExtraOpts: map[string]bool{
-			"mplex":  true,
-			"pubsub": true,
+			//"mplex":  true,
+			//"pubsub": true,
 		},
 	}
 

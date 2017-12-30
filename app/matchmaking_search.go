@@ -6,9 +6,10 @@ import (
 	"sync"
 	"github.com/iain17/logger"
 	Peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	net "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
 	"github.com/iain17/decentralizer/pb"
 	"time"
-	"github.com/Akagi201/kvcache/ttlru"
+	"github.com/iain17/kvcache/lttlru"
 	"github.com/cenkalti/backoff"
 	"github.com/pkg/errors"
 	"fmt"
@@ -22,12 +23,12 @@ type search struct {
 	sessionType uint64
 	ctx context.Context
 	storage *sessionstore.Store
-	seen *lru.LruWithTTL
+	seen *lttlru.LruWithTTL
 }
 
 func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*search, error) {
 	storage := d.getSessionStorage(sessionType)
-	seen, err := lru.NewTTL(MAX_IGNORE)
+	seen, err := lttlru.NewTTL(MAX_IGNORE)
 	if err != nil {
 		return nil, err
 	}
@@ -47,16 +48,13 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 
 //Looks for new providers. Ran at the start of a search and on a set interval.
 func (s *search) run() error {
-	logger.Debug("Trying to lock mutex")
 	s.mutex.Lock()
 	if s.running {
 		logger.Debug("Search run is already running...")
-		logger.Debug("Unlocking mutex")
 		s.mutex.Unlock()
 		return nil
 	}
 	s.running = true
-	logger.Debug("Unlocking mutex")
 	s.mutex.Unlock()
 
 	defer func() {
@@ -73,10 +71,20 @@ func (s *search) run() error {
 			queried := 0
 			total := len(providers)
 			for provider := range providers {
-				info := s.d.i.Peerstore.PeerInfo(provider)//Fetched because bitwise will only save the addrs temp: pstore.TempAddrTTL
-				if len(info.Addrs) == 0 {
-					logger.Debug("We forgot already how to find this peer")
+				info := s.d.i.Peerstore.PeerInfo(provider) //Fetched because bitwise will only save the addrs temp: pstore.TempAddrTTL
+
+				connectedNess := s.d.i.PeerHost.Network().Connectedness(provider)
+				if connectedNess == net.CannotConnect {
+					logger.Debug("Known to be terrible to connect to")
 					continue
+				}
+
+				//Check if we've got a way to connect
+				if connectedNess == net.NotConnected {
+					if len(info.Addrs) == 0 {
+						logger.Debugf("We've forgotten already how to find this peer: %s", provider.Pretty())
+						continue
+					}
 				}
 
 				//Stop any duplicate queries and peers that are known to not respond to our app.
@@ -84,17 +92,21 @@ func (s *search) run() error {
 				if s.seen.Contains(id) {
 					continue
 				}
-				s.seen.Add(id, true)
+				s.seen.AddWithTTL(id, true, 60 * time.Second)
 				if s.d.ignore.Contains(id) {
 					continue
 				}
 				s.d.sessionQueries <- sessionRequest{
 					search: s,
 					peer: info,
+					connected: connectedNess == net.Connected,
 				}
 				queried++
 			}
 			logger.Infof("Queried %d of the %d for sessions of type %d", queried, total, s.sessionType)
+			if queried == 0 {
+				return nil
+			}
 			sessions, err := s.storage.FindAll()
 			if err != nil {
 				logger.Warning(err)
@@ -111,16 +123,13 @@ func (s *search) run() error {
 //Fetches updates from existing providers.
 //If we again find sessions, we'll also become a provider.
 func (s *search) update() error {
-	logger.Debug("Trying to lock mutex")
 	s.mutex.Lock()
 	if s.running {
 		logger.Debug("Search run is already running...")
-		logger.Debug("Unlocking mutex")
 		s.mutex.Unlock()
 		return nil
 	}
 	s.running = true
-	logger.Debug("Unlocking mutex")
 	s.mutex.Unlock()
 
 	defer func() {

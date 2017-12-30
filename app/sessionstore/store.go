@@ -3,7 +3,7 @@ package sessionstore
 import (
 	"github.com/hashicorp/go-memdb"
 	"github.com/iain17/decentralizer/pb"
-	"github.com/Akagi201/kvcache/ttlru"
+	"github.com/iain17/kvcache/ttlru"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"time"
 	"errors"
