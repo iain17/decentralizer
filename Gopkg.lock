@@ -177,9 +177,27 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/jeffchao/backoff"
+  packages = ["."]
+  revision = "9d7fd7aa17f229da501a53ec2de5d2b8612cc65b"
+
+[[projects]]
+  branch = "master"
   name = "github.com/juju/errgo"
   packages = ["."]
   revision = "08cceb5d0b5331634b9826762a8fd53b29b86ad8"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/kardianos/osext"
+  packages = ["."]
+  revision = "ae77be60afb1dcacde03767a8c37337fad28ac14"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/kardianos/service"
+  packages = ["."]
+  revision = "14a49b39b37b67e7c4d0f9df86ff005c55e539ff"
 
 [[projects]]
   name = "github.com/miekg/dns"
@@ -267,6 +285,12 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["windows","windows/registry","windows/svc","windows/svc/eventlog","windows/svc/mgr"]
+  revision = "83801418e1b59fb1880e363299581ee543af32ca"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/text"
   packages = ["collate","collate/build","internal/colltab","internal/gen","internal/tag","internal/triegen","internal/ucd","language","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable"]
   revision = "e19ae1496984b1c655b8044a65c0300a3c878dd3"
@@ -286,6 +310,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d38a08f4f2ab4f7d31b3435cb141aaffd43268cbf4fd282bc7bc7dac2e47d8e2"
+  inputs-digest = "15c40161a9fba5159b2152303168efbf1680a5666881990277102019dbf24b07"
   solver-name = "gps-cdcl"
   solver-version = 1
