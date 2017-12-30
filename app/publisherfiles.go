@@ -11,7 +11,7 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"fmt"
 	"encoding/hex"
-	//"github.com/jeffchao/backoff"
+	"github.com/jeffchao/backoff"
 	"strings"
 )
 
@@ -21,31 +21,31 @@ func (d *Decentralizer) getPublisherTopic() string {
 }
 
 func (d *Decentralizer) initPublisherFiles() {
-	//f := backoff.Fibonacci()
-	//f.Interval = 1 * time.Second
-	//_, err := ipfs.Subscribe(d.i, d.getPublisherTopic(), func(peer peer.ID, data []byte) {
-	//	call := func() error {
-	//		return d.receivedUpdate(peer, data)
-	//	}
-	//	err := f.Retry(call)
-	//	if err != nil {
-	//		logger.Warning(err)
-	//	}
-	//})
-	//if err != nil {
-	//	logger.Fatal(err)
-	//}
+	f := backoff.Fibonacci()
+	f.Interval = 1 * time.Second
+	_, err := ipfs.Subscribe(d.i, d.getPublisherTopic(), func(peer peer.ID, data []byte) {
+		call := func() error {
+			return d.receivedUpdate(peer, data)
+		}
+		err := f.Retry(call)
+		if err != nil {
+			logger.Warning(err)
+		}
+	})
+	if err != nil {
+		logger.Fatal(err)
+	}
 	d.downloadPublisherDefinition()
-	//d.cron.Every(10).Minutes().Do(func() {
-	//	if d.i == nil {
-	//		return
-	//	}
-	//	lenPeers := len(d.i.PeerHost.Network().Peers())
-	//	if lenPeers <= MIN_CONNECTED_PEERS {
-	//		return
-	//	}
-	//	d.PushPublisherUpdate()
-	//})
+	d.cron.Every(10).Minutes().Do(func() {
+		if d.i == nil {
+			return
+		}
+		lenPeers := len(d.i.PeerHost.Network().Peers())
+		if lenPeers <= MIN_CONNECTED_PEERS {
+			return
+		}
+		d.PushPublisherUpdate()
+	})
 }
 
 func (d *Decentralizer) readPublisherUpdateFromDisk() ([]byte, error) {

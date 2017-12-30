@@ -14,6 +14,7 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"gx/ipfs/QmdQFrFnPrKRQtpeHKjZ3cVNwxmGKKS2TvhJTuN9C9yduh/go-libp2p-swarm"
 	"gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )
 
 func init() {
@@ -82,11 +83,7 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 		peers = append(peers, *peerInfo)
 
 		if d.i.PeerHost.Network().Connectedness(peerInfo.ID) != net.Connected {
-			snet, ok := d.i.PeerHost.Network().(*swarm.Network)
-			if !ok {
-				logger.Warning("not swarm")
-			}
-			snet.Swarm().Backoff().Clear(peerInfo.ID)
+			d.clearBackOff(peerInfo.ID)
 			err = d.i.PeerHost.Connect(d.i.Context(), *peerInfo)
 			if err != nil {
 				logger.Warning(err)
@@ -112,6 +109,14 @@ func (d *Decentralizer) setInfo() {
 	ln.SetInfo("peerId", d.i.Identity.Pretty())
 	logger.Infof("Broadcasting: %s", addrs)
 	ln.SetInfo("addr", addrs)
+}
+
+func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
+	snet, ok := d.i.PeerHost.Network().(*swarm.Network)
+	if ok {
+		logger.Warning("not swarm")
+		snet.Swarm().Backoff().Clear(id)
+	}
 }
 
 func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {

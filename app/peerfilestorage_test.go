@@ -40,22 +40,45 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	assert.NotNil(t, app2)
 
 	message := []byte("Hey ho this is cool.")
-	updatedMessage := []byte("Nah not that cool.")
 	filename := "test.txt"
 
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
-	_, err = app1.SavePeerFile(filename, updatedMessage)
-	assert.NoError(t, err)
-
-	time.Sleep(2 * time.Second)
-
 	file, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)
-	assert.Equal(t, string(updatedMessage), string(file))
+	assert.Equal(t, string(message), string(file))
 
 	_, err = app2.GetPeerFile(app1.i.Identity.Pretty(), "random shit")
 	assert.Error(t, err)
+}
+
+func TestDecentralizer_Updated(t *testing.T) {
+	FILE_EXPIRE = 0
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
+	app1 := fakeNew(nodes[0], false)
+	assert.NotNil(t, app1)
+	app2 := fakeNew(nodes[1], false)
+	assert.NotNil(t, app2)
+
+	message := []byte("Simplicity is the ultimate sophistication ~ Leonardo Da Vinci")
+	updatedMessage := []byte("The mass of men lead lives of quiet desperation. What is called resignation is confirmed desperation. ~Henry David Thoreau")
+	filename := "test.txt"
+
+	_, err := app1.SavePeerFile(filename, message)
+	assert.NoError(t, err)
+
+	var result []byte
+	for i:= 0; i < 10; i++ {
+		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
+		assert.NoError(t, err)
+		if string(updatedMessage) == string(result) {
+			break
+		}
+		time.Sleep(1 * time.Second)
+	}
+	assert.Equal(t, string(updatedMessage), string(result))
 }
 

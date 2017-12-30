@@ -22,7 +22,6 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"strings"
 	"github.com/giantswarm/retry-go"
-	"gx/ipfs/QmdQFrFnPrKRQtpeHKjZ3cVNwxmGKKS2TvhJTuN9C9yduh/go-libp2p-swarm"
 )
 
 type sessionRequest struct{
@@ -263,11 +262,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]*pb.Session, error) {
 	var stream inet.Stream
 	op := func() (err error) {
-		snet, ok := d.i.PeerHost.Network().(*swarm.Network)
-		if !ok {
-			logger.Warning("not swarm")
-		}
-		snet.Swarm().Backoff().Clear(peer)
+		d.clearBackOff(peer)
 		stream, err = d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
 		return
 	}
