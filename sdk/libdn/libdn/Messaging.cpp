@@ -1,14 +1,15 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(PeerID& pid, std::string& data) {
-		return SendDirectMessageLegacy(pid, data.c_str(), data.size());
+	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(uint32_t channel, PeerID& pid, std::string& data) {
+		return SendDirectMessageLegacy(channel, pid, data.c_str(), data.size());
 	}
 
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(PeerID& pid, const void* data, size_t size) {
-		auto result = new Promise<bool>([pid, data, size](Promise<bool>* promise) {
+	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(uint32_t channel, PeerID& pid, const void* data, size_t size) {
+		auto result = new Promise<bool>([channel, pid, data, size](Promise<bool>* promise) {
 			// Data we are sending to the server.
 			pb::RPCDirectMessage request;
+			request.set_channel(channel);
 			request.set_pid(pid);
 			request.set_message(data, size);
 
@@ -28,24 +29,18 @@ namespace libdn {
 		return result;
 	}
 
-	void ListenToDirectMessages() {
-		if (context.DMListening) {
-			return;
-		}
-		context.DMListening = true;
-		auto promise = new Promise<bool>([](Promise<bool>* promise) {
-			pb::empty request;
+	LIBDN_API Promise<bool>* LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback) {
+		return new Promise<bool>([channel, callback](Promise<bool>* promise) {
+			pb::RPCReceiveDirectMessageRequest request;
+			request.set_channel(channel);
 			auto ctx = context.client->getContext();
 			std::unique_ptr< ::grpc::ClientReader< ::pb::RPCDirectMessage>> reader = context.client->stub_->ReceiveDirectMessage(ctx, request);
 			pb::RPCDirectMessage message;
 			while (reader->Read(&message)) {
 				std::string data = message.message();
-				context.g_dmCB(message.pid(), (uint8_t*)data.c_str(), data.size());
+				callback(message.pid(), (uint8_t*)data.c_str(), data.size());
 			}
 			return true;
-		});
-		promise->finally([]() {
-			context.DMListening = false;
 		});
 	}
 

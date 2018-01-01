@@ -128,25 +128,27 @@ void storageTest() {
 void messagingTest() {
 	std::string to = "self";
 	std::string data = "Cool";
-	auto req = libdn::SendDirectMessage(to, data);
+	auto req = libdn::SendDirectMessage(1337, to, data);
 	req->wait();
 }
 
 int main() {
 	printf("DN_Init()\n");
-	libdn::Init(LogCB, MessageCB);
+	libdn::Init(LogCB);
 	bool status = false;
 	while (!status) {
 		status = libdn::Connect("10.1.1.34:50010", NETWORKKEY, true);
 	}
+	libdn::RegisterDirectMessageCallback(1337, MessageCB);
+
 	getSelf();
 
 	while (true) {
 		LogCB("frame");
 		libdn::RunFrame();
+		messagingTest();
 		matchMakingTest();
 		storageTest();
-		messagingTest();
 		Sleep(100);
 	}
 }
