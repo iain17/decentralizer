@@ -73,6 +73,7 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	logger.Info("Bootstrapping")
 	d.setInfo()
 	var peers []pstore.PeerInfo
+	connected := 0
 	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := getInfo(peer)
 		if err != nil {
@@ -83,16 +84,16 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 		peers = append(peers, *peerInfo)
 
 		if d.i.PeerHost.Network().Connectedness(peerInfo.ID) != net.Connected {
-			d.clearBackOff(peerInfo.ID)
-			err = d.i.PeerHost.Connect(d.i.Context(), *peerInfo)
-			if err != nil {
-				logger.Warning(err)
-			} else {
-				logger.Info("Connected!!!")
-			}
+			//d.clearBackOff(peerInfo.ID)
+			//err = d.i.PeerHost.Connect(d.i.Context(), *peerInfo)
+			//if err != nil {
+			//	logger.Warning(err)
+			//} else {
+				connected++
+			//}
 		}
 	}
-	logger.Infof("Bootstrapped %d peers", len(peers))
+	logger.Infof("Bootstrapped %d peers. We are connected to %d of those", len(peers), connected)
 	return peers
 }
 

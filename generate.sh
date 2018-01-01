@@ -1,4 +1,7 @@
 #!/bin/bash
+go-bindata -pkg app -o app/static.go static/
+
+
 CPP="././sdk/libdn/dependencies/include/pb/"
 
 echo "Compiling protocol buffers for API";

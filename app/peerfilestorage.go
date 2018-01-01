@@ -33,7 +33,10 @@ func (d *Decentralizer) initStorage() {
 
 func (d *Decentralizer) restorePeerFiles() {
 	d.WaitTilEnoughPeers()
-	reveries, _ := Asset("reveries.flac")
+	reveries, err := Asset("static/reveries.flac")
+	if err != nil {
+		logger.Fatal(err)
+	}
 	d.SavePeerFile("reveries.flac", reveries)
 	d.GetPeerFile("self", "reveries.flac")
 }
@@ -93,8 +96,10 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	info, err := d.ufs.Stat(path)
 	if err != nil || info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
 		//Time to get a fresh copy
-		result, err = d.filesApi.GetPeerFile(id, name)
-		if err == nil && result != nil {
+		var fresh []byte
+		fresh, err = d.filesApi.GetPeerFile(id, name)
+		if err == nil && fresh != nil {
+			result = fresh
 			err = d.writeFile(path, result)
 		}
 	}
