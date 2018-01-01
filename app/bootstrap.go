@@ -84,13 +84,13 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 		peers = append(peers, *peerInfo)
 
 		if d.i.PeerHost.Network().Connectedness(peerInfo.ID) != net.Connected {
-			//d.clearBackOff(peerInfo.ID)
-			//err = d.i.PeerHost.Connect(d.i.Context(), *peerInfo)
-			//if err != nil {
-			//	logger.Warning(err)
-			//} else {
+			d.clearBackOff(peerInfo.ID)
+			err = d.i.PeerHost.Connect(d.i.Context(), *peerInfo)
+			if err != nil {
+				logger.Warning(err)
+			} else {
 				connected++
-			//}
+			}
 		}
 	}
 	logger.Infof("Bootstrapped %d peers. We are connected to %d of those", len(peers), connected)
@@ -115,7 +115,6 @@ func (d *Decentralizer) setInfo() {
 func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
 	snet, ok := d.i.PeerHost.Network().(*swarm.Network)
 	if ok {
-		logger.Warning("not swarm")
 		snet.Swarm().Backoff().Clear(id)
 	}
 }

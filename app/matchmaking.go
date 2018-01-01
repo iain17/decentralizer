@@ -67,13 +67,13 @@ func (d *Decentralizer) processSessionRequest() {
 			addrs := req.peer.Addrs
 			if !req.connected {
 				//Add the addrs temp while we try and connect.
-				addrs = ipfs.FilterNonReachableAddrs(req.peer.Addrs, false, false,false)
+				addrs = ipfs.FilterNonReachableAddrs(req.peer.Addrs, true, false,false)
 				if len(addrs) == 0 {
-					logger.Debug("No reachable addrs found for sessions provider: %s", req.peer.ID.Pretty())
+					logger.Debugf("No reachable addrs found for sessions provider: %s", req.peer.ID.Pretty())
 					continue
 				}
 			}
-			d.i.Peerstore.AddAddrs(req.peer.ID, addrs, 10 * time.Minute)
+			d.i.Peerstore.AddAddrs(req.peer.ID, addrs, 10 * time.Second)
 			sessions, err := d.getSessionsRequest(req.peer.ID, req.search.sessionType)
 			if err != nil {
 				if err.Error() == "protocol not supported" || err == io.EOF {
