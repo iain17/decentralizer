@@ -33,8 +33,10 @@ func (s sLogger) Print(level int, message string) error {
 		break
 	case logger.WARNING:
 		serviceLogger.Warning(message)
-	default:
-		serviceLogger.Info(message)
+	//case logger.INFO:
+	//	serviceLogger.Info(message)
+	//default:
+	//	serviceLogger.Infof("[debug]: %s", message)
 	}
 	return nil
 }
