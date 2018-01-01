@@ -2,13 +2,18 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API void LIBDN_CALL Init(LogCB logCallback, DirectMessageCB directMessageCallback) {
+	LIBDN_API void LIBDN_CALL Init(LogCB logCallback) {
 		if (context.initialized) {
+			return;
+		}
+		bool adna = ADNA_Init();
+		if (!adna) {
+			MessageBoxA(NULL, "Could not start ADNA process.", "libdn", MB_OK);
+			exit(0);
 			return;
 		}
 		context.initialized = true;
 		context.g_logCB = logCallback;
-		context.g_dmCB = directMessageCallback;
 		Log_Print("Initializing libdn");
 	}
 
@@ -16,11 +21,7 @@ namespace libdn {
 		return;
 	}
 
-	void ListenToDirectMessages();
 	LIBDN_API void LIBDN_CALL RunFrame() {
-		if (!context.DMListening) {
-			ListenToDirectMessages();
-		}
 		return;
 	}
 }

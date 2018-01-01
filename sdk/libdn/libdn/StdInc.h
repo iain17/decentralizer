@@ -36,6 +36,7 @@
 // app specific headers
 #include "libdn.h"
 #include "Utils.h"
+#include "Adna.h"
 #include "RPC.h"
 #include "Conversions.h"
 #include "Promise.h"
@@ -48,9 +49,7 @@ extern const char * VERSION;
 extern struct DN_state_s {
 	libdn::DecentralizerClient* client;
 	bool initialized = false;
-	bool DMListening = false;
 	libdn::LogCB g_logCB;
-	libdn::DirectMessageCB g_dmCB;
 	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
 	::google::protobuf::RepeatedPtrField< ::std::string> peers;
 } context;
