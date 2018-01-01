@@ -1,45 +1,51 @@
 package app
 
 import (
-	"gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
-	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/golang/protobuf/proto"
 	"errors"
 	"time"
 	"io/ioutil"
+	"github.com/iain17/decentralizer/app/ipfs"
+	"fmt"
+	"encoding/hex"
+	"github.com/jeffchao/backoff"
 	"strings"
-	"io"
-	"github.com/iain17/framed"
 )
 
+func (d *Decentralizer) getPublisherTopic() string {
+	ih := d.n.InfoHash()
+	return fmt.Sprintf("%s_PUBLISHER", hex.EncodeToString(ih[:]), ih)
+}
+
 func (d *Decentralizer) initPublisherFiles() {
-	d.i.PeerHost.SetStreamHandler(GET_PUBLISHER_UPDATE, d.getPublisherUpdateResponse)
-	d.downloadPublisherDefinition()
-	go func() {
-		d.WaitTilEnoughPeers()
-		tries := 0
-		select {
-		case <-d.ctx.Done():
-			return
-		default:
-			d.updatePublisherDefinition()
-			if d.publisherUpdate == nil || d.publisherDefinition == nil {
-				tries++
-				if tries > 2 {
-					logger.Warning("Could not find publisher definition. Giving up")
-					return
-				}
-				logger.Warning("Could not find publisher definition. Retrying....")
-				time.Sleep(2 * time.Second)
-			} else {
-				logger.Info("Finished")
-				return
-			}
+	f := backoff.Fibonacci()
+	f.Interval = 1 * time.Second
+	_, err := ipfs.Subscribe(d.i, d.getPublisherTopic(), func(peer peer.ID, data []byte) {
+		call := func() error {
+			return d.receivedUpdate(peer, data)
 		}
-	}()
-	d.cron.AddFunc("* 30 * * * *", d.updatePublisherDefinition)
+		err := f.Retry(call)
+		if err != nil {
+			logger.Warning(err)
+		}
+	})
+	if err != nil {
+		logger.Fatal(err)
+	}
+	d.downloadPublisherDefinition()
+	d.cron.Every(10).Minutes().Do(func() {
+		if d.i == nil {
+			return
+		}
+		lenPeers := len(d.i.PeerHost.Network().Peers())
+		if lenPeers <= MIN_CONNECTED_PEERS {
+			return
+		}
+		d.PushPublisherUpdate()
+	})
 }
 
 func (d *Decentralizer) readPublisherUpdateFromDisk() ([]byte, error) {
@@ -97,6 +103,9 @@ func (d *Decentralizer) unmarshalPublisherDefinition(update *pb.PublisherUpdate)
 		return nil, errors.New("definition is older")
 	}
 	err = d.n.Verify(update.Definition, update.Signature)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("signature verification failed: %s", err.Error()))
+	}
 	return &definition, err
 }
 
@@ -136,10 +145,24 @@ func (d *Decentralizer) PublishPublisherUpdate(definition *pb.PublisherDefinitio
 	if err != nil {
 		return err
 	}
-	return nil
+	err = d.PushPublisherUpdate()
+	if err == nil {
+		d.cron.Every(1).Second().Do(d.PushPublisherUpdate)
+	}
+	return err
 }
 
-//Anything here we wanna do.
+func (d *Decentralizer) PushPublisherUpdate() error {
+	if d.publisherUpdate == nil {
+		return errors.New("no update set")
+	}
+	data, err := proto.Marshal(d.publisherUpdate)
+	if err != nil {
+		return err
+	}
+	return ipfs.Publish(d.i, d.getPublisherTopic(), data)
+}
+
 //Called when the publisher file has been loaded
 func (d *Decentralizer) runPublisherInstructions() {
 	//If the publisher file told us to stop. Stop!
@@ -150,120 +173,26 @@ func (d *Decentralizer) runPublisherInstructions() {
 	logger.Infof("Publisher instructions loaded: %s", time.Unix(d.publisherDefinition.Created, 0).Format(time.RFC822))
 }
 
-//Will go through each connected peer and try and connect. Find out what publisher update they are running.
-//If we've got 3 responses we'll stop trying. And take that this is the latest
-func (d *Decentralizer) updatePublisherDefinition() {
-	d.searchingForPublisherUpdate.Lock()
-	defer d.searchingForPublisherUpdate.Unlock()
-	checked := 0
-	for _, peer := range d.i.PeerHost.Network().Peers() {
-		if d.publisherDefinition != nil && checked >= MIN_CONNECTED_PEERS {
-			break
+//Pick 3 random peers
+func (d *Decentralizer) receivedUpdate(peer peer.ID, data []byte) error {
+	pId := peer.Pretty()
+	if d.ignore.Contains(pId) {
+		return errors.New("on ignore list")
+	}
+	var update pb.PublisherUpdate
+	err := proto.Unmarshal(data, &update)
+	if err != nil {
+		d.ignore.Add(pId, true)
+		return err
+	}
+	err = d.loadNewPublisherUpdate(&update)
+	if err != nil {
+		if strings.Contains(err.Error(), "signature verification failed") {
+			d.ignore.Add(pId, true)
+			return err
 		}
-		id := peer.Pretty()
-		if d.ignore[id] {
-			continue
-		}
-		definition, err := d.getPublisherUpdateRequest(peer)
-		if err != nil {
-			logger.Debug(err)
-			if err.Error() == "i/o deadline reached" {
-				continue
-			}
-			if err.Error() == "protocol not supported" {
-				d.ignore[id] = true
-				continue
-			}
-			if strings.Contains(err.Error(), "dial attempt failed") {
-				d.ignore[id] = true
-				continue
-			}
-			if err == io.EOF {
-				continue
-			}
-			logger.Warningf("Could not get publisher update: %v", err)
-			continue
-		}
-		checked++
-
-		err = d.loadNewPublisherUpdate(definition)
-		if err != nil {
-			if err.Error() == "definition is older" {
-				continue
-			}
-			logger.Warningf("Could not load new publisher update: %v", err)
-		} else {
-			break //updated.
-		}
+	} else {
+		return d.PushPublisherUpdate()//means it updated. we'll republish.
 	}
-}
-
-func (d *Decentralizer) getPublisherUpdateRequest(peer peer.ID) (*pb.PublisherUpdate, error) {
-	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_PUBLISHER_UPDATE)
-	if err != nil {
-		return nil, err
-	}
-	stream.SetDeadline(time.Now().Add(1 * time.Second))
-	defer stream.Close()
-	logger.Infof("Requesting %s for their publisher file.", peer.Pretty())
-
-	//Request
-	reqData, err := proto.Marshal(&pb.DNPublisherUpdateRequest{})
-	if err != nil {
-		return nil, err
-	}
-	err = framed.Write(stream, reqData)
-	if err != nil {
-		return nil, err
-	}
-
-	//Response
-	resData, err := framed.Read(stream)
-	if err != nil {
-		return nil, err
-	}
-	if resData[0] == byte('N') && resData[1] == byte('O') && resData[2] == byte('P') {
-		return nil, errors.New("peer doesn't have a publisher def")
-	}
-	var response pb.DNPublisherUpdateResponse
-	err = proto.Unmarshal(resData, &response)
-	if err != nil {
-		return nil, err
-	}
-	return response.Update, nil
-}
-
-
-func (d *Decentralizer) getPublisherUpdateResponse(stream inet.Stream) {
-	if d.publisherUpdate == nil {
-		framed.Write(stream, []byte("NOP"))
-		return
-	}
-	logger.Info("Responding with our publisher update.")
-
-	reqData, err := framed.Read(stream)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	var request pb.DNPublisherUpdateRequest
-	err = proto.Unmarshal(reqData, &request)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	//Response
-	response, err := proto.Marshal(&pb.DNPublisherUpdateResponse{
-		Update: d.publisherUpdate,
-	})
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	err = framed.Write(stream, response)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
+	return nil
 }

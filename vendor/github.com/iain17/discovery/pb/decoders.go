@@ -6,29 +6,11 @@ import (
 	"github.com/iain17/discovery/env"
 	"github.com/golang/protobuf/proto"
 	"io"
-	"github.com/getlantern/framed"
+	"github.com/iain17/framed"
 )
 
-//TODO: Replace framed for something better.
-func Write(w io.Writer, data []byte) error {
-	fw := framed.NewWriter(w)
-	s, err := fw.Write(data)
-	if err != nil {
-		return err
-	}
-	if len(data) != s {
-		return errors.New("Didn't write all of the data")
-	}
-	return err
-}
-
-func Read(r io.Reader) ([]byte, error) {
-	fr := framed.NewReader(r)
-	return fr.ReadFrame()
-}
-
 func Decode(r io.Reader) (*Message, error) {
-	data, err := Read(r)
+	data, err := framed.Read(r)
 	if err != nil {
 		return nil, err
 	}

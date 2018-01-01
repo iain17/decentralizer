@@ -45,6 +45,7 @@ func New(network *network.Network, max int) (*Discovery, error) {
 
 func (d *Discovery) Stop() {
 	d.cancel()
+	d.LocalNode.netTableService.Stop()
 }
 
 func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {

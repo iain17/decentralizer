@@ -4,6 +4,7 @@ import (
 	"github.com/anacrolix/utp"
 	"github.com/iain17/discovery/pb"
 	"net"
+	"time"
 )
 
 //Initiate a handshake procedure.
@@ -13,7 +14,15 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	if errSocket != nil {
 		return nil, errSocket
 	}
+	accepted := false
+	s.SetDeadline(time.Now().Add(2 * time.Second))
+
 	conn, errDial := s.Dial(h.String())
+	defer func() {
+		if !accepted && conn != nil{
+			conn.Close()
+		}
+	}()
 	if errDial != nil {
 		return nil, errDial
 	}
@@ -28,13 +37,12 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	peerInfo, err := pb.DecodePeerInfo(rn.conn, string(ln.discovery.network.ExportPublicKey()))
 	if err != nil {
 		rn.logger.Debug(err)
-		conn.Close()
 		return nil, err
 	}
 	rn.logger.Debug("Received peer info...")
-	rn.info = peerInfo.Info
-	rn.id = peerInfo.Id
+	rn.Initialize(peerInfo)
 
 	rn.logger.Info("connected!")
+	accepted = true
 	return rn, nil
 }

@@ -2,7 +2,7 @@ package app
 
 import (
 	"errors"
-	Peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	Peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"fmt"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/logger"

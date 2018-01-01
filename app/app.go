@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
-	//"github.com/iain17/discovery"
 	"context"
 	"errors"
 	"github.com/iain17/decentralizer/app/peerstore"
@@ -10,34 +9,47 @@ import (
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/logger"
 	"github.com/shibukawa/configdir"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
-	libp2pPeer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"net"
 	"time"
 	"github.com/ccding/go-stun/stun"
-	"github.com/robfig/cron"
+	"github.com/jasonlvhit/gocron"
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
 	"os"
+	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
 	"sync"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
+	"github.com/iain17/kvcache/lttlru"
+	"github.com/spf13/afero"
 )
 
 type Decentralizer struct {
+	mutex				   sync.Mutex
 	ctx 				   context.Context
 	n 					   *network.Network
-	cron				   *cron.Cron
+	cron				   *gocron.Scheduler
 	d					   *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
+	api 				   coreiface.CoreAPI
 
 	//Peer ids that did not respond to our queries.
-	ignore 				   map[string]bool
+	ignore 				   *lttlru.LruWithTTL
+
+	//Storage
+	filesApi       		   *ipfs.FilesAPI
+	ufs					   afero.Fs
 
 	//Matchmaking
+	matchmakingMutex	   sync.Mutex
+	searchMutex			   sync.Mutex
+	sessionQueries		   chan sessionRequest
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
-	searches 			   map[uint64]*search
+	searches 			   *lttlru.LruWithTTL
 
 	//addressbook
 	peers                  *peerstore.Store
@@ -49,7 +61,6 @@ type Decentralizer struct {
 	//Publisher files
 	publisherUpdate  	   *pb.PublisherUpdate
 	publisherDefinition	   *pb.PublisherDefinition
-	searchingForPublisherUpdate sync.Mutex
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -96,38 +107,33 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	if err != nil {
 		return nil, err
 	}
-	peers, err := peerstore.New(MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), i.Identity)
+	ignore, err := lttlru.NewTTL(MAX_IGNORE)
 	if err != nil {
 		return nil, err
 	}
 	instance := &Decentralizer{
 		ctx:					ctx,
-		cron: 				   cron.New(),
+		cron: 				    gocron.NewScheduler(),
 		n:   					n,
 		d:                      d,
 		i:                      i,
 		b:                      b,
-		sessions:               make(map[uint64]*sessionstore.Store),
-		sessionIdToSessionType: make(map[uint64]uint64),
-		searches:				make(map[uint64]*search),
-		peers:         			peers,
+		api:					coreapi.NewCoreAPI(i),
 		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
-		ignore:					make(map[string]bool),
+		ignore:					ignore,
 	}
-	err = instance.bootstrap()
-	if err == nil {
-		reveries, _ := Asset("reveries.flac")
-		instance.SavePeerFile("reveries.flac", reveries)
-	}
+	instance.bootstrap()
 
-	instance.GetIP()
+	instance.initStorage()
 	instance.initMatchmaking()
 	instance.initMessaging()
 	instance.initAddressbook()
 	instance.initPublisherFiles()
 	instance.cron.Start()
-	_, dnID := peerstore.PeerToDnId(i.Identity)
-	logger.Infof("Our dnID is: %v", dnID)
+
+	self, err := instance.peers.FindByPeerId(instance.i.Identity.Pretty())
+	logger.Infof("Initialized: PeerID '%s', decentralized id '%d': %v", self.PId, self.DnId, self.Details)
+
 	return instance, err
 }
 
@@ -139,8 +145,11 @@ func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 }
 
 func (d *Decentralizer) GetIP() net.IP {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 	if d.d != nil {
-		return d.d.GetIP()
+		ip := d.d.GetIP()
+		d.ip = &ip
 	}
 	if d.ip == nil {
 		stun := stun.NewClient()
@@ -169,7 +178,9 @@ func (d *Decentralizer) WaitTilEnoughPeers() {
 }
 
 func (s *Decentralizer) Stop() {
-	s.cron.Stop()
+	if s.cron != nil {
+		s.cron.Clear()
+	}
 	if s.i != nil {
 		s.i.Close()
 	}

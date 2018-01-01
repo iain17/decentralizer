@@ -6,6 +6,7 @@ import (
 	"testing"
 	"net"
 	"github.com/iain17/discovery/env"
+	"github.com/iain17/framed"
 )
 
 func TestDecode(t *testing.T) {
@@ -31,7 +32,7 @@ func TestDecode(t *testing.T) {
 			},
 		})
 		assert.NoError(t, err)
-		err = Write(conn, heartbeat)
+		err = framed.Write(conn, heartbeat)
 		assert.NoError(t, err)
 		println("sent. done")
 		for running {

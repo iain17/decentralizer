@@ -8,6 +8,7 @@ import (
 	"github.com/rs/xid"
 	"github.com/golang/protobuf/proto"
 	"io"
+	"github.com/iain17/framed"
 )
 
 type LocalNode struct {
@@ -88,7 +89,7 @@ func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	return pb.Write(w, peerInfo)
+	return framed.Write(w, peerInfo)
 }
 
 func (ln *LocalNode) String() string {
@@ -97,6 +98,9 @@ func (ln *LocalNode) String() string {
 
 //Will trigger updating the clients I'm connected to
 func (ln *LocalNode) SetInfo(key string, value string) {
+	//if ln.info[key] == value {
+	//	return
+	//}
 	ln.info[key] = value
 	for _, peer := range ln.netTableService.GetPeers() {
 		go ln.sendPeerInfo(peer.conn)

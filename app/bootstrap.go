@@ -3,37 +3,67 @@ package app
 import (
 	"github.com/iain17/discovery"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
-	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
-	"gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
-	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
+	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
 	"strings"
 	"time"
+	"errors"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
+	"github.com/iain17/decentralizer/app/ipfs"
+	"gx/ipfs/QmdQFrFnPrKRQtpeHKjZ3cVNwxmGKKS2TvhJTuN9C9yduh/go-libp2p-swarm"
+	"gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )
 
 func init() {
 	if USE_OWN_BOOTSTRAPPING {
-		core.DefaultBootstrapConfig = core.BootstrapConfig{
-			MinPeerThreshold:  4,
-			Period:            30 * time.Second,
-			ConnectionTimeout: (30 * time.Second) / 3, // Period / 3
-			BootstrapPeers: func() []pstore.PeerInfo {
-				return nil
-			},
+		bs := core.DefaultBootstrapConfig
+		bs.BootstrapPeers = func() []pstore.PeerInfo {
+			return nil
 		}
+		core.DefaultBootstrapConfig = bs
+	} else {
+		bs := core.DefaultBootstrapConfig
+		bs.BootstrapPeers = func() []pstore.PeerInfo {
+			a, _ := config.DefaultBootstrapPeers()
+			return toPeerInfos(a)
+		}
+		core.DefaultBootstrapConfig = bs
 	}
 }
 
-func (d *Decentralizer) bootstrap() error {
-	d.setInfo()
-	bs := core.DefaultBootstrapConfig
-	if USE_OWN_BOOTSTRAPPING {
-		bs.BootstrapPeers = d.discover
-	} else {
-		bs.BootstrapPeers = nil
+func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
+	pinfos := make(map[peer.ID]*pstore.PeerInfo)
+	for _, bootstrap := range bpeers {
+		pinfo, ok := pinfos[bootstrap.ID()]
+		if !ok {
+			pinfo = new(pstore.PeerInfo)
+			pinfos[bootstrap.ID()] = pinfo
+			pinfo.ID = bootstrap.ID()
+		}
+
+		pinfo.Addrs = append(pinfo.Addrs, bootstrap.Transport())
 	}
-	bs.MinPeerThreshold = MIN_CONNECTED_PEERS
-	return d.i.Bootstrap(bs)
+
+	var peers []pstore.PeerInfo
+	for _, pinfo := range pinfos {
+		peers = append(peers, *pinfo)
+	}
+
+	return peers
+}
+
+func (d *Decentralizer) bootstrap() error {
+	if USE_OWN_BOOTSTRAPPING {
+		bs := core.DefaultBootstrapConfig
+		bs.BootstrapPeers = d.discover
+		bs.MinPeerThreshold = MIN_CONNECTED_PEERS
+		core.DefaultBootstrapConfig = bs
+		return d.i.Bootstrap(bs)
+	}
+	return nil
 }
 
 func (d *Decentralizer) discover() []pstore.PeerInfo {
@@ -43,15 +73,27 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	logger.Info("Bootstrapping")
 	d.setInfo()
 	var peers []pstore.PeerInfo
-	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 5*time.Minute) {
+	connected := 0
+	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := getInfo(peer)
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Could not bootstrap %s: %s", peer.String(), err)
 			continue
 		}
+		logger.Infof("Bootstrapping: %v", peerInfo)
 		peers = append(peers, *peerInfo)
+
+		if d.i.PeerHost.Network().Connectedness(peerInfo.ID) != net.Connected {
+			//d.clearBackOff(peerInfo.ID)
+			//err = d.i.PeerHost.Connect(d.i.Context(), *peerInfo)
+			//if err != nil {
+			//	logger.Warning(err)
+			//} else {
+				connected++
+			//}
+		}
 	}
-	logger.Infof("Bootstrapped %d peers", len(peers))
+	logger.Infof("Bootstrapped %d peers. We are connected to %d of those", len(peers), connected)
 	return peers
 }
 
@@ -66,7 +108,16 @@ func (d *Decentralizer) setInfo() {
 	}
 
 	ln.SetInfo("peerId", d.i.Identity.Pretty())
+	logger.Infof("Broadcasting: %s", addrs)
 	ln.SetInfo("addr", addrs)
+}
+
+func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
+	snet, ok := d.i.PeerHost.Network().(*swarm.Network)
+	if ok {
+		logger.Warning("not swarm")
+		snet.Swarm().Backoff().Clear(id)
+	}
 }
 
 func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
@@ -76,13 +127,20 @@ func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 		return nil, err
 	}
 	var addrs []ma.Multiaddr
-	for _, strAddr := range strings.Split(remoteNode.GetInfo("addr"), DELIMITER_ADDR) {
+	addrText := remoteNode.GetInfo("addr")
+	rawAddr := strings.Split(addrText, DELIMITER_ADDR)
+	for _, strAddr := range rawAddr {
 		addr, err := ma.NewMultiaddr(strAddr)
-		if err != nil {
+		if err != nil && addr != nil {
 			logger.Warning(err)
 			continue
 		}
-		addrs = append(addrs, addr)
+		if ipfs.IsAddrReachable(addr, false, true, false) {
+			addrs = append(addrs, addr)
+		}
+	}
+	if len(addrs) == 0 {
+		return nil, errors.New("no addr set")
 	}
 	return &pstore.PeerInfo{
 		ID:    peerId,

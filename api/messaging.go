@@ -5,6 +5,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"errors"
+	"github.com/iain17/logger"
 )
 
 //
@@ -18,9 +19,15 @@ func (s *Server) SendDirectMessage(ctx context.Context, request *pb.RPCDirectMes
 
 func (s *Server) ReceiveDirectMessage(request *pb.RPCReceiveDirectMessageRequest, stream pb.Decentralizer_ReceiveDirectMessageServer) error {
 	if s.listeningChannels[request.Channel] {
-		return errors.New("another instance is already listening on this channel")
+		err := errors.New("another instance is already listening on this channel")
+		logger.Warning(err)
+		return err
 	}
 	s.listeningChannels[request.Channel] = true
+	defer func() {
+		s.listeningChannels[request.Channel] = false
+	}()
+
 	messageChannel := s.app.GetMessagingChan(request.Channel)
 	for {
 		select {

@@ -29,7 +29,9 @@ service Decentralizer {
 	// Matchmaking
 	//
 	// Create or update a session. Takes session info, returns session id.
-	rpc UpsertSession(RPCUpsertSessionRequest) returns (RPCUpsertSessionResponse) {}
+	rpc UpsertSession(RPCUpsertSessionRequest) returns (RPCUpsertSessionResponse) {
+		option (google.api.http) = { post: "/v1/session" };
+	}
 	// Delete a session. Takes session id, returns bool informing if the deletion was a success
 	rpc DeleteSession(RPCDeleteSessionRequest) returns (RPCDeleteSessionResponse) {}
 	// Get session ids. Takes session type, and a key and value to filter the sessions by details. If left empty this filter will not apply and all will be fetched.

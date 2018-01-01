@@ -18,8 +18,11 @@ func (d *DiscoveryMDNS) Init(ctx context.Context, ln *LocalNode) (err error) {
 	d.logger = logger.New("DiscoveryMDNS")
 	d.localNode = ln
 	d.context = ctx
+	if err != nil {
+		return err
+	}
 
-	d.server, err = zeroconf.Register(d.localNode.id, SERVICE, "local.", d.localNode.port, []string{}, nil)
+	d.server, err = zeroconf.Register(d.localNode.id, SERVICE, "local.", d.localNode.port, []string{d.localNode.id}, nil)
 	if err != nil {
 		return err
 	}
@@ -52,10 +55,13 @@ func (d *DiscoveryMDNS) Run() {
 			return
 		case entry, ok := <-entriesCh:
 			if !ok {
-				return
+				continue
 			}
 			if entry == nil {
-				return
+				continue
+			}
+			if len(entry.Text) != 1 || entry.Text[0] == d.localNode.id {
+				continue
 			}
 			var ip net.IP
 			if len(entry.AddrIPv4) > 0 {

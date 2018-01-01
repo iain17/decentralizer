@@ -27,13 +27,13 @@ func New(ctx context.Context, port int) (*Server, error) {
 	go func() {
 		err := i.initGRPC(port)
 		if err != nil {
-			logger.Errorf("GRPC API error: %s", err)
+			logger.Fatalf("GRPC API error: %s", err)
 		}
 	}()
 	go func() {
 		err := i.initHTTP(port + 1)
 		if err != nil {
-			logger.Errorf("HTTP API error: %s", err)
+			logger.Fatalf("HTTP API error: %s", err)
 		}
 	}()
 
@@ -43,5 +43,7 @@ func New(ctx context.Context, port int) (*Server, error) {
 
 func (s *Server) Stop() {
 	s.grpc.Stop()
-	s.app.Stop()
+	if s.app != nil {
+		s.app.Stop()
+	}
 }

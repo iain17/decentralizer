@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/iain17/framed"
 )
 
 type RemoteNode struct {
@@ -44,7 +45,7 @@ func (rn *RemoteNode) sendHeartBeat() error {
 	if err != nil {
 		return err
 	}
-	return pb.Write(rn.conn, heartbeat)
+	return framed.Write(rn.conn, heartbeat)
 }
 
 func (rn *RemoteNode) Send(message string) error {
@@ -60,7 +61,7 @@ func (rn *RemoteNode) Send(message string) error {
 	if err != nil {
 		return err
 	}
-	return pb.Write(rn.conn, transfer)
+	return framed.Write(rn.conn, transfer)
 }
 
 func (rn *RemoteNode) Close() {
@@ -81,6 +82,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 
 	rn.logger.Debug("listening...")
 	for {
+		rn.conn.SetDeadline(time.Now().Add((HEARTBEAT_DELAY * 1.5) * time.Second))
 		packet, err := pb.Decode(rn.conn)
 		if err != nil {
 			if err == io.EOF || err.Error() == "no packet read timeout" || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
@@ -159,7 +161,7 @@ func (rn *RemoteNode) SharePeers() error {
 	if err != nil {
 		return err
 	}
-	return pb.Write(rn.conn, peerShare)
+	return framed.Write(rn.conn, peerShare)
 }
 
 func (rn *RemoteNode) String() string {

@@ -46,6 +46,7 @@ func (l *ListenerService) Run() {
 			l.logger.Debugf("new connection from %q", conn.RemoteAddr().String())
 
 			if err = l.process(conn); err != nil {
+				conn.Close()
 				if err.Error() == "peer reset" || err.Error() == "we can't add ourselves" {
 					continue
 				}
@@ -72,7 +73,7 @@ func (l *ListenerService) process(c net.Conn) error {
 		return errors.New("we can't add ourselves")
 	}
 	if l.localNode.netTableService.isConnected(peerInfo.Id) {
-		logger.Debug("We are already connected to %s", peerInfo.Id)
+		logger.Debugf("We are already connected to %s", peerInfo.Id)
 		return nil
 	}
 	rn.logger.Debug("Received peer info...")
@@ -84,7 +85,7 @@ func (l *ListenerService) process(c net.Conn) error {
 	}
 	rn.logger.Debug("Sent our peer info...")
 
-	rn.info = peerInfo.Info
+	rn.Initialize(peerInfo)
 	l.localNode.netTableService.AddRemoteNode(rn)
 	return nil
 }

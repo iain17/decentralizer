@@ -4,16 +4,22 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
-	inet "gx/ipfs/QmU4vCDZTPLDqSDKguWbHCiUe46mZUtmM2g2suBZ9NE8ko/go-libp2p-net"
-	Peer "gx/ipfs/QmWNY7dV54ZDYmTA1ykVdwNCqC11mpU4zSUp6XDpLTH9eG/go-libp2p-peer"
+	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
+	Peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/Pallinder/go-randomdata"
-	pstore "gx/ipfs/QmYijbtjCxFEjSXaudaQAUz3LN5VKLssm8WCUsRoqzXmQR/go-libp2p-peerstore"
-	ma "gx/ipfs/QmW8s4zTsUoX1Q6CeYxVKPyqSKbF7H1YDUyTostBtZ8DaG/go-multiaddr"
+	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
+	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
 	"time"
 	"github.com/iain17/framed"
+	"github.com/iain17/decentralizer/app/peerstore"
 )
 
 func (d *Decentralizer) initAddressbook() {
+	var err error
+	d.peers, err = peerstore.New(MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity)
+	if err != nil {
+		logger.Fatal(err)
+	}
 	d.i.PeerHost.SetStreamHandler(GET_PEER_REQ, d.getPeerResponse)
 	d.downloadPeers()
 	d.saveSelf()
@@ -21,9 +27,9 @@ func (d *Decentralizer) initAddressbook() {
 		d.WaitTilEnoughPeers()
 		d.connectPreviousPeers()
 	}()
-	d.provideSelf()
-	d.cron.AddFunc("30 * * * * *", d.uploadPeers)
-	d.cron.AddFunc("* 5 * * * *", d.provideSelf)
+	go d.provideSelf()
+	d.cron.Every(30).Seconds().Do(d.uploadPeers)
+	d.cron.Every(5).Minutes().Do(d.provideSelf)
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -49,6 +55,7 @@ func (d *Decentralizer) downloadPeers() {
 }
 
 func (d *Decentralizer) provideSelf() {
+	d.WaitTilEnoughPeers()
 	peer, err := d.FindByPeerId("self")
 	if err != nil {
 		logger.Warningf("Could not provide self: %v", err)
@@ -79,7 +86,7 @@ func (d *Decentralizer) uploadPeers() {
 		logger.Warningf("Could not save address book: %v", err)
 		return
 	}
-	d.addressBookChanged = true
+	d.addressBookChanged = false
 	logger.Info("Saved address book")
 }
 
@@ -164,12 +171,13 @@ func (d *Decentralizer) FindByPeerId(peerId string) (p *pb.Peer, err error) {
 	return p, err
 }
 
+//Request peer info from an external peer.
 func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_PEER_REQ)
 	if err != nil {
 		return nil, err
 	}
-	stream.SetDeadline(time.Now().Add(300 * time.Millisecond))
+	stream.SetDeadline(time.Now().Add(MESSAGE_DEADLINE))
 	defer stream.Close()
 
 	//Request
@@ -200,6 +208,7 @@ func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
 		for _, addr := range info.Addrs {
 			response.Peer.Addrs = append(response.Peer.Addrs, addr.String())
 		}
+		d.i.Peerstore.AddAddrs(peer, ma.Split(stream.Conn().RemoteMultiaddr()), 3 * 24 * time.Hour)//Save it for 3 days.
 	}
 	return response.Peer, nil
 }
@@ -216,6 +225,7 @@ func (d *Decentralizer) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer,
 	return peer, err
 }
 
+//Called when an external peer asks for our peer info.
 func (d *Decentralizer) getPeerResponse(stream inet.Stream) {
 	reqData, err := framed.Read(stream)
 	if err != nil {

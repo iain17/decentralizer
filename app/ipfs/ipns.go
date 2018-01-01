@@ -1,11 +1,8 @@
 package ipfs
 
 import (
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/path"
-	"github.com/iain17/timeout"
-	"time"
-	"context"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 )
 
 func FilePublish(n *core.IpfsNode, pth path.Path) error {
@@ -18,14 +15,5 @@ func FilePublish(n *core.IpfsNode, pth path.Path) error {
 	if err != nil {
 		return err
 	}
-
-	completed := false
-	timeout.Do(func(ctx context.Context) {
-		err = n.Namesys.Publish(n.Context(), k, pth)
-		completed = true
-	}, 15*time.Second)
-	//if !completed {
-	//	err = errors.New("could not publish file in under 15 seconds. Check if you are connected to enough peers")
-	//}
-	return err
+	return n.Namesys.Publish(n.Context(), k, pth)
 }

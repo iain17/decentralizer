@@ -2,12 +2,13 @@ package ipfs
 
 import (
 	"context"
-	"fmt"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo/config"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/repo/fsrepo"
-	utilmain "gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/cmd/ipfs/util"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/fsrepo"
+	bitswap "github.com/ipfs/go-ipfs/exchange/bitswap/network"
+	dht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
+	utilmain "github.com/iain17/decentralizer/app/ipfs/util"
 	"os"
 	"strings"
 	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
@@ -33,10 +34,10 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 	buildCfg := &core.BuildCfg{
 		Repo:      r,
 		Online:    true,
-		Permament: true,
+		Permament: false,
 		ExtraOpts: map[string]bool{
 			"mplex":  true,
-			//"pubsub": true,
+			"pubsub": true,
 		},
 	}
 
@@ -100,26 +101,30 @@ func getIPFSRepo(path string, portIdx int) (repo.Repo, error) {
 		return nil, err
 	}
 
-	err = resetRepoConfigPorts(r, portIdx)
+	err = changeConfig(r)
 	return r, err
 }
 
-func resetRepoConfigPorts(r repo.Repo, nodeIdx int) error {
+func changeConfig(r repo.Repo) error {
 	rc, err := r.Config()
 	if err != nil {
 		return err
 	}
-	if nodeIdx > 0 && nodeIdx < 9 {
-		apiPort := fmt.Sprintf("500%d", nodeIdx)
-		gatewayPort := fmt.Sprintf("808%d", nodeIdx)
-		swarmPort := fmt.Sprintf("400%d", nodeIdx)
+	rc.Bootstrap = []string{}
 
-		rc.Addresses.API = strings.Replace(rc.Addresses.API, "5001", apiPort, -1)
-		rc.Addresses.Gateway = strings.Replace(rc.Addresses.Gateway, "8080", gatewayPort, -1)
-		for i, addr := range rc.Addresses.Swarm {
-			rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
-		}
+	//apiPort := fmt.Sprintf("500%d", 12)
+	//gatewayPort := fmt.Sprintf("808%d", 12)
+	swarmPort := "4123"
+
+	bitswap.ProtocolBitswap = "/decentralizer/bitswap/testnet/1.1.0"
+	dht.ProtocolDHT = "/decentralizer/kad/testnet/1.0.0"
+
+	//rc.Addresses.API = strings.Replace(rc.Addresses.API, "5001", apiPort, -1)
+	//rc.Addresses.Gateway = strings.Replace(rc.Addresses.Gateway, "8080", gatewayPort, -1)
+	for i, addr := range rc.Addresses.Swarm {
+		rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
 	}
+	//rc.Swarm.DisableNatPortMap = true
 	rc.Swarm.EnableRelayHop = true
 	err = r.SetConfig(rc)
 	return err

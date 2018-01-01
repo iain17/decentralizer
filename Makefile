@@ -29,6 +29,9 @@ ci:
 
 test:
 	go test -cover ./...
+gx:
+	rm -rf vendor/gx
+	gx install
 
 dep:
 	mv vendor/gx /tmp/

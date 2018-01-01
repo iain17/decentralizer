@@ -2,7 +2,7 @@ package app
 
 import (
 	"errors"
-	"gx/ipfs/QmTxUjSZnG7WmebrX2U7furEPNSy33pLgA53PtpJYJSZSn/go-ipfs/core/coreapi"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"io/ioutil"
 )
 
@@ -22,8 +22,7 @@ func (d * Decentralizer) GetPublisherFile(name string) ([]byte, error) {
 		if d.publisherDefinition.Links[name] != "" {
 			path := d.publisherDefinition.Links[name]
 			pth := coreapi.ResolvedPath(path, nil, nil)
-			api := coreapi.NewCoreAPI(d.i)
-			r, err := api.Unixfs().Cat(d.i.Context(), pth)
+			r, err := d.api.Unixfs().Cat(d.i.Context(), pth)
 			if err != nil {
 				return nil, err
 			}

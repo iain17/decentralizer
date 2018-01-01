@@ -6,6 +6,7 @@ import (
 	"github.com/iain17/logger"
 	"github.com/golang/protobuf/proto"
 	"github.com/hashicorp/golang-lru"
+	ttlru "github.com/iain17/kvcache/lttlru"
 	"errors"
 	"io/ioutil"
 	"net"
@@ -20,10 +21,9 @@ type NetTableService struct {
 	context   context.Context
 	newConn   chan *net.UDPAddr
 
-	blackList *lru.Cache
-	seen      *lru.Cache
+	blackList *ttlru.LruWithTTL
+	seen      *ttlru.LruWithTTL
 	peers     *lru.Cache
-	connected map[string]bool
 	mutex 	  sync.Mutex
 
 	heartbeatTicker <-chan time.Time
@@ -35,14 +35,13 @@ func (nt *NetTableService) Init(ctx context.Context, ln *LocalNode) error {
 	nt.logger = logger.New("NetTable")
 	nt.localNode = ln
 	nt.context = ctx
-	nt.connected = make(map[string]bool)
 	nt.newConn = make(chan *net.UDPAddr, CONCCURENT_NEW_CONNECTION*2)
 	var err error
-	nt.blackList, err = lru.New(1000)
+	nt.blackList, err = ttlru.NewTTL(1000)
 	if err != nil {
 		return err
 	}
-	nt.seen, err = lru.New(1000)
+	nt.seen, err = ttlru.NewTTL(4096)
 	if err != nil {
 		return err
 	}
@@ -155,21 +154,27 @@ func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
 		return
 	}
 	key := addr.String()
-	if nt.seen.Contains(key) {
+	if _, ok := nt.seen.Get(key); ok {
 		return
 	}
-	if nt.peers.Contains(key) {
-		return
-	}
-	nt.seen.Add(key, true)
+	nt.seen.AddWithTTL(key, true, 15 * time.Minute)
 	nt.logger.Debugf("new potential peer %q discovered", addr)
 	nt.newConn <- addr
 }
 
 func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
+	nt.mutex.Lock()
+	defer nt.mutex.Unlock()
+	if rn.id == "" || nt.peers.Contains(rn.id) {
+		nt.logger.Warningf("Already connected to %s", rn.id)
+		rn.conn.Close()
+		return
+	}
+
+	nt.peers.Add(rn.id, rn)
+
 	addr := rn.conn.RemoteAddr().String()
-	nt.peers.Add(addr, rn)
-	nt.logger.Infof("Connected to %s", addr)
+	nt.logger.Infof("Connected to %s: %s", addr, rn.id)
 	go rn.listen(nt.localNode)
 	err := nt.Save()
 	if err != nil {
@@ -178,14 +183,11 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 }
 
 func (nt *NetTableService) isConnected(id string) bool {
-	nt.mutex.Lock()
-	defer nt.mutex.Unlock()
-	return nt.connected[id]
+	return nt.peers.Contains(id)
 }
 
 func (nt *NetTableService) RemoveRemoteNode(rn *RemoteNode) {
-	nt.peers.Remove(rn.conn.RemoteAddr().String())
-	nt.connected[rn.id] = false
+	nt.peers.Remove(rn.id)
 }
 
 func (nt *NetTableService) GetPeers() []*RemoteNode {
@@ -246,7 +248,7 @@ func (nt *NetTableService) tryConnect(h *net.UDPAddr) error {
 //The black list is just a list of nodes we've already tried and or are connected to.
 //TODO: Fix that we don't connect to ourselves.
 func (nt *NetTableService) addToBlackList(h *net.UDPAddr) {
-	nt.blackList.Add(h.String(), 0)
+	nt.blackList.AddWithTTL(h.String(), 0, 10 * time.Minute)
 }
 
 func (nt *NetTableService) isBlackListed(h *net.UDPAddr) bool {
