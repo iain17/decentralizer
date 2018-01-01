@@ -164,6 +164,12 @@
   revision = "648cd1776b0827c6fe51effa719a67eca6dae3f1"
 
 [[projects]]
+  name = "github.com/ipfs/go-ipfs"
+  packages = ["exchange/bitswap/message","exchange/bitswap/message/pb","exchange/bitswap/network","exchange/bitswap/wantlist"]
+  revision = "cc01b7f188622e7148ce041b9d09252c85041d9f"
+  version = "v0.4.13"
+
+[[projects]]
   branch = "master"
   name = "github.com/jackpal/bencode-go"
   packages = ["."]
@@ -275,7 +281,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "95a4943f35d008beabde8c11e5075a1b714e6419"
+  revision = "0fcca4842a8d74bfddc2c96a073bd2a4d2a7a2e8"
 
 [[projects]]
   branch = "master"
@@ -310,6 +316,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "15c40161a9fba5159b2152303168efbf1680a5666881990277102019dbf24b07"
+  inputs-digest = "e6bbbb0890c782e2d8f88dd2d58f673d59b01a05bee773f66971f6b71319a01d"
   solver-name = "gps-cdcl"
   solver-version = 1
