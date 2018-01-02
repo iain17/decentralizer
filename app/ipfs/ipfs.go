@@ -26,19 +26,24 @@ func patchSystem() error {
 	return nil
 }
 
-func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode, error) {
-	r, err := getIPFSRepo(path, portIdx)
+func OpenIPFSRepo(ctx context.Context, path string, limited bool) (*core.IpfsNode, error) {
+	r, err := getIPFSRepo(path, limited)
 	if err != nil {
 		return nil, err
 	}
 	buildCfg := &core.BuildCfg{
 		Repo:      r,
 		Online:    true,
-		Permament: false,
+		Permament: true,
 		ExtraOpts: map[string]bool{
 			"mplex":  true,
 			"pubsub": true,
 		},
+	}
+	if limited {
+		buildCfg.Routing = core.DHTClientOption
+	} else {
+		buildCfg.Routing = core.DHTOption
 	}
 
 	err = patchSystem()
@@ -83,7 +88,7 @@ func OpenIPFSRepo(ctx context.Context, path string, portIdx int) (*core.IpfsNode
 	return node, nil
 }
 
-func getIPFSRepo(path string, portIdx int) (repo.Repo, error) {
+func getIPFSRepo(path string, limited bool) (repo.Repo, error) {
 	r, err := fsrepo.Open(path)
 	if _, ok := err.(fsrepo.NoRepoError); ok {
 		var conf *config.Config

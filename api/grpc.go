@@ -40,9 +40,8 @@ func (s *Server) initGRPC(port int) error {
 }
 
 func (s *Server) auth(ctx context.Context) (context.Context, error) {
-	var clientVersion string
-	var networkKey string
-	var isPrivateKey bool
+	var clientVersion, networkKey string
+	var isPrivateKey, limitedConnection bool
 	meta, ok := metadata.FromIncomingContext(ctx)
 	if ! ok {
 		return ctx, errors.New("set context pls")
@@ -56,9 +55,12 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 	if len(meta["privkey"]) != 0 {
 		isPrivateKey = meta["privkey"][0] == "1"
 	}
+	if len(meta["limited"]) != 0 {
+		limitedConnection = meta["limited"][0] == "1"
+	}
 	if s.app == nil && networkKey != "" {
 		logger.Info("Joining network...")
-		err := s.setNetwork(clientVersion, networkKey, isPrivateKey)
+		err := s.setNetwork(clientVersion, networkKey, isPrivateKey, limitedConnection)
 		if err != nil {
 			logger.Warningf("Failed to join network: %v", err)
 			return ctx, err

@@ -78,7 +78,7 @@ func Reset() {
 	os.RemoveAll(getIpfsPath())
 }
 
-func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralizer, error) {
+func New(ctx context.Context, networkStr string, privateKey bool, limitedConnection bool) (*Decentralizer, error) {
 	var n *network.Network
 	var err error
 	if privateKey {
@@ -91,7 +91,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	}
 	var d *discovery.Discovery
 	if USE_OWN_BOOTSTRAPPING {
-		d, err = discovery.New(n, MAX_DISCOVERED_PEERS)
+		d, err = discovery.New(n, MAX_DISCOVERED_PEERS, limitedConnection)
 		if err != nil {
 			return nil, err
 		}
@@ -99,7 +99,7 @@ func New(ctx context.Context, networkStr string, privateKey bool) (*Decentralize
 	ipfsPath := getIpfsPath()
 	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
-	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, -1)
+	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection)
 	if err != nil {
 		return nil, err
 	}
