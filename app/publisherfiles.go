@@ -160,6 +160,7 @@ func (d *Decentralizer) PushPublisherUpdate() error {
 	if err != nil {
 		return err
 	}
+	logger.Info("Publishing publisher update")
 	return ipfs.Publish(d.i, d.getPublisherTopic(), data)
 }
 

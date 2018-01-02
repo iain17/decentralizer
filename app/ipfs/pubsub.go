@@ -3,7 +3,7 @@ package ipfs
 import (
 	"context"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	"github.com/ipfs/go-ipfs/core"
 	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"gx/ipfs/QmUUSLfvihARhCxxgnjW4hmycJpPvzNu12Aaz6JWVdfnLg/go-libp2p-floodsub"
 	"io"
@@ -40,5 +40,6 @@ func Publish(node *core.IpfsNode, topic string, data []byte) error {
 	if node.Floodsub == nil {
 		return errors.New("pub sub must be enabled.")
 	}
+	logger.Debugf("Publishing: %s", topic)
 	return node.Floodsub.Publish(topic, data)
 }

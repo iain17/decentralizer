@@ -1,8 +1,8 @@
 package ipfs
 
 import (
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	"github.com/ipfs/go-ipfs/core"
+	"github.com/ipfs/go-ipfs/path"
 )
 
 func FilePublish(n *core.IpfsNode, pth path.Path) error {

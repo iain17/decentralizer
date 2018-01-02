@@ -92,9 +92,16 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	if err != nil {
 		return nil, err
 	}
+	refresh := false
 	path := d.getPeerFilePath(id, name)
 	info, err := d.ufs.Stat(path)
-	if err != nil || info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
+	if info != nil && info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
+		refresh = true
+	}
+	if id.Pretty() != d.i.Identity.Pretty() {
+		refresh = true
+	}
+	if err != nil || refresh {
 		//Time to get a fresh copy
 		var fresh []byte
 		fresh, err = d.filesApi.GetPeerFile(id, name)

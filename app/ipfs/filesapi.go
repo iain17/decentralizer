@@ -1,25 +1,24 @@
 package ipfs
 
 import (
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	"github.com/ipfs/go-ipfs/core/coreapi"
 	"bytes"
 	"errors"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	"github.com/ipfs/go-ipfs/core"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreunix"
-	Path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	"github.com/ipfs/go-ipfs/core/coreapi/interface"
+	"github.com/ipfs/go-ipfs/core/coreunix"
+	Path "github.com/ipfs/go-ipfs/path"
 	"io/ioutil"
 	"context"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
+	coreiface "github.com/ipfs/go-ipfs/core/coreapi/interface"
+	"github.com/iain17/timeout"
+	"time"
 )
 //Simplifies all the interactions with IPFS.
-const CONCURRENT_PUBLISH = 2
 type FilesAPI struct {
 	ctx					   context.Context
-	newPathToPublish       chan path.Path
 	i 				   	   *core.IpfsNode
 	api					   coreiface.CoreAPI
 }
@@ -29,30 +28,8 @@ func NewFilesAPI(ctx context.Context, node *core.IpfsNode, api coreiface.CoreAPI
 		ctx: ctx,
 		i: node,
 		api: api,
-		newPathToPublish: make(chan path.Path, CONCURRENT_PUBLISH*2),
-	}
-	logger.Debugf("Running %d user file publish workers", CONCURRENT_PUBLISH)
-	for i := 0; i < CONCURRENT_PUBLISH; i++ {
-		go instance.processPublication()
 	}
 	return instance, nil
-}
-
-func (d *FilesAPI) processPublication() {
-	for {
-		select {
-		case <-d.ctx.Done():
-			return
-		case path, ok := <-d.newPathToPublish:
-			if !ok {
-				return
-			}
-			err := FilePublish(d.i, path)
-			if err != nil {
-				logger.Warningf("Failed to publish %s: %s", path, err)
-			}
-		}
-	}
 }
 
 func (d *FilesAPI) SavePeerFile(name string, data []byte) (string, error) {
@@ -65,7 +42,12 @@ func (d *FilesAPI) SavePeerFile(name string, data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	d.newPathToPublish <- ph
+	timeout.Do(func(ctx context.Context) {
+		err := FilePublish(d.i, ph)
+		if err != nil {
+			logger.Warning(err)
+		}
+	}, 5 * time.Second)
 	return "/ipfs/"+location, nil
 }
 

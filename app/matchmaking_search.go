@@ -10,14 +10,13 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"github.com/iain17/kvcache/lttlru"
-	"github.com/cenkalti/backoff"
 	"github.com/pkg/errors"
 	"fmt"
+	"github.com/iain17/timeout"
 )
 
 type search struct {
 	running bool
-	backoff *backoff.ExponentialBackOff
 	mutex sync.Mutex
 	d *Decentralizer
 	sessionType uint64
@@ -32,10 +31,8 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 	if err != nil {
 		return nil, err
 	}
-	f := backoff.NewExponentialBackOff()
 	instance := &search{
 		d: d,
-		backoff: f,
 		sessionType: sessionType,
 		ctx: ctx,
 		storage: storage,
@@ -107,13 +104,8 @@ func (s *search) run() error {
 			if queried == 0 {
 				return nil
 			}
-			sessions, err := s.storage.FindAll()
-			if err != nil {
-				logger.Warning(err)
-			} else {
-				if len(sessions) > 0 {
-					return nil//Done
-				}
+			if !s.storage.IsEmpty() {
+				return nil
 			}
 		}
 	}
@@ -189,10 +181,11 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 }
 
 func (s *search) fetch() *sessionstore.Store {
-	duration := s.backoff.NextBackOff()
-	if duration != backoff.Stop {
-		s.run()
-		time.Sleep(duration)
-	}
+	go s.run()
+	timeout.Do(func(ctx context.Context) {
+		for s.storage.IsEmpty() {
+			time.Sleep(100 * time.Millisecond)
+		}
+	}, 10 * time.Second)
 	return s.storage
 }

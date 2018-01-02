@@ -45,8 +45,6 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
-	time.Sleep(1 * time.Second)
-
 	file, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)
 	assert.Equal(t, string(message), string(file))
@@ -75,8 +73,6 @@ func TestDecentralizer_Updated(t *testing.T) {
 	_, err = app1.SavePeerFile(filename, updatedMessage)
 	assert.NoError(t, err)
 
-	time.Sleep(1 * time.Second)
-
 	var result []byte
 	for i:= 0; i < 10; i++ {
 		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
@@ -89,7 +85,7 @@ func TestDecentralizer_Updated(t *testing.T) {
 	assert.Equal(t, string(updatedMessage), string(result))
 }
 
-func TestDecentralizer_Cache(t *testing.T) {
+func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	FILE_EXPIRE = 30 * time.Second
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -105,8 +101,6 @@ func TestDecentralizer_Cache(t *testing.T) {
 
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
-
-	time.Sleep(1 * time.Second)
 
 	result, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)
