@@ -36,7 +36,7 @@ namespace protobuf_pb_2fstorage_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[6];
+  static const ::google::protobuf::internal::ParseTable schema[4];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -50,17 +50,11 @@ void InitDefaultsRPCGetPeerFileRequestImpl();
 void InitDefaultsRPCGetPeerFileRequest();
 void InitDefaultsRPCGetPeerFileResponseImpl();
 void InitDefaultsRPCGetPeerFileResponse();
-void InitDefaultsRPCGetPublisherFileRequestImpl();
-void InitDefaultsRPCGetPublisherFileRequest();
-void InitDefaultsRPCGetPublisherFileResponseImpl();
-void InitDefaultsRPCGetPublisherFileResponse();
 inline void InitDefaults() {
   InitDefaultsRPCWritePeerFileRequest();
   InitDefaultsRPCWritePeerFileResponse();
   InitDefaultsRPCGetPeerFileRequest();
   InitDefaultsRPCGetPeerFileResponse();
-  InitDefaultsRPCGetPublisherFileRequest();
-  InitDefaultsRPCGetPublisherFileResponse();
 }
 }  // namespace protobuf_pb_2fstorage_2eproto
 namespace pb {
@@ -70,12 +64,6 @@ extern RPCGetPeerFileRequestDefaultTypeInternal _RPCGetPeerFileRequest_default_i
 class RPCGetPeerFileResponse;
 class RPCGetPeerFileResponseDefaultTypeInternal;
 extern RPCGetPeerFileResponseDefaultTypeInternal _RPCGetPeerFileResponse_default_instance_;
-class RPCGetPublisherFileRequest;
-class RPCGetPublisherFileRequestDefaultTypeInternal;
-extern RPCGetPublisherFileRequestDefaultTypeInternal _RPCGetPublisherFileRequest_default_instance_;
-class RPCGetPublisherFileResponse;
-class RPCGetPublisherFileResponseDefaultTypeInternal;
-extern RPCGetPublisherFileResponseDefaultTypeInternal _RPCGetPublisherFileResponse_default_instance_;
 class RPCWritePeerFileRequest;
 class RPCWritePeerFileRequestDefaultTypeInternal;
 extern RPCWritePeerFileRequestDefaultTypeInternal _RPCWritePeerFileRequest_default_instance_;
@@ -535,220 +523,6 @@ class RPCGetPeerFileResponse : public ::google::protobuf::Message /* @@protoc_in
   friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
   friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPeerFileResponseImpl();
 };
-// -------------------------------------------------------------------
-
-class RPCGetPublisherFileRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetPublisherFileRequest) */ {
- public:
-  RPCGetPublisherFileRequest();
-  virtual ~RPCGetPublisherFileRequest();
-
-  RPCGetPublisherFileRequest(const RPCGetPublisherFileRequest& from);
-
-  inline RPCGetPublisherFileRequest& operator=(const RPCGetPublisherFileRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCGetPublisherFileRequest(RPCGetPublisherFileRequest&& from) noexcept
-    : RPCGetPublisherFileRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCGetPublisherFileRequest& operator=(RPCGetPublisherFileRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCGetPublisherFileRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCGetPublisherFileRequest* internal_default_instance() {
-    return reinterpret_cast<const RPCGetPublisherFileRequest*>(
-               &_RPCGetPublisherFileRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
-
-  void Swap(RPCGetPublisherFileRequest* other);
-  friend void swap(RPCGetPublisherFileRequest& a, RPCGetPublisherFileRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCGetPublisherFileRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCGetPublisherFileRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCGetPublisherFileRequest& from);
-  void MergeFrom(const RPCGetPublisherFileRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCGetPublisherFileRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string name = 1;
-  void clear_name();
-  static const int kNameFieldNumber = 1;
-  const ::std::string& name() const;
-  void set_name(const ::std::string& value);
-  #if LANG_CXX11
-  void set_name(::std::string&& value);
-  #endif
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  ::std::string* mutable_name();
-  ::std::string* release_name();
-  void set_allocated_name(::std::string* name);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCGetPublisherFileRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr name_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPublisherFileRequestImpl();
-};
-// -------------------------------------------------------------------
-
-class RPCGetPublisherFileResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetPublisherFileResponse) */ {
- public:
-  RPCGetPublisherFileResponse();
-  virtual ~RPCGetPublisherFileResponse();
-
-  RPCGetPublisherFileResponse(const RPCGetPublisherFileResponse& from);
-
-  inline RPCGetPublisherFileResponse& operator=(const RPCGetPublisherFileResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RPCGetPublisherFileResponse(RPCGetPublisherFileResponse&& from) noexcept
-    : RPCGetPublisherFileResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline RPCGetPublisherFileResponse& operator=(RPCGetPublisherFileResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const RPCGetPublisherFileResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RPCGetPublisherFileResponse* internal_default_instance() {
-    return reinterpret_cast<const RPCGetPublisherFileResponse*>(
-               &_RPCGetPublisherFileResponse_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
-
-  void Swap(RPCGetPublisherFileResponse* other);
-  friend void swap(RPCGetPublisherFileResponse& a, RPCGetPublisherFileResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RPCGetPublisherFileResponse* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  RPCGetPublisherFileResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const RPCGetPublisherFileResponse& from);
-  void MergeFrom(const RPCGetPublisherFileResponse& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(RPCGetPublisherFileResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // bytes file = 1;
-  void clear_file();
-  static const int kFileFieldNumber = 1;
-  const ::std::string& file() const;
-  void set_file(const ::std::string& value);
-  #if LANG_CXX11
-  void set_file(::std::string&& value);
-  #endif
-  void set_file(const char* value);
-  void set_file(const void* value, size_t size);
-  ::std::string* mutable_file();
-  ::std::string* release_file();
-  void set_allocated_file(::std::string* file);
-
-  // @@protoc_insertion_point(class_scope:pb.RPCGetPublisherFileResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr file_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fstorage_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fstorage_2eproto::InitDefaultsRPCGetPublisherFileResponseImpl();
-};
 // ===================================================================
 
 
@@ -1051,127 +825,9 @@ inline void RPCGetPeerFileResponse::set_allocated_file(::std::string* file) {
   // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPeerFileResponse.file)
 }
 
-// -------------------------------------------------------------------
-
-// RPCGetPublisherFileRequest
-
-// string name = 1;
-inline void RPCGetPublisherFileRequest::clear_name() {
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCGetPublisherFileRequest::name() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetPublisherFileRequest.name)
-  return name_.GetNoArena();
-}
-inline void RPCGetPublisherFileRequest::set_name(const ::std::string& value) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetPublisherFileRequest.name)
-}
-#if LANG_CXX11
-inline void RPCGetPublisherFileRequest::set_name(::std::string&& value) {
-  
-  name_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPublisherFileRequest.name)
-}
-#endif
-inline void RPCGetPublisherFileRequest::set_name(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetPublisherFileRequest.name)
-}
-inline void RPCGetPublisherFileRequest::set_name(const char* value, size_t size) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPublisherFileRequest.name)
-}
-inline ::std::string* RPCGetPublisherFileRequest::mutable_name() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetPublisherFileRequest.name)
-  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCGetPublisherFileRequest::release_name() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetPublisherFileRequest.name)
-  
-  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCGetPublisherFileRequest::set_allocated_name(::std::string* name) {
-  if (name != NULL) {
-    
-  } else {
-    
-  }
-  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPublisherFileRequest.name)
-}
-
-// -------------------------------------------------------------------
-
-// RPCGetPublisherFileResponse
-
-// bytes file = 1;
-inline void RPCGetPublisherFileResponse::clear_file() {
-  file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& RPCGetPublisherFileResponse::file() const {
-  // @@protoc_insertion_point(field_get:pb.RPCGetPublisherFileResponse.file)
-  return file_.GetNoArena();
-}
-inline void RPCGetPublisherFileResponse::set_file(const ::std::string& value) {
-  
-  file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.RPCGetPublisherFileResponse.file)
-}
-#if LANG_CXX11
-inline void RPCGetPublisherFileResponse::set_file(::std::string&& value) {
-  
-  file_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.RPCGetPublisherFileResponse.file)
-}
-#endif
-inline void RPCGetPublisherFileResponse::set_file(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.RPCGetPublisherFileResponse.file)
-}
-inline void RPCGetPublisherFileResponse::set_file(const void* value, size_t size) {
-  
-  file_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.RPCGetPublisherFileResponse.file)
-}
-inline ::std::string* RPCGetPublisherFileResponse::mutable_file() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.RPCGetPublisherFileResponse.file)
-  return file_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RPCGetPublisherFileResponse::release_file() {
-  // @@protoc_insertion_point(field_release:pb.RPCGetPublisherFileResponse.file)
-  
-  return file_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RPCGetPublisherFileResponse::set_allocated_file(::std::string* file) {
-  if (file != NULL) {
-    
-  } else {
-    
-  }
-  file_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file);
-  // @@protoc_insertion_point(field_set_allocated:pb.RPCGetPublisherFileResponse.file)
-}
-
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

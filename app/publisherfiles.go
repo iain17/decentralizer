@@ -174,7 +174,6 @@ func (d *Decentralizer) runPublisherInstructions() {
 	logger.Infof("Publisher instructions loaded: %s", time.Unix(d.publisherDefinition.Created, 0).Format(time.RFC822))
 }
 
-//Pick 3 random peers
 func (d *Decentralizer) receivedUpdate(peer peer.ID, data []byte) error {
 	pId := peer.Pretty()
 	if d.ignore.Contains(pId) {
@@ -196,4 +195,8 @@ func (d *Decentralizer) receivedUpdate(peer peer.ID, data []byte) error {
 		return d.PushPublisherUpdate()//means it updated. we'll republish.
 	}
 	return nil
+}
+
+func (d *Decentralizer) PublisherDefinition() *pb.PublisherDefinition {
+	return d.publisherDefinition
 }

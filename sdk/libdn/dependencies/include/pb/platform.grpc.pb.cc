@@ -27,10 +27,11 @@ static const char* Decentralizer_method_names[] = {
   "/pb.Decentralizer/GetPeer",
   "/pb.Decentralizer/WritePeerFile",
   "/pb.Decentralizer/GetPeerFile",
-  "/pb.Decentralizer/GetPublisherFile",
   "/pb.Decentralizer/SendDirectMessage",
   "/pb.Decentralizer/ReceiveDirectMessage",
   "/pb.Decentralizer/publishPublisherUpdate",
+  "/pb.Decentralizer/GetPublisherDefinition",
+  "/pb.Decentralizer/GetPublisherFile",
 };
 
 std::unique_ptr< Decentralizer::Stub> Decentralizer::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -50,10 +51,11 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_GetPeer_(Decentralizer_method_names[8], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_WritePeerFile_(Decentralizer_method_names[9], ::grpc::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetPeerFile_(Decentralizer_method_names[10], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetPublisherFile_(Decentralizer_method_names[11], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SendDirectMessage_(Decentralizer_method_names[12], ::grpc::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ReceiveDirectMessage_(Decentralizer_method_names[13], ::grpc::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_publishPublisherUpdate_(Decentralizer_method_names[14], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SendDirectMessage_(Decentralizer_method_names[11], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ReceiveDirectMessage_(Decentralizer_method_names[12], ::grpc::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_publishPublisherUpdate_(Decentralizer_method_names[13], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPublisherDefinition_(Decentralizer_method_names[14], ::grpc::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetPublisherFile_(Decentralizer_method_names[15], ::grpc::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status Decentralizer::Stub::GetHealth(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::pb::RPCHealthReply* response) {
@@ -188,18 +190,6 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPeerFile_, context, request, false);
 }
 
-::grpc::Status Decentralizer::Stub::GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) {
-  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetPublisherFile_, context, request, response);
-}
-
-::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* Decentralizer::Stub::AsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPublisherFile_, context, request, true);
-}
-
-::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* Decentralizer::Stub::PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPublisherFile_, context, request, false);
-}
-
 ::grpc::Status Decentralizer::Stub::SendDirectMessage(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::pb::empty* response) {
   return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_SendDirectMessage_, context, request, response);
 }
@@ -234,6 +224,30 @@ Decentralizer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
 
 ::grpc::ClientAsyncResponseReader< ::pb::empty>* Decentralizer::Stub::PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::ClientAsyncResponseReader< ::pb::empty>::Create(channel_.get(), cq, rpcmethod_publishPublisherUpdate_, context, request, false);
+}
+
+::grpc::Status Decentralizer::Stub::GetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::pb::PublisherDefinition* response) {
+  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetPublisherDefinition_, context, request, response);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>* Decentralizer::Stub::AsyncGetPublisherDefinitionRaw(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>::Create(channel_.get(), cq, rpcmethod_GetPublisherDefinition_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>* Decentralizer::Stub::PrepareAsyncGetPublisherDefinitionRaw(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>::Create(channel_.get(), cq, rpcmethod_GetPublisherDefinition_, context, request, false);
+}
+
+::grpc::Status Decentralizer::Stub::GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) {
+  return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_GetPublisherFile_, context, request, response);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* Decentralizer::Stub::AsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPublisherFile_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* Decentralizer::Stub::PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>::Create(channel_.get(), cq, rpcmethod_GetPublisherFile_, context, request, false);
 }
 
 Decentralizer::Service::Service() {
@@ -295,23 +309,28 @@ Decentralizer::Service::Service() {
   AddMethod(new ::grpc::RpcServiceMethod(
       Decentralizer_method_names[11],
       ::grpc::RpcMethod::NORMAL_RPC,
-      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPublisherFileRequest, ::pb::RPCGetPublisherFileResponse>(
-          std::mem_fn(&Decentralizer::Service::GetPublisherFile), this)));
-  AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[12],
-      ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCDirectMessage, ::pb::empty>(
           std::mem_fn(&Decentralizer::Service::SendDirectMessage), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[13],
+      Decentralizer_method_names[12],
       ::grpc::RpcMethod::SERVER_STREAMING,
       new ::grpc::ServerStreamingHandler< Decentralizer::Service, ::pb::RPCReceiveDirectMessageRequest, ::pb::RPCDirectMessage>(
           std::mem_fn(&Decentralizer::Service::ReceiveDirectMessage), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
-      Decentralizer_method_names[14],
+      Decentralizer_method_names[13],
       ::grpc::RpcMethod::NORMAL_RPC,
       new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCPublishPublisherUpdateRequest, ::pb::empty>(
           std::mem_fn(&Decentralizer::Service::publishPublisherUpdate), this)));
+  AddMethod(new ::grpc::RpcServiceMethod(
+      Decentralizer_method_names[14],
+      ::grpc::RpcMethod::NORMAL_RPC,
+      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::GetPublisherDefinitionRequest, ::pb::PublisherDefinition>(
+          std::mem_fn(&Decentralizer::Service::GetPublisherDefinition), this)));
+  AddMethod(new ::grpc::RpcServiceMethod(
+      Decentralizer_method_names[15],
+      ::grpc::RpcMethod::NORMAL_RPC,
+      new ::grpc::RpcMethodHandler< Decentralizer::Service, ::pb::RPCGetPublisherFileRequest, ::pb::RPCGetPublisherFileResponse>(
+          std::mem_fn(&Decentralizer::Service::GetPublisherFile), this)));
 }
 
 Decentralizer::Service::~Service() {
@@ -394,13 +413,6 @@ Decentralizer::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Decentralizer::Service::GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) {
-  (void) context;
-  (void) request;
-  (void) response;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
 ::grpc::Status Decentralizer::Service::SendDirectMessage(::grpc::ServerContext* context, const ::pb::RPCDirectMessage* request, ::pb::empty* response) {
   (void) context;
   (void) request;
@@ -416,6 +428,20 @@ Decentralizer::Service::~Service() {
 }
 
 ::grpc::Status Decentralizer::Service::publishPublisherUpdate(::grpc::ServerContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::empty* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Decentralizer::Service::GetPublisherDefinition(::grpc::ServerContext* context, const ::pb::GetPublisherDefinitionRequest* request, ::pb::PublisherDefinition* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Decentralizer::Service::GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) {
   (void) context;
   (void) request;
   (void) response;

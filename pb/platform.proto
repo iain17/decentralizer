@@ -7,14 +7,14 @@ import "pb/messaging.proto";
 import "pb/publisher.proto";
 import "google/api/annotations.proto";
 
+message empty {}
+
 message RPCHealthRequest {}
 
 message RPCHealthReply {
 	bool ready = 1;
 	string message = 2;
 }
-
-message empty {}
 
 service Decentralizer {
 	//
@@ -62,8 +62,6 @@ service Decentralizer {
 	rpc WritePeerFile(RPCWritePeerFileRequest) returns (RPCWritePeerFileResponse) {}
 	// Get a peer file. Takes a file name, returns the file.
 	rpc GetPeerFile(RPCGetPeerFileRequest) returns (RPCGetPeerFileResponse) {}
-	// Get a publisher file.
-	rpc GetPublisherFile(RPCGetPublisherFileRequest) returns (RPCGetPublisherFileResponse) {}
 
 	//
 	// Messaging
@@ -75,5 +73,14 @@ service Decentralizer {
 	//
 	// Publisher
 	//
+	//Publish a new publisher update. (Only if you have the private key!)
 	rpc publishPublisherUpdate(RPCPublishPublisherUpdateRequest) returns (empty) {}
+	//Get the full publisher definition
+	rpc GetPublisherDefinition(GetPublisherDefinitionRequest) returns (PublisherDefinition) {
+		option (google.api.http) = { get: "/v1/publisher" };
+	}
+	// Get a publisher file.
+	rpc GetPublisherFile(RPCGetPublisherFileRequest) returns (RPCGetPublisherFileResponse) {
+		option (google.api.http) = { get: "/v1/publisher/{name}" };
+	}
 }

@@ -134,14 +134,6 @@ class Decentralizer final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerFileResponse>> PrepareAsyncGetPeerFile(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerFileResponse>>(PrepareAsyncGetPeerFileRaw(context, request, cq));
     }
-    // Get a publisher file.
-    virtual ::grpc::Status GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>> AsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>>(AsyncGetPublisherFileRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>> PrepareAsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>>(PrepareAsyncGetPublisherFileRaw(context, request, cq));
-    }
     //
     // Messaging
     //
@@ -165,12 +157,29 @@ class Decentralizer final {
     //
     // Publisher
     //
+    // Publish a new publisher update. (Only if you have the private key!)
     virtual ::grpc::Status publishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::pb::empty* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>> AsyncpublishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>>(AsyncpublishPublisherUpdateRaw(context, request, cq));
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>> PrepareAsyncpublishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>>(PrepareAsyncpublishPublisherUpdateRaw(context, request, cq));
+    }
+    // Get the full publisher definition
+    virtual ::grpc::Status GetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::pb::PublisherDefinition* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::PublisherDefinition>> AsyncGetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::PublisherDefinition>>(AsyncGetPublisherDefinitionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::PublisherDefinition>> PrepareAsyncGetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::PublisherDefinition>>(PrepareAsyncGetPublisherDefinitionRaw(context, request, cq));
+    }
+    // Get a publisher file.
+    virtual ::grpc::Status GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>> AsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>>(AsyncGetPublisherFileRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>> PrepareAsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>>(PrepareAsyncGetPublisherFileRaw(context, request, cq));
     }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCHealthReply>* AsyncGetHealthRaw(::grpc::ClientContext* context, const ::pb::RPCHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -195,8 +204,6 @@ class Decentralizer final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCWritePeerFileResponse>* PrepareAsyncWritePeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCWritePeerFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerFileResponse>* AsyncGetPeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPeerFileResponse>* PrepareAsyncGetPeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>* AsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>* PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* AsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* PrepareAsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientReaderInterface< ::pb::RPCDirectMessage>* ReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request) = 0;
@@ -204,6 +211,10 @@ class Decentralizer final {
     virtual ::grpc::ClientAsyncReaderInterface< ::pb::RPCDirectMessage>* PrepareAsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* AsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::empty>* PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::PublisherDefinition>* AsyncGetPublisherDefinitionRaw(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::PublisherDefinition>* PrepareAsyncGetPublisherDefinitionRaw(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>* AsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::RPCGetPublisherFileResponse>* PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -285,13 +296,6 @@ class Decentralizer final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>> PrepareAsyncGetPeerFile(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>>(PrepareAsyncGetPeerFileRaw(context, request, cq));
     }
-    ::grpc::Status GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>> AsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>>(AsyncGetPublisherFileRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>> PrepareAsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>>(PrepareAsyncGetPublisherFileRaw(context, request, cq));
-    }
     ::grpc::Status SendDirectMessage(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::pb::empty* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::empty>> AsyncSendDirectMessage(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::empty>>(AsyncSendDirectMessageRaw(context, request, cq));
@@ -314,6 +318,20 @@ class Decentralizer final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::empty>> PrepareAsyncpublishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::empty>>(PrepareAsyncpublishPublisherUpdateRaw(context, request, cq));
+    }
+    ::grpc::Status GetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::pb::PublisherDefinition* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>> AsyncGetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>>(AsyncGetPublisherDefinitionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>> PrepareAsyncGetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>>(PrepareAsyncGetPublisherDefinitionRaw(context, request, cq));
+    }
+    ::grpc::Status GetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::pb::RPCGetPublisherFileResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>> AsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>>(AsyncGetPublisherFileRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>> PrepareAsyncGetPublisherFile(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>>(PrepareAsyncGetPublisherFileRaw(context, request, cq));
     }
 
    private:
@@ -340,8 +358,6 @@ class Decentralizer final {
     ::grpc::ClientAsyncResponseReader< ::pb::RPCWritePeerFileResponse>* PrepareAsyncWritePeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCWritePeerFileRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>* AsyncGetPeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPeerFileResponse>* PrepareAsyncGetPeerFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPeerFileRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* AsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* AsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* PrepareAsyncSendDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCDirectMessage& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientReader< ::pb::RPCDirectMessage>* ReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request) override;
@@ -349,6 +365,10 @@ class Decentralizer final {
     ::grpc::ClientAsyncReader< ::pb::RPCDirectMessage>* PrepareAsyncReceiveDirectMessageRaw(::grpc::ClientContext* context, const ::pb::RPCReceiveDirectMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* AsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::pb::empty>* PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>* AsyncGetPublisherDefinitionRaw(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::PublisherDefinition>* PrepareAsyncGetPublisherDefinitionRaw(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* AsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::RPCGetPublisherFileResponse>* PrepareAsyncGetPublisherFileRaw(::grpc::ClientContext* context, const ::pb::RPCGetPublisherFileRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::RpcMethod rpcmethod_GetHealth_;
     const ::grpc::RpcMethod rpcmethod_UpsertSession_;
     const ::grpc::RpcMethod rpcmethod_DeleteSession_;
@@ -360,10 +380,11 @@ class Decentralizer final {
     const ::grpc::RpcMethod rpcmethod_GetPeer_;
     const ::grpc::RpcMethod rpcmethod_WritePeerFile_;
     const ::grpc::RpcMethod rpcmethod_GetPeerFile_;
-    const ::grpc::RpcMethod rpcmethod_GetPublisherFile_;
     const ::grpc::RpcMethod rpcmethod_SendDirectMessage_;
     const ::grpc::RpcMethod rpcmethod_ReceiveDirectMessage_;
     const ::grpc::RpcMethod rpcmethod_publishPublisherUpdate_;
+    const ::grpc::RpcMethod rpcmethod_GetPublisherDefinition_;
+    const ::grpc::RpcMethod rpcmethod_GetPublisherFile_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -405,8 +426,6 @@ class Decentralizer final {
     virtual ::grpc::Status WritePeerFile(::grpc::ServerContext* context, const ::pb::RPCWritePeerFileRequest* request, ::pb::RPCWritePeerFileResponse* response);
     // Get a peer file. Takes a file name, returns the file.
     virtual ::grpc::Status GetPeerFile(::grpc::ServerContext* context, const ::pb::RPCGetPeerFileRequest* request, ::pb::RPCGetPeerFileResponse* response);
-    // Get a publisher file.
-    virtual ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response);
     //
     // Messaging
     //
@@ -416,7 +435,12 @@ class Decentralizer final {
     //
     // Publisher
     //
+    // Publish a new publisher update. (Only if you have the private key!)
     virtual ::grpc::Status publishPublisherUpdate(::grpc::ServerContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::empty* response);
+    // Get the full publisher definition
+    virtual ::grpc::Status GetPublisherDefinition(::grpc::ServerContext* context, const ::pb::GetPublisherDefinitionRequest* request, ::pb::PublisherDefinition* response);
+    // Get a publisher file.
+    virtual ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetHealth : public BaseClass {
@@ -639,32 +663,12 @@ class Decentralizer final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetPublisherFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithAsyncMethod_GetPublisherFile() {
-      ::grpc::Service::MarkMethodAsync(11);
-    }
-    ~WithAsyncMethod_GetPublisherFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) final override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestGetPublisherFile(::grpc::ServerContext* context, ::pb::RPCGetPublisherFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPublisherFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithAsyncMethod_SendDirectMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_SendDirectMessage() {
-      ::grpc::Service::MarkMethodAsync(12);
+      ::grpc::Service::MarkMethodAsync(11);
     }
     ~WithAsyncMethod_SendDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -675,7 +679,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSendDirectMessage(::grpc::ServerContext* context, ::pb::RPCDirectMessage* request, ::grpc::ServerAsyncResponseWriter< ::pb::empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -684,7 +688,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_ReceiveDirectMessage() {
-      ::grpc::Service::MarkMethodAsync(13);
+      ::grpc::Service::MarkMethodAsync(12);
     }
     ~WithAsyncMethod_ReceiveDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -695,7 +699,7 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestReceiveDirectMessage(::grpc::ServerContext* context, ::pb::RPCReceiveDirectMessageRequest* request, ::grpc::ServerAsyncWriter< ::pb::RPCDirectMessage>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(13, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(12, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -704,7 +708,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_publishPublisherUpdate() {
-      ::grpc::Service::MarkMethodAsync(14);
+      ::grpc::Service::MarkMethodAsync(13);
     }
     ~WithAsyncMethod_publishPublisherUpdate() override {
       BaseClassMustBeDerivedFromService(this);
@@ -715,10 +719,50 @@ class Decentralizer final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestpublishPublisherUpdate(::grpc::ServerContext* context, ::pb::RPCPublishPublisherUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetPublisherDefinition : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetPublisherDefinition() {
+      ::grpc::Service::MarkMethodAsync(14);
+    }
+    ~WithAsyncMethod_GetPublisherDefinition() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPublisherDefinition(::grpc::ServerContext* context, const ::pb::GetPublisherDefinitionRequest* request, ::pb::PublisherDefinition* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetPublisherDefinition(::grpc::ServerContext* context, ::pb::GetPublisherDefinitionRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::PublisherDefinition>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetHealth<WithAsyncMethod_UpsertSession<WithAsyncMethod_DeleteSession<WithAsyncMethod_GetSessionIdsByDetails<WithAsyncMethod_GetSessionIdsByPeerIds<WithAsyncMethod_GetSession<WithAsyncMethod_UpsertPeer<WithAsyncMethod_GetPeerIds<WithAsyncMethod_GetPeer<WithAsyncMethod_WritePeerFile<WithAsyncMethod_GetPeerFile<WithAsyncMethod_GetPublisherFile<WithAsyncMethod_SendDirectMessage<WithAsyncMethod_ReceiveDirectMessage<WithAsyncMethod_publishPublisherUpdate<Service > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_GetPublisherFile : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetPublisherFile() {
+      ::grpc::Service::MarkMethodAsync(15);
+    }
+    ~WithAsyncMethod_GetPublisherFile() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetPublisherFile(::grpc::ServerContext* context, ::pb::RPCGetPublisherFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::pb::RPCGetPublisherFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetHealth<WithAsyncMethod_UpsertSession<WithAsyncMethod_DeleteSession<WithAsyncMethod_GetSessionIdsByDetails<WithAsyncMethod_GetSessionIdsByPeerIds<WithAsyncMethod_GetSession<WithAsyncMethod_UpsertPeer<WithAsyncMethod_GetPeerIds<WithAsyncMethod_GetPeer<WithAsyncMethod_WritePeerFile<WithAsyncMethod_GetPeerFile<WithAsyncMethod_SendDirectMessage<WithAsyncMethod_ReceiveDirectMessage<WithAsyncMethod_publishPublisherUpdate<WithAsyncMethod_GetPublisherDefinition<WithAsyncMethod_GetPublisherFile<Service > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_GetHealth : public BaseClass {
    private:
@@ -907,29 +951,12 @@ class Decentralizer final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_GetPublisherFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithGenericMethod_GetPublisherFile() {
-      ::grpc::Service::MarkMethodGeneric(11);
-    }
-    ~WithGenericMethod_GetPublisherFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) final override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
   class WithGenericMethod_SendDirectMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_SendDirectMessage() {
-      ::grpc::Service::MarkMethodGeneric(12);
+      ::grpc::Service::MarkMethodGeneric(11);
     }
     ~WithGenericMethod_SendDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -946,7 +973,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_ReceiveDirectMessage() {
-      ::grpc::Service::MarkMethodGeneric(13);
+      ::grpc::Service::MarkMethodGeneric(12);
     }
     ~WithGenericMethod_ReceiveDirectMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -963,13 +990,47 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_publishPublisherUpdate() {
-      ::grpc::Service::MarkMethodGeneric(14);
+      ::grpc::Service::MarkMethodGeneric(13);
     }
     ~WithGenericMethod_publishPublisherUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
     ::grpc::Status publishPublisherUpdate(::grpc::ServerContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::empty* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetPublisherDefinition : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetPublisherDefinition() {
+      ::grpc::Service::MarkMethodGeneric(14);
+    }
+    ~WithGenericMethod_GetPublisherDefinition() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPublisherDefinition(::grpc::ServerContext* context, const ::pb::GetPublisherDefinitionRequest* request, ::pb::PublisherDefinition* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetPublisherFile : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetPublisherFile() {
+      ::grpc::Service::MarkMethodGeneric(15);
+    }
+    ~WithGenericMethod_GetPublisherFile() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1195,32 +1256,12 @@ class Decentralizer final {
     virtual ::grpc::Status StreamedGetPeerFile(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetPeerFileRequest,::pb::RPCGetPeerFileResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetPublisherFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithStreamedUnaryMethod_GetPublisherFile() {
-      ::grpc::Service::MarkMethodStreamed(11,
-        new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPublisherFileRequest, ::pb::RPCGetPublisherFileResponse>(std::bind(&WithStreamedUnaryMethod_GetPublisherFile<BaseClass>::StreamedGetPublisherFile, this, std::placeholders::_1, std::placeholders::_2)));
-    }
-    ~WithStreamedUnaryMethod_GetPublisherFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) final override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetPublisherFile(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetPublisherFileRequest,::pb::RPCGetPublisherFileResponse>* server_unary_streamer) = 0;
-  };
-  template <class BaseClass>
   class WithStreamedUnaryMethod_SendDirectMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_SendDirectMessage() {
-      ::grpc::Service::MarkMethodStreamed(12,
+      ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCDirectMessage, ::pb::empty>(std::bind(&WithStreamedUnaryMethod_SendDirectMessage<BaseClass>::StreamedSendDirectMessage, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_SendDirectMessage() override {
@@ -1240,7 +1281,7 @@ class Decentralizer final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_publishPublisherUpdate() {
-      ::grpc::Service::MarkMethodStreamed(14,
+      ::grpc::Service::MarkMethodStreamed(13,
         new ::grpc::StreamedUnaryHandler< ::pb::RPCPublishPublisherUpdateRequest, ::pb::empty>(std::bind(&WithStreamedUnaryMethod_publishPublisherUpdate<BaseClass>::StreamedpublishPublisherUpdate, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_publishPublisherUpdate() override {
@@ -1254,14 +1295,54 @@ class Decentralizer final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedpublishPublisherUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCPublishPublisherUpdateRequest,::pb::empty>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIdsByDetails<WithStreamedUnaryMethod_GetSessionIdsByPeerIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<WithStreamedUnaryMethod_publishPublisherUpdate<Service > > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetPublisherDefinition : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetPublisherDefinition() {
+      ::grpc::Service::MarkMethodStreamed(14,
+        new ::grpc::StreamedUnaryHandler< ::pb::GetPublisherDefinitionRequest, ::pb::PublisherDefinition>(std::bind(&WithStreamedUnaryMethod_GetPublisherDefinition<BaseClass>::StreamedGetPublisherDefinition, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetPublisherDefinition() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetPublisherDefinition(::grpc::ServerContext* context, const ::pb::GetPublisherDefinitionRequest* request, ::pb::PublisherDefinition* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetPublisherDefinition(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::GetPublisherDefinitionRequest,::pb::PublisherDefinition>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetPublisherFile : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetPublisherFile() {
+      ::grpc::Service::MarkMethodStreamed(15,
+        new ::grpc::StreamedUnaryHandler< ::pb::RPCGetPublisherFileRequest, ::pb::RPCGetPublisherFileResponse>(std::bind(&WithStreamedUnaryMethod_GetPublisherFile<BaseClass>::StreamedGetPublisherFile, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetPublisherFile() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetPublisherFile(::grpc::ServerContext* context, const ::pb::RPCGetPublisherFileRequest* request, ::pb::RPCGetPublisherFileResponse* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetPublisherFile(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::RPCGetPublisherFileRequest,::pb::RPCGetPublisherFileResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIdsByDetails<WithStreamedUnaryMethod_GetSessionIdsByPeerIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_SendDirectMessage<WithStreamedUnaryMethod_publishPublisherUpdate<WithStreamedUnaryMethod_GetPublisherDefinition<WithStreamedUnaryMethod_GetPublisherFile<Service > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_ReceiveDirectMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithSplitStreamingMethod_ReceiveDirectMessage() {
-      ::grpc::Service::MarkMethodStreamed(13,
+      ::grpc::Service::MarkMethodStreamed(12,
         new ::grpc::SplitServerStreamingHandler< ::pb::RPCReceiveDirectMessageRequest, ::pb::RPCDirectMessage>(std::bind(&WithSplitStreamingMethod_ReceiveDirectMessage<BaseClass>::StreamedReceiveDirectMessage, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithSplitStreamingMethod_ReceiveDirectMessage() override {
@@ -1276,7 +1357,7 @@ class Decentralizer final {
     virtual ::grpc::Status StreamedReceiveDirectMessage(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::pb::RPCReceiveDirectMessageRequest,::pb::RPCDirectMessage>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_ReceiveDirectMessage<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIdsByDetails<WithStreamedUnaryMethod_GetSessionIdsByPeerIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_GetPublisherFile<WithStreamedUnaryMethod_SendDirectMessage<WithSplitStreamingMethod_ReceiveDirectMessage<WithStreamedUnaryMethod_publishPublisherUpdate<Service > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetHealth<WithStreamedUnaryMethod_UpsertSession<WithStreamedUnaryMethod_DeleteSession<WithStreamedUnaryMethod_GetSessionIdsByDetails<WithStreamedUnaryMethod_GetSessionIdsByPeerIds<WithStreamedUnaryMethod_GetSession<WithStreamedUnaryMethod_UpsertPeer<WithStreamedUnaryMethod_GetPeerIds<WithStreamedUnaryMethod_GetPeer<WithStreamedUnaryMethod_WritePeerFile<WithStreamedUnaryMethod_GetPeerFile<WithStreamedUnaryMethod_SendDirectMessage<WithSplitStreamingMethod_ReceiveDirectMessage<WithStreamedUnaryMethod_publishPublisherUpdate<WithStreamedUnaryMethod_GetPublisherDefinition<WithStreamedUnaryMethod_GetPublisherFile<Service > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace pb

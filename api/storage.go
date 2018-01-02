@@ -33,14 +33,3 @@ func (s *Server) GetPeerFile(ctx context.Context, request *pb.RPCGetPeerFileRequ
 		File: file,
 	}, err
 }
-
-// Get a publisher file.
-func (s *Server) GetPublisherFile(ctx context.Context, req *pb.RPCGetPublisherFileRequest) (*pb.RPCGetPublisherFileResponse, error) {
-	file, err := s.app.GetPublisherFile(req.Name)
-	if err != nil {
-		logger.Warning(err)
-	}
-	return &pb.RPCGetPublisherFileResponse{
-		File: file,
-	}, err
-}

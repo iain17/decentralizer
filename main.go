@@ -12,7 +12,7 @@ const PROD = false
 func init() {
 	if !PROD {
 		logger.AddOutput(logger.Stdout{
-			MinLevel: logger.DEBUG, //logger.DEBUG,
+			MinLevel: logger.INFO, //logger.DEBUG,
 			Colored:  true,
 		})
 	}
@@ -54,10 +54,14 @@ func (p *program) run() {
 		serviceLogger.Error(err)
 		os.Exit(0)
 	}
+	select {
+		case <- p.ctx.Done():
+			p.api.Stop()
+			break
+	}
 }
 func (p *program) Stop(s service.Service) error {
 	p.cancel()
-	s.Stop()
 	return nil
 }
 

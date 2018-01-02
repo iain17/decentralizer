@@ -39,20 +39,21 @@ It has these top-level messages:
 	DNDirectMessageRequest
 	RPCReceiveDirectMessageRequest
 	RPCDirectMessage
+	Empty
 	RPCHealthRequest
 	RPCHealthReply
-	Empty
 	PublisherDefinition
 	PublisherUpdate
 	DNPublisherUpdateRequest
 	DNPublisherUpdateResponse
 	RPCPublishPublisherUpdateRequest
+	RPCGetPublisherFileRequest
+	RPCGetPublisherFileResponse
+	GetPublisherDefinitionRequest
 	RPCWritePeerFileRequest
 	RPCWritePeerFileResponse
 	RPCGetPeerFileRequest
 	RPCGetPeerFileResponse
-	RPCGetPublisherFileRequest
-	RPCGetPublisherFileResponse
 */
 package pb
 

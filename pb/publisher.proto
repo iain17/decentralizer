@@ -24,3 +24,13 @@ message DNPublisherUpdateResponse {
 message RPCPublishPublisherUpdateRequest {
     PublisherDefinition definition = 1;
 }
+
+message RPCGetPublisherFileRequest {
+    string name = 1;
+}
+
+message RPCGetPublisherFileResponse {
+    bytes file = 1;
+}
+
+message GetPublisherDefinitionRequest {}

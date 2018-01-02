@@ -60,6 +60,21 @@ class RPCPublishPublisherUpdateRequestDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<RPCPublishPublisherUpdateRequest>
       _instance;
 } _RPCPublishPublisherUpdateRequest_default_instance_;
+class RPCGetPublisherFileRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetPublisherFileRequest>
+      _instance;
+} _RPCGetPublisherFileRequest_default_instance_;
+class RPCGetPublisherFileResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<RPCGetPublisherFileResponse>
+      _instance;
+} _RPCGetPublisherFileResponse_default_instance_;
+class GetPublisherDefinitionRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<GetPublisherDefinitionRequest>
+      _instance;
+} _GetPublisherDefinitionRequest_default_instance_;
 }  // namespace pb
 namespace protobuf_pb_2fpublisher_2eproto {
 void InitDefaultsPublisherDefinition_FilesEntry_DoNotUseImpl() {
@@ -232,7 +247,70 @@ void InitDefaultsRPCPublishPublisherUpdateRequest() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCPublishPublisherUpdateRequestImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[8];
+void InitDefaultsRPCGetPublisherFileRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_RPCGetPublisherFileRequest_default_instance_;
+    new (ptr) ::pb::RPCGetPublisherFileRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::RPCGetPublisherFileRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsRPCGetPublisherFileRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetPublisherFileRequestImpl);
+}
+
+void InitDefaultsRPCGetPublisherFileResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_RPCGetPublisherFileResponse_default_instance_;
+    new (ptr) ::pb::RPCGetPublisherFileResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::RPCGetPublisherFileResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsRPCGetPublisherFileResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetPublisherFileResponseImpl);
+}
+
+void InitDefaultsGetPublisherDefinitionRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_GetPublisherDefinitionRequest_default_instance_;
+    new (ptr) ::pb::GetPublisherDefinitionRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::GetPublisherDefinitionRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsGetPublisherDefinitionRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsGetPublisherDefinitionRequestImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[11];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::PublisherDefinition_FilesEntry_DoNotUse, _has_bits_),
@@ -296,6 +374,23 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCPublishPublisherUpdateRequest, definition_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileRequest, name_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCGetPublisherFileResponse, file_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::GetPublisherDefinitionRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::pb::PublisherDefinition_FilesEntry_DoNotUse)},
@@ -306,6 +401,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 44, -1, sizeof(::pb::DNPublisherUpdateRequest)},
   { 49, -1, sizeof(::pb::DNPublisherUpdateResponse)},
   { 55, -1, sizeof(::pb::RPCPublishPublisherUpdateRequest)},
+  { 61, -1, sizeof(::pb::RPCGetPublisherFileRequest)},
+  { 67, -1, sizeof(::pb::RPCGetPublisherFileResponse)},
+  { 73, -1, sizeof(::pb::GetPublisherDefinitionRequest)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -317,6 +415,9 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNPublisherUpdateRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNPublisherUpdateResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCPublishPublisherUpdateRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetPublisherFileRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCGetPublisherFileResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_GetPublisherDefinitionRequest_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -335,7 +436,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 8);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 11);
 }
 
 void AddDescriptorsImpl() {
@@ -356,10 +457,13 @@ void AddDescriptorsImpl() {
       "pdateResponse\022#\n\006update\030\001 \001(\0132\023.pb.Publi"
       "sherUpdate\"O\n RPCPublishPublisherUpdateR"
       "equest\022+\n\ndefinition\030\001 \001(\0132\027.pb.Publishe"
-      "rDefinitionb\006proto3"
+      "rDefinition\"*\n\032RPCGetPublisherFileReques"
+      "t\022\014\n\004name\030\001 \001(\t\"+\n\033RPCGetPublisherFileRe"
+      "sponse\022\014\n\004file\030\001 \001(\014\"\037\n\035GetPublisherDefi"
+      "nitionRequestb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 619);
+      descriptor, 741);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/publisher.proto", &protobuf_RegisterTypes);
 }
@@ -2138,6 +2242,700 @@ void RPCPublishPublisherUpdateRequest::InternalSwap(RPCPublishPublisherUpdateReq
 }
 
 ::google::protobuf::Metadata RPCPublishPublisherUpdateRequest::GetMetadata() const {
+  protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void RPCGetPublisherFileRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RPCGetPublisherFileRequest::kNameFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+RPCGetPublisherFileRequest::RPCGetPublisherFileRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fpublisher_2eproto::InitDefaultsRPCGetPublisherFileRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.RPCGetPublisherFileRequest)
+}
+RPCGetPublisherFileRequest::RPCGetPublisherFileRequest(const RPCGetPublisherFileRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.name().size() > 0) {
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+  // @@protoc_insertion_point(copy_constructor:pb.RPCGetPublisherFileRequest)
+}
+
+void RPCGetPublisherFileRequest::SharedCtor() {
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+RPCGetPublisherFileRequest::~RPCGetPublisherFileRequest() {
+  // @@protoc_insertion_point(destructor:pb.RPCGetPublisherFileRequest)
+  SharedDtor();
+}
+
+void RPCGetPublisherFileRequest::SharedDtor() {
+  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void RPCGetPublisherFileRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RPCGetPublisherFileRequest::descriptor() {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RPCGetPublisherFileRequest& RPCGetPublisherFileRequest::default_instance() {
+  ::protobuf_pb_2fpublisher_2eproto::InitDefaultsRPCGetPublisherFileRequest();
+  return *internal_default_instance();
+}
+
+RPCGetPublisherFileRequest* RPCGetPublisherFileRequest::New(::google::protobuf::Arena* arena) const {
+  RPCGetPublisherFileRequest* n = new RPCGetPublisherFileRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void RPCGetPublisherFileRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCGetPublisherFileRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool RPCGetPublisherFileRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.RPCGetPublisherFileRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string name = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), static_cast<int>(this->name().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.RPCGetPublisherFileRequest.name"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.RPCGetPublisherFileRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.RPCGetPublisherFileRequest)
+  return false;
+#undef DO_
+}
+
+void RPCGetPublisherFileRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.RPCGetPublisherFileRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetPublisherFileRequest.name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->name(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.RPCGetPublisherFileRequest)
+}
+
+::google::protobuf::uint8* RPCGetPublisherFileRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetPublisherFileRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.RPCGetPublisherFileRequest.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetPublisherFileRequest)
+  return target;
+}
+
+size_t RPCGetPublisherFileRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetPublisherFileRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string name = 1;
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RPCGetPublisherFileRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetPublisherFileRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCGetPublisherFileRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetPublisherFileRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetPublisherFileRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetPublisherFileRequest)
+    MergeFrom(*source);
+  }
+}
+
+void RPCGetPublisherFileRequest::MergeFrom(const RPCGetPublisherFileRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetPublisherFileRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.name().size() > 0) {
+
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+}
+
+void RPCGetPublisherFileRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetPublisherFileRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RPCGetPublisherFileRequest::CopyFrom(const RPCGetPublisherFileRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetPublisherFileRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RPCGetPublisherFileRequest::IsInitialized() const {
+  return true;
+}
+
+void RPCGetPublisherFileRequest::Swap(RPCGetPublisherFileRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void RPCGetPublisherFileRequest::InternalSwap(RPCGetPublisherFileRequest* other) {
+  using std::swap;
+  name_.Swap(&other->name_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata RPCGetPublisherFileRequest::GetMetadata() const {
+  protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void RPCGetPublisherFileResponse::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RPCGetPublisherFileResponse::kFileFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+RPCGetPublisherFileResponse::RPCGetPublisherFileResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fpublisher_2eproto::InitDefaultsRPCGetPublisherFileResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.RPCGetPublisherFileResponse)
+}
+RPCGetPublisherFileResponse::RPCGetPublisherFileResponse(const RPCGetPublisherFileResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.file().size() > 0) {
+    file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
+  }
+  // @@protoc_insertion_point(copy_constructor:pb.RPCGetPublisherFileResponse)
+}
+
+void RPCGetPublisherFileResponse::SharedCtor() {
+  file_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+RPCGetPublisherFileResponse::~RPCGetPublisherFileResponse() {
+  // @@protoc_insertion_point(destructor:pb.RPCGetPublisherFileResponse)
+  SharedDtor();
+}
+
+void RPCGetPublisherFileResponse::SharedDtor() {
+  file_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void RPCGetPublisherFileResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RPCGetPublisherFileResponse::descriptor() {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RPCGetPublisherFileResponse& RPCGetPublisherFileResponse::default_instance() {
+  ::protobuf_pb_2fpublisher_2eproto::InitDefaultsRPCGetPublisherFileResponse();
+  return *internal_default_instance();
+}
+
+RPCGetPublisherFileResponse* RPCGetPublisherFileResponse::New(::google::protobuf::Arena* arena) const {
+  RPCGetPublisherFileResponse* n = new RPCGetPublisherFileResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void RPCGetPublisherFileResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.RPCGetPublisherFileResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  file_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool RPCGetPublisherFileResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.RPCGetPublisherFileResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // bytes file = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_file()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.RPCGetPublisherFileResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.RPCGetPublisherFileResponse)
+  return false;
+#undef DO_
+}
+
+void RPCGetPublisherFileResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.RPCGetPublisherFileResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bytes file = 1;
+  if (this->file().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      1, this->file(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.RPCGetPublisherFileResponse)
+}
+
+::google::protobuf::uint8* RPCGetPublisherFileResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.RPCGetPublisherFileResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bytes file = 1;
+  if (this->file().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->file(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.RPCGetPublisherFileResponse)
+  return target;
+}
+
+size_t RPCGetPublisherFileResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.RPCGetPublisherFileResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // bytes file = 1;
+  if (this->file().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->file());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RPCGetPublisherFileResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.RPCGetPublisherFileResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RPCGetPublisherFileResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RPCGetPublisherFileResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.RPCGetPublisherFileResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.RPCGetPublisherFileResponse)
+    MergeFrom(*source);
+  }
+}
+
+void RPCGetPublisherFileResponse::MergeFrom(const RPCGetPublisherFileResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.RPCGetPublisherFileResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.file().size() > 0) {
+
+    file_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_);
+  }
+}
+
+void RPCGetPublisherFileResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.RPCGetPublisherFileResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RPCGetPublisherFileResponse::CopyFrom(const RPCGetPublisherFileResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.RPCGetPublisherFileResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RPCGetPublisherFileResponse::IsInitialized() const {
+  return true;
+}
+
+void RPCGetPublisherFileResponse::Swap(RPCGetPublisherFileResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void RPCGetPublisherFileResponse::InternalSwap(RPCGetPublisherFileResponse* other) {
+  using std::swap;
+  file_.Swap(&other->file_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata RPCGetPublisherFileResponse::GetMetadata() const {
+  protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void GetPublisherDefinitionRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+GetPublisherDefinitionRequest::GetPublisherDefinitionRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fpublisher_2eproto::InitDefaultsGetPublisherDefinitionRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.GetPublisherDefinitionRequest)
+}
+GetPublisherDefinitionRequest::GetPublisherDefinitionRequest(const GetPublisherDefinitionRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:pb.GetPublisherDefinitionRequest)
+}
+
+void GetPublisherDefinitionRequest::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+GetPublisherDefinitionRequest::~GetPublisherDefinitionRequest() {
+  // @@protoc_insertion_point(destructor:pb.GetPublisherDefinitionRequest)
+  SharedDtor();
+}
+
+void GetPublisherDefinitionRequest::SharedDtor() {
+}
+
+void GetPublisherDefinitionRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* GetPublisherDefinitionRequest::descriptor() {
+  ::protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const GetPublisherDefinitionRequest& GetPublisherDefinitionRequest::default_instance() {
+  ::protobuf_pb_2fpublisher_2eproto::InitDefaultsGetPublisherDefinitionRequest();
+  return *internal_default_instance();
+}
+
+GetPublisherDefinitionRequest* GetPublisherDefinitionRequest::New(::google::protobuf::Arena* arena) const {
+  GetPublisherDefinitionRequest* n = new GetPublisherDefinitionRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void GetPublisherDefinitionRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.GetPublisherDefinitionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
+}
+
+bool GetPublisherDefinitionRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.GetPublisherDefinitionRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.GetPublisherDefinitionRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.GetPublisherDefinitionRequest)
+  return false;
+#undef DO_
+}
+
+void GetPublisherDefinitionRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.GetPublisherDefinitionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.GetPublisherDefinitionRequest)
+}
+
+::google::protobuf::uint8* GetPublisherDefinitionRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.GetPublisherDefinitionRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.GetPublisherDefinitionRequest)
+  return target;
+}
+
+size_t GetPublisherDefinitionRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.GetPublisherDefinitionRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GetPublisherDefinitionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.GetPublisherDefinitionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const GetPublisherDefinitionRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const GetPublisherDefinitionRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.GetPublisherDefinitionRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.GetPublisherDefinitionRequest)
+    MergeFrom(*source);
+  }
+}
+
+void GetPublisherDefinitionRequest::MergeFrom(const GetPublisherDefinitionRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.GetPublisherDefinitionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void GetPublisherDefinitionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.GetPublisherDefinitionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetPublisherDefinitionRequest::CopyFrom(const GetPublisherDefinitionRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.GetPublisherDefinitionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetPublisherDefinitionRequest::IsInitialized() const {
+  return true;
+}
+
+void GetPublisherDefinitionRequest::Swap(GetPublisherDefinitionRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void GetPublisherDefinitionRequest::InternalSwap(GetPublisherDefinitionRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata GetPublisherDefinitionRequest::GetMetadata() const {
   protobuf_pb_2fpublisher_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fpublisher_2eproto::file_level_metadata[kIndexInFileMessages];
 }

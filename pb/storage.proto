@@ -19,11 +19,3 @@ message RPCGetPeerFileRequest {
 message RPCGetPeerFileResponse {
     bytes file = 1;
 }
-
-message RPCGetPublisherFileRequest {
-    string name = 1;
-}
-
-message RPCGetPublisherFileResponse {
-    bytes file = 1;
-}
