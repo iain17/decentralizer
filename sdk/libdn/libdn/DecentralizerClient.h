@@ -21,18 +21,21 @@ namespace libdn {
 
 		const char* networkKey;
 		bool isPrivateKey;
+		bool limited;
 
 		grpc::ClientContext* getContext() {
 			grpc::ClientContext* ctx = new grpc::ClientContext();
 			ctx->AddMetadata("cver", "0.1.0");
 			ctx->AddMetadata("netkey", networkKey);
 			ctx->AddMetadata("privkey", isPrivateKey ? "1" : "0");
+			ctx->AddMetadata("limited", limited ? "1" : "0");
 			return ctx;
 		}
 
-		explicit DecentralizerClient(std::shared_ptr<Channel> channel, const char* networkKey, bool isPrivateKey) : stub_(Decentralizer::NewStub(channel)) {
+		explicit DecentralizerClient(std::shared_ptr<Channel> channel, const char* networkKey, bool isPrivateKey, bool limited) : stub_(Decentralizer::NewStub(channel)) {
 			this->networkKey = networkKey;
 			this->isPrivateKey = isPrivateKey;
+			this->limited = limited;
 		}
 	};
 }
