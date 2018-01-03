@@ -147,7 +147,7 @@ func (d *Decentralizer) PublishPublisherUpdate(definition *pb.PublisherDefinitio
 	}
 	err = d.PushPublisherUpdate()
 	if err == nil {
-		d.cron.Every(5).Second().Do(d.PushPublisherUpdate)
+		d.cron.Every(5).Seconds().Do(d.PushPublisherUpdate)
 	}
 	return err
 }

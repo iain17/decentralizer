@@ -110,13 +110,13 @@ func (d *Decentralizer) connectPreviousPeers() error {
 			}
 			addrs = append(addrs, addr)
 		}
-		err = d.i.PeerHost.Connect(d.i.Context(), pstore.PeerInfo{
+		_ = d.i.PeerHost.Connect(d.i.Context(), pstore.PeerInfo{
 			ID: pId,
 			Addrs: addrs,
 		})
-		if err != nil {
-			logger.Warning(err)
-		}
+		//if err != nil {
+		//	logger.Debug(err)
+		//}
 	}
 	return nil
 }
