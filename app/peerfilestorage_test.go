@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/iain17/decentralizer/app/ipfs"
 	"time"
+	"github.com/iain17/logger"
 )
 
 //One user saves a file. The other gets it by its hash.
@@ -73,6 +74,8 @@ func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {
 	_, err = app1.SavePeerFile(filename, updatedMessage)
 	assert.NoError(t, err)
 
+	time.Sleep(1 * time.Second)
+
 	var result []byte
 	for i:= 0; i < 10; i++ {
 		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
@@ -101,6 +104,8 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
+	time.Sleep(1 * time.Second)
+
 	var result []byte
 	for i:= 0; i < 10; i++ {
 		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
@@ -108,6 +113,7 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 		if string(message) == string(result) {
 			break
 		}
+		logger.Infof("%s != %s", message, result)
 		time.Sleep(1 * time.Second)
 	}
 	assert.Equal(t, string(message), string(result))
