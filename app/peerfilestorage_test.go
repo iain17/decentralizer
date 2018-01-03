@@ -25,6 +25,8 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, cid)
 
+	time.Sleep(1 * time.Second)
+
 	data, err := app1.getIPFSFile(cid)
 	assert.NoError(t, err)
 	assert.Equal(t, string(message), string(data))
@@ -45,6 +47,8 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
+
+	time.Sleep(1 * time.Second)
 
 	file, err := app2.filesApi.GetPeerFile(app1.i.Identity, filename)
 	assert.NoError(t, err)
@@ -106,6 +110,8 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	filename := "test.txt"
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
+
+	time.Sleep(1 * time.Second)
 
 	var result []byte
 	for i:= 0; i < 10; i++ {
