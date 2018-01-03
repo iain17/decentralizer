@@ -33,7 +33,7 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	err := master.PublishPublisherUpdate(definition)
 	assert.NoError(t, err)
 	assert.NotNil(t, master.publisherUpdate)
-	time.Sleep(2 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	assert.NotNil(t, slave.publisherUpdate)
 	if slave.publisherUpdate != nil {

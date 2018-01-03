@@ -77,7 +77,7 @@ func getBasePath() *configdir.Config {
 
 func Reset() {
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
-	os.RemoveAll(getBasePath().Path)
+	os.RemoveAll(getBasePath().Path+"/ipfs")
 }
 
 func New(ctx context.Context, networkStr string, privateKey bool, limitedConnection bool) (*Decentralizer, error) {
@@ -100,7 +100,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	}
 	logger.Infof("IPFS path: %s", Base)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
-	i, err := ipfs.OpenIPFSRepo(ctx, Base.Path, limitedConnection)
+	i, err := ipfs.OpenIPFSRepo(ctx, Base.Path+"/ipfs", limitedConnection)
 	if err != nil {
 		return nil, err
 	}
