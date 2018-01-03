@@ -10,13 +10,13 @@ import (
 )
 
 type Server struct {
-	ctx context.Context
-	app *app.Decentralizer
-	grpc *grpc.Server
-	endpoint string
-	mutex sync.Mutex
+	ctx               context.Context
+	app               *app.Decentralizer
+	grpc              *grpc.Server
+	endpoint          string
+	mutex             sync.Mutex
 	listeningChannels map[uint32]bool//To keep track if a client is already listening for direct messages on this channel.
-	wg sync.WaitGroup
+	Wg                sync.WaitGroup
 }
 
 func New(ctx context.Context, port int) (*Server, error) {
@@ -37,7 +37,6 @@ func New(ctx context.Context, port int) (*Server, error) {
 			logger.Fatalf("HTTP API error: %s", err)
 		}
 	}()
-	go i.RunAlive()
 	return i, nil
 }
 
