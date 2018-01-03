@@ -16,6 +16,7 @@ type Server struct {
 	endpoint string
 	mutex sync.Mutex
 	listeningChannels map[uint32]bool//To keep track if a client is already listening for direct messages on this channel.
+	wg sync.WaitGroup
 }
 
 func New(ctx context.Context, port int) (*Server, error) {
@@ -36,13 +37,15 @@ func New(ctx context.Context, port int) (*Server, error) {
 			logger.Fatalf("HTTP API error: %s", err)
 		}
 	}()
-
+	go i.RunAlive()
 	return i, nil
 }
 
 
 func (s *Server) Stop() {
-	s.grpc.Stop()
+	if s.grpc != nil {
+		s.grpc.Stop()
+	}
 	if s.app != nil {
 		s.app.Stop()
 	}

@@ -24,10 +24,12 @@ func (s *Server) initGRPC(port int) error {
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
 			grpc_auth.StreamServerInterceptor(s.auth),
 			grpc_recovery.StreamServerInterceptor(),
+			s.AliveStreamInterceptor(),
 		)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_auth.UnaryServerInterceptor(s.auth),
 			grpc_recovery.UnaryServerInterceptor(),
+			s.AliveUnaryInterceptor(),
 		)),
 	)
 	pb.RegisterDecentralizerServer(s.grpc, s)
