@@ -70,6 +70,16 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 	instance.initAddressbook()
 	instance.initPublisherFiles()
 
+	go func() {
+		select {
+			case <- instance.ctx.Done():
+				if instance != nil {
+					instance.Stop()
+				}
+				return
+		}
+	}()
+
 	//Mock UFS
 	instance.ufs = afero.NewMemMapFs()
 
