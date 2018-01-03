@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"io"
 
-	chunk "github.com/ipfs/go-ipfs/importer/chunk"
-	help "github.com/ipfs/go-ipfs/importer/helpers"
-	trickle "github.com/ipfs/go-ipfs/importer/trickle"
-	mdag "github.com/ipfs/go-ipfs/merkledag"
-	ft "github.com/ipfs/go-ipfs/unixfs"
-	uio "github.com/ipfs/go-ipfs/unixfs/io"
+	chunk "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/chunk"
+	help "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/helpers"
+	trickle "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/trickle"
+	mdag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	ft "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs"
+	uio "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs/io"
 
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	node "gx/ipfs/QmPN7cwmpcc4DWXb4KTB9dNAJgjuPY69h3npsMfhRrQL9c/go-ipld-format"

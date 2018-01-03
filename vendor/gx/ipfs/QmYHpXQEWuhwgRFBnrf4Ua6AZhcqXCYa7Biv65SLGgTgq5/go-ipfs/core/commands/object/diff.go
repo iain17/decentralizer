@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io"
 
-	cmds "github.com/ipfs/go-ipfs/commands"
-	core "github.com/ipfs/go-ipfs/core"
-	dagutils "github.com/ipfs/go-ipfs/merkledag/utils"
-	path "github.com/ipfs/go-ipfs/path"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
+	core "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	dagutils "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag/utils"
+	path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 )
 
 type Changes struct {

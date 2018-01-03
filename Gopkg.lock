@@ -131,7 +131,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "5bb325cb97e76cfe9d67868384485be403298a0f"
+  revision = "64425a6f1dc2a0d7562b8a4dcfa905d38fe1f704"
 
 [[projects]]
   branch = "master"
@@ -162,12 +162,6 @@
   name = "github.com/iain17/timeout"
   packages = ["."]
   revision = "648cd1776b0827c6fe51effa719a67eca6dae3f1"
-
-[[projects]]
-  name = "github.com/ipfs/go-ipfs"
-  packages = ["exchange/bitswap/message","exchange/bitswap/message/pb","exchange/bitswap/network","exchange/bitswap/wantlist"]
-  revision = "cc01b7f188622e7148ce041b9d09252c85041d9f"
-  version = "v0.4.13"
 
 [[projects]]
   branch = "master"
@@ -309,13 +303,13 @@
 
 [[projects]]
   name = "google.golang.org/grpc"
-  packages = [".","balancer","balancer/roundrobin","codes","connectivity","credentials","encoding","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","reflection","reflection/grpc_reflection_v1alpha","resolver","resolver/dns","resolver/passthrough","stats","status","tap","transport"]
-  revision = "e687fa4e6424368ece6e4fe727cea2c806a0fcb4"
-  version = "v1.8.2"
+  packages = [".","balancer","balancer/base","balancer/roundrobin","codes","connectivity","credentials","encoding","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","reflection","reflection/grpc_reflection_v1alpha","resolver","resolver/dns","resolver/passthrough","stats","status","tap","transport"]
+  revision = "f3955b8e9e244dd4dd4bc4f7b7a23a8445400a76"
+  version = "v1.9.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e6bbbb0890c782e2d8f88dd2d58f673d59b01a05bee773f66971f6b71319a01d"
+  inputs-digest = "08af66ae300261f4a231c5925db420c4108457ff27530e5a82bb5f93b2b46506"
   solver-name = "gps-cdcl"
   solver-version = 1

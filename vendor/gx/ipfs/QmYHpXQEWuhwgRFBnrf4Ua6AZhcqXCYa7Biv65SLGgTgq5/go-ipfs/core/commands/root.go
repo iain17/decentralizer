@@ -4,12 +4,12 @@ import (
 	"io"
 	"strings"
 
-	cmds "github.com/ipfs/go-ipfs/commands"
-	dag "github.com/ipfs/go-ipfs/core/commands/dag"
-	files "github.com/ipfs/go-ipfs/core/commands/files"
-	ocmd "github.com/ipfs/go-ipfs/core/commands/object"
-	unixfs "github.com/ipfs/go-ipfs/core/commands/unixfs"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
+	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/commands/dag"
+	files "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/commands/files"
+	ocmd "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/commands/object"
+	unixfs "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/commands/unixfs"
 )
 
 var log = logging.Logger("core/commands")

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	mdag "github.com/ipfs/go-ipfs/merkledag"
-	format "github.com/ipfs/go-ipfs/unixfs"
-	hamt "github.com/ipfs/go-ipfs/unixfs/hamt"
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
+	mdag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	format "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs"
+	hamt "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs/hamt"
 
 	node "gx/ipfs/QmPN7cwmpcc4DWXb4KTB9dNAJgjuPY69h3npsMfhRrQL9c/go-ipld-format"
 )

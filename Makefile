@@ -40,6 +40,7 @@ dep:
 
 dep-update:
 	mv vendor/gx /tmp/
+	dep prune
 	dep ensure --update
 	mv /tmp/gx vendor/
 

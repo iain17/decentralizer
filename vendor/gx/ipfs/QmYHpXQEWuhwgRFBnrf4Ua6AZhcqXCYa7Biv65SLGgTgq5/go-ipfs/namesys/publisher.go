@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"time"
 
-	dag "github.com/ipfs/go-ipfs/merkledag"
-	pb "github.com/ipfs/go-ipfs/namesys/pb"
-	path "github.com/ipfs/go-ipfs/path"
-	pin "github.com/ipfs/go-ipfs/pin"
-	dshelp "github.com/ipfs/go-ipfs/thirdparty/ds-help"
-	ft "github.com/ipfs/go-ipfs/unixfs"
+	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	pb "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/namesys/pb"
+	path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	pin "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/pin"
+	dshelp "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/ds-help"
+	ft "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs"
 
 	routing "gx/ipfs/QmPR2JzfKd9poHx9XBhzoFeBBC31ZM3W5iUPKJZWyaoZZm/go-libp2p-routing"
 	u "gx/ipfs/QmSU6eubNdhXjFBJBSksTp8kv8YRub8mGAPv8tVJHmL2EU/go-ipfs-util"

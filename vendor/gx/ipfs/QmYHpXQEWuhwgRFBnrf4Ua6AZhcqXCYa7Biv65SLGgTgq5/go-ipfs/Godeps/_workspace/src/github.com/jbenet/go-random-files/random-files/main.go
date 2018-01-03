@@ -9,8 +9,8 @@ import (
 	"os"
 	"time"
 
-	randomfiles "github.com/ipfs/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random-files"
-	ringreader "github.com/ipfs/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random-files/ringreader"
+	randomfiles "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random-files"
+	ringreader "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random-files/ringreader"
 )
 
 var usage = `usage: %s [options] <path>...

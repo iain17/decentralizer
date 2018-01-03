@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"io"
 
-	pb "github.com/ipfs/go-ipfs/exchange/bitswap/message/pb"
-	wantlist "github.com/ipfs/go-ipfs/exchange/bitswap/wantlist"
 	blocks "gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
+	pb "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/message/pb"
+	wantlist "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/wantlist"
 
 	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"

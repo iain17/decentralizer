@@ -4,11 +4,11 @@ import (
 	"io"
 	"strings"
 
-	cmds "github.com/ipfs/go-ipfs/commands"
-	"github.com/ipfs/go-ipfs/core"
-	ns "github.com/ipfs/go-ipfs/namesys"
-	path "github.com/ipfs/go-ipfs/path"
 	u "gx/ipfs/QmSU6eubNdhXjFBJBSksTp8kv8YRub8mGAPv8tVJHmL2EU/go-ipfs-util"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	ns "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/namesys"
+	path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 )
 
 type ResolvedPath struct {

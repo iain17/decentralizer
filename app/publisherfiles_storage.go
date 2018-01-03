@@ -2,7 +2,7 @@ package app
 
 import (
 	"errors"
-	"github.com/ipfs/go-ipfs/core/coreapi"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"io/ioutil"
 )
 

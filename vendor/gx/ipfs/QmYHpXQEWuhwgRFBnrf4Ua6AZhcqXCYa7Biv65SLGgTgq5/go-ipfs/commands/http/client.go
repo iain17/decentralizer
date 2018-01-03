@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	cmds "github.com/ipfs/go-ipfs/commands"
-	config "github.com/ipfs/go-ipfs/repo/config"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
+	config "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
 
 	context "context"
 )

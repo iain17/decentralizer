@@ -8,16 +8,16 @@ import (
 	"strings"
 	"testing"
 
-	core "github.com/ipfs/go-ipfs/core"
-	coreapi "github.com/ipfs/go-ipfs/core/coreapi"
-	coreiface "github.com/ipfs/go-ipfs/core/coreapi/interface"
-	coreunix "github.com/ipfs/go-ipfs/core/coreunix"
-	mdag "github.com/ipfs/go-ipfs/merkledag"
-	repo "github.com/ipfs/go-ipfs/repo"
-	config "github.com/ipfs/go-ipfs/repo/config"
-	ds2 "github.com/ipfs/go-ipfs/thirdparty/datastore2"
-	unixfs "github.com/ipfs/go-ipfs/unixfs"
 	cbor "gx/ipfs/QmWCs8kMecJwCPK8JThue8TjgM2ieJ2HjTLDu7Cv2NEmZi/go-ipld-cbor"
+	core "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	coreapi "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
+	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
+	coreunix "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreunix"
+	mdag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	repo "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo"
+	config "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
+	ds2 "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/datastore2"
+	unixfs "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs"
 )
 
 // `echo -n 'hello, world!' | ipfs add`

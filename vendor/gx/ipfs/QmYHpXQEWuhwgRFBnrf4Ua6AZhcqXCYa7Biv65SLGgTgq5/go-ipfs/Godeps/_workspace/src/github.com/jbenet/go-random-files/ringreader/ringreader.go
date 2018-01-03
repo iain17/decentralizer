@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	random "github.com/ipfs/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random"
+	random "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random"
 )
 
 type Reader struct {

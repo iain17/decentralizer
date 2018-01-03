@@ -6,8 +6,8 @@ package unixfs
 import (
 	"errors"
 
-	dag "github.com/ipfs/go-ipfs/merkledag"
-	pb "github.com/ipfs/go-ipfs/unixfs/pb"
+	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	pb "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs/pb"
 	proto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 )
 

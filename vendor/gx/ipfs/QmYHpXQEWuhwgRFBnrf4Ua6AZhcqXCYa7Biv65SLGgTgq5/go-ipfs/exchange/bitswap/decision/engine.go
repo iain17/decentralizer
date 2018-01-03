@@ -6,12 +6,12 @@ import (
 	"sync"
 	"time"
 
-	bstore "github.com/ipfs/go-ipfs/blocks/blockstore"
-	bsmsg "github.com/ipfs/go-ipfs/exchange/bitswap/message"
-	wl "github.com/ipfs/go-ipfs/exchange/bitswap/wantlist"
 	blocks "gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	bstore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blocks/blockstore"
+	bsmsg "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/message"
+	wl "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/wantlist"
 )
 
 // TODO consider taking responsibility for other types of requests. For

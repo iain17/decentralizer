@@ -5,11 +5,11 @@ import (
 	"errors"
 	"time"
 
-	keystore "github.com/ipfs/go-ipfs/keystore"
-	namesys "github.com/ipfs/go-ipfs/namesys"
-	pb "github.com/ipfs/go-ipfs/namesys/pb"
-	path "github.com/ipfs/go-ipfs/path"
-	dshelp "github.com/ipfs/go-ipfs/thirdparty/ds-help"
+	keystore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/keystore"
+	namesys "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/namesys"
+	pb "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/namesys/pb"
+	path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	dshelp "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/ds-help"
 
 	routing "gx/ipfs/QmPR2JzfKd9poHx9XBhzoFeBBC31ZM3W5iUPKJZWyaoZZm/go-libp2p-routing"
 	goprocess "gx/ipfs/QmSF8fPo3jgVBAy8fpdjjYqgG87dkJgUprRBHRd2tmfgpP/goprocess"

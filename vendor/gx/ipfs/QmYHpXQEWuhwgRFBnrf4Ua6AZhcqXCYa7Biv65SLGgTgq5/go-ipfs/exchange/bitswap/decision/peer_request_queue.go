@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	wantlist "github.com/ipfs/go-ipfs/exchange/bitswap/wantlist"
-	pq "github.com/ipfs/go-ipfs/thirdparty/pq"
+	wantlist "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/wantlist"
+	pq "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/pq"
 
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"

@@ -8,9 +8,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ipfs/go-ipfs/blocks/blockstore"
-	exchange "github.com/ipfs/go-ipfs/exchange"
-	bitswap "github.com/ipfs/go-ipfs/exchange/bitswap"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blocks/blockstore"
+	exchange "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange"
+	bitswap "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap"
 
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	blocks "gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"

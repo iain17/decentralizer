@@ -1,7 +1,7 @@
 package levenshtein_test
 
 import (
-	"github.com/ipfs/go-ipfs/Godeps/_workspace/src/github.com/texttheater/golang-levenshtein/levenshtein"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/Godeps/_workspace/src/github.com/texttheater/golang-levenshtein/levenshtein"
 	"testing"
 )
 

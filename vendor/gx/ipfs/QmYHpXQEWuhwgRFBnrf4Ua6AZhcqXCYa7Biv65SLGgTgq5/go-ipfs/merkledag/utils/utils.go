@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 
-	bstore "github.com/ipfs/go-ipfs/blocks/blockstore"
-	bserv "github.com/ipfs/go-ipfs/blockservice"
-	offline "github.com/ipfs/go-ipfs/exchange/offline"
-	dag "github.com/ipfs/go-ipfs/merkledag"
-	path "github.com/ipfs/go-ipfs/path"
+	bstore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blocks/blockstore"
+	bserv "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blockservice"
+	offline "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/offline"
+	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 
 	node "gx/ipfs/QmPN7cwmpcc4DWXb4KTB9dNAJgjuPY69h3npsMfhRrQL9c/go-ipld-format"
 	ds "gx/ipfs/QmVSase1JP7cq9QkPT46oNwdp9pT6kBkG3oqS14y3QcZjG/go-datastore"

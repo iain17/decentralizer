@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ipfs/go-ipfs/plugin"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/plugin"
 
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )

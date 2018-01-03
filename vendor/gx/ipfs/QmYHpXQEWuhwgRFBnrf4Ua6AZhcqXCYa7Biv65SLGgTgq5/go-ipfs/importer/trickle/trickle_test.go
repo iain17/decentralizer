@@ -9,12 +9,12 @@ import (
 	mrand "math/rand"
 	"testing"
 
-	chunk "github.com/ipfs/go-ipfs/importer/chunk"
-	h "github.com/ipfs/go-ipfs/importer/helpers"
-	merkledag "github.com/ipfs/go-ipfs/merkledag"
-	mdtest "github.com/ipfs/go-ipfs/merkledag/test"
-	ft "github.com/ipfs/go-ipfs/unixfs"
-	uio "github.com/ipfs/go-ipfs/unixfs/io"
+	chunk "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/chunk"
+	h "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/helpers"
+	merkledag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	mdtest "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag/test"
+	ft "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs"
+	uio "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/unixfs/io"
 
 	u "gx/ipfs/QmSU6eubNdhXjFBJBSksTp8kv8YRub8mGAPv8tVJHmL2EU/go-ipfs-util"
 )

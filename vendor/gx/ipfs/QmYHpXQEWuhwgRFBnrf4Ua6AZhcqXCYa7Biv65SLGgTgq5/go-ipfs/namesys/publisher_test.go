@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	path "github.com/ipfs/go-ipfs/path"
-	mockrouting "github.com/ipfs/go-ipfs/routing/mock"
-	dshelp "github.com/ipfs/go-ipfs/thirdparty/ds-help"
+	path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
+	mockrouting "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/routing/mock"
+	dshelp "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/ds-help"
 
 	ds "gx/ipfs/QmVSase1JP7cq9QkPT46oNwdp9pT6kBkG3oqS14y3QcZjG/go-datastore"
 	dssync "gx/ipfs/QmVSase1JP7cq9QkPT46oNwdp9pT6kBkG3oqS14y3QcZjG/go-datastore/sync"

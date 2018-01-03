@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	cmds "github.com/ipfs/go-ipfs/commands"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
 )
 
 var daemonShutdownCmd = &cmds.Command{

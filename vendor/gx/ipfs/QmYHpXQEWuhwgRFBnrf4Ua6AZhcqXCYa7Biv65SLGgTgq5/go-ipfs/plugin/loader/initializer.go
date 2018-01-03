@@ -1,8 +1,8 @@
 package loader
 
 import (
-	"github.com/ipfs/go-ipfs/core/coredag"
-	"github.com/ipfs/go-ipfs/plugin"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coredag"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/plugin"
 
 	format "gx/ipfs/QmPN7cwmpcc4DWXb4KTB9dNAJgjuPY69h3npsMfhRrQL9c/go-ipld-format"
 )

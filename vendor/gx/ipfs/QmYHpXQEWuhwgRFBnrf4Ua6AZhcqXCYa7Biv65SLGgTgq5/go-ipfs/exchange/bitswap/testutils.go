@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	blockstore "github.com/ipfs/go-ipfs/blocks/blockstore"
-	tn "github.com/ipfs/go-ipfs/exchange/bitswap/testnet"
-	datastore2 "github.com/ipfs/go-ipfs/thirdparty/datastore2"
-	delay "github.com/ipfs/go-ipfs/thirdparty/delay"
 	testutil "gx/ipfs/QmWRCn8vruNAzHx8i6SAXinuheRitKEGu8c7m26stKvsYx/go-testutil"
+	blockstore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blocks/blockstore"
+	tn "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/testnet"
+	datastore2 "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/datastore2"
+	delay "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/delay"
 
 	p2ptestutil "gx/ipfs/QmQGX417WoxKxDJeHqouMEmmH4G1RCENNSzkZYHrXy3Xb3/go-libp2p-netutil"
 	ds "gx/ipfs/QmVSase1JP7cq9QkPT46oNwdp9pT6kBkG3oqS14y3QcZjG/go-datastore"

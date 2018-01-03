@@ -3,9 +3,9 @@ package reprovide
 import (
 	"context"
 
-	blocks "github.com/ipfs/go-ipfs/blocks/blockstore"
-	merkledag "github.com/ipfs/go-ipfs/merkledag"
-	pin "github.com/ipfs/go-ipfs/pin"
+	blocks "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blocks/blockstore"
+	merkledag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	pin "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/pin"
 
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 )

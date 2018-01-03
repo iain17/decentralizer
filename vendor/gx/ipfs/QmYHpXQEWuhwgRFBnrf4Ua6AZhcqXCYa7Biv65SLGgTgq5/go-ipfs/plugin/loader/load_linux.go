@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"plugin"
 
-	iplugin "github.com/ipfs/go-ipfs/plugin"
+	iplugin "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/plugin"
 )
 
 func init() {

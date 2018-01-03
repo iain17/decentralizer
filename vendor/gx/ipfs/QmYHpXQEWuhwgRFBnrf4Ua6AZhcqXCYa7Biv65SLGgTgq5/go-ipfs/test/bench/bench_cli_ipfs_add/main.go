@@ -10,9 +10,9 @@ import (
 	"path"
 	"testing"
 
-	"github.com/ipfs/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random"
-	"github.com/ipfs/go-ipfs/repo/config"
-	"github.com/ipfs/go-ipfs/thirdparty/unit"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/Godeps/_workspace/src/github.com/jbenet/go-random"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/unit"
 )
 
 var (

@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	bsmsg "github.com/ipfs/go-ipfs/exchange/bitswap/message"
-	bsnet "github.com/ipfs/go-ipfs/exchange/bitswap/network"
-	mockrouting "github.com/ipfs/go-ipfs/routing/mock"
-	delay "github.com/ipfs/go-ipfs/thirdparty/delay"
+	bsmsg "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/message"
+	bsnet "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/network"
+	mockrouting "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/routing/mock"
+	delay "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/delay"
 
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	routing "gx/ipfs/QmPR2JzfKd9poHx9XBhzoFeBBC31ZM3W5iUPKJZWyaoZZm/go-libp2p-routing"

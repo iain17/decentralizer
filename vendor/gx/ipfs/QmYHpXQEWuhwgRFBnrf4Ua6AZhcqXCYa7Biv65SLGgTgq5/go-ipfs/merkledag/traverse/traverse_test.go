@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	mdag "github.com/ipfs/go-ipfs/merkledag"
-	mdagtest "github.com/ipfs/go-ipfs/merkledag/test"
+	mdag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	mdagtest "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag/test"
 
 	node "gx/ipfs/QmPN7cwmpcc4DWXb4KTB9dNAJgjuPY69h3npsMfhRrQL9c/go-ipld-format"
 )

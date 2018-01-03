@@ -1,18 +1,18 @@
 package ipfs
 
 import (
-	"github.com/ipfs/go-ipfs/core/coreapi"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"bytes"
 	"errors"
-	"github.com/ipfs/go-ipfs/core"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
 	"github.com/iain17/logger"
-	"github.com/ipfs/go-ipfs/core/coreapi/interface"
-	"github.com/ipfs/go-ipfs/core/coreunix"
-	Path "github.com/ipfs/go-ipfs/path"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreunix"
+	Path "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/path"
 	"io/ioutil"
 	"context"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	coreiface "github.com/ipfs/go-ipfs/core/coreapi/interface"
+	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
 	"github.com/iain17/timeout"
 	"time"
 )

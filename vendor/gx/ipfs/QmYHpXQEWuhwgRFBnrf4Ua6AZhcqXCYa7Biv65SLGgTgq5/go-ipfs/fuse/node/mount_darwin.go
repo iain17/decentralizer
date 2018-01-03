@@ -10,7 +10,7 @@ import (
 	"strings"
 	"syscall"
 
-	core "github.com/ipfs/go-ipfs/core"
+	core "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
 
 	"gx/ipfs/QmYRGECuvQnRX73fcvPnGbYijBcGN2HbKZQ7jh26qmLiHG/semver"
 )

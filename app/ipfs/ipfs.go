@@ -2,11 +2,11 @@ package ipfs
 
 import (
 	"context"
-	"github.com/ipfs/go-ipfs/core"
-	"github.com/ipfs/go-ipfs/repo"
-	"github.com/ipfs/go-ipfs/repo/config"
-	"github.com/ipfs/go-ipfs/repo/fsrepo"
-	bitswap "github.com/ipfs/go-ipfs/exchange/bitswap/network"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/fsrepo"
+	bitswap "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/network"
 	dht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
 	utilmain "github.com/iain17/decentralizer/app/ipfs/util"
 	"os"

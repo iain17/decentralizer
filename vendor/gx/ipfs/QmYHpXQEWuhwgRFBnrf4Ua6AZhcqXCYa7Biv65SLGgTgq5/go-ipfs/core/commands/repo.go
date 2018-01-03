@@ -9,12 +9,12 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	bstore "github.com/ipfs/go-ipfs/blocks/blockstore"
-	cmds "github.com/ipfs/go-ipfs/commands"
-	corerepo "github.com/ipfs/go-ipfs/core/corerepo"
-	config "github.com/ipfs/go-ipfs/repo/config"
-	fsrepo "github.com/ipfs/go-ipfs/repo/fsrepo"
-	lockfile "github.com/ipfs/go-ipfs/repo/fsrepo/lock"
+	bstore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blocks/blockstore"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
+	corerepo "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/corerepo"
+	config "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
+	fsrepo "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/fsrepo"
+	lockfile "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/fsrepo/lock"
 
 	cid "gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	u "gx/ipfs/QmSU6eubNdhXjFBJBSksTp8kv8YRub8mGAPv8tVJHmL2EU/go-ipfs-util"

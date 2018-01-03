@@ -6,9 +6,9 @@ import (
 	"net/url"
 	"testing"
 
-	cmds "github.com/ipfs/go-ipfs/commands"
-	ipfscmd "github.com/ipfs/go-ipfs/core/commands"
-	coremock "github.com/ipfs/go-ipfs/core/mock"
+	cmds "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands"
+	ipfscmd "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/commands"
+	coremock "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/mock"
 )
 
 func assertHeaders(t *testing.T, resHeaders http.Header, reqHeaders map[string]string) {

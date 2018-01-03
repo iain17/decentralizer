@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ipfs/go-ipfs/commands/files"
-	bal "github.com/ipfs/go-ipfs/importer/balanced"
-	"github.com/ipfs/go-ipfs/importer/chunk"
-	h "github.com/ipfs/go-ipfs/importer/helpers"
-	trickle "github.com/ipfs/go-ipfs/importer/trickle"
-	dag "github.com/ipfs/go-ipfs/merkledag"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands/files"
+	bal "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/balanced"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/chunk"
+	h "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/helpers"
+	trickle "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/importer/trickle"
+	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
 
 	node "gx/ipfs/QmPN7cwmpcc4DWXb4KTB9dNAJgjuPY69h3npsMfhRrQL9c/go-ipld-format"
 )

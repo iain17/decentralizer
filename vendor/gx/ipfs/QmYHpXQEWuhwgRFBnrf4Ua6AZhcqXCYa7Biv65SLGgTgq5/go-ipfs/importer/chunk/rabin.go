@@ -4,7 +4,7 @@ import (
 	"hash/fnv"
 	"io"
 
-	"github.com/ipfs/go-ipfs/Godeps/_workspace/src/github.com/whyrusleeping/chunker"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/Godeps/_workspace/src/github.com/whyrusleeping/chunker"
 )
 
 var IpfsRabinPoly = chunker.Pol(17437180132763653)

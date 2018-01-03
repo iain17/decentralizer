@@ -3,9 +3,9 @@ package repo
 import (
 	"errors"
 
-	filestore "github.com/ipfs/go-ipfs/filestore"
-	keystore "github.com/ipfs/go-ipfs/keystore"
-	"github.com/ipfs/go-ipfs/repo/config"
+	filestore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/filestore"
+	keystore "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/keystore"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
 
 	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
 )

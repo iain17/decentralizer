@@ -4,7 +4,7 @@ import (
 	ds "gx/ipfs/QmVSase1JP7cq9QkPT46oNwdp9pT6kBkG3oqS14y3QcZjG/go-datastore"
 	dsq "gx/ipfs/QmVSase1JP7cq9QkPT46oNwdp9pT6kBkG3oqS14y3QcZjG/go-datastore/query"
 
-	delay "github.com/ipfs/go-ipfs/thirdparty/delay"
+	delay "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/thirdparty/delay"
 )
 
 func WithDelay(ds ds.Datastore, delay delay.D) ds.Datastore {
