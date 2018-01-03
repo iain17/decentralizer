@@ -196,7 +196,7 @@ func (s *stream) transport() {
 			// write this message.
 			_, err := s.write.Write(o.msg)
 			if err != nil {
-				log.Error("mock_stream", err)
+				//log.Error("mock_stream", err)
 			}
 		} else {
 			buf.Write(o.msg)
