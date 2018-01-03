@@ -87,11 +87,11 @@ func (d *Decentralizer) getIPFSFile(path string) ([]byte, error) {
 
 //Get a particular peer file from someone.
 func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) {
-	var result []byte
 	id, err := d.decodePeerId(peerId)
 	if err != nil {
 		return nil, err
 	}
+	var result []byte
 	refresh := false
 	path := d.getPeerFilePath(id, name)
 	info, err := d.ufs.Stat(path)
@@ -101,7 +101,10 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	if id.Pretty() != d.i.Identity.Pretty() {
 		refresh = true
 	}
-	if err != nil || refresh {
+	if err == nil && !refresh {
+		result, err = d.getFile(path)
+	}
+	if result == nil || refresh {
 		//Time to get a fresh copy
 		var fresh []byte
 		fresh, err = d.filesApi.GetPeerFile(id, name)
@@ -109,10 +112,6 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 			result = fresh
 			err = d.writeFile(path, result)
 		}
-	}
-	//No result yet?
-	if result == nil {
-		result, err = d.getFile(path)
 	}
 	return result, err
 }

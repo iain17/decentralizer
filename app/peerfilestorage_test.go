@@ -14,9 +14,9 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0], false)
+	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1], false)
+	app2 := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, app2)
 
 	message := []byte("Low in coupling and high in cohesion.")
@@ -35,9 +35,9 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0], false)
+	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1], false)
+	app2 := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, app2)
 
 	message := []byte("Hey ho this is cool.")
@@ -46,12 +46,16 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
-	file, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
+	file, err := app2.filesApi.GetPeerFile(app1.i.Identity, filename)
 	assert.NoError(t, err)
-	assert.Equal(t, string(message), string(file))
+	assert.Equal(t, string(message), string(file), "Should work fine calling directly IPFS")
+
+	file, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
+	assert.NoError(t, err)
+	assert.Equal(t, string(message), string(file), "Should work fine calling IPFS through cache layer")
 
 	_, err = app2.GetPeerFile(app1.i.Identity.Pretty(), "random shit")
-	assert.Error(t, err)
+	assert.Error(t, err, "404. doesn't exist")
 }
 
 func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {
@@ -59,9 +63,9 @@ func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0], false)
+	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1], false)
+	app2 := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, app2)
 
 	message := []byte("Simplicity is the ultimate sophistication ~ Leonardo Da Vinci")
@@ -93,18 +97,15 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0], false)
+	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
-	app2 := fakeNew(nodes[1], false)
+	app2 := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, app2)
 
 	message := []byte("Simplicity is the ultimate sophistication ~ Leonardo Da Vinci")
 	filename := "test.txt"
-
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
-
-	time.Sleep(1 * time.Second)
 
 	var result []byte
 	for i:= 0; i < 10; i++ {

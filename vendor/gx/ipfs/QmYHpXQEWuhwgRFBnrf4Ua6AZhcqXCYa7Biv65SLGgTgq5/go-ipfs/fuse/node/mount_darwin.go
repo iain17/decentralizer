@@ -38,7 +38,7 @@ It is recommended you install it from the OSXFUSE website:
 
 For more help, see:
 
-	https://github.com/ipfs/go-ipfs/issues/177
+	https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues/177
 `
 
 // errStrNoFuseHeaders is included in the output of `go get <fuseVersionPkg>` if there
@@ -55,7 +55,7 @@ It is recommended you install it from the OSXFUSE website:
 
 For more help, see:
 
-	https://github.com/ipfs/go-ipfs/issues/177
+	https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues/177
 `
 
 var errStrNeedFuseVersion = `unable to check fuse version.
@@ -76,8 +76,8 @@ version you have by running:
 
 	ipfs config %s true
 
-[1]: https://github.com/ipfs/go-ipfs/issues/177
-[2]: https://github.com/ipfs/go-ipfs/pull/533
+[1]: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues/177
+[2]: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/pull/533
 [3]: %s
 `
 
@@ -106,8 +106,8 @@ trying to run these checks with:
 
 	ipfs config %s true
 
-[1]: https://github.com/ipfs/go-ipfs/issues/177
-[2]: https://github.com/ipfs/go-ipfs/pull/533
+[1]: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues/177
+[2]: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/pull/533
 [3]: %s
 `
 
@@ -116,7 +116,7 @@ You may be able to get this error to go away by setting it again:
 
 	ipfs config %s true
 
-Either way, please tell us at: http://github.com/ipfs/go-ipfs/issues
+Either way, please tell us at: http://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues
 `
 
 func darwinFuseCheckVersion(node *core.IpfsNode) error {

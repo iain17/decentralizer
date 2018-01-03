@@ -30,6 +30,7 @@ type Decentralizer struct {
 	ctx 				   context.Context
 	n 					   *network.Network
 	cron				   *gocron.Scheduler
+	cronChan			   chan bool
 	d					   *discovery.Discovery
 	i                      *core.IpfsNode
 	b                      *ipfs.BitswapService
@@ -129,7 +130,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	instance.initMessaging()
 	instance.initAddressbook()
 	instance.initPublisherFiles()
-	instance.cron.Start()
+	instance.cronChan = instance.cron.Start()
 
 	self, err := instance.peers.FindByPeerId(instance.i.Identity.Pretty())
 	logger.Infof("Initialized: PeerID '%s', decentralized id '%d': %v", self.PId, self.DnId, self.Details)
@@ -178,9 +179,7 @@ func (d *Decentralizer) WaitTilEnoughPeers() {
 }
 
 func (s *Decentralizer) Stop() {
-	if s.cron != nil {
-		s.cron.Clear()
-	}
+	s.cronChan <- false
 	if s.i != nil {
 		s.i.Close()
 	}

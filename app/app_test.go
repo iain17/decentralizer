@@ -14,6 +14,7 @@ import (
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"github.com/spf13/afero"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	"context"
 )
 
 var testNetwork *network.Network
@@ -33,7 +34,7 @@ func init() {
 	Base = getBasePath()
 }
 
-func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
+func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentralizer {
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	b, err := ipfs.NewBitSwap(node)
 	if err != nil {
@@ -54,7 +55,7 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
-		ctx:					node.Context(),
+		ctx:					ctx,
 		cron:					gocron.NewScheduler(),
 		n:						n,
 		ip:                     &ip,
@@ -64,7 +65,7 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 		directMessageChannels: 	make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					ignore,
 	}
-	instance.cron.Start()
+	instance.cronChan = instance.cron.Start()
 	instance.initStorage()
 	instance.initMatchmaking()
 	instance.initMessaging()
@@ -72,17 +73,14 @@ func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {
 	instance.initPublisherFiles()
 
 	go func() {
-		select {
-			case <- instance.ctx.Done():
-				if instance != nil {
-					instance.Stop()
-				}
-				return
-		}
+		print("ok")
+		<- instance.ctx.Done()
+		instance.cronChan <- false
 	}()
 
 	//Mock UFS
 	instance.ufs = afero.NewMemMapFs()
+	instance.WaitTilEnoughPeers()
 
 	return instance
 }

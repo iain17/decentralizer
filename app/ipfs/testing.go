@@ -19,7 +19,7 @@ func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
 	for i := 0; i < numPeers; i++ {
 		n, err := core.NewNode(ctx, &core.BuildCfg{
 			Online:    true,
-			Permament: true,
+			Permament: false,
 			Host:      coremock.MockHostOption(mn),
 			ExtraOpts: map[string]bool{
 				"mplex":  true,

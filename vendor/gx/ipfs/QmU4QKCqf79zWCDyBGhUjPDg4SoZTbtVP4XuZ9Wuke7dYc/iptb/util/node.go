@@ -1,7 +1,7 @@
 package iptbutil
 
 import (
-	"github.com/ipfs/go-ipfs/repo/config"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
 )
 
 type IpfsNode interface {

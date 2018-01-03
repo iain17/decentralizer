@@ -389,12 +389,12 @@ func (dht *IpfsDHT) findProvidersAsyncRoutine(ctx context.Context, key *cid.Cid,
 	_, err := query.Run(ctx, peers)
 	if err != nil {
 		log.Debugf("Query error: %s", err)
-		// Special handling for issue: https://github.com/ipfs/go-ipfs/issues/3032
+		// Special handling for issue: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues/3032
 		if fmt.Sprint(err) == "<nil>" {
 			log.Error("reproduced bug 3032:")
 			log.Errorf("Errors type information: %#v", err)
 			log.Errorf("go version: %s", runtime.Version())
-			log.Error("please report this information to: https://github.com/ipfs/go-ipfs/issues/3032")
+			log.Error("please report this information to: https://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/issues/3032")
 
 			// replace problematic error with something that won't crash the daemon
 			err = fmt.Errorf("<nil>")

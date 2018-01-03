@@ -13,9 +13,8 @@ import (
 	"context"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
-	"github.com/iain17/timeout"
-	"time"
 )
+
 //Simplifies all the interactions with IPFS.
 type FilesAPI struct {
 	ctx					   context.Context
@@ -42,19 +41,16 @@ func (d *FilesAPI) SavePeerFile(name string, data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	timeout.Do(func(ctx context.Context) {
-		err := FilePublish(d.i, ph)
-		if err != nil {
-			logger.Warning(err)
-		}
-	}, 5 * time.Second)
-	return "/ipfs/"+location, nil
+	err = FilePublish(d.i, ph)
+	return "/ipfs/"+location, err
 }
 
 func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*iface.Link, error) {
 	logger.Infof("Get peer files of peer id %s", owner.Pretty())
 	rawPath := "/ipns/" + owner.Pretty()
 	pth := coreapi.ResolvedPath(rawPath, nil, nil)
+	//d.api.ResolveNode(d.i.Context(), pth)
+	//return coreapi.NewCoreAPI(d.i).Unixfs().Ls(d.i.Context(), pth)
 	return d.api.Unixfs().Ls(d.i.Context(), pth)
 }
 

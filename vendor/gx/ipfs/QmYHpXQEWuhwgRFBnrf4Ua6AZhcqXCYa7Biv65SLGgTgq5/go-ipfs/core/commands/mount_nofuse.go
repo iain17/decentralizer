@@ -16,7 +16,7 @@ for mounting. If you'd like to be able to mount, please use a version of
 ipfs compiled with fuse.
 
 For the latest instructions, please check the project's repository:
-  http://github.com/ipfs/go-ipfs
+  http://gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs
 `,
 	},
 }

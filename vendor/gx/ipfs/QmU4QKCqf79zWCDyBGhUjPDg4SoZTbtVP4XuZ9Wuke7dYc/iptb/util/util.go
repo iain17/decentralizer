@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	serial "github.com/ipfs/go-ipfs/repo/fsrepo/serialize"
+	serial "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/fsrepo/serialize"
 	"gx/ipfs/QmZLUtHGe9HDQrreAYkXCzzK6mHVByV4MRd8heXAtV5wyS/stump"
 )
 

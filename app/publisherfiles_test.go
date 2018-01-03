@@ -15,9 +15,9 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	master := fakeNew(nodes[0], true)
+	master := fakeNew(ctx, nodes[0], true)
 	assert.NotNil(t, master)
-	slave := fakeNew(nodes[1], false)
+	slave := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, slave)
 
 	definition := &pb.PublisherDefinition{
@@ -46,13 +46,13 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, num)
-	master := fakeNew(nodes[0], true)
+	master := fakeNew(ctx, nodes[0], true)
 	assert.NotNil(t, master)
 
 	//Start slaves
 	var slaves []*Decentralizer
 	for i := 1; i < num; i++ {
-		slave := fakeNew(nodes[i], false)
+		slave := fakeNew(ctx, nodes[i], false)
 		assert.NotNil(t, slave)
 		slaves = append(slaves, slave)
 	}
@@ -136,7 +136,7 @@ func TestDecentralizer_publishStopper(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-	app1 := fakeNew(nodes[0], false)
+	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
 	data, err := proto.Marshal(&pb.PublisherDefinition{
 		Status: false,
