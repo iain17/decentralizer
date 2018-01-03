@@ -12,8 +12,8 @@ void LogCB(const char* message) {
 	printf("[DN] %s\n", message);
 }
 
-void MessageCB(libdn::PeerID from, const uint8_t* data, uint32_t size) {
-	printf("[DN] Received direct message from %s with a size of %i\n", from.c_str(), size);
+void MessageCB(libdn::PeerID& from, const uint8_t* data, uint32_t size) {
+	printf("[DN] Received direct message from %s: %s with a size of %i\n", from.c_str(), data, size);
 }
 
 void createSession() {
