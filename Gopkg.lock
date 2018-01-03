@@ -56,6 +56,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/fsnotify/fsnotify"
+  packages = ["."]
+  revision = "629574ca2a5df945712d3079857300b5e4da0236"
+  version = "v1.4.2"
+
+[[projects]]
   branch = "master"
   name = "github.com/getlantern/testify"
   packages = ["assert"]
@@ -129,6 +135,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/hashicorp/hcl"
+  packages = [".","hcl/ast","hcl/parser","hcl/scanner","hcl/strconv","hcl/token","json/parser","json/scanner","json/token"]
+  revision = "23c074d0eceb2b8a5bfdbb271ab780cde70f05a8"
+
+[[projects]]
+  branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
   revision = "64425a6f1dc2a0d7562b8a4dcfa905d38fe1f704"
@@ -155,13 +167,19 @@
   branch = "master"
   name = "github.com/iain17/logger"
   packages = ["."]
-  revision = "298c53b526494fc0fd875db8db94f83b8ef6325d"
+  revision = "b55c36e1a2ffd3f2b3f96fa4ebb2f92e55c1c473"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/timeout"
   packages = ["."]
   revision = "648cd1776b0827c6fe51effa719a67eca6dae3f1"
+
+[[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
 
 [[projects]]
   branch = "master"
@@ -188,16 +206,10 @@
   revision = "08cceb5d0b5331634b9826762a8fd53b29b86ad8"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/kardianos/osext"
+  name = "github.com/magiconair/properties"
   packages = ["."]
-  revision = "ae77be60afb1dcacde03767a8c37337fad28ac14"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/kardianos/service"
-  packages = ["."]
-  revision = "14a49b39b37b67e7c4d0f9df86ff005c55e539ff"
+  revision = "d419a98cdbed11a922bf76f257b7c4be79b50e73"
+  version = "v1.7.4"
 
 [[projects]]
   name = "github.com/miekg/dns"
@@ -213,6 +225,18 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/mitchellh/go-homedir"
+  packages = ["."]
+  revision = "b8bc1bf767474819792c23f32d8286a45736f1c6"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mitchellh/mapstructure"
+  packages = ["."]
+  revision = "06020f85339e21b2478f756a78e295255ffa4d6a"
+
+[[projects]]
+  branch = "master"
   name = "github.com/nictuku/dht"
   packages = ["."]
   revision = "f929f301e23c84bb4ddaac58b92588d88237a38c"
@@ -222,6 +246,12 @@
   name = "github.com/nictuku/nettools"
   packages = ["."]
   revision = "8867a2107ad3a0998e2d36c67ed2115d9a399df8"
+
+[[projects]]
+  name = "github.com/pelletier/go-toml"
+  packages = ["."]
+  revision = "16398bac157da96aa88f98a2df640c7f32af1da2"
+  version = "v1.0.1"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -252,6 +282,36 @@
   packages = [".","mem"]
   revision = "ec3a3111d1e1bdff38a61e09d5a5f5e974905611"
   version = "v1.0.1"
+
+[[projects]]
+  name = "github.com/spf13/cast"
+  packages = ["."]
+  revision = "acbeb36b902d72a7a4c18e8f3241075e7ab763e4"
+  version = "v1.1.0"
+
+[[projects]]
+  name = "github.com/spf13/cobra"
+  packages = ["."]
+  revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
+  version = "v0.0.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/spf13/jwalterweatherman"
+  packages = ["."]
+  revision = "12bd96e66386c1960ab0f74ced1362f66f552f7b"
+
+[[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/spf13/viper"
+  packages = ["."]
+  revision = "25b30aa063fc18e48662b86996252eabdcf2f0c7"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/stretchr/testify"
@@ -286,7 +346,7 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["windows","windows/registry","windows/svc","windows/svc/eventlog","windows/svc/mgr"]
+  packages = ["unix"]
   revision = "28a7276518d399b9634904daad79e18b44d481bc"
 
 [[projects]]
@@ -307,9 +367,15 @@
   revision = "f3955b8e9e244dd4dd4bc4f7b7a23a8445400a76"
   version = "v1.9.0"
 
+[[projects]]
+  branch = "v2"
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "c95af922eae69f190717a0b7148960af8c55a072"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "08af66ae300261f4a231c5925db420c4108457ff27530e5a82bb5f93b2b46506"
+  inputs-digest = "5d5aaaeb488328cad89e8a45e4ed497067fa580ab5b6c17566a1fca2c08c635f"
   solver-name = "gps-cdcl"
   solver-version = 1
