@@ -52,9 +52,13 @@ service Decentralizer {
 	// Create or update a peer. Takes peer info, returns if it was a success.
 	rpc UpsertPeer(RPCUpsertPeerRequest) returns (RPCUpsertPeerResponse) {}
 	// Get peer ids. takes a key and value to filter the peers by details. If left empty this filter will not apply and all will be fetched.
-	rpc GetPeerIds(RPCGetPeerIdsRequest) returns (RPCGetPeerIdsResponse) {}
+	rpc GetPeerIds(RPCGetPeerIdsRequest) returns (RPCGetPeerIdsResponse) {
+		option (google.api.http) = { get: "/v1/peers/{key}/{value}" };
+	}
 	// Get an individual peer. Takes either a peer id or decentralizer id and returns the peer info.
-	rpc GetPeer(RPCGetPeerRequest) returns (RPCGetPeerResponse) {}
+	rpc GetPeer(RPCGetPeerRequest) returns (RPCGetPeerResponse) {
+		option (google.api.http) = { get: "/v1/peer/{pId}" };
+	}
 
 	//
 	// Storage

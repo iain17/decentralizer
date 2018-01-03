@@ -41,6 +41,7 @@ func (d *Decentralizer) republishPeerFiles() {
 		data, err := d.GetPeerFile("self", name)
 		if err != nil {
 			logger.Warning(err)
+			continue
 		}
 		d.SavePeerFile(name, data)
 	}
@@ -139,10 +140,12 @@ func (d *Decentralizer) GetPeerFiles(peerId string) (map[string]uint64, error) {
 	})
 	//fetch from peer
 	links, err := d.filesApi.GetPeerFiles(id)
-	if err == nil {
+	if err != nil {
+		logger.Warningf("Could not fetch fresh peer files")
+	} else {
 		for _, link := range links {
 			result[link.Name] = link.Size
 		}
 	}
-	return result, err
+	return result, nil
 }
