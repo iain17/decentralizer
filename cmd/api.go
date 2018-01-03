@@ -60,7 +60,12 @@ var apiCmd = &cobra.Command{
 			Colored:  true,
 		})
 		if logPath != "" {
-			//File export
+			os.Remove(logPath)
+			fileOut, err := logger.NewFileOut(logPath)
+			if err != nil {
+				logger.Fatal(err)
+			}
+			logger.AddOutput(fileOut)
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
