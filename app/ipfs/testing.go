@@ -41,7 +41,7 @@ func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
 		if ii > len(nodes)-1 {
 			continue
 		}
-		logger.Infof("Connecting node %d with %d", i, ii)
+		logger.Debugf("Connecting node %d with %d", i, ii)
 		n2 := nodes[ii]
 		p2 := n2.PeerHost.Peerstore().PeerInfo(n2.PeerHost.ID())
 		if err := n1.PeerHost.Connect(ctx, p2); err != nil {

@@ -13,6 +13,7 @@ import (
 	"github.com/iain17/kvcache/lttlru"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"github.com/spf13/afero"
+	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 )
 
 var testNetwork *network.Network
@@ -21,10 +22,10 @@ var testSlaveNetwork *network.Network//just the public key
 func init() {
 	MIN_CONNECTED_PEERS = 1
 	logger.AddOutput(logger.Stdout{
-		MinLevel: logger.DEBUG, //logger.DEBUG,
+		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
-	//logging.Configure(logging.LevelDebug)
+	logging.Configure(logging.LevelError)
 	configPath = configdir.New("ECorp", "Decentralizer-test")
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	testNetwork, _ = network.New()
