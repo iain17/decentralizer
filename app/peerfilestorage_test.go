@@ -96,32 +96,24 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	assert.NotNil(t, app2)
 
 	message := []byte("Simplicity is the ultimate sophistication ~ Leonardo Da Vinci")
-	updatedMessage := []byte("The mass of men lead lives of quiet desperation. What is called resignation is confirmed desperation. ~Henry David Thoreau")
 	filename := "test.txt"
 
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
-	result, err := app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
-	assert.NoError(t, err)
-	assert.Equal(t, string(message), string(result), "Not yet updated")
-
-	_, err = app1.SavePeerFile(filename, updatedMessage)
-	assert.NoError(t, err)
-
 	time.Sleep(1 * time.Second)
-
+	var result []byte
 	for i:= 0; i < 10; i++ {
 		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 		assert.NoError(t, err)
 		time.Sleep(100 * time.Millisecond)
 	}
-	assert.Equal(t, string(updatedMessage), string(result), "Not cached because it's from a different user")
+	assert.Equal(t, string(message), string(result), "Not cached because it's from a different user")
 
 	//Now app1 goes offline. Can app2 still get his data from cache?
 	app1.Stop()
 	result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 	assert.NoError(t, err)
-	assert.Equal(t, string(updatedMessage), string(result), "app1 is offline. But I can still fetch his data.")
+	assert.Equal(t, string(message), string(result), "app1 is offline. But I can still fetch his data.")
 }
 
