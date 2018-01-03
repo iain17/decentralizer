@@ -149,7 +149,7 @@
   branch = "master"
   name = "github.com/iain17/kvcache"
   packages = ["lttlru","ttlru"]
-  revision = "5fd51d2119f6807795d27235981abb66bd816441"
+  revision = "3b7a63bd72a172f5ab4b5bc2c9f12b8467c4a677"
 
 [[projects]]
   branch = "master"
@@ -287,7 +287,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["windows","windows/registry","windows/svc","windows/svc/eventlog","windows/svc/mgr"]
-  revision = "83801418e1b59fb1880e363299581ee543af32ca"
+  revision = "28a7276518d399b9634904daad79e18b44d481bc"
 
 [[projects]]
   branch = "master"

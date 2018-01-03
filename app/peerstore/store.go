@@ -8,6 +8,7 @@ import (
 	"github.com/iain17/logger"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"time"
+	"context"
 )
 
 type Store struct {
@@ -44,7 +45,7 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
@@ -54,7 +55,7 @@ func New(size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
 		db:       db,
 		expireAt: expireAt,
 	}
-	instance.sessionIds, err = lru.NewTTLWithEvict(size, instance.onEvicted)
+	instance.sessionIds, err = lru.NewTTLWithEvict(ctx, size, instance.onEvicted)
 	return instance, err
 }
 
@@ -137,6 +138,7 @@ func (s *Store) FindByDetails(key, value string) (result []*pb.Peer, err error) 
 	}
 	for {
 		if peer, ok := p.Next().(*pb.Peer); ok {
+
 			result = append(result, peer)
 		} else {
 			break

@@ -104,7 +104,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 	}()
 	if d.sessions[sessionType] == nil {
 		var err error
-		d.sessions[sessionType], err = sessionstore.New(MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second), d.i.Identity)
+		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second), d.i.Identity)
 		if err != nil {
 			logger.Warningf("Could not get session storage: %v", err)
 			return nil

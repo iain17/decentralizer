@@ -6,11 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/iain17/decentralizer/pb"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"context"
 )
 
 func TestSessionsStore_FindByPeerId(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(10, 1 * time.Hour, self)
+	store, err := New(ctx,10, 1 * time.Hour, self)
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
 		Address: 1,
@@ -40,8 +43,10 @@ func TestSessionsStore_FindByPeerId(t *testing.T) {
 }
 
 func TestSessionsStore_Expire(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(10, 1 * time.Second, self)
+	store, err := New(ctx,10, 1 * time.Second, self)
 	assert.NoError(t, err)
 	//Our own sessions never expire.
 	_, err = store.Insert(&pb.Session {
@@ -76,8 +81,10 @@ func TestSessionsStore_Expire(t *testing.T) {
 }
 
 func TestSessionsStore_Limit(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(1, 2 * time.Hour, self)
+	store, err := New(ctx,1, 2 * time.Hour, self)
 	assert.NoError(t, err)
 	//Because self has added this. we'll have 2
 	_, err = store.Insert(&pb.Session {
@@ -117,8 +124,10 @@ func TestSessionsStore_Limit(t *testing.T) {
 }
 
 func TestSessionsStore_FindByDetails(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(10, 1 * time.Hour, self)
+	store, err := New(ctx,10, 1 * time.Hour, self)
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
 		Address: 1,

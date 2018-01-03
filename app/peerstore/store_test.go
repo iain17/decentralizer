@@ -6,12 +6,16 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"testing"
 	"time"
+	"context"
 )
 
 func TestStore_FindByPeerId(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(10, 1*time.Hour, self)
+	store, err := New(ctx,10, 1*time.Hour, self)
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -36,9 +40,12 @@ func TestStore_FindByPeerId(t *testing.T) {
 }
 
 func TestStore_Expire(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(10, 1*time.Second, self)
+	store, err := New(ctx, 10, 1*time.Second, self)
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -59,9 +66,11 @@ func TestStore_Expire(t *testing.T) {
 }
 
 func TestStore_Limit(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(1, 2*time.Hour, self)
+	store, err := New(ctx,1, 2*time.Hour, self)
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -87,9 +96,11 @@ func TestStore_Limit(t *testing.T) {
 
 //Self should never be deleted.
 func TestStore_Self(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ")
 	assert.NoError(t, err)
-	store, err := New(1, 2*time.Hour, self)
+	store, err := New(ctx,1, 2*time.Hour, self)
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -126,9 +137,11 @@ func TestStore_Self(t *testing.T) {
 }
 
 func TestStore_FindByDetails(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(10, 1*time.Hour, self)
+	store, err := New(ctx,10, 1*time.Hour, self)
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,

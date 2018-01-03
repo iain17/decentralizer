@@ -16,7 +16,7 @@ import (
 
 func (d *Decentralizer) initAddressbook() {
 	var err error
-	d.peers, err = peerstore.New(MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity)
+	d.peers, err = peerstore.New(d.ctx, MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity)
 	if err != nil {
 		logger.Fatal(err)
 	}

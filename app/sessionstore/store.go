@@ -9,6 +9,7 @@ import (
 	"errors"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/app/peerstore"
+	"context"
 )
 
 type Store struct {
@@ -45,7 +46,7 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
@@ -55,7 +56,7 @@ func New(size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
 		db: db,
 		expireAt: expireAt,
 	}
-	instance.sessionIds, err = lru.NewTTLWithEvict(size, instance.onEvicted)
+	instance.sessionIds, err = lru.NewTTLWithEvict(ctx, size, instance.onEvicted)
 	return instance, err
 }
 
