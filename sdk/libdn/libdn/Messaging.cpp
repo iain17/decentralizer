@@ -38,7 +38,8 @@ namespace libdn {
 			pb::RPCDirectMessage message;
 			while (reader->Read(&message)) {
 				std::string data = message.message();
-				callback(message.pid(), (uint8_t*)data.c_str(), data.size());
+				std::string pid = message.pid();
+				callback(pid, (uint8_t*)data.c_str(), data.size());
 			}
 			return true;
 		});
