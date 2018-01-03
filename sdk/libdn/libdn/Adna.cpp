@@ -24,7 +24,7 @@ PROCESS_INFORMATION* NewAdnaInstance() {
 	//siStartInfo.hStdOutput = g_hChildStd_OUT_Wr;
 	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
 
-	LPSTR params = (LPSTR)"";//--SafeLogging 0
+	LPSTR params = (LPSTR)"api";
 	const char* exec = va("%s\\%s", basePath, adnaExecutable);
 	bSuccess = CreateProcess(exec,
 		params,

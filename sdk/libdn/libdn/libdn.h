@@ -29,6 +29,7 @@ namespace libdn {
 	public:
 		bool ready;
 		std::string message;
+		std::string basePath;
 	};
 
 	// Fetch the health of the DN server.
