@@ -134,10 +134,19 @@ func (d *Decentralizer) GetPeerFiles(peerId string) (map[string]uint64, error) {
 	//fetch locally
 	path := d.getPeerPath(id)
 	result := map[string]uint64{}
-	afero.Walk(d.ufs, path, func(path string, info os.FileInfo, err error) error{
+	err = afero.Walk(d.ufs, path, func(path string, info os.FileInfo, err error) error{
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
 		result[info.Name()] = (uint64)(info.Size())
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	//fetch from peer
 	links, err := d.filesApi.GetPeerFiles(id)
 	if err != nil {
