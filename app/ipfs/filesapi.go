@@ -12,17 +12,16 @@ import (
 	"io/ioutil"
 	"context"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	coreiface "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
 )
 
 //Simplifies all the interactions with IPFS.
 type FilesAPI struct {
 	ctx					   context.Context
 	i 				   	   *core.IpfsNode
-	api					   coreiface.CoreAPI
+	api					   iface.CoreAPI
 }
 
-func NewFilesAPI(ctx context.Context, node *core.IpfsNode, api coreiface.CoreAPI) (*FilesAPI, error) {
+func NewFilesAPI(ctx context.Context, node *core.IpfsNode, api iface.CoreAPI) (*FilesAPI, error) {
 	instance := &FilesAPI{
 		ctx: ctx,
 		i: node,
