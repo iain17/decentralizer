@@ -33,7 +33,7 @@ func (d *Decentralizer) initAddressbook() {
 }
 
 func (d *Decentralizer) downloadPeers() {
-	data, err := configPath.QueryCacheFolder().ReadFile(ADDRESS_BOOK_FILE)
+	data, err := Base.ReadFile(ADDRESS_BOOK_FILE)
 	if err != nil {
 		//logger.Warningf("Could not restore address book: %v", err)
 		return
@@ -81,7 +81,7 @@ func (d *Decentralizer) uploadPeers() {
 		logger.Warningf("Could not save address book: %v", err)
 		return
 	}
-	err = configPath.QueryCacheFolder().WriteFile(ADDRESS_BOOK_FILE, data)
+	err = Base.WriteFile(ADDRESS_BOOK_FILE, data)
 	if err != nil {
 		logger.Warningf("Could not save address book: %v", err)
 		return

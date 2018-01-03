@@ -64,18 +64,19 @@ type Decentralizer struct {
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
+var Base = getBasePath()
 
-func getIpfsPath() string {
+func getBasePath() *configdir.Config {
 	paths := configPath.QueryFolders(configdir.Global)
 	if len(paths) == 0 {
 		panic(errors.New("queryFolder request failed"))
 	}
-	return paths[0].Path
+	return paths[0]
 }
 
 func Reset() {
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
-	os.RemoveAll(getIpfsPath())
+	os.RemoveAll(getBasePath().Path)
 }
 
 func New(ctx context.Context, networkStr string, privateKey bool, limitedConnection bool) (*Decentralizer, error) {
@@ -96,10 +97,9 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 			return nil, err
 		}
 	}
-	ipfsPath := getIpfsPath()
-	logger.Infof("IPFS path: %s", ipfsPath)
+	logger.Infof("IPFS path: %s", Base)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
-	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection)
+	i, err := ipfs.OpenIPFSRepo(ctx, Base.Path, limitedConnection)
 	if err != nil {
 		return nil, err
 	}
