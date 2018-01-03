@@ -53,7 +53,7 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestDecentralizer_Updated(t *testing.T) {
+func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {
 	FILE_EXPIRE = 0
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -86,7 +86,7 @@ func TestDecentralizer_Updated(t *testing.T) {
 }
 
 func TestDecentralizer_GetPeerFileCache(t *testing.T) {
-	FILE_EXPIRE = 30 * time.Second
+	FILE_EXPIRE = 0
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
@@ -101,14 +101,16 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
-	time.Sleep(1 * time.Second)
 	var result []byte
 	for i:= 0; i < 10; i++ {
 		result, err = app2.GetPeerFile(app1.i.Identity.Pretty(), filename)
 		assert.NoError(t, err)
-		time.Sleep(100 * time.Millisecond)
+		if string(message) == string(result) {
+			break
+		}
+		time.Sleep(1 * time.Second)
 	}
-	assert.Equal(t, string(message), string(result), "Not cached because it's from a different user")
+	assert.Equal(t, string(message), string(result))
 
 	//Now app1 goes offline. Can app2 still get his data from cache?
 	app1.Stop()
@@ -116,4 +118,3 @@ func TestDecentralizer_GetPeerFileCache(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, string(message), string(result), "app1 is offline. But I can still fetch his data.")
 }
-

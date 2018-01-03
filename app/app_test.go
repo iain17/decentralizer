@@ -30,6 +30,7 @@ func init() {
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	testNetwork, _ = network.New()
 	testSlaveNetwork, _ = network.Unmarshal(testNetwork.Marshal())
+	Base = getBasePath()
 }
 
 func fakeNew(node *core.IpfsNode, master bool) *Decentralizer {

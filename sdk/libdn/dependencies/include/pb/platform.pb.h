@@ -34,6 +34,7 @@
 #include "pb/storage.pb.h"
 #include "pb/messaging.pb.h"
 #include "pb/publisher.pb.h"
+#include "google/api/annotations.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fplatform_2eproto {
@@ -354,6 +355,20 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_message();
   void set_allocated_message(::std::string* message);
 
+  // string basePath = 3;
+  void clear_basepath();
+  static const int kBasePathFieldNumber = 3;
+  const ::std::string& basepath() const;
+  void set_basepath(const ::std::string& value);
+  #if LANG_CXX11
+  void set_basepath(::std::string&& value);
+  #endif
+  void set_basepath(const char* value);
+  void set_basepath(const char* value, size_t size);
+  ::std::string* mutable_basepath();
+  ::std::string* release_basepath();
+  void set_allocated_basepath(::std::string* basepath);
+
   // bool ready = 1;
   void clear_ready();
   static const int kReadyFieldNumber = 1;
@@ -365,6 +380,7 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr message_;
+  ::google::protobuf::internal::ArenaStringPtr basepath_;
   bool ready_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
@@ -454,6 +470,59 @@ inline void RPCHealthReply::set_allocated_message(::std::string* message) {
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
   // @@protoc_insertion_point(field_set_allocated:pb.RPCHealthReply.message)
+}
+
+// string basePath = 3;
+inline void RPCHealthReply::clear_basepath() {
+  basepath_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCHealthReply::basepath() const {
+  // @@protoc_insertion_point(field_get:pb.RPCHealthReply.basePath)
+  return basepath_.GetNoArena();
+}
+inline void RPCHealthReply::set_basepath(const ::std::string& value) {
+  
+  basepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCHealthReply.basePath)
+}
+#if LANG_CXX11
+inline void RPCHealthReply::set_basepath(::std::string&& value) {
+  
+  basepath_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCHealthReply.basePath)
+}
+#endif
+inline void RPCHealthReply::set_basepath(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  basepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.RPCHealthReply.basePath)
+}
+inline void RPCHealthReply::set_basepath(const char* value, size_t size) {
+  
+  basepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCHealthReply.basePath)
+}
+inline ::std::string* RPCHealthReply::mutable_basepath() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.RPCHealthReply.basePath)
+  return basepath_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RPCHealthReply::release_basepath() {
+  // @@protoc_insertion_point(field_release:pb.RPCHealthReply.basePath)
+  
+  return basepath_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RPCHealthReply::set_allocated_basepath(::std::string* basepath) {
+  if (basepath != NULL) {
+    
+  } else {
+    
+  }
+  basepath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), basepath);
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCHealthReply.basePath)
 }
 
 #ifdef __GNUC__

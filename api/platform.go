@@ -23,6 +23,7 @@ func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RP
 	return &pb.RPCHealthReply{
 		Ready: ready,
 		Message: error,
+		BasePath: app.Base.Path,
 	}, nil
 }
 
