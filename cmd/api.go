@@ -111,9 +111,3 @@ func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
 		}
 	}
 }
-
-func checkError(err error) {
-	if err != nil {
-		logger.Fatal(err)
-	}
-}

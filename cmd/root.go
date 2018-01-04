@@ -27,7 +27,7 @@ var cfgFile string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "test",
+	Use:   "adna",
 	Short: "A p2p backend for any solution.",
 	Long: ``,
 	// Uncomment the following line if your bare application
@@ -50,7 +50,7 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.test.yaml)")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.adna.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -70,9 +70,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".test" (without extension).
+		// Search config in home directory with name ".adna" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".test")
+		viper.SetConfigName(".adna")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

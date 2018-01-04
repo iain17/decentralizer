@@ -38,13 +38,12 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		storage: storage,
 		seen: seen,
 	}
-	instance.run()
 	d.cron.Every(30).Seconds().Do(instance.update)
 	return instance, nil
 }
 
-//Looks for new providers. Ran at the start of a search and on a set interval.
 func (s *search) run() error {
+	logger.Info("Trying to lock mutex")
 	s.mutex.Lock()
 	if s.running {
 		logger.Debug("Search run is already running...")
@@ -52,9 +51,11 @@ func (s *search) run() error {
 		return nil
 	}
 	s.running = true
+	logger.Info("Unlocking mutex")
 	s.mutex.Unlock()
 
 	defer func() {
+		logger.Info("Running to false")
 		s.running = false
 	}()
 	//Keeps looking until we've found at least 1!
@@ -66,9 +67,10 @@ func (s *search) run() error {
 			logger.Infof("Searching for sessions with type %d", s.sessionType)
 			providers := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), 512)
 			queried := 0
-			total := len(providers)
+			total := 0
 			for provider := range providers {
 				info := s.d.i.Peerstore.PeerInfo(provider) //Fetched because bitwise will only save the addrs temp: pstore.TempAddrTTL
+				total++
 
 				connectedNess := s.d.i.PeerHost.Network().Connectedness(provider)
 				if connectedNess == net.CannotConnect {
@@ -102,12 +104,19 @@ func (s *search) run() error {
 			}
 			logger.Infof("Queried %d of the %d for sessions of type %d", queried, total, s.sessionType)
 			if queried == 0 {
+				logger.Debug("Nothing left to query.")
 				return nil
 			}
+			logger.Infof("1")
 			if !s.storage.IsEmpty() {
+				logger.Debug("We found at least one. quitting.")
 				return nil
+			} else {
+				logger.Debug("None found")
 			}
+			break
 		}
+		time.Sleep(1 * time.Second)
 	}
 	return nil
 }
@@ -115,6 +124,7 @@ func (s *search) run() error {
 //Fetches updates from existing providers.
 //If we again find sessions, we'll also become a provider.
 func (s *search) update() error {
+	logger.Info("Trying to lock mutex")
 	s.mutex.Lock()
 	if s.running {
 		logger.Debug("Search run is already running...")
@@ -122,9 +132,11 @@ func (s *search) update() error {
 		return nil
 	}
 	s.running = true
+	logger.Info("Unlocking mutex")
 	s.mutex.Unlock()
 
 	defer func() {
+		logger.Info("Running to false")
 		s.running = false
 	}()
 	peers, err := s.d.GetPeersByDetails("sessionProvider", "1")
@@ -181,11 +193,19 @@ func (s *search) add(sessions []*pb.Session, from Peer.ID) error {
 }
 
 func (s *search) fetch() *sessionstore.Store {
+	logger.Debug("Fetching")
 	go s.run()
 	timeout.Do(func(ctx context.Context) {
 		for s.storage.IsEmpty() {
-			time.Sleep(100 * time.Millisecond)
+			select {
+			case <- ctx.Done():
+				return
+			default:
+				logger.Debug("Still empty")
+				time.Sleep(1 * time.Second)
+			}
 		}
 	}, 10 * time.Second)
+	logger.Debug("Returning")
 	return s.storage
 }

@@ -113,6 +113,9 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	}
 	if err == nil && !refresh {
 		result, err = d.getFile(path)
+		if err != nil {
+			logger.Warning(err)
+		}
 	}
 	if result == nil || refresh {
 		//Time to get a fresh copy
@@ -121,6 +124,9 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 		if err == nil && fresh != nil {
 			result = fresh
 			err = d.writeFile(path, result)
+			if err != nil {
+				logger.Warning(err)
+			}
 		}
 	}
 	return result, err

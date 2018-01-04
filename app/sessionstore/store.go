@@ -94,8 +94,12 @@ func (s *Store) Insert(info *pb.Session) (uint64, error) {
 	txn := s.db.Txn(true)
 	defer txn.Commit()
 	err = txn.Insert(TABLE, info)
-	if err == nil && info.PId != s.self.Pretty() {
-		s.sessionIds.AddWithTTL(info.SessionId, true, s.expireAt)
+	if err == nil {
+		if info.PId != s.self.Pretty() {
+			s.sessionIds.AddWithTTL(info.SessionId, true, s.expireAt)
+		} else {
+			s.sessionIds.Add(info.SessionId, true)
+		}
 	}
 	return info.SessionId, err
 }
@@ -126,14 +130,7 @@ func (s *Store) FindAll() (result []*pb.Session, err error) {
 }
 
 func (s *Store) IsEmpty() bool {
-	txn := s.db.Txn(false)
-	defer txn.Abort()
-	p, err := txn.Get(TABLE, "id")
-	if err != nil {
-		return true
-	}
-	_, ok := p.Next().(*pb.Session)
-	return !ok
+	return s.sessionIds.Len() == 0
 }
 
 func (s *Store) FindByDetails(key, value string) (result []*pb.Session, err error) {

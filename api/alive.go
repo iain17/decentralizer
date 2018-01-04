@@ -20,7 +20,10 @@ func (s *Server) AliveStreamInterceptor() grpc.StreamServerInterceptor {
 func (s *Server) AliveUnaryInterceptor() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (_ interface{}, err error) {
 		s.Wg.Add(1)
-		defer s.Wg.Done()
+		go func() {
+			<- ctx.Done()
+			s.Wg.Done()
+		}()
 		return handler(ctx, req)
 	}
 }

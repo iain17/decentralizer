@@ -98,9 +98,10 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 			return nil, err
 		}
 	}
-	logger.Infof("IPFS path: %s", Base)
+	ipfsPath := Base.Path+"/ipfs"
+	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
-	i, err := ipfs.OpenIPFSRepo(ctx, Base.Path+"/ipfs", limitedConnection)
+	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection)
 	if err != nil {
 		return nil, err
 	}
