@@ -73,7 +73,6 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 	instance.initPublisherFiles()
 
 	go func() {
-		print("ok")
 		<- instance.ctx.Done()
 		instance.cronChan <- false
 	}()

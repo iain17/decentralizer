@@ -157,7 +157,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 	d.sessionIdToSessionType[sessionId] = sessionType
 	timeout.Do(func(ctx context.Context) {
 		d.b.Provide(d.getMatchmakingKey(sessionType))
-	}, 3*time.Second)
+	}, 5*time.Second)
 	return sessionId, err
 }
 

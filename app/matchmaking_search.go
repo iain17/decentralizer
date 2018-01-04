@@ -38,6 +38,7 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		storage: storage,
 		seen: seen,
 	}
+	instance.fetch()
 	d.cron.Every(30).Seconds().Do(instance.update)
 	return instance, nil
 }
@@ -205,7 +206,7 @@ func (s *search) fetch() *sessionstore.Store {
 				time.Sleep(1 * time.Second)
 			}
 		}
-	}, 10 * time.Second)
+	}, 5 * time.Second)
 	logger.Debug("Returning")
 	return s.storage
 }

@@ -83,7 +83,8 @@ func TestSessionsStore_Expire(t *testing.T) {
 func TestSessionsStore_Limit(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
+	owner := "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381"
+	self, err := libp2pPeer.IDB58Decode(owner)
 	store, err := New(ctx,1, 2 * time.Hour, self)
 	assert.NoError(t, err)
 	//Because self has added this. we'll have 2
@@ -91,7 +92,7 @@ func TestSessionsStore_Limit(t *testing.T) {
 		Address: 1,
 		Port: 1,
 		DnId: 1,
-		PId: "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381",
+		PId: owner,
 		Details: map[string]string{
 			"hey": "ho",
 		},
@@ -117,10 +118,9 @@ func TestSessionsStore_Limit(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	time.Sleep(1 * time.Second)
+	assert.Equal(t, 1, store.Len())
 	sessions, err := store.FindAll()
-	assert.NoError(t, err)
-	//Because the size is actually 1. but we can't delete a session we created.
-	assert.Equal(t, 2, len(sessions))
+	assert.Equal(t, sessions[0].PId, owner, "We can't delete our session. So in the end eventho we were the first to insert, the rest gets deleted")
 }
 
 func TestSessionsStore_FindByDetails(t *testing.T) {

@@ -135,6 +135,10 @@ func (s *Store) FindAll() (result []*pb.Session, err error) {
 	return
 }
 
+func (s *Store) Len() int {
+	return s.sessionIds.Len()
+}
+
 func (s *Store) IsEmpty() bool {
 	return s.sessionIds.Len() == 0
 }
