@@ -63,15 +63,21 @@ func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.
 func (s *Store) onEvicted(key interface{}, value interface{}) {
 	//In go routine. Because of deadlock caused when evicted is called, the insert function higher up the call chain has just locked the mutex.
 	go func() {
-		if sSessionId, ok := key.(uint64); ok {
-			err := s.Remove(sSessionId)
-			if err != nil {
-				logger.Warningf("Could not delete session id: %d", sSessionId)
+		if isExternalSession, ok := value.(bool); ok {
+			if sSessionId, ok := key.(uint64); ok {
+				if isExternalSession {
+					err := s.Remove(sSessionId)
+					if err != nil {
+						logger.Warningf("Could not delete session id: %d", sSessionId)
+					} else {
+						logger.Infof("Deleted session id: %d", sSessionId)
+					}
+				} else {
+					s.sessionIds.Add(sSessionId, false)//Add it back in cuz we can't delete our sessions.
+				}
 			} else {
-				logger.Infof("Deleted session id: %d", sSessionId)
+				logger.Warningf("Could not delete session id...", sSessionId)
 			}
-		} else {
-			logger.Warningf("Could not delete session id...", sSessionId)
 		}
 	}()
 }
@@ -98,7 +104,7 @@ func (s *Store) Insert(info *pb.Session) (uint64, error) {
 		if info.PId != s.self.Pretty() {
 			s.sessionIds.AddWithTTL(info.SessionId, true, s.expireAt)
 		} else {
-			s.sessionIds.Add(info.SessionId, true)
+			s.sessionIds.Add(info.SessionId, false)
 		}
 	}
 	return info.SessionId, err
