@@ -1,7 +1,7 @@
 
 #include "StdInc.h"
 #include <stdio.h>
-#include <intrin.h>  
+#include <intrin.h>
 
 #define VA_BUFFER_COUNT		4
 #define VA_BUFFER_SIZE		32768
@@ -80,4 +80,28 @@ bool IsProcessRunning(const char *filename) {
 	}
 	CloseHandle(hSnapShot);
 	return false;
+}
+
+#include <ws2def.h>
+#include <WinSock2.h>
+BOOL CheckPortTCP(short int dwPort, char* ipAddressStr) {
+	struct sockaddr_in client;
+	int sock;
+
+	client.sin_family = AF_INET;
+	client.sin_port = htons(dwPort);
+	client.sin_addr.s_addr = inet_addr(ipAddressStr);
+
+	int iTimeout = 1600;
+	sock = (int)socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(sock,
+		SOL_SOCKET,
+		SO_RCVTIMEO,
+		/*
+		reinterpret_cast<char*>(&tv),
+		sizeof(timeval) );
+		*/
+		(const char *)&iTimeout,
+		sizeof(iTimeout));
+	return (connect(sock, (struct sockaddr *) &client, sizeof(client)) == 0);
 }

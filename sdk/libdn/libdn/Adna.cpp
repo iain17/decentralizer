@@ -100,7 +100,7 @@ PROCESS_INFORMATION* NewAdnaInstance() {
 	}
 
 	if (&piProcInfo) {
-	//	CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
+		CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
 	}
 
 	if (!IsProcessRunning(adnaExecutable)) {
@@ -117,6 +117,7 @@ bool ADNA_Init() {
 			MessageBoxA(NULL, "Could not resolve path.", "libdn", MB_OK);
 		}
 	}
+	//TODO: Check CheckPortTCP and spawn a adna process passing the specified port.
 	if (!IsProcessRunning(adnaExecutable)) {
 		PROCESS_INFORMATION* piProcInfo = NewAdnaInstance();
 		if (piProcInfo) {
