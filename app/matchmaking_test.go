@@ -26,7 +26,7 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 
 	//App 1 gets only non cool sessions
 	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
@@ -60,7 +60,7 @@ func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 
 	search := app1.getSessionSearch(1337)
 	search.refresh(ctx)
@@ -91,7 +91,7 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 
 	//App 1 gets only non cool sessions
 	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
@@ -131,7 +131,7 @@ func TestDecentralizer_GetSessionsByDetailsEvil(t *testing.T) {
 		}
 	}()
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 
 	//App 1 gets only non cool sessions
 	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
@@ -166,7 +166,7 @@ func TestValidateDNSessions(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetailsExpire(t *testing.T) {
-	EXPIRE_TIME_SESSION = 10 * time.Second
+	EXPIRE_TIME_SESSION = 2 * time.Second
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 2)
@@ -181,35 +181,32 @@ func TestDecentralizer_GetSessionsByDetailsExpire(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 
 	search := app1.getSessionSearch(1337)
 	search.refresh(ctx)
 	store := search.fetch()
-	sessions, err := store.FindAll()
 	assert.NoError(t, err)
-	assert.Equal(t, 1, len(sessions), "Because it hasn't YET expired")
+	assert.Equal(t, 1, store.Len(), "Because it hasn't YET expired")
 
-	time.Sleep(EXPIRE_TIME_SESSION)
+	time.Sleep(EXPIRE_TIME_SESSION * 2)
 
 	searchCtx, cancel := context.WithCancel(app1.i.Context())
 	search.refresh(searchCtx)
-	sessions, err = store.FindAll()
 	assert.NoError(t, err)
-	assert.Equal(t, 0, len(sessions), "Because it expired")
+	assert.Equal(t, 0, store.Len(), "Because it expired")
 	cancel()
 
 	_, err = app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{
 		"cool": "no",
 	})
 	assert.NoError(t, err)
-	time.Sleep(1 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 
 	searchCtx, cancel = context.WithCancel(app1.i.Context())
 	search.refresh(searchCtx)
-	time.Sleep(1 * time.Second)
-	sessions, err = store.FindAll()
+	time.Sleep(500 * time.Millisecond)
 	assert.NoError(t, err)
-	assert.Equal(t, 1, len(sessions), "Because app2 has republished again")
+	assert.Equal(t, 1, store.Len(), "Because app2 has republished again")
 	cancel()
 }

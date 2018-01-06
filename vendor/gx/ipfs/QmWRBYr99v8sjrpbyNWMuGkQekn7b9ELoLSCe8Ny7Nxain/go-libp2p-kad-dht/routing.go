@@ -241,6 +241,25 @@ func (dht *IpfsDHT) GetValues2(ctx context.Context, key string, nvals int) ([]ro
 	var vals []routing.RecvdVal
 	var valslock sync.Mutex
 
+	// If we have it local, dont bother doing an RPC!
+	var err error
+	//lrec, err := dht.getLocal(key)
+	//if err == nil {
+	//	// TODO: this is tricky, we dont always want to trust our own value
+	//	// what if the authoritative source updated it?
+	//	log.Debug("have it locally")
+	//	vals = append(vals, routing.RecvdVal{
+	//		Val:  lrec.GetValue(),
+	//		From: dht.self,
+	//	})
+	//
+	//	if nvals <= 1 {
+	//		return vals, nil
+	//	}
+	//} else if nvals == 0 {
+	//	return nil, err
+	//}
+
 	// get closest peers in the routing table
 	rtp := dht.routingTable.NearestPeers(kb.ConvertKey(key), AlphaValue)
 	log.Debugf("peers in rt: %d %s", len(rtp), rtp)
@@ -250,16 +269,34 @@ func (dht *IpfsDHT) GetValues2(ctx context.Context, key string, nvals int) ([]ro
 	}
 
 	// setup the Query
+	parent := ctx
 	query := dht.newQuery(key, func(ctx context.Context, p peer.ID) (*dhtQueryResult, error) {
-		res := &dhtQueryResult{}
-		pmes, err := dht.getValueSingle(ctx, p, key)
-		if err != nil {
+		notif.PublishQueryEvent(parent, &notif.QueryEvent{
+			Type: notif.SendingQuery,
+			ID:   p,
+		})
+
+		rec, peers, err := dht.getValueOrPeers(ctx, p, key)
+		switch err {
+		case routing.ErrNotFound:
+			// in this case, they responded with nothing,
+			// still send a notification so listeners can know the
+			// request has completed 'successfully'
+			notif.PublishQueryEvent(parent, &notif.QueryEvent{
+				Type: notif.PeerResponse,
+				ID:   p,
+			})
 			return nil, err
+		default:
+			return nil, err
+
+		case nil, errInvalidRecord:
+			// in either of these cases, we want to keep going
 		}
 
-		if rec := pmes.GetRecord(); rec != nil {
-			// Success! We were given the value
-			log.Debug("GetValues2: got value")
+		res := &dhtQueryResult{closerPeers: peers}
+
+		if rec.GetValue() != nil || err == errInvalidRecord {
 			rv := routing.RecvdVal{
 				Val:  rec.GetValue(),
 				From: p,
@@ -273,17 +310,26 @@ func (dht *IpfsDHT) GetValues2(ctx context.Context, key string, nvals int) ([]ro
 			}
 			valslock.Unlock()
 		}
+
+		notif.PublishQueryEvent(parent, &notif.QueryEvent{
+			Type:      notif.PeerResponse,
+			ID:        p,
+			Responses: peers,
+		})
+
 		return res, nil
 	})
 
 	// run it!
-	_, err := query.Run(ctx, rtp)
+	_, err = query.Run(ctx, rtp)
 	if len(vals) == 0 {
 		if err != nil {
 			return nil, err
 		}
 	}
+
 	return vals, nil
+
 }
 
 // Value provider layer of indirection.

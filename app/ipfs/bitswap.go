@@ -79,8 +79,8 @@ func (b *BitswapService) PutValue(keyType string, rawKey string, data []byte) er
 
 func (b *BitswapService) GetValues(ctx context.Context, keyType string, rawKey string, count int) ([]routing.RecvdVal, error) {
 	key := b.getKey(keyType, rawKey)
-	return b.dht.GetValues2(b.node.Context(), key, count)
-	//return b.node.Routing.GetValues(ctx, key, count)
+	//return b.dht.GetValues2(b.node.Context(), key, count)//The first ifstatement, checking for cache.
+	return b.node.Routing.GetValues(ctx, key, count)
 }
 
 func StringToCid(value string) *cid.Cid {
