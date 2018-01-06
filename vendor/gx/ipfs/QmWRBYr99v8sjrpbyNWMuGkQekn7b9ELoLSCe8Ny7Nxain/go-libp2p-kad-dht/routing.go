@@ -237,6 +237,55 @@ func (dht *IpfsDHT) GetValues(ctx context.Context, key string, nvals int) ([]rou
 
 }
 
+func (dht *IpfsDHT) GetValues2(ctx context.Context, key string, nvals int) ([]routing.RecvdVal, error) {
+	var vals []routing.RecvdVal
+	var valslock sync.Mutex
+
+	// get closest peers in the routing table
+	rtp := dht.routingTable.NearestPeers(kb.ConvertKey(key), AlphaValue)
+	log.Debugf("peers in rt: %d %s", len(rtp), rtp)
+	if len(rtp) == 0 {
+		log.Warning("No peers from routing table!")
+		return nil, kb.ErrLookupFailure
+	}
+
+	// setup the Query
+	query := dht.newQuery(key, func(ctx context.Context, p peer.ID) (*dhtQueryResult, error) {
+		res := &dhtQueryResult{}
+		pmes, err := dht.getValueSingle(ctx, p, key)
+		if err != nil {
+			return nil, err
+		}
+
+		if rec := pmes.GetRecord(); rec != nil {
+			// Success! We were given the value
+			log.Debug("GetValues2: got value")
+			rv := routing.RecvdVal{
+				Val:  rec.GetValue(),
+				From: p,
+			}
+			valslock.Lock()
+			vals = append(vals, rv)
+
+			// If weve collected enough records, we're done
+			if len(vals) >= nvals {
+				res.success = true
+			}
+			valslock.Unlock()
+		}
+		return res, nil
+	})
+
+	// run it!
+	_, err := query.Run(ctx, rtp)
+	if len(vals) == 0 {
+		if err != nil {
+			return nil, err
+		}
+	}
+	return vals, nil
+}
+
 // Value provider layer of indirection.
 // This is what DSHTs (Coral and MainlineDHT) do to store large values in a DHT.
 

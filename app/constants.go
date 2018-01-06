@@ -12,6 +12,7 @@ var MIN_CONNECTED_PEERS = 1//40
 const DELIMITER_ADDR = ";;"
 const EXPIRE_TIME_SESSION = 120
 const MAX_SESSIONS = 1000
+const MAX_ADVERTISE_NUM = 256
 const MAX_CONTACTS = 1000
 const EXPIRE_TIME_CONTACT = 10800//3 hours
 const GET_PEER_REQ = "/decentralizer/peers/1.0.0/get"
@@ -25,6 +26,7 @@ const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
 const CONCURRENT_SESSION_REQUEST = 100
 const MAX_SESSION_SEARCHES = 10
 const MESSAGE_DEADLINE = time.Minute * 10
+const DHT_SESSIONS_KEY_TYPE = "sessions"
 var FILE_EXPIRE = time.Hour * 1
 
 func init() {

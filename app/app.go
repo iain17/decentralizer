@@ -47,7 +47,6 @@ type Decentralizer struct {
 	//Matchmaking
 	matchmakingMutex	   sync.Mutex
 	searchMutex			   sync.Mutex
-	sessionQueries		   chan sessionRequest
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
 	searches 			   *lttlru.LruWithTTL

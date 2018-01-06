@@ -8,27 +8,13 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
-	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
-	peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
-	libp2pPeerStore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
 	"time"
 	"encoding/hex"
 	"github.com/iain17/timeout"
 	"context"
-	"github.com/iain17/framed"
 	"github.com/iain17/kvcache/lttlru"
-	"io"
-	"github.com/iain17/decentralizer/app/ipfs"
-	"strings"
-	"github.com/giantswarm/retry-go"
+	"github.com/gogo/protobuf/proto"
 )
-
-type sessionRequest struct{
-	peer   libp2pPeerStore.PeerInfo
-	search *search
-	connected bool
-}
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 	ih := d.n.InfoHash()
@@ -37,7 +23,6 @@ func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 
 func (d *Decentralizer) initMatchmaking() {
 	go d.GetIP()
-	d.sessionQueries 			= make(chan sessionRequest, CONCURRENT_SESSION_REQUEST)
 	d.sessions 					= make(map[uint64]*sessionstore.Store)
 	d.sessionIdToSessionType	= make(map[uint64]uint64)
 	var err error
@@ -45,56 +30,15 @@ func (d *Decentralizer) initMatchmaking() {
 	if err != nil {
 		logger.Fatal(err)
 	}
-	d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
 
-	//Spawn some workers
-	logger.Debugf("Running %d session request workers", CONCURRENT_SESSION_REQUEST)
-	for i := 0; i < CONCURRENT_SESSION_REQUEST; i++ {
-		go d.processSessionRequest()
-	}
-}
-
-func (d *Decentralizer) processSessionRequest() {
-	for {
-		select {
-		case <-d.ctx.Done():
-			return
-		case req, ok := <-d.sessionQueries:
-			logger.Infof("Querying %s for sessions of type: %d", req.peer.ID.Pretty(), req.search.sessionType)
-			if !ok {
-				return
-			}
-			addrs := req.peer.Addrs
-			if !req.connected {
-				//Add the addrs temp while we try and connect.
-				addrs = ipfs.FilterNonReachableAddrs(req.peer.Addrs, true, false,false)
-				if len(addrs) == 0 {
-					logger.Debugf("No reachable addrs found for sessions provider: %s", req.peer.ID.Pretty())
-					continue
-				}
-			}
-			d.i.Peerstore.AddAddrs(req.peer.ID, addrs, 10 * time.Second)
-			sessions, err := d.getSessionsRequest(req.peer.ID, req.search.sessionType)
-			if err != nil {
-				if err.Error() == "protocol not supported" || err == io.EOF {
-					d.ignore.Add(req.peer.ID.Pretty(), true)
-					continue
-				}
-				//give em another go.
-				req.search.seen.Remove(req.peer.ID.Pretty())
-				if err.Error() == "i/o deadline reached" {
-					continue
-				}
-				logger.Debugf("Failed to get sessions from %s: %v", req.peer.ID.Pretty(), err)
-			} else {
-				logger.Debug("Received sessions. Adding them!")
-				err = req.search.add(sessions, req.peer.ID)
-				if err != nil {
-					logger.Warning(err)
-				}
-			}
+	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
+		var response pb.DNSessionResponse
+		err = proto.Unmarshal(val, &response)
+		if err != nil {
+			return err
 		}
-	}
+		return nil
+	}, false)
 }
 
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
@@ -148,17 +92,36 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		Port:    port,
 		Details: details,
 	}
-	//Also look for other sessions. So we can become a provider for more than just ourselves.
-	go d.getSessionSearch(sessionType)
 	sessionId, err := sessions.Insert(info)
 	if err != nil {
 		return 0, err
 	}
 	d.sessionIdToSessionType[sessionId] = sessionType
 	timeout.Do(func(ctx context.Context) {
-		d.b.Provide(d.getMatchmakingKey(sessionType))
+		err := d.advertise(sessionType)
+		if err != nil {
+			logger.Errorf("Could not advertise session: %s", err.Error())
+		}
 	}, 5*time.Second)
 	return sessionId, err
+}
+
+//Advertise all the session ids we have
+func (d *Decentralizer) advertise(sessionType uint64) error {
+	//Before we override DHT with our advisement. Let us check others.
+	search := d.getSessionSearch(sessionType)
+	store := search.fetch()
+	localSessions, err := store.FindByPeerId(d.i.Identity.Pretty())
+	if err != nil {
+		return err
+	}
+	data, err := proto.Marshal(&pb.DNSessionResponse{
+		Results: localSessions,
+	})
+	if err != nil {
+		return err
+	}
+	return d.b.PutValue(DHT_SESSIONS_KEY_TYPE, d.getMatchmakingKey(sessionType), data)
 }
 
 func (d *Decentralizer) setSessionIdToType(sessionId uint64, sessionType uint64) {
@@ -219,91 +182,4 @@ func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) 
 		result = append(result, peers...)
 	}
 	return result, nil
-}
-
-//Receive a request to give our sessions for a certain type
-func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
-	reqData, err := framed.Read(stream)
-	defer stream.Close()
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	var request pb.DNSessionRequest
-	err = proto.Unmarshal(reqData, &request)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	logger.Infof("%s requested our sessions of type %d...", stream.Conn().RemotePeer().Pretty(), request.Type)
-	sessionsStorage := d.getSessionStorage(request.Type)
-	sessions, err := sessionsStorage.FindByPeerId(d.i.Identity.Pretty())
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	logger.Infof("Sending %d sessions back of type %d", len(sessions), request.Type)
-	//Response
-	response, err := proto.Marshal(&pb.DNSessionResponse{
-		Results: sessions,
-	})
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	err = framed.Write(stream, response)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-}
-
-// Get in contact with a peer and ask it for session of a certain type
-func (d *Decentralizer) getSessionsRequest(peer peer.ID, sessionType uint64) ([]*pb.Session, error) {
-	var stream inet.Stream
-	op := func() (err error) {
-		d.clearBackOff(peer)
-		stream, err = d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
-		return
-	}
-	err := retry.Do(op,
-		retry.RetryChecker(func(err error) bool {
-			//If there is something about dialing. Retry.
-			if strings.Contains(err.Error(), "dial") {
-				logger.Warning(err)
-				return true
-			}
-			return false
-		}),
-		retry.MaxTries(30),
-		retry.Timeout(10 * time.Minute),
-		retry.Sleep(2 * time.Second))
-	if err != nil {
-		return nil, err
-	}
-	defer stream.Close()
-	logger.Debugf("Requesting %s for any sessions", peer.Pretty())
-	//Request
-	reqData, err := proto.Marshal(&pb.DNSessionRequest{
-		Type: sessionType,
-	})
-	if err != nil {
-		return nil, err
-	}
-	err = framed.Write(stream, reqData)
-	if err != nil {
-		return nil, err
-	}
-
-	//Response
-	resData, err := framed.Read(stream)
-	if err != nil {
-		return nil, err
-	}
-	var response pb.DNSessionResponse
-	err = proto.Unmarshal(resData, &response)
-	if err != nil {
-		return nil, err
-	}
-	return response.Results, nil
 }

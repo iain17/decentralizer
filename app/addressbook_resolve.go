@@ -18,15 +18,15 @@ func (d *Decentralizer) resolveDecentralizedId(decentralizedId uint64) (Peer.ID,
 	peers := d.b.Find(getDecentralizedIdKey(decentralizedId), 1024)
 	seen := make(map[string]bool)
 	for peer := range peers {
-		id := peer.Pretty()
+		id := peer.ID.Pretty()
 		if seen[id] {
 			continue
 		}
 		seen[id] = true
-		_, possibleId := peerstore.PeerToDnId(peer)
+		_, possibleId := peerstore.PeerToDnId(peer.ID)
 		if possibleId == decentralizedId {
 			logger.Infof("Resolved %d == %s", id)
-			return peer, nil
+			return peer.ID, nil
 		}
 	}
 	return "", errors.New("could not resolve id.")

@@ -118,6 +118,10 @@ func (s *Store) Remove(sessionId uint64) error {
 	return err
 }
 
+func (s *Store) SessionIds() []interface{} {
+	return s.sessionIds.Keys()
+}
+
 func (s *Store) FindAll() (result []*pb.Session, err error) {
 	txn := s.db.Txn(false)
 	defer txn.Abort()

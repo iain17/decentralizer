@@ -1,54 +1,53 @@
 package ipfs
 
 import (
-	"errors"
 	u "gx/ipfs/QmSU6eubNdhXjFBJBSksTp8kv8YRub8mGAPv8tVJHmL2EU/go-ipfs-util"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap"
-	bsnet "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/network"
-	"gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
 	"gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
 	"gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
-	"reflect"
-	"unsafe"
+	b58 "gx/ipfs/QmT8rehPR3F6bmwL6zjUN8XpiDBFFpMP2myPdC6ApsWfJf/go-base58"
+	"gx/ipfs/QmPR2JzfKd9poHx9XBhzoFeBBC31ZM3W5iUPKJZWyaoZZm/go-libp2p-routing"
 	"github.com/iain17/timeout"
 	"time"
 	"context"
 	"github.com/iain17/logger"
+	ipdht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
+	"errors"
+	"fmt"
+	"gx/ipfs/QmbxkgUceEcuSZ4ZdBA3x74VUDSSYjHYmmeEqkjxbtZ6Jg/go-libp2p-record"
 )
 
 //Find other peers around a subject.
-//This is done by using the bitswap network of IPFS which is currently powered by DHT.
-//TODO: d.i.Routing?!?!
+//This is done by using kad-DHT.
 type BitswapService struct {
 	node    *core.IpfsNode
-	network bsnet.BitSwapNetwork
+	dht		*ipdht.IpfsDHT
+	test map[string][]byte
 }
 
 func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
-	//Extract the network unexported value from the bitswap exchange of ipfs
-	if exchange, ok := node.Exchange.(*bitswap.Bitswap); ok {
-
-		pointerVal := reflect.ValueOf(exchange)
-		val := reflect.Indirect(pointerVal)
-
-		member := val.FieldByName("network")
-		ptrToY := unsafe.Pointer(member.UnsafeAddr())
-		realPtrToY := (*bsnet.BitSwapNetwork)(ptrToY)
-		network := *(realPtrToY)
-
+	if dht, ok := node.Routing.(*ipdht.IpfsDHT); ok {
 		return &BitswapService{
 			node:    node,
-			network: network,
+			dht: dht,
+			test: make(map[string][]byte),
 		}, nil
 	} else {
-		return nil, errors.New("interface conversion: node.Exchange is not *bitswap.Bitswap")
+		return nil, errors.New("interface conversion: node.Routing is not *ipdht.IpfsDHT")
 	}
 }
 
-func (b *BitswapService) Find(subject string, num int) <-chan peer.ID {
+func (b *BitswapService) RegisterValidator(keyType string, validatorFunc func(string, []byte) error, sign bool) {
+	b.dht.Validator[keyType] = &record.ValidChecker{
+		Func: validatorFunc,
+		Sign: sign,
+	}
+}
+
+func (b *BitswapService) Find(subject string, num int) <-chan pstore.PeerInfo {
 	logger.Debugf("Find subject: %s", subject)
-	peers := b.network.FindProvidersAsync(b.node.Context(), StringToCid(subject), num)
+	peers := b.node.Routing.FindProvidersAsync(b.node.Context(), StringToCid(subject), num)
 	logger.Debugf("Found %d around %s", len(peers), subject)
 	return peers
 }
@@ -57,7 +56,7 @@ func (b *BitswapService) Provide(subject string) error {
 	var err error
 	completed := false
 	timeout.Do(func(ctx context.Context) {
-		err = b.network.Provide(b.node.Context(), StringToCid(subject))
+		err = b.node.Routing.Provide(b.node.Context(), StringToCid(subject), true)
 		completed = true
 		logger.Debugf("Provided subject: %s", subject)
 	}, 5*time.Second)
@@ -65,6 +64,22 @@ func (b *BitswapService) Provide(subject string) error {
 	//	err = errors.New("could not provide '%s' in under 15 seconds. Check if you are connected to enough peers")
 	//}
 	return err
+}
+
+func (b *BitswapService) getKey(keyType string, rawKey string) string {
+	return fmt.Sprintf("/%s/%s", keyType, b58.Encode([]byte(rawKey)))
+}
+
+func (b *BitswapService) PutValue(keyType string, rawKey string, data []byte) error {
+	key := b.getKey(keyType, rawKey)
+	logger.Debugf("Put value: %s", key)
+	return b.node.Routing.PutValue(b.node.Context(), key, data)
+	//return b.node.Routing.PutValue(b.node.Context(), key, data)
+}
+
+func (b *BitswapService) GetValues(keyType string, rawKey string, count int) ([]routing.RecvdVal, error) {
+	key := b.getKey(keyType, rawKey)
+	return b.node.Routing.GetValues(b.node.Context(), key, count)
 }
 
 func StringToCid(value string) *cid.Cid {
