@@ -162,7 +162,7 @@ void AddDescriptorsImpl() {
       "proto\032\034google/api/annotations.proto\"\007\n\005e"
       "mpty\"\022\n\020RPCHealthRequest\"B\n\016RPCHealthRep"
       "ly\022\r\n\005ready\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\022\020\n\010ba"
-      "sePath\030\003 \001(\t2\356\n\n\rDecentralizer\022I\n\tGetHea"
+      "sePath\030\003 \001(\t2\243\013\n\rDecentralizer\022I\n\tGetHea"
       "lth\022\024.pb.RPCHealthRequest\032\022.pb.RPCHealth"
       "Reply\"\022\202\323\344\223\002\014\022\n/v1/health\022_\n\rUpsertSessi"
       "on\022\033.pb.RPCUpsertSessionRequest\032\034.pb.RPC"
@@ -179,28 +179,29 @@ void AddDescriptorsImpl() {
       "RPCGetSessionResponse\"\037\202\323\344\223\002\031\022\027/v1/sessi"
       "on/{sessionId}\022C\n\nUpsertPeer\022\030.pb.RPCUps"
       "ertPeerRequest\032\031.pb.RPCUpsertPeerRespons"
-      "e\"\000\022C\n\nGetPeerIds\022\030.pb.RPCGetPeerIdsRequ"
-      "est\032\031.pb.RPCGetPeerIdsResponse\"\000\022:\n\007GetP"
-      "eer\022\025.pb.RPCGetPeerRequest\032\026.pb.RPCGetPe"
-      "erResponse\"\000\022L\n\rWritePeerFile\022\033.pb.RPCWr"
-      "itePeerFileRequest\032\034.pb.RPCWritePeerFile"
-      "Response\"\000\022F\n\013GetPeerFile\022\031.pb.RPCGetPee"
-      "rFileRequest\032\032.pb.RPCGetPeerFileResponse"
-      "\"\000\0226\n\021SendDirectMessage\022\024.pb.RPCDirectMe"
-      "ssage\032\t.pb.empty\"\000\022T\n\024ReceiveDirectMessa"
-      "ge\022\".pb.RPCReceiveDirectMessageRequest\032\024"
-      ".pb.RPCDirectMessage\"\0000\001\022K\n\026publishPubli"
-      "sherUpdate\022$.pb.RPCPublishPublisherUpdat"
-      "eRequest\032\t.pb.empty\"\000\022k\n\026GetPublisherDef"
-      "inition\022!.pb.GetPublisherDefinitionReque"
-      "st\032\027.pb.PublisherDefinition\"\025\202\323\344\223\002\017\022\r/v1"
-      "/publisher\022q\n\020GetPublisherFile\022\036.pb.RPCG"
-      "etPublisherFileRequest\032\037.pb.RPCGetPublis"
-      "herFileResponse\"\034\202\323\344\223\002\026\022\024/v1/publisher/{"
-      "name}b\006proto3"
+      "e\"\000\022b\n\nGetPeerIds\022\030.pb.RPCGetPeerIdsRequ"
+      "est\032\031.pb.RPCGetPeerIdsResponse\"\037\202\323\344\223\002\031\022\027"
+      "/v1/peers/{key}/{value}\022P\n\007GetPeer\022\025.pb."
+      "RPCGetPeerRequest\032\026.pb.RPCGetPeerRespons"
+      "e\"\026\202\323\344\223\002\020\022\016/v1/peer/{pId}\022L\n\rWritePeerFi"
+      "le\022\033.pb.RPCWritePeerFileRequest\032\034.pb.RPC"
+      "WritePeerFileResponse\"\000\022F\n\013GetPeerFile\022\031"
+      ".pb.RPCGetPeerFileRequest\032\032.pb.RPCGetPee"
+      "rFileResponse\"\000\0226\n\021SendDirectMessage\022\024.p"
+      "b.RPCDirectMessage\032\t.pb.empty\"\000\022T\n\024Recei"
+      "veDirectMessage\022\".pb.RPCReceiveDirectMes"
+      "sageRequest\032\024.pb.RPCDirectMessage\"\0000\001\022K\n"
+      "\026publishPublisherUpdate\022$.pb.RPCPublishP"
+      "ublisherUpdateRequest\032\t.pb.empty\"\000\022k\n\026Ge"
+      "tPublisherDefinition\022!.pb.GetPublisherDe"
+      "finitionRequest\032\027.pb.PublisherDefinition"
+      "\"\025\202\323\344\223\002\017\022\r/v1/publisher\022q\n\020GetPublisherF"
+      "ile\022\036.pb.RPCGetPublisherFileRequest\032\037.pb"
+      ".RPCGetPublisherFileResponse\"\034\202\323\344\223\002\026\022\024/v"
+      "1/publisher/{name}b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1653);
+      descriptor, 1706);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/platform.proto", &protobuf_RegisterTypes);
   ::protobuf_pb_2fmatchmaking_2eproto::AddDescriptors();
@@ -208,6 +209,7 @@ void AddDescriptorsImpl() {
   ::protobuf_pb_2fstorage_2eproto::AddDescriptors();
   ::protobuf_pb_2fmessaging_2eproto::AddDescriptors();
   ::protobuf_pb_2fpublisher_2eproto::AddDescriptors();
+  ::protobuf_google_2fapi_2fannotations_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {

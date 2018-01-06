@@ -32,13 +32,25 @@ func (d *Decentralizer) initMatchmaking() {
 	}
 
 	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
-		var response pb.DNSessionResponse
-		err = proto.Unmarshal(val, &response)
+		var sessions pb.DNSessions
+		err = proto.Unmarshal(val, &sessions)
 		if err != nil {
 			return err
 		}
+		//Check publish time
+		now := time.Now().UTC()
+		publishedTime := time.Unix(int64(sessions.Published), 0)
+		publishedTimeText := publishedTime.String()
+		expireTime := now.Add(-EXPIRE_TIME_SESSION)
+		expireTimeText := expireTime.String()
+		if publishedTime.Before(expireTime) {
+			return fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTimeText, expireTimeText)
+		}
+		if publishedTime.After(now) {
+			return errors.New("record with publish date %s was published in the future")
+		}
 		return nil
-	}, false)
+	}, true)
 }
 
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
@@ -48,7 +60,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 	}()
 	if d.sessions[sessionType] == nil {
 		var err error
-		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration((EXPIRE_TIME_SESSION*1.5)*time.Second), d.i.Identity)
+		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration(EXPIRE_TIME_SESSION), d.i.Identity)
 		if err != nil {
 			logger.Warningf("Could not get session storage: %v", err)
 			return nil
@@ -115,7 +127,8 @@ func (d *Decentralizer) advertise(sessionType uint64) error {
 	if err != nil {
 		return err
 	}
-	data, err := proto.Marshal(&pb.DNSessionResponse{
+	data, err := proto.Marshal(&pb.DNSessions{
+		Published: uint64(time.Now().UTC().Unix()),
 		Results: localSessions,
 	})
 	if err != nil {

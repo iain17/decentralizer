@@ -14,12 +14,9 @@ message Session {
 }
 
 //DN messages
-message DNSessionResponse {
-    repeated Session results = 1;
-}
-
-message DNSessionRequest {
-    uint64 type = 1;
+message DNSessions {
+    uint64 published = 1;
+    repeated Session results = 2;
 }
 
 //RPC messages

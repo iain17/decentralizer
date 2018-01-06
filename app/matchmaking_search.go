@@ -19,12 +19,17 @@ type search struct {
 	sessionType uint64
 	ctx context.Context
 	storage *sessionstore.Store
-	seen *lttlru.LruWithTTL
+	seen *lttlru.LruWithTTL//Tells us if we've already pased the result of this peer.
+	publication *lttlru.LruWithTTL//Tell us if the record we are about to insert is from a newer source.
 }
 
 func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*search, error) {
 	storage := d.getSessionStorage(sessionType)
 	seen, err := lttlru.NewTTL(MAX_IGNORE)
+	if err != nil {
+		return nil, err
+	}
+	publication, err := lttlru.NewTTL(MAX_SESSIONS)
 	if err != nil {
 		return nil, err
 	}
@@ -34,9 +39,10 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		ctx: ctx,
 		storage: storage,
 		seen: seen,
+		publication: publication,
 	}
 	instance.fetch()
-	//d.cron.Every(30).Seconds().Do(instance.update)
+	//d.cron.Every(30).Seconds().Do(instance.fetch)
 	return instance, nil
 }
 
@@ -76,19 +82,27 @@ func (s *search) run() error {
 		}
 		s.seen.AddWithTTL(id, true, 1 * time.Minute)
 
-		var response pb.DNSessionResponse
+		var response pb.DNSessions
 		err = proto.Unmarshal(value.Val, &response)
 		if err != nil {
 			logger.Warning(err)
 			continue
 		}
 		logger.Infof("Got %d sessions from %s", len(response.Results), id)
+		publishedTime := time.Unix(int64(response.Published), 0)
 		for _, session := range response.Results {
 			//if session.PId != value.From.Pretty() {
 			//	logger.Warningf("We can't accept sessions that aren't yours %s", id)
 			//	s.d.ignore.AddWithTTL(id, true, 5 * time.Minute)
 			//	break
 			//}
+			if rawLastInserted, ok := s.publication.Get(session.SessionId); ok {
+				LastInserted := time.Unix(rawLastInserted.(int64), 0)
+				if publishedTime.Before(LastInserted) || publishedTime.Equal(LastInserted) {
+					continue
+				}
+			}
+			s.publication.Add(session.SessionId, time.Now().UTC().Unix())
 			_, err := s.storage.Insert(session)
 			if err != nil {
 				logger.Warning(err)
