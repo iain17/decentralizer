@@ -77,9 +77,10 @@ func (b *BitswapService) PutValue(keyType string, rawKey string, data []byte) er
 	//return b.node.Routing.PutValue(b.node.Context(), key, data)
 }
 
-func (b *BitswapService) GetValues(keyType string, rawKey string, count int) ([]routing.RecvdVal, error) {
+func (b *BitswapService) GetValues(ctx context.Context, keyType string, rawKey string, count int) ([]routing.RecvdVal, error) {
 	key := b.getKey(keyType, rawKey)
-	return b.node.Routing.GetValues(b.node.Context(), key, count)
+	return b.dht.GetValues2(b.node.Context(), key, count)
+	//return b.node.Routing.GetValues(ctx, key, count)
 }
 
 func StringToCid(value string) *cid.Cid {

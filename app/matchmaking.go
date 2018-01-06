@@ -37,20 +37,29 @@ func (d *Decentralizer) initMatchmaking() {
 		if err != nil {
 			return err
 		}
-		//Check publish time
-		now := time.Now().UTC()
-		publishedTime := time.Unix(int64(sessions.Published), 0)
-		publishedTimeText := publishedTime.String()
-		expireTime := now.Add(-EXPIRE_TIME_SESSION)
-		expireTimeText := expireTime.String()
-		if publishedTime.Before(expireTime) {
-			return fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTimeText, expireTimeText)
-		}
-		if publishedTime.After(now) {
-			return errors.New("record with publish date %s was published in the future")
-		}
-		return nil
+		return validateDNSessions(&sessions)
 	}, true)
+}
+
+func validateDNSessions(sessions *pb.DNSessions) error {
+	//Check publish time
+	now := time.Now().UTC()
+	publishedTime := time.Unix(int64(sessions.Published), 0).UTC()
+	publishedTimeText := publishedTime.String()
+	expireTime := now.Add(-EXPIRE_TIME_SESSION)
+	expireTimeText := expireTime.String()
+	if publishedTime.Before(expireTime) {
+		err := fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTimeText, expireTimeText)
+		logger.Warning(err)
+		return err
+	}
+	if publishedTime.After(now) {
+		err := errors.New("record with publish date %s was published in the future")
+		logger.Warning(err)
+		return err
+	}
+	logger.Infof("successfully validated DNSessions published at: %s", publishedTimeText)
+	return nil
 }
 
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
@@ -127,10 +136,15 @@ func (d *Decentralizer) advertise(sessionType uint64) error {
 	if err != nil {
 		return err
 	}
-	data, err := gogoProto.Marshal(&pb.DNSessions{
+	sessions := &pb.DNSessions{
 		Published: uint64(time.Now().UTC().Unix()),
 		Results: localSessions,
-	})
+	}
+	err = validateDNSessions(sessions)
+	if err != nil {
+		return err
+	}
+	data, err := gogoProto.Marshal(sessions)
 	if err != nil {
 		return err
 	}

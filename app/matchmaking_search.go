@@ -13,7 +13,6 @@ import (
 )
 
 type search struct {
-	running bool
 	mutex sync.Mutex
 	d *Decentralizer
 	sessionType uint64
@@ -46,29 +45,20 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 	return instance, nil
 }
 
-func (s *search) run() error {
+func (s *search) run(ctx context.Context) error {
 	logger.Info("Trying to lock mutex")
 	s.mutex.Lock()
-	if s.running {
-		logger.Debug("Search run is already running...")
-		s.mutex.Unlock()
-		return nil
-	}
-	s.running = true
-	logger.Info("Unlocking mutex")
-	s.mutex.Unlock()
 
-	defer func() {
-		logger.Info("Running to false")
-		s.running = false
-	}()
+	defer s.mutex.Unlock()
+
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	values, err := s.d.b.GetValues(DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 512)
+	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 99999)
 	if err != nil {
 		return err
 	}
 	queried := 0
 	total := 0
+	s.seen.Purge()
 	for _, value := range values {
 		total++
 		id := value.From.Pretty()
@@ -80,7 +70,7 @@ func (s *search) run() error {
 			logger.Debugf("%s is on the seen list", id)
 			continue
 		}
-		s.seen.AddWithTTL(id, true, 1 * time.Minute)
+		s.seen.Add(id, true)
 
 		var response pb.DNSessions
 		err = gogoProto.Unmarshal(value.Val, &response)
@@ -97,8 +87,9 @@ func (s *search) run() error {
 			//	break
 			//}
 			if rawLastInserted, ok := s.publication.Get(session.SessionId); ok {
-				LastInserted := time.Unix(rawLastInserted.(int64), 0)
+				LastInserted := time.Unix(rawLastInserted.(int64), 0).UTC()
 				if publishedTime.Before(LastInserted) || publishedTime.Equal(LastInserted) {
+					logger.Debugf("Received older record. Skipping: this: %s, last: %s", publishedTime.String(), LastInserted.String())
 					continue
 				}
 			}
@@ -114,17 +105,18 @@ func (s *search) run() error {
 	return nil
 }
 
-func (s *search) refresh() {
-	err := s.run()
+func (s *search) refresh(ctx context.Context) {
+	err := s.run(ctx)
 	if err != nil {
 		logger.Warning(err)
 	}
 }
 
 func (s *search) fetch() *sessionstore.Store {
+	searchCtx, cancel := context.WithTimeout(s.d.i.Context(), 5 * time.Second)
 	timeout.Do(func(ctx context.Context) {
 		tries := 0
-		s.refresh()
+		s.refresh(searchCtx)
 		for s.storage.IsEmpty() {
 			select {
 			case <- ctx.Done():
@@ -133,11 +125,12 @@ func (s *search) fetch() *sessionstore.Store {
 				if tries > 5 {
 					break
 				}
-				s.refresh()
+				s.refresh(searchCtx)
 				time.Sleep(1 * time.Second)
 				tries++
 			}
 		}
 	}, 5 * time.Second)
+	cancel()
 	return s.storage
 }
