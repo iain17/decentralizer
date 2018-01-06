@@ -13,7 +13,7 @@ import (
 	"github.com/iain17/timeout"
 	"context"
 	"github.com/iain17/kvcache/lttlru"
-	"github.com/gogo/protobuf/proto"
+	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
@@ -33,7 +33,7 @@ func (d *Decentralizer) initMatchmaking() {
 
 	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
 		var sessions pb.DNSessions
-		err = proto.Unmarshal(val, &sessions)
+		err = gogoProto.Unmarshal(val, &sessions)
 		if err != nil {
 			return err
 		}
@@ -127,7 +127,7 @@ func (d *Decentralizer) advertise(sessionType uint64) error {
 	if err != nil {
 		return err
 	}
-	data, err := proto.Marshal(&pb.DNSessions{
+	data, err := gogoProto.Marshal(&pb.DNSessions{
 		Published: uint64(time.Now().UTC().Unix()),
 		Results: localSessions,
 	})

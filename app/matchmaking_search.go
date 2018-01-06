@@ -8,8 +8,8 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"github.com/iain17/timeout"
-	"github.com/gogo/protobuf/proto"
 	"github.com/iain17/kvcache/lttlru"
+	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 )
 
 type search struct {
@@ -83,7 +83,7 @@ func (s *search) run() error {
 		s.seen.AddWithTTL(id, true, 1 * time.Minute)
 
 		var response pb.DNSessions
-		err = proto.Unmarshal(value.Val, &response)
+		err = gogoProto.Unmarshal(value.Val, &response)
 		if err != nil {
 			logger.Warning(err)
 			continue
