@@ -11,6 +11,8 @@ import (
 	"github.com/pkg/errors"
 	"os"
 	"github.com/shibukawa/configdir"
+	ipfsfiles "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands/files"
+	"bytes"
 )
 
 func (d *Decentralizer) initStorage() {
@@ -27,24 +29,26 @@ func (d *Decentralizer) initStorage() {
 	layer := afero.NewMemMapFs()
 	d.ufs = afero.NewCacheOnReadFs(base, layer, 100 * time.Second)
 
-
 	go d.republishPeerFiles()
 }
 
-func (d *Decentralizer) republishPeerFiles() {
+func (d *Decentralizer) republishPeerFiles() (string, error) {
 	d.WaitTilEnoughPeers()
-	files, err := d.GetPeerFiles("self")
+	peerFiles, err := d.GetPeerFiles("self")
 	if err != nil {
 		logger.Warning(err)
 	}
-	for name, _ := range files {
+	var files []ipfsfiles.File
+	for name, _ := range peerFiles {
 		data, err := d.GetPeerFile("self", name)
 		if err != nil {
 			logger.Warning(err)
 			continue
 		}
-		d.SavePeerFile(name, data)
+		ipfsFile := ipfsfiles.NewReaderFile(name, name, ioutil.NopCloser(bytes.NewBuffer(data)), nil)
+		files = append(files, ipfsFile)
 	}
+	return d.filesApi.PublishPeerFiles(files)
 }
 
 func (d *Decentralizer) getPeerPath(owner libp2pPeer.ID) string {
@@ -68,7 +72,11 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return d.filesApi.SavePeerFile(name, data)
+	location, err := d.republishPeerFiles()
+	if err != nil {
+		return "", err
+	}
+	return location+"/"+name, err
 }
 
 func (d *Decentralizer) writeFile(path string, data []byte) error {
@@ -120,6 +128,7 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	if result == nil || refresh {
 		//Time to get a fresh copy
 		var fresh []byte
+		logger.Infof("Fetching fresh copy of %s of %s", name, id.Pretty())
 		fresh, err = d.filesApi.GetPeerFile(id, name)
 		if err == nil && fresh != nil {
 			result = fresh

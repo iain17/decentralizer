@@ -40,7 +40,7 @@ func init() {
 }
 
 
-const MAX_IDLE_TIME = 15 * time.Second//Ignored in daemon mode
+const MAX_IDLE_TIME = 60 * time.Second//Ignored in daemon mode
 // apiCmd represents the api command
 var apiCmd = &cobra.Command{
 	Use:   "api",
@@ -100,6 +100,7 @@ var apiCmd = &cobra.Command{
 }
 
 func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
+	logger.Warning("Killing on idle")
 	var free time.Time
 	for {
 		time.Sleep(MAX_IDLE_TIME)
@@ -107,6 +108,7 @@ func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
 		free = time.Now()
 		s.Wg.Wait()
 		if free.Add(MAX_IDLE_TIME).After(time.Now()) {
+			logger.Warning("Idle. Closing process.")
 			cancel()
 		}
 	}

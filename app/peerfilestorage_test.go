@@ -20,16 +20,31 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 	assert.NotNil(t, app2)
 
 	message := []byte("Low in coupling and high in cohesion.")
+	message2 := []byte("Ja! Natürliches mineralwasser.")
 
-	cid, err := app2.SavePeerFile("test.txt", message)
+	ph1, err := app2.SavePeerFile("test.txt", message)
 	assert.NoError(t, err)
-	assert.NotNil(t, cid)
+	assert.NotNil(t, ph1)
+
+	ph2, err := app2.SavePeerFile("test2.txt", message2)
+	assert.NoError(t, err)
+	assert.NotNil(t, ph1)
+
+	//Self is able to get
+	data, err := app2.getIPFSFile(ph1)
+	assert.NoError(t, err)
+	data, err = app2.getIPFSFile(ph2)
+	assert.NoError(t, err)
 
 	time.Sleep(1 * time.Second)
 
-	data, err := app1.getIPFSFile(cid)
+	data, err = app1.getIPFSFile(ph1)
 	assert.NoError(t, err)
 	assert.Equal(t, string(message), string(data))
+
+	data, err = app1.getIPFSFile(ph2)
+	assert.NoError(t, err)
+	assert.Equal(t, string(message2), string(data))
 }
 
 //One user saves a file. The other gets it by its name and the peer id that saved it.
@@ -60,6 +75,37 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 
 	_, err = app2.GetPeerFile(app1.i.Identity.Pretty(), "random shit")
 	assert.Error(t, err, "404. doesn't exist")
+}
+
+func TestDecentralizer_SaveGetTwoUserFiles(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
+	app1 := fakeNew(ctx, nodes[0], false)
+	assert.NotNil(t, app1)
+	app2 := fakeNew(ctx, nodes[1], false)
+	assert.NotNil(t, app2)
+
+	name1 := "quote1.txt"
+	quote1 := []byte("Holmes gave an ejaculation of impatience.")
+	name2 := "quote2.txt"
+	quote2 := []byte(`"Elementary, my dear Watson.`)
+
+	_, err := app1.SavePeerFile(name1, quote1)
+	assert.NoError(t, err)
+
+	_, err = app1.SavePeerFile(name2, quote2)
+	assert.NoError(t, err)
+
+	time.Sleep(1 * time.Second)
+
+	file, err := app2.filesApi.GetPeerFile(app1.i.Identity, name1)
+	assert.NoError(t, err)
+	assert.Equal(t, string(quote1), string(file))
+
+	file, err = app2.filesApi.GetPeerFile(app1.i.Identity, name2)
+	assert.NoError(t, err)
+	assert.Equal(t, string(quote2), string(file))
 }
 
 func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {

@@ -2,8 +2,6 @@ package ipfs
 
 import (
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
-	"bytes"
-	"errors"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
 	"github.com/iain17/logger"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi/interface"
@@ -12,6 +10,10 @@ import (
 	"io/ioutil"
 	"context"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	"fmt"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blockservice"
+	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
+	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands/files"
 )
 
 //Simplifies all the interactions with IPFS.
@@ -30,18 +32,31 @@ func NewFilesAPI(ctx context.Context, node *core.IpfsNode, api iface.CoreAPI) (*
 	return instance, nil
 }
 
-func (d *FilesAPI) SavePeerFile(name string, data []byte) (string, error) {
-	logger.Infof("Saving peer file %s", name)
-	location, path, err := coreunix.AddWrapped(d.i, bytes.NewBuffer(data), name)
+func (d *FilesAPI) PublishPeerFiles(files []files.File) (string, error) {
+	bserv := blockservice.New(d.i.Blockstore, d.i.Exchange)
+	dserv := dag.NewDAGService(bserv)
+	fileAdder, err := coreunix.NewAdder(d.i.Context(), d.i.Pinning, d.i.Blockstore, dserv)
+	fileAdder.Wrap = true
+	for _, file := range files {
+		logger.Infof("Saving peer file %s", file.FileName())
+		fileAdder.AddFile(file)
+	}
+	// copy intermediary nodes from editor to our actual dagservice
+	_, err = fileAdder.Finalize()
 	if err != nil {
 		return "", err
 	}
-	ph := Path.FromCid(path.Cid())
+	err = fileAdder.PinRoot()
 	if err != nil {
 		return "", err
 	}
-	err = FilePublish(d.i, ph)
-	return "/ipfs/"+location, err
+	root, err := fileAdder.RootNode()
+	ph := Path.FromCid(root.Cid())
+	if err != nil {
+		return "", err
+	}
+	err = PublishPath(d.i, ph)
+	return "/ipns/"+d.i.Identity.Pretty(), err
 }
 
 func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*iface.Link, error) {
@@ -54,17 +69,22 @@ func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*iface.Link, error) {
 }
 
 func (d *FilesAPI) GetPeerFile(owner libp2pPeer.ID, name string) ([]byte, error) {
-	logger.Infof("Get peer file %s of peer id %s", name, owner.String())
-	files, err := d.GetPeerFiles(owner)
+	logger.Infof("Get peer file %s of peer id %s", name, owner.Pretty())
+	peerFiles, err := d.GetPeerFiles(owner)
 	if err != nil {
 		return nil, err
 	}
-	for _, file := range files {
+	var fileMap []string
+	for _, file := range peerFiles {
+		logger.Infof("Checking %s == %s", file.Name, name)
 		if file.Name == name {
 			return d.GetFile(file.Cid.String())
 		}
+		fileMap = append(fileMap, file.Name)
 	}
-	return nil, errors.New("could not find peer file")
+	err = fmt.Errorf("could not find '%s' from %s in a list of: %v", name, owner.Pretty(), fileMap)
+	logger.Warning(err)
+	return nil, err
 }
 
 //Path could be "/ipfs/QmQy2Dw4Wk7rdJKjThjYXzfFJNaRKRHhHP5gHHXroJMYxk"
