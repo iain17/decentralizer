@@ -102,22 +102,18 @@ func (d *Decentralizer) getSessionSearch(sessionType uint64) (result *search) {
 }
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
-	sessions := d.getSessionStorage(sessionType)
-	pId, dId := peerstore.PeerToDnId(d.i.Identity)
-	info := &pb.Session{
-		DnId:    dId,
-		PId:     pId,
+	session := &pb.Session{
+		PId:     "self",
 		Type:    sessionType,
 		Name:    name,
 		Address: uint32(utils.Inet_aton(d.GetIP())),
 		Port:    port,
 		Details: details,
 	}
-	sessionId, err := sessions.Insert(info)
+	sessionId, err := d.InsertSession(session)
 	if err != nil {
 		return 0, err
 	}
-	d.sessionIdToSessionType[sessionId] = sessionType
 	timeout.Do(func(ctx context.Context) {
 		err := d.advertise(sessionType)
 		if err != nil {
@@ -125,6 +121,21 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		}
 	}, 5*time.Second)
 	return sessionId, err
+}
+
+func (d *Decentralizer) InsertSession(session *pb.Session) (uint64, error) {
+	id, err := d.decodePeerId(session.PId)
+	if err != nil {
+		return 0, err
+	}
+	session.PId, session.DnId = peerstore.PeerToDnId(id)
+	sessions := d.getSessionStorage(session.Type)
+	sessionId, err := sessions.Insert(session)
+	if err != nil {
+		return 0, err
+	}
+	d.sessionIdToSessionType[sessionId] = session.Type
+	return sessionId, nil
 }
 
 //Advertise all the session ids we have

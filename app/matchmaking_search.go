@@ -93,10 +93,11 @@ func (s *search) run(ctx context.Context) error {
 					continue
 				}
 			}
-			s.publication.Add(session.SessionId, time.Now().UTC().Unix())
-			_, err := s.storage.Insert(session)
+			_, err := s.d.InsertSession(session)
 			if err != nil {
 				logger.Warning(err)
+			} else {
+				s.publication.Add(session.SessionId, time.Now().UTC().Unix())
 			}
 		}
 		queried++

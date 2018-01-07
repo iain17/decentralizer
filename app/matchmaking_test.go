@@ -35,6 +35,52 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	assert.Equal(t, sessions[0].Name, "App 2 session :D")
 }
 
+func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
+	EXPIRE_TIME_SESSION = 3 * time.Hour
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx, 3)
+	app1 := fakeNew(ctx, nodes[0], false)
+	assert.NotNil(t, app1)
+	app2 := fakeNew(ctx, nodes[1], false)
+	assert.NotNil(t, app2)
+	app3 := fakeNew(ctx, nodes[2], false)
+	assert.NotNil(t, app3)
+
+	_, err := app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{"0": "0"})
+	assert.NoError(t, err)
+
+	app1Search := app1.getSessionSearch(1337)
+	app1Store := app1Search.fetch()
+	app2Search := app2.getSessionSearch(1337)
+	app2Store := app2Search.fetch()
+	app3Search := app3.getSessionSearch(1337)
+	app3Store := app3Search.fetch()
+	assert.Equal(t, 1, app1Store.Len())
+	assert.Equal(t, 1, app2Store.Len())
+	assert.Equal(t, 1, app3Store.Len())
+
+	_, err = app3.UpsertSession(1337, "App 3 session :D", 308, map[string]string{"0": "0"})
+	assert.NoError(t, err)
+
+	app1Store = app1Search.fetch()
+	app2Store = app2Search.fetch()
+	app3Store = app3Search.fetch()
+	assert.Equal(t, 2, app1Store.Len())
+	assert.Equal(t, 2, app2Store.Len())
+	assert.Equal(t, 2, app3Store.Len())
+
+	_, err = app1.UpsertSession(1337, "App 1 session :D", 111, map[string]string{"0": "0"})
+	assert.NoError(t, err)
+
+	app1Store = app1Search.fetch()
+	app2Store = app2Search.fetch()
+	app3Store = app3Search.fetch()
+	assert.Equal(t, 3, app1Store.Len())
+	assert.Equal(t, 3, app2Store.Len())
+	assert.Equal(t, 3, app3Store.Len())
+}
+
 func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
 	EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
