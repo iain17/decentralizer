@@ -62,7 +62,25 @@ namespace libdn {
 		return 0;
 	}
 
+	bool ADNA_reachable() {
+		bool reachable = false;
+		int tries = 0;
+		while (!reachable) {
+			reachable = CheckPortTCP((short int)context.port, (char*)context.host);
+			if (reachable) {
+				break;
+			}
+			if (tries > 3) {
+				break;
+			}
+			tries++;
+			Sleep(500);
+		}
+		return reachable;
+	}
+
 	PROCESS_INFORMATION* NewAdnaInstance() {
+		ADNA_Shutdown();
 		ADNA_setupPipe();
 
 		PROCESS_INFORMATION piProcInfo;
@@ -96,7 +114,7 @@ namespace libdn {
 		CloseHandle(g_hChildStd_OUT_Wr);
 		// If an error occurs, exit the application. 
 		if (!bSuccess) {
-			MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
+			//MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
 			return nullptr;
 		}
 
@@ -104,11 +122,15 @@ namespace libdn {
 			CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
 		}
 
+		Sleep(1000);
 		if (!IsProcessRunning(adnaExecutable)) {
-			MessageBoxA(NULL, "Failed to start ADNA.", "libdn", MB_OK);
+			return nullptr;
+		}
+		if (!ADNA_reachable()) {
+			return nullptr;
 		}
 
-		Log_Print("Started adna.\n");
+		Log_Print("Started adna process.\n");
 		return &piProcInfo;
 	}
 
@@ -116,17 +138,30 @@ namespace libdn {
 		if (strlen(basePath) == 0) {
 			if (!_getcwd(basePath, sizeof(basePath))) {
 				MessageBoxA(NULL, "Could not resolve path.", "libdn", MB_OK);
-			}
-		}
-		//TODO: Check CheckPortTCP and spawn a adna process passing the specified port.
-		if (!IsProcessRunning(adnaExecutable)) {
-			PROCESS_INFORMATION* piProcInfo = NewAdnaInstance();
-			if (piProcInfo) {
-				return true;
-			} else {
 				return false;
 			}
 		}
-		return true;
+		int tries = 0;
+		bool reachable = false;
+		//While adna is not reachable.
+		while(!reachable) {
+			reachable = ADNA_reachable();
+			if (reachable) {
+				break;
+			}
+			if (tries > 3) {
+				break;
+			}
+			//If local, spawn one
+			if (std::strcmp(context.host, "localhost") == 0 || std::strcmp(context.host, "127.0.0.1") == 0) {
+				PROCESS_INFORMATION* piProcInfo = NewAdnaInstance();
+				if (!piProcInfo) {
+					context.port++;
+				}
+			}
+			Sleep(1000);
+			tries++;
+		}
+		return reachable;
 	}
 }

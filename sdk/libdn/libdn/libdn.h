@@ -17,7 +17,7 @@ namespace libdn {
 	LIBDN_API void LIBDN_CALL Shutdown();
 
 	// connects to a DN server
-	LIBDN_API bool LIBDN_CALL Connect(const char* address, const char* networkKey, bool isPrivateKey, bool limited);
+	LIBDN_API bool LIBDN_CALL Connect(const char* host, int port, const char* networkKey, bool isPrivateKey, bool limited);
 
 	// Should be called in the games loop
 	LIBDN_API void LIBDN_CALL RunFrame();

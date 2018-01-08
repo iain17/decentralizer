@@ -4,6 +4,7 @@ namespace libdn {
 	bool IsProcessRunning(const char *filename);
 	BOOL CheckPortTCP(short int dwPort, char*ipAddressStr);
 	const char *va(const char *fmt, ...);
+	void setupUtils();
 }
 
 #include <stdarg.h>  // For va_start, etc.

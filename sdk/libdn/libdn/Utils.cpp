@@ -80,15 +80,22 @@ namespace libdn {
 		return false;
 	}
 
-#include <ws2def.h>
-#include <WinSock2.h>
-	BOOL CheckPortTCP(short int dwPort, char* ipAddressStr) {
+	#include <ws2def.h>
+	#include <WinSock2.h>
+
+	BOOL CheckPortTCP(short int port, char* hostname) {
 		struct sockaddr_in client;
 		int sock;
 
+		hostent * record = gethostbyname(hostname);
+		if (record == NULL) {
+			Log_Print("Could not look up '%s'. Error code: %d.\n", hostname, WSAGetLastError());
+			return false;
+		}
+
 		client.sin_family = AF_INET;
-		client.sin_port = htons(dwPort);
-		client.sin_addr.s_addr = inet_addr(ipAddressStr);
+		client.sin_port = htons(port);
+		client.sin_addr.s_addr = *(ULONG*)record->h_addr_list[0];
 
 		int iTimeout = 1600;
 		sock = (int)socket(AF_INET, SOCK_STREAM, 0);
@@ -102,5 +109,13 @@ namespace libdn {
 			(const char *)&iTimeout,
 			sizeof(iTimeout));
 		return (connect(sock, (struct sockaddr *) &client, sizeof(client)) == 0);
+	}
+
+	void setupUtils() {
+		WSADATA wsadata;
+		if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) {
+			MessageBox(NULL, TEXT("WSAStartup failed!"), TEXT("Error"), MB_OK);
+			exit(0);
+		}
 	}
 }
