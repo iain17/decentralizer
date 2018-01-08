@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [".","assert","inproc","pproffd"]
-  revision = "b41e3843fdeafb3c2840cb36fe9199c9beabf8ff"
+  revision = "645547693a6802592a8b638b068b9176d6d86084"
 
 [[projects]]
   branch = "master"
@@ -66,12 +66,6 @@
   name = "github.com/getlantern/testify"
   packages = ["assert"]
   revision = "2eeb3906e78fc89e76ba11e5694adeb64c0a0b43"
-
-[[projects]]
-  name = "github.com/giantswarm/retry-go"
-  packages = ["."]
-  revision = "867bc2467430df5c49fb33e54d648f5fc0e73bf1"
-  version = "0.5.0"
 
 [[projects]]
   branch = "master"
@@ -159,6 +153,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/iain17/ipinfo"
+  packages = ["."]
+  revision = "d6cf941d85a0898d013abdfde262d5c373a7d4db"
+
+[[projects]]
+  branch = "master"
   name = "github.com/iain17/kvcache"
   packages = ["lttlru","ttlru"]
   revision = "3b7a63bd72a172f5ab4b5bc2c9f12b8467c4a677"
@@ -198,12 +198,6 @@
   name = "github.com/jeffchao/backoff"
   packages = ["."]
   revision = "9d7fd7aa17f229da501a53ec2de5d2b8612cc65b"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/juju/errgo"
-  packages = ["."]
-  revision = "08cceb5d0b5331634b9826762a8fd53b29b86ad8"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -341,13 +335,13 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["bpf","context","http2","http2/hpack","idna","internal/iana","internal/socket","internal/timeseries","ipv4","ipv6","lex/httplex","trace"]
-  revision = "d866cfc389cec985d6fda2859936a575a55a3ab6"
+  revision = "434ec0c7fe3742c984919a691b2018a6e9694425"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "28a7276518d399b9634904daad79e18b44d481bc"
+  revision = "1792d66dc88e503d3cb2400578221cdf1f7fe26f"
 
 [[projects]]
   branch = "master"
@@ -371,11 +365,11 @@
   branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "c95af922eae69f190717a0b7148960af8c55a072"
+  revision = "1244d3ce02e3e1c16820ada0bae506b6c479f106"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5d5aaaeb488328cad89e8a45e4ed497067fa580ab5b6c17566a1fca2c08c635f"
+  inputs-digest = "7a19c7e04170437ec95e3956ba2de3a9064788c0ba31da2a0af762975ee27dbf"
   solver-name = "gps-cdcl"
   solver-version = 1
