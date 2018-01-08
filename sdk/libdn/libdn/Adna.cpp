@@ -98,7 +98,7 @@ namespace libdn {
 		siStartInfo.hStdOutput = g_hChildStd_OUT_Wr;
 		siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
 
-		LPSTR params = (LPSTR)va("%s api", adnaExecutable);
+		LPSTR params = (LPSTR)va("%s api -p %i", adnaExecutable, context.port);
 		const char* exec = va("%s\\%s", basePath, adnaExecutable);
 		bSuccess = CreateProcess(exec,
 			params,
@@ -122,7 +122,6 @@ namespace libdn {
 			CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
 		}
 
-		Sleep(1000);
 		if (!IsProcessRunning(adnaExecutable)) {
 			return nullptr;
 		}
@@ -134,7 +133,7 @@ namespace libdn {
 		return &piProcInfo;
 	}
 
-	bool ADNA_Init() {
+	bool ADNA_Ensure_Process() {
 		if (strlen(basePath) == 0) {
 			if (!_getcwd(basePath, sizeof(basePath))) {
 				MessageBoxA(NULL, "Could not resolve path.", "libdn", MB_OK);
@@ -145,6 +144,14 @@ namespace libdn {
 		bool reachable = false;
 		//While adna is not reachable.
 		while(!reachable) {
+			//If local, spawn one
+			if ((std::strcmp(context.host, "localhost") == 0 || std::strcmp(context.host, "127.0.0.1") == 0) && !IsProcessRunning(adnaExecutable)) {
+				PROCESS_INFORMATION* piProcInfo = NewAdnaInstance();
+				if (!piProcInfo) {
+					context.port++;
+				}
+			}
+
 			reachable = ADNA_reachable();
 			if (reachable) {
 				break;
@@ -152,14 +159,9 @@ namespace libdn {
 			if (tries > 3) {
 				break;
 			}
-			//If local, spawn one
-			if (std::strcmp(context.host, "localhost") == 0 || std::strcmp(context.host, "127.0.0.1") == 0) {
-				PROCESS_INFORMATION* piProcInfo = NewAdnaInstance();
-				if (!piProcInfo) {
-					context.port++;
-				}
-			}
+
 			Sleep(1000);
+			Log_Print("Trying another port...");
 			tries++;
 		}
 		return reachable;

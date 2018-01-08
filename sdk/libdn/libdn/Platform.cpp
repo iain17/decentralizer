@@ -27,6 +27,15 @@ namespace libdn {
 	}
 
 	LIBDN_API HealthResult* LIBDN_CALL Health() {
+		bool ok = ADNA_Ensure_Process();
+
+		bool adna = ADNA_Ensure_Process();
+		if (!adna) {
+			HealthResult* result = new HealthResult();
+			result->message = "Failed to connect";
+			return result;
+		}
+
 		// Data we are sending to the server.
 		pb::RPCHealthRequest request;
 

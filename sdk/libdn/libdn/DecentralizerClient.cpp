@@ -10,9 +10,9 @@ namespace libdn {
 		}
 		context.host = host;
 		context.port = port;
-		bool adna = ADNA_Init();
+		bool adna = ADNA_Ensure_Process();
 		if (!adna) {
-			MessageBoxA(NULL, "Could not start ADNA process.", "libdn", MB_OK);
+			MessageBoxA(NULL, "Could not connect.", "error", MB_OK);
 			exit(0);
 			return false;
 		}
