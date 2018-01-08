@@ -25,10 +25,12 @@ namespace libdn {
 
 		grpc::ClientContext* getContext() {
 			grpc::ClientContext* ctx = new grpc::ClientContext();
-			ctx->AddMetadata("cver", "0.1.0");
-			ctx->AddMetadata("netkey", networkKey);
-			ctx->AddMetadata("privkey", isPrivateKey ? "1" : "0");
-			ctx->AddMetadata("limited", limited ? "1" : "0");
+			if(ctx != nullptr){
+				ctx->AddMetadata("cver", "0.1.0");
+				ctx->AddMetadata("netkey", networkKey);
+				ctx->AddMetadata("privkey", isPrivateKey ? "1" : "0");
+				ctx->AddMetadata("limited", limited ? "1" : "0");
+			}
 			return ctx;
 		}
 

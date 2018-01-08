@@ -61,7 +61,7 @@ void findSessions() {
 
 void matchMakingTest() {
 	LogCB("matchMakingTest");
-	//createSession();
+	createSession();
 	findSessions();
 }
 
@@ -137,7 +137,7 @@ int main() {
 	libdn::Init(LogCB);
 	bool status = false;
 	while (!status) {
-		status = libdn::Connect("10.1.1.34:50010", NETWORKKEY, false, true);
+		status = libdn::Connect("localhost:50010", NETWORKKEY, false, true);
 	}
 	libdn::RegisterDirectMessageCallback(1337, MessageCB);
 

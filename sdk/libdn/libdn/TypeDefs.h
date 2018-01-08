@@ -12,7 +12,8 @@ namespace libdn {
 	typedef void(_cdecl * LogCB)(const char* message);
 	typedef void(_cdecl * DirectMessageCB)(PeerID&, const uint8_t *, uint32_t);
 
-	#define LIBDN_API extern "C" __declspec(dllexport)
+	//#define LIBDN_API extern "C" __declspec(dllexport)
+	#define LIBDN_API extern
 
 	#define LIBDN_CALL __cdecl
 }

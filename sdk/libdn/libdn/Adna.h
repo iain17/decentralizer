@@ -1,3 +1,5 @@
 #pragma once
-bool ADNA_Init();
-void ADNA_Shutdown();
+namespace libdn {
+	bool ADNA_Init();
+	void ADNA_Shutdown();
+}
