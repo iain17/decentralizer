@@ -12,6 +12,7 @@ import (
 	"time"
 	"github.com/iain17/framed"
 	"github.com/iain17/decentralizer/app/peerstore"
+	"github.com/iain17/ipinfo"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -121,19 +122,33 @@ func (d *Decentralizer) connectPreviousPeers() error {
 	return nil
 }
 
-//Save ourself at least in the address book.
+//Save our self at least in the address book.
 func (d *Decentralizer) saveSelf() error {
 	self, err := d.peers.FindByPeerId(d.i.Identity.Pretty())
-	if err != nil || self == nil {
-		//Add self
-		err = d.UpsertPeer(d.i.Identity.Pretty(), map[string]string{
-			"name": randomdata.SillyName(),
-		})
-		if err != nil {
-			return err
-		}
-		d.uploadPeers()
+	var details map[string]string
+	if err != nil {
+		details = map[string]string{}
+	} else {
+		details = self.Details
 	}
+	if details["name"] == "" {
+		details["name"] = randomdata.SillyName()
+	}
+	info, err := ipinfo.GetIpInfo()
+	if err != nil {
+		logger.Warningf("Could not find ip info for our session: %s", err)
+	}
+	if info != nil {
+		details["country"] = info.CountryCode
+		details["ip"] = info.Ip
+	}
+
+	//Add self
+	err = d.UpsertPeer(d.i.Identity.Pretty(), details)
+	if err != nil {
+		return err
+	}
+	d.uploadPeers()
 	return nil
 }
 

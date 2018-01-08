@@ -40,7 +40,7 @@ func init() {
 }
 
 
-const MAX_IDLE_TIME = 60 * time.Second//Ignored in daemon mode
+const MAX_IDLE_TIME = 15 * time.Second//Ignored in daemon mode
 // apiCmd represents the api command
 var apiCmd = &cobra.Command{
 	Use:   "api",
