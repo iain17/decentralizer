@@ -1,6 +1,6 @@
 #include "StdInc.h"
-
 namespace libdn {
+	PROCESS_INFORMATION* NewAdnaInstance();
 	//Will hang until we are connected and DN is ready.
 	LIBDN_API void LIBDN_CALL WaitUntilReady() {
 		HealthResult* health = Health();
@@ -17,6 +17,8 @@ namespace libdn {
 				if(i == 0){
 					Log_Print(fmt::format("Could not delete lock file. Please do so manually: {0}", lockFile.c_str()).c_str());
 					Sleep(8000);
+				} else {
+					NewAdnaInstance();
 				}
 				Sleep(1000);
 			}

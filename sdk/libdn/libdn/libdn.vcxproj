@@ -27,13 +27,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -149,6 +149,7 @@
       <Command>if "%COMPUTERNAME%" == "DESKTOP-7VJ8QSF" (
    copy /y "$(SolutionDir)libdn\*.h" "F:\Visual Studio projects\t5\deps\include\libdn"
    copy /y "$(SolutionDir)Release\libdn.lib" "F:\Visual Studio projects\t5\deps\lib"
+   copy /y "$(SolutionDir)include\lib\libdn_deps_release.lib" "F:\Visual Studio projects\t5\deps\lib"
 
 
    copy /y "$(TargetPath)" "F:\Program Files (x86)\Atlas\Call of Duty Black Ops\libdn.dll"
