@@ -49,6 +49,8 @@ extern const char * VERSION;
 extern struct DN_state_s {
 	libdn::DecentralizerClient* client;
 	bool initialized = false;
+	const char* host;
+	int port;
 	libdn::LogCB g_logCB;
 	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
 	::google::protobuf::RepeatedPtrField< ::std::string> peers;

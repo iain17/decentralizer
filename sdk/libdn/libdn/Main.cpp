@@ -6,12 +6,7 @@ namespace libdn {
 		if (context.initialized) {
 			return;
 		}
-		bool adna = ADNA_Init();
-		if (!adna) {
-			MessageBoxA(NULL, "Could not start ADNA process.", "libdn", MB_OK);
-			exit(0);
-			return;
-		}
+		setupUtils();
 		context.initialized = true;
 		context.g_logCB = logCallback;
 		Log_Print("Initializing libdn");
