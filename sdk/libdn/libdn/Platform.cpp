@@ -36,6 +36,11 @@ namespace libdn {
 
 	LIBDN_API std::shared_ptr<HealthResult> LIBDN_CALL Health() {
 		auto result = std::make_shared<HealthResult>();
+		if (context.client == nullptr) {
+			result->message = "Not connected";
+			return result;
+		}
+
 		bool adna = ADNA_Ensure_Process();
 		if (!adna) {
 			result->message = "Failed to connect";

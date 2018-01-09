@@ -137,7 +137,7 @@ int main() {
 	libdn::Init(LogCB);
 	bool status = false;
 	while (!status) {
-		status = libdn::Connect("localhost", 50010, NETWORKKEY, false, false);
+		status = libdn::Connect("localhost", 1337, NETWORKKEY, false, false);
 	}
 	printf("Starting example app\n");
 	libdn::RegisterDirectMessageCallback(1337, MessageCB);
