@@ -91,7 +91,7 @@ namespace libdn {
 	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL SendDirectMessageLegacy(uint32_t channel, PeerID& pid, const void* data, size_t size);
 	// function to register a callback when a direct message has been received
 	// Default channel is 0. For dedicated servers the channel will be the session id.
-	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback);
+	LIBDN_API void LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback);
 
 	/// ---------------------------------------------------------
 	// Matchmaking service

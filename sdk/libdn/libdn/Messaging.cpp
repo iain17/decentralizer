@@ -28,20 +28,29 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback) {
-		auto result = std::make_shared<Promise<bool>>([channel, callback](auto promise) {
+	LIBDN_API void LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback) {
+		new Promise<bool>([channel, callback](auto promise) {
 			pb::RPCReceiveDirectMessageRequest request;
 			request.set_channel(channel);
+
 			auto ctx = context.client->getContext();
 			std::unique_ptr< ::grpc::ClientReader< ::pb::RPCDirectMessage>> reader = context.client->stub_->ReceiveDirectMessage(ctx, request);
+			
+			Log_Print("Listening for direct message on channel %i", channel);
 			pb::RPCDirectMessage message;
 			while (reader->Read(&message)) {
 				std::string data = message.message();
 				std::string pid = message.pid();
 				callback(pid, (uint8_t*)data.c_str(), data.size());
 			}
-			return true;
+
+			Log_Print("Stopped for direct message on channel %i", channel);
+			auto status = reader->Finish();
+			if (!status.ok()) {
+				promise->reject(fmt::format("[Direct message callback registration failed] {1}: {2}", status.error_code(), status.error_message().c_str()));
+			}
+			delete promise;
+			return status.ok();
 		});
-		return result;
 	}
 }
