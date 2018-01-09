@@ -76,6 +76,9 @@ namespace libdn {
 	//Get yourself.
 	LIBDN_API Peer* LIBDN_CALL GetSelf();
 
+	//Refresh ourself
+	LIBDN_API bool LIBDN_CALL refreshSelf();
+
 	//Resolve a decentralized id to a peer id
 	LIBDN_API std::shared_ptr<PeerID> LIBDN_CALL ResolveDecentralizedId(DNID dId);
 

@@ -13,6 +13,8 @@ namespace libdn {
 
 			auto ctx = context.client->getContext();
 			grpc::Status status = context.client->stub_->UpsertSession(ctx, request, &reply);
+			request.release_session();
+
 			DNSID result;
 			if (status.ok()) {
 				auto sessionId = reply.sessionid();

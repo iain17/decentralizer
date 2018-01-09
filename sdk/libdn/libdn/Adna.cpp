@@ -133,16 +133,13 @@ namespace libdn {
 		return &piProcInfo;
 	}
 
-	bool ADNA_Ensure_Process() {
-		context.AdnaMutex.lock();
+	bool ADNA_Ensure_Process_do() {
 		if (context.host == nullptr || context.port == 0) {
-			context.AdnaMutex.unlock();
 			return false;
 		}
 		if (strlen(basePath) == 0) {
 			if (!_getcwd(basePath, sizeof(basePath))) {
 				MessageBoxA(NULL, "Could not resolve path.", "libdn", MB_OK);
-				context.AdnaMutex.unlock();
 				return false;
 			}
 		}
@@ -170,7 +167,13 @@ namespace libdn {
 			Log_Print("Trying another port...");
 			tries++;
 		}
-		context.AdnaMutex.unlock();
 		return reachable;
+	}
+
+	bool ADNA_Ensure_Process() {
+		context.AdnaMutex.lock();
+		bool result = ADNA_Ensure_Process_do();
+		context.AdnaMutex.unlock();
+		return result;
 	}
 }

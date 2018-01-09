@@ -5,7 +5,7 @@ namespace libdn {
 		auto result = std::make_shared<Promise<bool>>([peer](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCUpsertPeerRequest request;
-			pb::Peer p = DNPeerToPBPeer(peer);
+			auto p = DNPeerToPBPeer(peer);
 			request.set_allocated_peer(&p);
 
 			// Container for the data we expect from the server.
@@ -13,6 +13,7 @@ namespace libdn {
 
 			auto ctx = context.client->getContext();
 			grpc::Status status = context.client->stub_->UpsertPeer(ctx, request, &reply);
+			request.release_peer();
 
 			if (!status.ok()) {
 				promise->reject(fmt::format("[Could not upsert peer] {0}: {1}", status.error_code(), status.error_message().c_str()));
@@ -72,8 +73,22 @@ namespace libdn {
 		return result;
 	}
 
+	LIBDN_API bool LIBDN_CALL refreshSelf() {
+		std::string pid = "self";
+		auto request = GetPeerById(0, pid);
+		if (request->wait()) {
+			auto peer = request->get();
+			context.self = peer;
+			return true;
+		}
+		return false;
+	}
+
 	LIBDN_API Peer* LIBDN_CALL GetSelf() {
 		context.selfMutex.lock();
+		if (context.self.dnId == 0) {
+			refreshSelf();
+		}
 		Peer* self = &context.self;
 		context.selfMutex.unlock();
 		return self;
