@@ -123,6 +123,7 @@ func (nt *NetTableService) Save() error {
 	if err != nil {
 		return err
 	}
+	nt.logger.Info("Saved %d peers to net table file", peers)
 	return configPath.QueryCacheFolder().WriteFile(NET_TABLE_FILE, data)
 }
 
@@ -140,6 +141,7 @@ func (nt *NetTableService) Restore() error {
 	if err != nil {
 		return err
 	}
+	nt.logger.Info("Restored %d peers from net table file", peers)
 	for _, peer := range peers.Peers {
 		nt.Discovered(&net.UDPAddr{
 			IP:   net.ParseIP(peer.Ip),

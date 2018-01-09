@@ -90,19 +90,19 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
-	var d *discovery.Discovery
-	if USE_OWN_BOOTSTRAPPING {
-		d, err = discovery.New(n, MAX_DISCOVERED_PEERS, limitedConnection)
-		if err != nil {
-			return nil, err
-		}
-	}
 	ipfsPath := Base.Path+"/ipfs"
 	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
 	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection)
 	if err != nil {
 		return nil, err
+	}
+	var d *discovery.Discovery
+	if USE_OWN_BOOTSTRAPPING {
+		d, err = discovery.New(ctx, n, MAX_DISCOVERED_PEERS, limitedConnection)
+		if err != nil {
+			return nil, err
+		}
 	}
 	b, err := ipfs.NewBitSwap(i)
 	if err != nil {

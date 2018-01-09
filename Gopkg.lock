@@ -137,7 +137,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "64425a6f1dc2a0d7562b8a4dcfa905d38fe1f704"
+  revision = "ffdcfbc90a0a1a4b5346237331f49237ef4d8ad8"
 
 [[projects]]
   branch = "master"

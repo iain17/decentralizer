@@ -19,8 +19,8 @@ type Discovery struct {
 	limited bool//Means we are on a limited connection. Means we won't advertise on DHT
 }
 
-func New(network *network.Network, max int, limitedConnection bool) (*Discovery, error) {
-	ctx, cancel := context.WithCancel(context.Background())
+func New(ctx context.Context, network *network.Network, max int, limitedConnection bool) (*Discovery, error) {
+	ctx, cancel := context.WithCancel(ctx)
 	defer func() {
 		if r := recover(); r != nil {
 			var ok bool
