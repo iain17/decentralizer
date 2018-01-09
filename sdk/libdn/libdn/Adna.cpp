@@ -110,8 +110,8 @@ namespace libdn {
 			(LPSTR)va("%s\\", basePath),          // use parent's current directory 
 			&siStartInfo,  // STARTUPINFO pointer 
 			&piProcInfo);  // receives PROCESS_INFORMATION
-		CloseHandle(g_hChildStd_ERR_Wr);
-		CloseHandle(g_hChildStd_OUT_Wr);
+		//CloseHandle(g_hChildStd_ERR_Wr);
+		//CloseHandle(g_hChildStd_OUT_Wr);
 		// If an error occurs, exit the application. 
 		if (!bSuccess) {
 			//MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
@@ -134,9 +134,15 @@ namespace libdn {
 	}
 
 	bool ADNA_Ensure_Process() {
+		context.AdnaMutex.lock();
+		if (context.host == nullptr || context.port == 0) {
+			context.AdnaMutex.unlock();
+			return false;
+		}
 		if (strlen(basePath) == 0) {
 			if (!_getcwd(basePath, sizeof(basePath))) {
 				MessageBoxA(NULL, "Could not resolve path.", "libdn", MB_OK);
+				context.AdnaMutex.unlock();
 				return false;
 			}
 		}
@@ -164,6 +170,7 @@ namespace libdn {
 			Log_Print("Trying another port...");
 			tries++;
 		}
+		context.AdnaMutex.unlock();
 		return reachable;
 	}
 }

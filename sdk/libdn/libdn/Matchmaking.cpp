@@ -1,21 +1,21 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API Promise<UpsertSessionResult>* LIBDN_CALL UpsertSession(libdn::Session * session) {
-		auto result = new Promise<UpsertSessionResult>([session](Promise<UpsertSessionResult>* promise) {
+	LIBDN_API std::shared_ptr<Promise<DNSID>> LIBDN_CALL UpsertSession(libdn::Session& session) {
+		auto result = std::make_shared<Promise<DNSID>>([session](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCUpsertSessionRequest request;
-			request.set_allocated_session(DNSessionToPBSession(session));
+			auto s = DNSessionToPBSession(session);
+			request.set_allocated_session(&s);
 
 			// Container for the data we expect from the server.
 			pb::RPCUpsertSessionResponse reply;
 
 			auto ctx = context.client->getContext();
 			grpc::Status status = context.client->stub_->UpsertSession(ctx, request, &reply);
-
-			UpsertSessionResult result;
+			DNSID result;
 			if (status.ok()) {
-				result.sessionId = reply.sessionid();
+				auto sessionId = reply.sessionid();
 			} else {
 				promise->reject(fmt::format("[Could not upsert session] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
@@ -24,8 +24,8 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<bool>* LIBDN_CALL DeleteSession(DNSID sid) {
-		auto result = new Promise<bool>([sid](Promise<bool>* promise) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL DeleteSession(DNSID sid) {
+		auto result = std::make_shared<Promise<bool>>([sid](auto promise) {
 			//build request.
 			pb::RPCDeleteSessionRequest request;
 			request.set_sessionid(sid);
@@ -47,8 +47,8 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value) {
-		auto result = new Promise<int>([type, key, value](Promise<int>* promise) {
+	LIBDN_API std::shared_ptr<Promise<int>> LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value) {
+		auto result = std::make_shared<Promise<int>>([type, key, value](auto promise) {
 			//build request.
 			pb::RPCGetSessionIdsByDetailsRequest request;
 			request.set_type(type);
@@ -74,37 +74,8 @@ namespace libdn {
 		return result;
 	}
 
-	/*
-	LIBDN_API Promise<int>* LIBDN_CALL GetNumSessionsByPeerIds(uint32_t type, []PeerID ids) {
-		auto result = new Promise<int>([type, ids](Promise<int>* promise) {
-			//build request.
-			pb::RPCGetSessionIdsByPeerIdsRequest request;
-			for (auto const peerId : ids) {
-				request.add_peerids(peerId);
-			}
-
-			// Container for the data we expect from the server.
-			pb::RPCGetSessionIdsResponse reply;
-
-			auto ctx = context.client->getContext();
-			grpc::Status status = context.client->stub_->GetSessionIdsByDetails(ctx, request, &reply);
-
-			if (status.ok()) {
-				context.sessions = reply.sessionids();
-				int size = context.sessions.size();
-				return size;
-			} else {
-				promise->reject(fmt::format("[Could not get session ids] {0}: {1}", status.error_code(), status.error_message().c_str()));
-			}
-
-			return 0;
-		});
-		return result;
-	}
-	*/
-
-	LIBDN_API Promise<libdn::Session*>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId) {
-		auto result = new Promise<libdn::Session*>([sessionId](Promise<libdn::Session*>* promise) {
+	LIBDN_API std::shared_ptr<Promise<libdn::Session>> LIBDN_CALL GetSessionBySessionId(DNSID sessionId) {
+		auto result = std::make_shared<Promise<libdn::Session>>([sessionId](auto promise) {
 			//build request.
 			pb::RPCGetSessionRequest request;
 			request.set_sessionid(sessionId);
@@ -118,14 +89,13 @@ namespace libdn {
 			if (!status.ok()) {
 				promise->reject(fmt::format("[Could not get session] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
-			auto session = reply.session();
-			return PBSessionToDNSession(&session);
+			return PBSessionToDNSession(reply.session());
 		});
 		return result;
 	}
 
 
-	LIBDN_API Session* LIBDN_CALL GetSessionByIndex(int index) {
+	LIBDN_API std::shared_ptr<Session> LIBDN_CALL GetSessionByIndex(int index) {
 		if (index > context.sessions.size() - 1) {
 			return NULL;
 		}
@@ -134,9 +104,8 @@ namespace libdn {
 			Log_Print(reason.c_str());
 		});
 		if (req->wait()) {
-			return req->get();
+			return std::make_shared<Session>(req->get());
 		}
 		return NULL;
 	}
-
 }

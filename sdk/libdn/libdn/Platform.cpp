@@ -1,9 +1,26 @@
 #include "StdInc.h"
 namespace libdn {
-	PROCESS_INFORMATION* NewAdnaInstance();
+
+	void fixImproperShutdown(const char* basePath) {
+		Log_Print("Improper shutdown detected. Trying to auto fix.");
+		const char* lockFile = va("%s\\ipfs\\repo.lock", basePath);
+		int i = remove(lockFile);
+		if (i == 0) {
+			Log_Print("Could not delete lock file. Please do so manually: %s", lockFile);
+			Sleep(8000);
+		} else {
+			Log_Print("Lock file %s deleted. Restarting...", lockFile);
+			bool adna = ADNA_Ensure_Process();
+			if (!adna) {
+				exit(0);
+			}
+		}
+		Sleep(1000);
+	}
+
 	//Will hang until we are connected and DN is ready.
 	LIBDN_API void LIBDN_CALL WaitUntilReady() {
-		HealthResult* health = Health();
+		auto health = Health();
 		while (!health || !health->ready) {
 			health = Health();
 			if (health != nullptr && health->ready) {
@@ -11,27 +28,16 @@ namespace libdn {
 			}
 			//Did we close improperly?
 			if (health->message.find(".lock") != std::string::npos) {
-				ADNA_Shutdown();
-				std::string lockFile = health->basePath + "\\ipfs\\repo.lock";
-				int i = remove(lockFile.c_str());
-				if(i == 0){
-					Log_Print(fmt::format("Could not delete lock file. Please do so manually: {0}", lockFile.c_str()).c_str());
-					Sleep(8000);
-				} else {
-					NewAdnaInstance();
-				}
-				Sleep(1000);
+				fixImproperShutdown(health->basePath.c_str());
 			}
 			Sleep(100);
 		}
 	}
 
-	LIBDN_API HealthResult* LIBDN_CALL Health() {
-		bool ok = ADNA_Ensure_Process();
-
+	LIBDN_API std::shared_ptr<HealthResult> LIBDN_CALL Health() {
+		auto result = std::make_shared<HealthResult>();
 		bool adna = ADNA_Ensure_Process();
 		if (!adna) {
-			HealthResult* result = new HealthResult();
 			result->message = "Failed to connect";
 			return result;
 		}
@@ -45,7 +51,6 @@ namespace libdn {
 		auto ctx = context.client->getContext();
 		grpc::Status status = context.client->stub_->GetHealth(ctx, request, &reply);
 
-		HealthResult* result = new HealthResult();
 		result->ready = reply.ready();
 		result->basePath = reply.basepath();
 		if (status.ok()) {

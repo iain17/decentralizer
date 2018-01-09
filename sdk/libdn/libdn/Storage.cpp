@@ -1,8 +1,8 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API Promise<std::string>* LIBDN_CALL GetPublisherFile(const char* name) {
-		auto result = new Promise<std::string>([name](Promise<std::string>* promise) {
+	LIBDN_API std::shared_ptr<Promise<std::string>> LIBDN_CALL GetPublisherFile(const char* name) {
+		auto result = std::make_shared<Promise<std::string>>([name](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCGetPublisherFileRequest request;
 			request.set_name(name);
@@ -21,8 +21,8 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise< std::string >*LIBDN_CALL GetPeerFile(PeerID& pid, const char * name) {
-		auto result = new Promise< std::string>([pid, name](Promise<std::string>* promise) {
+	LIBDN_API std::shared_ptr<Promise< std::string >> LIBDN_CALL GetPeerFile(PeerID& pid, const char * name) {
+		auto result = std::make_shared<Promise< std::string>>([pid, name](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCGetPeerFileRequest request;
 			request.set_name(name);
@@ -41,8 +41,8 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFileLegacy(const char * name, const void* data, size_t size) {
-		auto result = new Promise<bool>([name, data, size](Promise<bool>* promise) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL WritePeerFileLegacy(const char * name, const void* data, size_t size) {
+		auto result = std::make_shared<Promise<bool>>([name, data, size](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCWritePeerFileRequest request;
 			request.set_name(name);
@@ -64,7 +64,7 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFile(const char * name, std::string& data) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL WritePeerFile(const char * name, std::string& data) {
 		return WritePeerFileLegacy(name, data.c_str(), data.size());
 	}
 }

@@ -1,12 +1,12 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(uint32_t channel, PeerID& pid, std::string& data) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL SendDirectMessage(uint32_t channel, PeerID& pid, std::string& data) {
 		return SendDirectMessageLegacy(channel, pid, data.c_str(), data.size());
 	}
 
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(uint32_t channel, PeerID& pid, const void* data, size_t size) {
-		auto result = new Promise<bool>([channel, pid, data, size](Promise<bool>* promise) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL SendDirectMessageLegacy(uint32_t channel, PeerID& pid, const void* data, size_t size) {
+		auto result = std::make_shared<Promise<bool>>([channel, pid, data, size](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCDirectMessage request;
 			request.set_channel(channel);
@@ -19,7 +19,6 @@ namespace libdn {
 			auto ctx = context.client->getContext();
 			grpc::Status status = context.client->stub_->SendDirectMessage(ctx, request, &reply);
 
-			UpsertSessionResult result;
 			if (!status.ok()) {
 				promise->reject(fmt::format("[Could not send direct message to {0}] {1}: {2}", pid.c_str(), status.error_code(), status.error_message().c_str()));
 				return false;
@@ -29,8 +28,8 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<bool>* LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback) {
-		return new Promise<bool>([channel, callback](Promise<bool>* promise) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback) {
+		auto result = std::make_shared<Promise<bool>>([channel, callback](auto promise) {
 			pb::RPCReceiveDirectMessageRequest request;
 			request.set_channel(channel);
 			auto ctx = context.client->getContext();
@@ -43,7 +42,6 @@ namespace libdn {
 			}
 			return true;
 		});
+		return result;
 	}
-
-
 }

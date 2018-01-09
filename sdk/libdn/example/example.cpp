@@ -19,14 +19,14 @@ void MessageCB(libdn::PeerID& from, const uint8_t* data, uint32_t size) {
 void createSession() {
 	LogCB("createSession");
 	//Create session.
-	libdn::Session* session = new libdn::Session();
-	session->name = "Big tests";
-	session->type = 2117;
-	session->port = 8080;
-	session->details["cool"] = "yes";
+	libdn::Session session;
+	session.name = "Big tests";
+	session.type = 2117;
+	session.port = 8080;
+	session.details["cool"] = "yes";
 	auto request = libdn::UpsertSession(session);
-	request->then([](libdn::UpsertSessionResult result) {
-		printf("Created session. id = %llx\n", result.sessionId);
+	request->then([](libdn::DNSID sessionId) {
+		printf("Created session. id = %llx\n", sessionId);
 	});
 	request->wait();
 }
@@ -100,15 +100,15 @@ void getSelf() {
 		} else {
 
 			//Update my name
-			self->details["name"] = "iain17";
-			auto request = libdn::UpsertPeer(self);
+			self->details["name"] = "example";
+			auto request = libdn::UpsertPeer(*self);
 			request->wait();
 			self = libdn::GetSelf();
 
 			printf("Self peer id = '%s' decentralized id = '%16llX' and name is %s\n", self->pId.c_str(), self->dnId, self->details["name"].c_str());
 		
 			//Resolve my decentralized id.
-			libdn::PeerID* peerId = libdn::ResolveDecentralizedId(self->dnId);
+			auto peerId = libdn::ResolveDecentralizedId(self->dnId);
 			if (!peerId->empty()) {
 				printf("Resolving works %s\n", peerId->c_str());
 			} else {

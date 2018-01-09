@@ -36,22 +36,21 @@ namespace libdn {
 	LIBDN_API void LIBDN_CALL WaitUntilReady();
 
 	// Fetch the health of the DN server.
-	LIBDN_API HealthResult* LIBDN_CALL Health();
-
+	LIBDN_API std::shared_ptr<HealthResult> LIBDN_CALL Health();
 
 	// ----------------------------------------------------------
 	// Storage
 	// ----------------------------------------------------------
 
 	// Fetches a publisher file.
-	LIBDN_API Promise<std::string>* LIBDN_CALL GetPublisherFile(const char* name);
+	LIBDN_API std::shared_ptr<Promise<std::string>> LIBDN_CALL GetPublisherFile(const char* name);
 
 	// Fetches a peer file
-	LIBDN_API Promise< std::string >*LIBDN_CALL GetPeerFile(PeerID& pid, const char * name);
+	LIBDN_API std::shared_ptr<Promise<std::string>>LIBDN_CALL GetPeerFile(PeerID& pid, const char * name);
 
 	// Writes a peer file
-	LIBDN_API Promise<bool>* LIBDN_CALL WritePeerFileLegacy(const char * name, const void* data, size_t size);
-	LIBDN_API Promise<bool>*LIBDN_CALL WritePeerFile(const char * name, std::string& data);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL WritePeerFileLegacy(const char * name, const void* data, size_t size);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL WritePeerFile(const char * name, std::string& data);
 
 	// ----------------------------------------------------------
 	// Addressbook service
@@ -62,35 +61,34 @@ namespace libdn {
 		DNID dnId;
 		std::map<std::string, std::string> details;
 	};
-
-	LIBDN_API Promise<bool>* LIBDN_CALL UpsertPeer(Peer* peer);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL UpsertPeer(Peer& peer);
 
 	// gets the number of peers using search in details
 	// the key is the key of details and the value is the value of the details.
-	LIBDN_API Promise<int>* LIBDN_CALL GetNumPeers(const char* key, const char* value);
+	LIBDN_API std::shared_ptr<Promise<int>> LIBDN_CALL GetNumPeers(const char* key, const char* value);
 
 	// gets a single peer by index
-	LIBDN_API Peer* LIBDN_CALL GetPeerByIndex(int index);
+	LIBDN_API std::shared_ptr<Peer> LIBDN_CALL GetPeerByIndex(int index);
 
 	// gets a single session's info by either peer id or decentralized id
-	LIBDN_API Promise<Peer*>* LIBDN_CALL GetPeerById(DNID dId, PeerID& pId);
+	LIBDN_API std::shared_ptr<Promise<Peer>> LIBDN_CALL GetPeerById(DNID dId, PeerID& pId);
 
 	//Get yourself.
 	LIBDN_API Peer* LIBDN_CALL GetSelf();
 
 	//Resolve a decentralized id to a peer id
-	LIBDN_API PeerID* LIBDN_CALL ResolveDecentralizedId(DNID dId);
+	LIBDN_API std::shared_ptr<PeerID> LIBDN_CALL ResolveDecentralizedId(DNID dId);
 
 
 	// ----------------------------------------------------------
 	// Direct messaging service
 	// ----------------------------------------------------------
 	// sends direct message to another peer.
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessage(uint32_t channel, PeerID& pid, std::string& data);
-	LIBDN_API Promise<bool>*LIBDN_CALL SendDirectMessageLegacy(uint32_t channel, PeerID& pid, const void* data, size_t size);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL SendDirectMessage(uint32_t channel, PeerID& pid, std::string& data);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL SendDirectMessageLegacy(uint32_t channel, PeerID& pid, const void* data, size_t size);
 	// function to register a callback when a direct message has been received
 	// Default channel is 0. For dedicated servers the channel will be the session id.
-	LIBDN_API Promise<bool>* LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL RegisterDirectMessageCallback(uint32_t channel, DirectMessageCB callback);
 
 	/// ---------------------------------------------------------
 	// Matchmaking service
@@ -109,23 +107,18 @@ namespace libdn {
 		std::map<std::string, std::string> details;
 	};
 
-	class UpsertSessionResult {
-	public:
-		DNSID sessionId;
-	};
-
 	// creates/updates a session
-	LIBDN_API Promise<UpsertSessionResult>* LIBDN_CALL UpsertSession(libdn::Session * session);
+	LIBDN_API std::shared_ptr<Promise<DNSID>> LIBDN_CALL UpsertSession(libdn::Session& session);
 
 	// deletes a session
-	LIBDN_API Promise<bool>* LIBDN_CALL DeleteSession(DNSID sessionId);
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL DeleteSession(DNSID sessionId);
 
 	// gets the number of sessions
-	LIBDN_API Promise<int>* LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value);
+	LIBDN_API std::shared_ptr<Promise<int>> LIBDN_CALL GetNumSessions(uint32_t type, const char* key, const char* value);
 
 	// gets a single session's info by index
-	LIBDN_API Session* LIBDN_CALL GetSessionByIndex(int index);
+	LIBDN_API std::shared_ptr<Session> LIBDN_CALL GetSessionByIndex(int index);
 
 	// gets a single session's info by sessionId
-	LIBDN_API Promise<Session*>* LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
+	LIBDN_API std::shared_ptr<Promise<libdn::Session>> LIBDN_CALL GetSessionBySessionId(DNSID sessionId);
 }

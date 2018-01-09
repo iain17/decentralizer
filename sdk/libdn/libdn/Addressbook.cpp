@@ -1,11 +1,12 @@
 #include "StdInc.h"
 
 namespace libdn {
-	LIBDN_API Promise<bool>*LIBDN_CALL UpsertPeer(libdn::Peer * peer) {
-		auto result = new Promise<bool>([peer](Promise<bool>* promise) {
+	LIBDN_API std::shared_ptr<Promise<bool>> LIBDN_CALL UpsertPeer(libdn::Peer& peer) {
+		auto result = std::make_shared<Promise<bool>>([peer](auto promise) {
 			// Data we are sending to the server.
 			pb::RPCUpsertPeerRequest request;
-			request.set_allocated_peer(DNPeerToPBPeer(peer));
+			pb::Peer p = DNPeerToPBPeer(peer);
+			request.set_allocated_peer(&p);
 
 			// Container for the data we expect from the server.
 			pb::RPCUpsertPeerResponse reply;
@@ -13,7 +14,6 @@ namespace libdn {
 			auto ctx = context.client->getContext();
 			grpc::Status status = context.client->stub_->UpsertPeer(ctx, request, &reply);
 
-			UpsertSessionResult result;
 			if (!status.ok()) {
 				promise->reject(fmt::format("[Could not upsert peer] {0}: {1}", status.error_code(), status.error_message().c_str()));
 				return false;
@@ -23,8 +23,8 @@ namespace libdn {
 		return result;
 	}
 
-	LIBDN_API Promise<int>*LIBDN_CALL GetNumPeers(const char * key, const char * value) {
-		auto result = new Promise<int>([key, value](Promise<int>* promise) {
+	LIBDN_API std::shared_ptr<Promise<int>> LIBDN_CALL GetNumPeers(const char * key, const char * value) {
+		auto result = std::make_shared<Promise<int>>([key, value](auto promise) {
 			//build request.
 			pb::RPCGetPeerIdsRequest request;
 			request.set_key(key);
@@ -51,8 +51,8 @@ namespace libdn {
 
 	//If pId is set to "self" it will automatically resolve to the local peer id.
 	//If both are given. Perference is given to pId.
-	LIBDN_API Promise<Peer*>*LIBDN_CALL GetPeerById(DNID dId, PeerID& pId) {
-		auto result = new Promise<Peer*>([dId, pId](Promise<Peer*>* promise) {
+	LIBDN_API std::shared_ptr<Promise<Peer>> LIBDN_CALL GetPeerById(DNID dId, PeerID& pId) {
+		auto result = std::make_shared<Promise<Peer>>([dId, pId](auto promise) {
 			//build request.
 			pb::RPCGetPeerRequest request;
 			request.set_dnid(dId);
@@ -67,19 +67,19 @@ namespace libdn {
 			if (!status.ok()) {
 				promise->reject(fmt::format("[Could not get peer] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
-			auto peer = reply.peer();
-			return PBPeerToDNPeer(&peer);
+			return PBPeerToDNPeer(reply.peer());
 		});
 		return result;
 	}
 
 	LIBDN_API Peer* LIBDN_CALL GetSelf() {
-		std::string pid = "self";
-		auto request = GetPeerById(0, pid);
-		return request->get();
+		context.selfMutex.lock();
+		Peer* self = &context.self;
+		context.selfMutex.unlock();
+		return self;
 	}
 
-	LIBDN_API Peer *LIBDN_CALL GetPeerByIndex(int index) {
+	LIBDN_API std::shared_ptr<Peer> LIBDN_CALL GetPeerByIndex(int index) {
 		if (index > context.peers.size() - 1) {
 			return NULL;
 		}
@@ -89,21 +89,21 @@ namespace libdn {
 			Log_Print(reason.c_str());
 		});
 		if (req->wait()) {
-			return req->get();
+			return std::make_shared<Peer>(req->get());
 		}
 		return NULL;
 	}
 
-	LIBDN_API PeerID* LIBDN_CALL ResolveDecentralizedId(DNID dId) {
+	LIBDN_API std::shared_ptr<PeerID> LIBDN_CALL ResolveDecentralizedId(DNID dId) {
 		std::string empty = "";
 		auto request = GetPeerById(dId, empty);
 		request->fail([](const char* reason) {
 			Log_Print("Could not resolve DecentralizedId: %s", reason);
 		});
 		if (request->wait()) {
-			PeerID* peerId = (PeerID*) new std::string(request->get()->pId);
-			return peerId;
+			auto test = request->get().pId;
+			return std::make_shared<PeerID>(test);
 		}
-		return new std::string("");
+		return std::make_shared<PeerID>("");
 	}
 }

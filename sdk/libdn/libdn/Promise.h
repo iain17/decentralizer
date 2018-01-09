@@ -50,6 +50,8 @@ namespace libdn {
 			this->fail(Log_Print);
 		}
 
+		~Promise() {}
+
 		void resolve(T result) {
 			if (this->state != 0) {
 				return;
@@ -119,14 +121,6 @@ namespace libdn {
 			return this->_promise.get();
 		}
 
-		/*
-		void free() {
-			if (failureText) {
-				delete failureText;
-			}
-			delete this;
-		}
-		*/
 	};
 
 }

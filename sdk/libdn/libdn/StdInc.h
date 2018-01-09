@@ -47,6 +47,8 @@ extern const char * VERSION;
 
 // global state
 extern struct DN_state_s {
+	std::mutex AdnaMutex;
+	std::mutex selfMutex;
 	libdn::DecentralizerClient* client;
 	bool initialized = false;
 	const char* host;
@@ -54,6 +56,7 @@ extern struct DN_state_s {
 	libdn::LogCB g_logCB;
 	::google::protobuf::RepeatedField<::google::protobuf::uint64> sessions;
 	::google::protobuf::RepeatedPtrField< ::std::string> peers;
+	libdn::Peer self;
 } context;
 
 #endif
