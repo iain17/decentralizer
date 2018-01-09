@@ -109,8 +109,8 @@ void getSelf() {
 		
 			//Resolve my decentralized id.
 			auto peerId = libdn::ResolveDecentralizedId(self->dnId);
-			if (!peerId->empty()) {
-				printf("Resolving works %s\n", peerId->c_str());
+			if (!peerId.empty()) {
+				printf("Resolving works %s\n", peerId.c_str());
 			} else {
 				printf("Resolving is fucked\n");
 			}

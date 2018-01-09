@@ -109,16 +109,16 @@ namespace libdn {
 		return NULL;
 	}
 
-	LIBDN_API std::shared_ptr<PeerID> LIBDN_CALL ResolveDecentralizedId(DNID dId) {
+	LIBDN_API PeerID LIBDN_CALL ResolveDecentralizedId(DNID dId) {
 		std::string empty = "";
 		auto request = GetPeerById(dId, empty);
 		request->fail([](const char* reason) {
 			Log_Print("Could not resolve DecentralizedId: %s", reason);
 		});
+		PeerID result;
 		if (request->wait()) {
-			auto test = request->get().pId;
-			return std::make_shared<PeerID>(test);
+			result = request->get().pId;
 		}
-		return std::make_shared<PeerID>("");
+		return result;
 	}
 }
