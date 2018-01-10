@@ -13,6 +13,7 @@ import (
 	"github.com/iain17/framed"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/ipinfo"
+	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -31,6 +32,11 @@ func (d *Decentralizer) initAddressbook() {
 	go d.provideSelf()
 	d.cron.Every(30).Seconds().Do(d.uploadPeers)
 	d.cron.Every(5).Minutes().Do(d.provideSelf)
+
+	d.b.RegisterValidator(DHT_DECENTRALIZED_ID_KEY_TYPE, func(key string, val []byte) error{
+		_, err := libp2pPeer.IDB58Decode(string(val))
+		return err
+	}, false)
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -62,8 +68,12 @@ func (d *Decentralizer) provideSelf() {
 		logger.Warningf("Could not provide self: %v", err)
 		return
 	}
-	d.b.Provide(getDecentralizedIdKey(peer.DnId))
-	logger.Debug("Provided self")
+	err = d.b.PutValue(DHT_DECENTRALIZED_ID_KEY_TYPE, getDecentralizedIdKey(peer.DnId), []byte(d.i.Identity.Pretty()))
+	if err != nil {
+		logger.Warning(err)
+	} else {
+		logger.Debug("Successfully provided self")
+	}
 }
 
 func (d *Decentralizer) uploadPeers() {

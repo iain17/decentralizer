@@ -26,6 +26,7 @@ const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
 const CONCURRENT_SESSION_REQUEST = 100
 const MAX_SESSION_SEARCHES = 10
 const MESSAGE_DEADLINE = time.Minute * 10
+const DHT_DECENTRALIZED_ID_KEY_TYPE = "decentralized"
 const DHT_SESSIONS_KEY_TYPE = "sessions"
 var FILE_EXPIRE = time.Hour * 1
 
