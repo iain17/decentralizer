@@ -41,7 +41,7 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		publication: publication,
 	}
 	instance.fetch()
-	//d.cron.Every(30).Seconds().Do(instance.fetch)
+	d.cron.Every(30).Seconds().Do(instance.fetch)
 	return instance, nil
 }
 
@@ -52,7 +52,7 @@ func (s *search) run(ctx context.Context) error {
 	defer s.mutex.Unlock()
 
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 99999)
+	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 1024)
 	if err != nil {
 		return err
 	}
@@ -135,6 +135,5 @@ func (s *search) fetch() (*sessionstore.Store, error) {
 		}
 	}, 5 * time.Second)
 	cancel()
-	//TODO: Return err
-	return s.storage, nil
+	return s.storage, err
 }

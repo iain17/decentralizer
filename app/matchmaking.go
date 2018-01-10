@@ -39,8 +39,27 @@ func (d *Decentralizer) initMatchmaking() {
 		}
 		return validateDNSessionsRecord(&sessions)
 	}, true)
+
+	d.b.RegisterSelector(DHT_SESSIONS_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+		var currRecord pb.DNSessionsRecord
+		best := 0
+		for i, val := range values {
+			var record pb.DNSessionsRecord
+			err = gogoProto.Unmarshal(val, &record)
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			if isNewerRecord(currRecord.Published, record.Published) {
+				currRecord = record
+				best = i
+			}
+		}
+		return best, nil
+	})
 }
 
+//Checks if its past the publication time
 func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	//Check publish time
 	now := time.Now().UTC()
@@ -146,7 +165,7 @@ func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 	//Before we override DHT with our advisement. Let us check others.
 	search := d.getSessionSearch(sessionType)
 	store, err := search.fetch()
-	if err != nil {
+	if err != nil && err.Error() != "routing: not found" {
 		return err
 	}
 	localSessions, err := store.FindByPeerId(d.i.Identity.Pretty())

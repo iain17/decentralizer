@@ -45,7 +45,7 @@ func (d *Decentralizer) initAddressbook() {
 	}, true)
 
 	d.b.RegisterSelector(DHT_PEER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
-		var peer *pb.Peer
+		var currPeer pb.Peer
 		best := 0
 		for i, val := range values {
 			var record pb.DNPeerRecord
@@ -54,7 +54,8 @@ func (d *Decentralizer) initAddressbook() {
 				logger.Warning(err)
 				continue
 			}
-			if d.isNewerPeer(peer, record.Peer) {
+			if isNewerRecord(currPeer.Published, record.Peer.Published) {
+				currPeer = *record.Peer
 				best = i
 			}
 		}
