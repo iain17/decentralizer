@@ -66,6 +66,8 @@ var apiCmd = &cobra.Command{
 				logger.Fatal(err)
 			}
 			logger.AddOutput(fileOut)
+			ipfsLogOption := logging.Output(fileOut)
+			logging.Configure(ipfsLogOption)
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())

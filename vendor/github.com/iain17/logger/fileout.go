@@ -27,3 +27,7 @@ func (s *Fileout) Print(level int, message string) error {
 	_, err := s.file.WriteString(data)
 	return err
 }
+
+func (s *Fileout) Write(p []byte) (n int, err error) {
+	return s.file.Write(p)
+}
