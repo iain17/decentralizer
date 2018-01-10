@@ -58,6 +58,7 @@ service Decentralizer {
 	// Get an individual peer. Takes either a peer id or decentralizer id and returns the peer info.
 	rpc GetPeer(RPCGetPeerRequest) returns (RPCGetPeerResponse) {
 		option (google.api.http) = { get: "/v1/peer/{pId}" };
+		option (google.api.http) = { get: "/v1/peer/{pId}" };
 	}
 
 	//

@@ -123,7 +123,7 @@ func (nt *NetTableService) Save() error {
 	if err != nil {
 		return err
 	}
-	nt.logger.Info("Saved %d peers to net table file", peers)
+	nt.logger.Infof("Saved %d peers to net table file", len(peers))
 	return configPath.QueryCacheFolder().WriteFile(NET_TABLE_FILE, data)
 }
 
@@ -141,7 +141,7 @@ func (nt *NetTableService) Restore() error {
 	if err != nil {
 		return err
 	}
-	nt.logger.Info("Restored %d peers from net table file", peers)
+	nt.logger.Infof("Restored %d peers from net table file", len(peers.Peers))
 	for _, peer := range peers.Peers {
 		nt.Discovered(&net.UDPAddr{
 			IP:   net.ParseIP(peer.Ip),
@@ -235,7 +235,7 @@ func (nt *NetTableService) heartbeat() {
 
 func (nt *NetTableService) tryConnect(h *net.UDPAddr) error {
 	if nt.isEnoughPeers() {
-		return errors.New("Will not connected. Reached max.")
+		return errors.New("will not connected. Reached max")
 	}
 	rn, err := connect(h, nt.localNode)
 	if err != nil {

@@ -7,9 +7,16 @@ import (
 	"github.com/golang/protobuf/proto"
 	"io"
 	"github.com/iain17/framed"
+	"github.com/iain17/logger"
 )
 
 func Decode(r io.Reader) (*Message, error) {
+	defer func() {
+		if r := recover(); r == nil {
+			logger.Errorf("panic: %s", r)
+			return
+		}
+	}()
 	data, err := framed.Read(r)
 	if err != nil {
 		return nil, err

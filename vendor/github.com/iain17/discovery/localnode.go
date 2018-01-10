@@ -76,6 +76,8 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 }
 
 func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
+	ln.infoMutex.Lock()
+	defer ln.infoMutex.Unlock()
 	peerInfo, err := proto.Marshal(&pb.Message{
 		Version: env.VERSION,
 		Msg: &pb.Message_PeerInfo{

@@ -59,18 +59,20 @@ var apiCmd = &cobra.Command{
 			logging.Configure(logging.LevelError)
 		}
 		logger.AddOutput(logger.Stdout{
-			MinLevel: logLvl, //logger.DEBUG,
+			MinLevel: logLvl,
 			Colored:  true,
 		})
 		if logPath != "" {
 			os.Remove(logPath)
-			fileOut, err := logger.NewFileOut(logPath)
+			fileOut, err := logger.NewFileOut(logPath, logLvl)
 			if err != nil {
 				logger.Fatal(err)
 			}
 			logger.AddOutput(fileOut)
-			ipfsLogOption := logging.Output(fileOut)
-			logging.Configure(ipfsLogOption)
+			if verbose {
+				ipfsLogOption := logging.Output(fileOut)
+				logging.Configure(ipfsLogOption)
+			}
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
