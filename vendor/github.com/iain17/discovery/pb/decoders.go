@@ -7,13 +7,14 @@ import (
 	"github.com/golang/protobuf/proto"
 	"io"
 	"github.com/iain17/framed"
-	"github.com/iain17/logger"
 )
 
-func Decode(r io.Reader) (*Message, error) {
+func Decode(r io.Reader) (result *Message, err error) {
 	defer func() {
-		if r := recover(); r == nil {
-			logger.Errorf("panic: %s", r)
+		if r := recover(); r != nil {
+			if err, ok := r.(error); ok {
+				err = fmt.Errorf("panic while decoding message: %v", err)
+			}
 			return
 		}
 	}()
@@ -21,14 +22,15 @@ func Decode(r io.Reader) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	var result Message
-	if err := proto.Unmarshal(data, &result); err != nil {
+	var msg Message
+	if err := proto.Unmarshal(data, &msg); err != nil {
 		return nil, err
 	}
 	if result.Version != env.VERSION {
 		return nil, errors.New(fmt.Sprintf("Invalid version. Received %d, expected %d", result.Version, env.VERSION))
 	}
-	return &result, nil
+	result = &msg
+	return
 }
 
 func DecodeHeartBeat(r io.Reader) error {
