@@ -168,10 +168,6 @@ func request_Decentralizer_GetPeerIds_0(ctx context.Context, marshaler runtime.M
 
 }
 
-var (
-	filter_Decentralizer_GetPeer_0 = &utilities.DoubleArray{Encoding: map[string]int{"pId": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
-
 func request_Decentralizer_GetPeer_0(ctx context.Context, marshaler runtime.Marshaler, client DecentralizerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq RPCGetPeerRequest
 	var metadata runtime.ServerMetadata
@@ -194,8 +190,15 @@ func request_Decentralizer_GetPeer_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pId", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Decentralizer_GetPeer_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["dnId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "dnId")
+	}
+
+	protoReq.DnId, err = runtime.Uint64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "dnId", err)
 	}
 
 	msg, err := client.GetPeer(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -523,7 +526,7 @@ var (
 
 	pattern_Decentralizer_GetPeerIds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "peers", "key", "value"}, ""))
 
-	pattern_Decentralizer_GetPeer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "peer", "pId"}, ""))
+	pattern_Decentralizer_GetPeer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "peer", "pId", "dnId"}, ""))
 
 	pattern_Decentralizer_GetPublisherDefinition_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "publisher"}, ""))
 
