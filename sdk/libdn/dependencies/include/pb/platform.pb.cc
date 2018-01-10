@@ -209,7 +209,6 @@ void AddDescriptorsImpl() {
   ::protobuf_pb_2fstorage_2eproto::AddDescriptors();
   ::protobuf_pb_2fmessaging_2eproto::AddDescriptors();
   ::protobuf_pb_2fpublisher_2eproto::AddDescriptors();
-  ::protobuf_google_2fapi_2fannotations_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
