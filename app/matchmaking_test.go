@@ -25,7 +25,7 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	sessId, err := app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{
 		"cool": "no",
 	})
-	assert.NoError(t, err)
+		assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
 	time.Sleep(500 * time.Millisecond)

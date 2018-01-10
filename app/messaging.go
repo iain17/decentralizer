@@ -7,6 +7,10 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/framed"
 	"github.com/golang/protobuf/proto"
+	"github.com/giantswarm/retry-go"
+	"time"
+	"strings"
+	"context"
 )
 
 type DirectMessage struct {
@@ -42,7 +46,25 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 		return nil
 	}
 
-	stream, err := d.i.PeerHost.NewStream(d.i.Context(), id, SEND_DIRECT_MESSAGE)
+	ctx, cancel := context.WithTimeout(d.ctx, 10 * time.Minute) //TODO: configurable?
+	defer cancel()
+	var stream inet.Stream
+	op := func() (err error) {
+		logger.Infof("Trying to open stream to (to: %s:%d)", id.Pretty(), channel)
+		stream, err = d.i.PeerHost.NewStream(ctx, id, SEND_DIRECT_MESSAGE)
+		return
+	}
+	err = retry.Do(op,
+		retry.RetryChecker(func(err error) bool {
+			//If there is something about dialing. Retry.
+			if strings.Contains(err.Error(), "dial") {
+				logger.Warningf("Failed to open stream to %s: %s", id.Pretty(), err)
+				return true
+			}
+			return false
+		}),
+		retry.Timeout(5 * time.Minute),
+		retry.Sleep(30 * time.Second))
 	if err != nil {
 		return err
 	}
