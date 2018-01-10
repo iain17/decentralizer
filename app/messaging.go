@@ -51,6 +51,7 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 	var stream inet.Stream
 	op := func() (err error) {
 		logger.Infof("Trying to open stream to (to: %s:%d)", id.Pretty(), channel)
+		d.clearBackOff(id)
 		stream, err = d.i.PeerHost.NewStream(ctx, id, SEND_DIRECT_MESSAGE)
 		return
 	}
