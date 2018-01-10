@@ -72,12 +72,13 @@ func (b *BitswapService) getKey(keyType string, rawKey string) string {
 
 func (b *BitswapService) PutValue(keyType string, rawKey string, data []byte) error {
 	key := b.getKey(keyType, rawKey)
-	logger.Debugf("Put value: %s", key)
+	logger.Infof("Put value: %s", key)
 	return b.node.Routing.PutValue(b.node.Context(), key, data)
 	//return b.node.Routing.PutValue(b.node.Context(), key, data)
 }
 
 func (b *BitswapService) GetValues(ctx context.Context, keyType string, rawKey string, count int) ([]routing.RecvdVal, error) {
+	logger.Infof("Get values for type %s for key %s", keyType, rawKey)
 	key := b.getKey(keyType, rawKey)
 	//return b.dht.GetValues2(b.node.Context(), key, count)//The first ifstatement, checking for cache.
 	return b.node.Routing.GetValues(ctx, key, count)

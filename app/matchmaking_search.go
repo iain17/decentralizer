@@ -106,18 +106,20 @@ func (s *search) run(ctx context.Context) error {
 	return nil
 }
 
-func (s *search) refresh(ctx context.Context) {
+func (s *search) refresh(ctx context.Context) error {
 	err := s.run(ctx)
 	if err != nil {
 		logger.Warning(err)
 	}
+	return err
 }
 
-func (s *search) fetch() *sessionstore.Store {
+func (s *search) fetch() (*sessionstore.Store, error) {
 	searchCtx, cancel := context.WithTimeout(s.d.i.Context(), 5 * time.Second)
+	var err error
 	timeout.Do(func(ctx context.Context) {
 		tries := 0
-		s.refresh(searchCtx)
+		err = s.refresh(searchCtx)
 		for s.storage.IsEmpty() {
 			select {
 			case <- ctx.Done():
@@ -126,12 +128,13 @@ func (s *search) fetch() *sessionstore.Store {
 				if tries > 5 {
 					break
 				}
-				s.refresh(searchCtx)
+				err = s.refresh(searchCtx)
 				time.Sleep(1 * time.Second)
 				tries++
 			}
 		}
 	}, 5 * time.Second)
 	cancel()
-	return s.storage
+	//TODO: Return err
+	return s.storage, nil
 }

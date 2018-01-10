@@ -115,11 +115,14 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	timeout.Do(func(ctx context.Context) {
-		err := d.advertise(sessionType)
+		err = d.advertise(sessionType)
 		if err != nil {
-			logger.Errorf("Could not advertise session: %s", err.Error())
+			err = fmt.Errorf("could not advertise session: %s", err.Error())
 		}
 	}, 5*time.Second)
+	if err != nil {
+		return 0, err
+	}
 	return sessionId, err
 }
 
@@ -142,7 +145,10 @@ func (d *Decentralizer) InsertSession(session *pb.Session) (uint64, error) {
 func (d *Decentralizer) advertise(sessionType uint64) error {
 	//Before we override DHT with our advisement. Let us check others.
 	search := d.getSessionSearch(sessionType)
-	store := search.fetch()
+	store, err := search.fetch()
+	if err != nil {
+		return err
+	}
 	localSessions, err := store.FindByPeerId(d.i.Identity.Pretty())
 	if err != nil {
 		return err
@@ -189,7 +195,10 @@ func (d *Decentralizer) GetSession(sessionId uint64) (*pb.Session, error) {
 func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.Session, error) {
 	search := d.getSessionSearch(sessionType)
 	if search != nil {
-		storage := search.fetch()
+		storage, err := search.fetch()
+		if err != nil {
+			return nil, err
+		}
 		return storage.FindAll()
 	}
 	return nil, errors.New("could not get session search")
@@ -198,7 +207,10 @@ func (d *Decentralizer) GetSessions(sessionType uint64) ([]*pb.Session, error) {
 func (d *Decentralizer) GetSessionsByDetails(sessionType uint64, key, value string) ([]*pb.Session, error) {
 	search := d.getSessionSearch(sessionType)
 	if search != nil {
-		storage := search.fetch()
+		storage, err := search.fetch()
+		if err != nil {
+			return nil, err
+		}
 		return storage.FindByDetails(key, value)
 	}
 	return nil, errors.New("could not get session search")
@@ -211,7 +223,10 @@ func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) 
 		if ! ok {
 			continue
 		}
-		storage := value.(*search).fetch()
+		storage, err := value.(*search).fetch()
+		if err != nil {
+			return nil, err
+		}
 		peers, err := storage.FindByPeerId(peerId)
 		if err != nil {
 			logger.Warning(err)

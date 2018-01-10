@@ -62,7 +62,7 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 	}
 	if s.app == nil && networkKey != "" {
 		logger.Info("Joining network...")
-		err := s.setNetwork(clientVersion, networkKey, isPrivateKey, limitedConnection)
+		err := s.SetNetwork(clientVersion, networkKey, isPrivateKey, limitedConnection)
 		if err != nil {
 			logger.Warningf("Failed to join network: %v", err)
 			return ctx, err

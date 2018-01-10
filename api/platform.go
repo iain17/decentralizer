@@ -27,7 +27,7 @@ func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RP
 	}, nil
 }
 
-func (s *Server) setNetwork(clientVersion string, networkKey string, isPrivateKey bool, limitedConnection bool) error {
+func (s *Server) SetNetwork(clientVersion string, networkKey string, isPrivateKey bool, limitedConnection bool) error {
 	s.mutex.Lock()
 	defer func () {
 		s.mutex.Unlock()

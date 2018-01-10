@@ -16,10 +16,13 @@ func getDecentralizedIdKey(decentralizedId uint64) string {
 
 //Try and find peer in DHT
 func (d *Decentralizer) resolveDecentralizedId(decentralizedId uint64) (Peer.ID, error) {
+	logger.Infof("Trying to resolve %d", decentralizedId)
 	values, err := d.b.GetValues(d.i.Context(), DHT_DECENTRALIZED_ID_KEY_TYPE, getDecentralizedIdKey(decentralizedId), 1024)
 	if err != nil {
+		logger.Warningf("Could not resolve %d: %s", err.Error(), decentralizedId)
 		return "", err
 	}
+	logger.Infof("Found %d possible values for %d", len(values), decentralizedId)
 	seen := make(map[string]bool)
 	for _, value := range values {
 		id := string(value.Val)

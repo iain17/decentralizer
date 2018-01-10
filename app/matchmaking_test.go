@@ -32,7 +32,9 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(sessions))
-	assert.Equal(t, sessions[0].Name, "App 2 session :D")
+	if len(sessions) != 0 {
+		assert.Equal(t, sessions[0].Name, "App 2 session :D")
+	}
 }
 
 func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
@@ -51,11 +53,14 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 	assert.NoError(t, err)
 
 	app1Search := app1.getSessionSearch(1337)
-	app1Store := app1Search.fetch()
+	app1Store, err := app1Search.fetch()
+	assert.NoError(t, err)
 	app2Search := app2.getSessionSearch(1337)
-	app2Store := app2Search.fetch()
+	app2Store, err := app2Search.fetch()
+	assert.NoError(t, err)
 	app3Search := app3.getSessionSearch(1337)
-	app3Store := app3Search.fetch()
+	app3Store, err := app3Search.fetch()
+	assert.NoError(t, err)
 	assert.Equal(t, 1, app1Store.Len())
 	assert.Equal(t, 1, app2Store.Len())
 	assert.Equal(t, 1, app3Store.Len())
@@ -63,9 +68,12 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 	_, err = app3.UpsertSession(1337, "App 3 session :D", 308, map[string]string{"0": "0"})
 	assert.NoError(t, err)
 
-	app1Store = app1Search.fetch()
-	app2Store = app2Search.fetch()
-	app3Store = app3Search.fetch()
+	app1Store, err = app1Search.fetch()
+	assert.NoError(t, err)
+	app2Store, err = app2Search.fetch()
+	assert.NoError(t, err)
+	app3Store, err = app3Search.fetch()
+	assert.NoError(t, err)
 	assert.Equal(t, 2, app1Store.Len())
 	assert.Equal(t, 2, app2Store.Len())
 	assert.Equal(t, 2, app3Store.Len())
@@ -73,9 +81,12 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 	_, err = app1.UpsertSession(1337, "App 1 session :D", 111, map[string]string{"0": "0"})
 	assert.NoError(t, err)
 
-	app1Store = app1Search.fetch()
-	app2Store = app2Search.fetch()
-	app3Store = app3Search.fetch()
+	app1Store, err = app1Search.fetch()
+	assert.NoError(t, err)
+	app2Store, err = app2Search.fetch()
+	assert.NoError(t, err)
+	app3Store, err = app3Search.fetch()
+	assert.NoError(t, err)
 	assert.Equal(t, 3, app1Store.Len())
 	assert.Equal(t, 3, app2Store.Len())
 	assert.Equal(t, 3, app3Store.Len())
@@ -110,7 +121,8 @@ func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
 
 	search := app1.getSessionSearch(1337)
 	search.refresh(ctx)
-	store := search.fetch()
+	store, err := search.fetch()
+	assert.NoError(t, err)
 	sessions, err := store.FindAll()
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(sessions), "App 1 should have both sessions")
@@ -231,7 +243,8 @@ func TestDecentralizer_GetSessionsByDetailsExpire(t *testing.T) {
 
 	search := app1.getSessionSearch(1337)
 	search.refresh(ctx)
-	store := search.fetch()
+	store, err := search.fetch()
+	assert.NoError(t, err)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, store.Len(), "Because it hasn't YET expired")
 

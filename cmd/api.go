@@ -25,9 +25,10 @@ import (
 	"context"
 	"os/signal"
 	"syscall"
+	"github.com/iain17/decentralizer/pb"
 )
-var verbose, daemon bool
-var logPath string
+var verbose, daemon, isPrivateKey, isLimited bool
+var logPath, networkKey string
 var port int
 
 func init() {
@@ -37,8 +38,10 @@ func init() {
 	apiCmd.Flags().BoolVarP(&daemon,"daemon", "d", false, "Run daemon mode. Meaning it won't close")
 	apiCmd.Flags().BoolVarP(&verbose,"verbose", "v", false, "Verbose will enable verbose logging")
 	apiCmd.Flags().StringVarP(&logPath, "logPath", "l", "adna.log", "Path of log file to output to")
+	apiCmd.Flags().StringVarP(&networkKey, "network", "n", "", "Network key we should initialize with")
+	apiCmd.Flags().BoolVar(&isPrivateKey, "isPrivate", false, "Is network key a private key or not (not used if network key not set)")
+	apiCmd.Flags().BoolVar(&isLimited, "limited", false, "If we are on a limited (slower) connection (not used if network key not set)")
 }
-
 
 const MAX_IDLE_TIME = 15 * time.Second//Ignored in daemon mode
 // apiCmd represents the api command
@@ -47,7 +50,7 @@ var apiCmd = &cobra.Command{
 	Short: "Runs the GRPC and HTTP api",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		logLvl := logger.INFO
+			logLvl := logger.INFO
 		if verbose {
 			logLvl = logger.DEBUG
 			logging.Configure(logging.LevelDebug)
@@ -74,6 +77,13 @@ var apiCmd = &cobra.Command{
 		s, err := api.New(ctx, port)
 		if err != nil {
 			logger.Fatal(err)
+		}
+
+		if networkKey != "" {
+			err = s.SetNetwork(pb.VERSION.String(), networkKey, isPrivateKey, isLimited)
+			if err != nil {
+				logger.Fatal(err)
+			}
 		}
 
 		if !daemon {
