@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/stretchr/testify/assert"
 	"github.com/iain17/decentralizer/app/ipfs"
+	"time"
 )
 
 func TestDecentralizer_FindSelf(t *testing.T) {
@@ -50,16 +51,20 @@ func TestDecentralizer_FindByPeerIdAndUpdate(t *testing.T) {
 	})
 
 	//Find myself app1 find app1.
-	peer, err := app1.FindByPeerId(app1.i.Identity.Pretty())
+	peer, err := app1.FindByPeerId("self")
 	assert.NoError(t, err)
 	assert.NotNil(t, peer)
-	assert.Equal(t, "these violent delights have cool beginnings", peer.Details["quote"])
+	if peer != nil {
+		assert.Equal(t, "these violent delights have cool beginnings", peer.Details["quote"])
+	}
 
 	//App 1 find app 2.
 	peer, err = app1.FindByPeerId(app2.i.Identity.Pretty())
 	assert.NoError(t, err)
 	assert.NotNil(t, peer)
-	assert.Equal(t, "these violent delights have violent beginnings", peer.Details["quote"])
+	if peer != nil {
+		assert.Equal(t, "these violent delights have violent beginnings", peer.Details["quote"])
+	}
 }
 
 func TestDecentralizer_FindUnknownId(t *testing.T) {
@@ -76,16 +81,20 @@ func TestDecentralizer_FindUnknownId(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
+	time.Sleep(500 * time.Millisecond)
+
 	peer, err := app2.FindByPeerId("self")
 	assert.NoError(t, err)
 	assert.NotNil(t, peer)
 
-	DnId := peer.DnId
-	//Now have app2 find us with just DnId.
-	peer, err = app1.FindByDecentralizedId(DnId)
-	assert.NoError(t, err)
-	assert.NotNil(t, peer)
 	if peer != nil {
-		assert.Equal(t, peer.Details["quote"], "these violent delights have violent ends")
+		DnId := peer.DnId
+		//Now have app2 find us with just DnId.
+		peer, err = app1.FindByDecentralizedId(DnId)
+		assert.NoError(t, err)
+		assert.NotNil(t, peer)
+		if peer != nil {
+			assert.Equal(t, peer.Details["quote"], "these violent delights have violent ends")
+		}
 	}
 }

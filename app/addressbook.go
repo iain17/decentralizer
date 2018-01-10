@@ -3,17 +3,12 @@ package app
 import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
-	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
-	Peer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/Pallinder/go-randomdata"
-	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
-	ma "gx/ipfs/QmXY77cVe7rVRQXZZQRioukUM7aRW3BTcAgJe12MCtb3Ji/go-multiaddr"
 	"time"
-	"github.com/iain17/framed"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/ipinfo"
-	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"fmt"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -22,21 +17,49 @@ func (d *Decentralizer) initAddressbook() {
 	if err != nil {
 		logger.Fatal(err)
 	}
-	d.i.PeerHost.SetStreamHandler(GET_PEER_REQ, d.getPeerResponse)
 	d.downloadPeers()
 	d.saveSelf()
-	go func() {
-		d.WaitTilEnoughPeers()
-		d.connectPreviousPeers()
-	}()
-	go d.provideSelf()
+	go d.advertisePeerRecord()
 	d.cron.Every(30).Seconds().Do(d.uploadPeers)
-	d.cron.Every(5).Minutes().Do(d.provideSelf)
+	d.cron.Every(5).Minutes().Do(d.advertisePeerRecord)
 
-	d.b.RegisterValidator(DHT_DECENTRALIZED_ID_KEY_TYPE, func(key string, val []byte) error{
-		_, err := libp2pPeer.IDB58Decode(string(val))
-		return err
-	}, false)
+	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
+		var record pb.DNPeerRecord
+		err = gogoProto.Unmarshal(val, &record)
+		if err != nil {
+			return fmt.Errorf("record invalid. could not unmarshal: %s", err.Error())
+		}
+		//Check key
+		key, err := d.b.DecodeKey(rawKey)
+		if err != nil {
+			return err
+		}
+		expectedDecentralizedId, err := reverseDecentralizedIdKey(key)
+		if err != nil {
+			return fmt.Errorf("failed to reverse '%s' to decentralized id: %s", key, err.Error())
+		}
+		if expectedDecentralizedId != record.Peer.DnId {
+			return fmt.Errorf("reversing decentralized key id failed. Expected %d, received %d", expectedDecentralizedId, record.Peer.DnId)
+		}
+		return nil
+	}, true)
+
+	d.b.RegisterSelector(DHT_PEER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+		var peer *pb.Peer
+		best := 0
+		for i, val := range values {
+			var record pb.DNPeerRecord
+			err = gogoProto.Unmarshal(val, &record)
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			if d.isNewerPeer(peer, record.Peer) {
+				best = i
+			}
+		}
+		return best, nil
+	})
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -46,7 +69,7 @@ func (d *Decentralizer) downloadPeers() {
 		return
 	}
 	var addressbook pb.DNAddressbook
-	err = proto.Unmarshal(data, &addressbook)
+	err = gogoProto.Unmarshal(data, &addressbook)
 	if err != nil {
 		logger.Warningf("Could not restore address book: %v", err)
 		return
@@ -61,19 +84,26 @@ func (d *Decentralizer) downloadPeers() {
 	logger.Info("Restored address book")
 }
 
-func (d *Decentralizer) provideSelf() {
+func (d *Decentralizer) advertisePeerRecord() error {
 	d.WaitTilEnoughPeers()
 	peer, err := d.FindByPeerId("self")
 	if err != nil {
 		logger.Warningf("Could not provide self: %v", err)
-		return
+		return err
 	}
-	err = d.b.PutValue(DHT_DECENTRALIZED_ID_KEY_TYPE, getDecentralizedIdKey(peer.DnId), []byte(d.i.Identity.Pretty()))
+	data, err := gogoProto.Marshal(&pb.DNPeerRecord{
+		Peer: peer,
+	})
+	if err != nil {
+		return err
+	}
+	err = d.b.PutValue(DHT_PEER_KEY_TYPE, getDecentralizedIdKey(peer.DnId), data)
 	if err != nil {
 		logger.Warning(err)
 	} else {
 		logger.Debug("Successfully provided self")
 	}
+	return err
 }
 
 func (d *Decentralizer) uploadPeers() {
@@ -85,7 +115,7 @@ func (d *Decentralizer) uploadPeers() {
 		logger.Warningf("Could not save address book: %v", err)
 		return
 	}
-	data, err := proto.Marshal(&pb.DNAddressbook{
+	data, err := gogoProto.Marshal(&pb.DNAddressbook{
 		Peers: peers,
 	})
 	if err != nil {
@@ -101,40 +131,9 @@ func (d *Decentralizer) uploadPeers() {
 	logger.Info("Saved address book")
 }
 
-//Connect to our previous peers
-func (d *Decentralizer) connectPreviousPeers() error {
-	logger.Info("Connecting to previous peers...")
-	peers, err := d.peers.FindAll()
-	if err != nil {
-		return err
-	}
-	for _, peer := range peers {
-		pId, err := d.decodePeerId(peer.PId)
-		if err != nil {
-			continue
-		}
-		var addrs []ma.Multiaddr
-		for _, rawAddr := range peer.Addrs {
-			addr, err := ma.NewMultiaddr(rawAddr)
-			if err != nil {
-				continue
-			}
-			addrs = append(addrs, addr)
-		}
-		_ = d.i.PeerHost.Connect(d.i.Context(), pstore.PeerInfo{
-			ID: pId,
-			Addrs: addrs,
-		})
-		//if err != nil {
-		//	logger.Debug(err)
-		//}
-	}
-	return nil
-}
-
 //Save our self at least in the address book.
 func (d *Decentralizer) saveSelf() error {
-	self, err := d.peers.FindByPeerId(d.i.Identity.Pretty())
+	self, err := d.peers.FindByPeerId("self")
 	var details map[string]string
 	if err != nil {
 		details = map[string]string{}
@@ -154,7 +153,7 @@ func (d *Decentralizer) saveSelf() error {
 	}
 
 	//Add self
-	err = d.UpsertPeer(d.i.Identity.Pretty(), details)
+	err = d.UpsertPeer("self", details)
 	if err != nil {
 		return err
 	}
@@ -164,10 +163,14 @@ func (d *Decentralizer) saveSelf() error {
 
 func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error {
 	err := d.peers.Upsert(&pb.Peer{
+		Published: uint64(time.Now().UTC().Unix()),
 		PId:     pId,
 		Details: details,
 	})
 	d.addressBookChanged = true
+	if pId == "self" {
+		err = d.advertisePeerRecord()
+	}
 	return err
 }
 
@@ -180,106 +183,21 @@ func (d *Decentralizer) GetPeers() ([]*pb.Peer, error) {
 }
 
 func (d *Decentralizer) FindByPeerId(peerId string) (p *pb.Peer, err error) {
-	p, err = d.peers.FindByPeerId(peerId)
-	if err != nil {
-		var id Peer.ID
-		id, err = d.decodePeerId(peerId)
-		if err != nil {
-			return nil, err
-		}
-		p, err = d.getPeerRequest(id)
-		if err != nil {
-			return nil, err
-		}
-		d.peers.Upsert(p)
-	}
-	return p, err
-}
-
-//Request peer info from an external peer.
-func (d *Decentralizer) getPeerRequest(peer Peer.ID) (*pb.Peer, error) {
-	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_PEER_REQ)
+	id, err := d.decodePeerId(peerId)
 	if err != nil {
 		return nil, err
 	}
-	stream.SetDeadline(time.Now().Add(MESSAGE_DEADLINE))
-	defer stream.Close()
-
-	//Request
-	reqData, err := proto.Marshal(&pb.DNPeerRequest{})
-	if err != nil {
-		return nil, err
-	}
-	err = framed.Write(stream, reqData)
-	if err != nil {
-		return nil, err
-	}
-
-	//Response
-	resData, err := framed.Read(stream)
-	if err != nil {
-		return nil, err
-	}
-	var response pb.DNPeerResponse
-	err = proto.Unmarshal(resData, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	//Save addr so we can quickly connect to our contacts
-	if response.Peer != nil {
-		info := d.i.Peerstore.PeerInfo(peer)
-		response.Peer.Addrs = []string{}
-		for _, addr := range info.Addrs {
-			response.Peer.Addrs = append(response.Peer.Addrs, addr.String())
-		}
-		d.i.Peerstore.AddAddrs(peer, ma.Split(stream.Conn().RemoteMultiaddr()), 3 * 24 * time.Hour)//Save it for 3 days.
-	}
-	return response.Peer, nil
+	var decentralizedId uint64
+	peerId, decentralizedId = peerstore.PeerToDnId(id)
+	return d.FindByDecentralizedId(decentralizedId)
 }
 
 func (d *Decentralizer) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer, error) {
-	peer, err := d.peers.FindByDecentralizedId(decentralizedId)
-	if err != nil || peer == nil {
-		peerId, err := d.resolveDecentralizedId(decentralizedId)
-		if err != nil {
-			return nil, err
-		}
-		return d.FindByPeerId(peerId.Pretty())
+	//Try and fetch from network
+	peer, err := d.getPeerFromNetwork(decentralizedId)
+	if err != nil {
+		logger.Warningf("Could not fetch peer from network: %s", err.Error())
+		peer, err = d.peers.FindByDecentralizedId(decentralizedId)
 	}
 	return peer, err
-}
-
-//Called when an external peer asks for our peer info.
-func (d *Decentralizer) getPeerResponse(stream inet.Stream) {
-	reqData, err := framed.Read(stream)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	var request pb.DNPeerRequest
-	err = proto.Unmarshal(reqData, &request)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	peer, err := d.peers.FindByPeerId(d.i.Identity.Pretty())
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	//Response
-	response, err := proto.Marshal(&pb.DNPeerResponse{
-		Peer: peer,
-	})
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	err = framed.Write(stream, response)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
 }

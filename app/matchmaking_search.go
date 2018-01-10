@@ -72,7 +72,7 @@ func (s *search) run(ctx context.Context) error {
 		}
 		s.seen.Add(id, true)
 
-		var response pb.DNSessions
+		var response pb.DNSessionsRecord
 		err = gogoProto.Unmarshal(value.Val, &response)
 		if err != nil {
 			logger.Warning(err)

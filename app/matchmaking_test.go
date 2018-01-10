@@ -202,23 +202,23 @@ func TestValidateDNSessions(t *testing.T) {
 	EXPIRE_TIME_SESSION = 3 * time.Hour
 
 	//Future
-	assert.Error(t, validateDNSessions(&pb.DNSessions{
+	assert.Error(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
 		Published: uint64(time.Now().Add(2 * time.Hour).Unix()),
 	}))
 
 	//Expired
-	assert.Error(t, validateDNSessions(&pb.DNSessions{
+	assert.Error(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
 		Published: uint64(time.Now().AddDate(-3, 0, 0).Unix()),
 	}))
 
 	//Alright
-	assert.NoError(t, validateDNSessions(&pb.DNSessions{
+	assert.NoError(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
 		Published: uint64(time.Now().Unix()),
 	}))
 
 	EXPIRE_TIME_SESSION = 1 * time.Second
 	//Just in time
-	assert.NoError(t, validateDNSessions(&pb.DNSessions{
+	assert.NoError(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
 		Published: uint64(time.Now().Unix()),
 	}))
 }

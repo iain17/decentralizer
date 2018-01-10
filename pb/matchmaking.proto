@@ -14,7 +14,7 @@ message Session {
 }
 
 //DN messages
-message DNSessions {
+message DNSessionsRecord {
     uint64 published = 1;
     repeated Session results = 2;
 }

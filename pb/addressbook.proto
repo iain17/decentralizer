@@ -2,18 +2,17 @@ syntax = "proto3";
 package pb;
 
 message Peer {
+    uint64 published = 1;
     //If pId == "self". We'll resolve it to our peerId.
-    string pId = 1;//PeerId
-    uint64 dnId = 2;
-    map<string, string> details = 3;
-    repeated string addrs = 4;
+    string pId = 2;//PeerId
+    uint64 dnId = 3;
+    map<string, string> details = 4;
+
 }
 
-message DNPeerResponse {
-    Peer peer = 1;
+message DNPeerRecord {
+    Peer peer = 2;
 }
-
-message DNPeerRequest {}
 
 message DNAddressbook {
     repeated Peer peers = 1;

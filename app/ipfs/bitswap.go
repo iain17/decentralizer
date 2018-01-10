@@ -16,6 +16,7 @@ import (
 	"errors"
 	"fmt"
 	"gx/ipfs/QmbxkgUceEcuSZ4ZdBA3x74VUDSSYjHYmmeEqkjxbtZ6Jg/go-libp2p-record"
+	"strings"
 )
 
 //Find other peers around a subject.
@@ -38,11 +39,15 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 	}
 }
 
-func (b *BitswapService) RegisterValidator(keyType string, validatorFunc func(string, []byte) error, sign bool) {
+func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.ValidatorFunc, sign bool) {
 	b.dht.Validator[keyType] = &record.ValidChecker{
 		Func: validatorFunc,
 		Sign: sign,
 	}
+}
+
+func (b *BitswapService) RegisterSelector(keyType string, selectorFunc record.SelectorFunc) {
+	b.dht.Selector[keyType] = selectorFunc
 }
 
 func (b *BitswapService) Find(subject string, num int) <-chan pstore.PeerInfo {
@@ -64,6 +69,14 @@ func (b *BitswapService) Provide(subject string) error {
 	//	err = errors.New("could not provide '%s' in under 15 seconds. Check if you are connected to enough peers")
 	//}
 	return err
+}
+
+func (b *BitswapService) DecodeKey(key string) (string, error) {
+	parts := strings.Split(key, "/")
+	if len(parts) != 3 {
+		return "", errors.New("invalid key")
+	}
+	return string(b58.Decode(parts[2])), nil
 }
 
 func (b *BitswapService) getKey(keyType string, rawKey string) string {

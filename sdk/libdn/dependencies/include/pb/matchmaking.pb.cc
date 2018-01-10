@@ -30,11 +30,11 @@ class SessionDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<Session>
       _instance;
 } _Session_default_instance_;
-class DNSessionsDefaultTypeInternal {
+class DNSessionsRecordDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<DNSessions>
+  ::google::protobuf::internal::ExplicitlyConstructed<DNSessionsRecord>
       _instance;
-} _DNSessions_default_instance_;
+} _DNSessionsRecord_default_instance_;
 class RPCUpsertSessionRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<RPCUpsertSessionRequest>
@@ -124,7 +124,7 @@ void InitDefaultsSession() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSessionImpl);
 }
 
-void InitDefaultsDNSessionsImpl() {
+void InitDefaultsDNSessionsRecordImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -134,16 +134,16 @@ void InitDefaultsDNSessionsImpl() {
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
   {
-    void* ptr = &::pb::_DNSessions_default_instance_;
-    new (ptr) ::pb::DNSessions();
+    void* ptr = &::pb::_DNSessionsRecord_default_instance_;
+    new (ptr) ::pb::DNSessionsRecord();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pb::DNSessions::InitAsDefaultInstance();
+  ::pb::DNSessionsRecord::InitAsDefaultInstance();
 }
 
-void InitDefaultsDNSessions() {
+void InitDefaultsDNSessionsRecord() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionsImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionsRecordImpl);
 }
 
 void InitDefaultsRPCUpsertSessionRequestImpl() {
@@ -363,12 +363,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, port_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, details_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessions, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRecord, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessions, published_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessions, results_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRecord, published_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRecord, results_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertSessionRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -429,7 +429,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::pb::Session_DetailsEntry_DoNotUse)},
   { 9, -1, sizeof(::pb::Session)},
-  { 22, -1, sizeof(::pb::DNSessions)},
+  { 22, -1, sizeof(::pb::DNSessionsRecord)},
   { 29, -1, sizeof(::pb::RPCUpsertSessionRequest)},
   { 35, -1, sizeof(::pb::RPCUpsertSessionResponse)},
   { 41, -1, sizeof(::pb::RPCDeleteSessionRequest)},
@@ -444,7 +444,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Session_DetailsEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Session_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessions_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionsRecord_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCUpsertSessionRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCUpsertSessionResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCDeleteSessionRequest_default_instance_),
@@ -483,24 +483,24 @@ void AddDescriptorsImpl() {
       " \001(\004\022\014\n\004type\030\004 \001(\004\022\014\n\004name\030\005 \001(\t\022\017\n\007addr"
       "ess\030\006 \001(\r\022\014\n\004port\030\007 \001(\r\022)\n\007details\030\010 \003(\013"
       "2\030.pb.Session.DetailsEntry\032.\n\014DetailsEnt"
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"=\n\nDN"
-      "Sessions\022\021\n\tpublished\030\001 \001(\004\022\034\n\007results\030\002"
-      " \003(\0132\013.pb.Session\"7\n\027RPCUpsertSessionReq"
-      "uest\022\034\n\007session\030\001 \001(\0132\013.pb.Session\"-\n\030RP"
-      "CUpsertSessionResponse\022\021\n\tsessionId\030\001 \001("
-      "\004\",\n\027RPCDeleteSessionRequest\022\021\n\tsessionI"
-      "d\030\001 \001(\004\"*\n\030RPCDeleteSessionResponse\022\016\n\006r"
-      "esult\030\001 \001(\010\"L\n RPCGetSessionIdsByDetails"
-      "Request\022\014\n\004type\030\001 \001(\004\022\013\n\003key\030\002 \001(\t\022\r\n\005va"
-      "lue\030\003 \001(\t\"3\n RPCGetSessionIdsByPeerIdsRe"
-      "quest\022\017\n\007peerIds\030\001 \003(\t\".\n\030RPCGetSessionI"
-      "dsResponse\022\022\n\nsessionIds\030\001 \003(\004\")\n\024RPCGet"
-      "SessionRequest\022\021\n\tsessionId\030\001 \001(\004\"5\n\025RPC"
-      "GetSessionResponse\022\034\n\007session\030\001 \001(\0132\013.pb"
-      ".Sessionb\006proto3"
+      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"C\n\020DN"
+      "SessionsRecord\022\021\n\tpublished\030\001 \001(\004\022\034\n\007res"
+      "ults\030\002 \003(\0132\013.pb.Session\"7\n\027RPCUpsertSess"
+      "ionRequest\022\034\n\007session\030\001 \001(\0132\013.pb.Session"
+      "\"-\n\030RPCUpsertSessionResponse\022\021\n\tsessionI"
+      "d\030\001 \001(\004\",\n\027RPCDeleteSessionRequest\022\021\n\tse"
+      "ssionId\030\001 \001(\004\"*\n\030RPCDeleteSessionRespons"
+      "e\022\016\n\006result\030\001 \001(\010\"L\n RPCGetSessionIdsByD"
+      "etailsRequest\022\014\n\004type\030\001 \001(\004\022\013\n\003key\030\002 \001(\t"
+      "\022\r\n\005value\030\003 \001(\t\"3\n RPCGetSessionIdsByPee"
+      "rIdsRequest\022\017\n\007peerIds\030\001 \003(\t\".\n\030RPCGetSe"
+      "ssionIdsResponse\022\022\n\nsessionIds\030\001 \003(\004\")\n\024"
+      "RPCGetSessionRequest\022\021\n\tsessionId\030\001 \001(\004\""
+      "5\n\025RPCGetSessionResponse\022\034\n\007session\030\001 \001("
+      "\0132\013.pb.Sessionb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 776);
+      descriptor, 782);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/matchmaking.proto", &protobuf_RegisterTypes);
 }
@@ -1195,69 +1195,69 @@ void Session::InternalSwap(Session* other) {
 
 // ===================================================================
 
-void DNSessions::InitAsDefaultInstance() {
+void DNSessionsRecord::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int DNSessions::kPublishedFieldNumber;
-const int DNSessions::kResultsFieldNumber;
+const int DNSessionsRecord::kPublishedFieldNumber;
+const int DNSessionsRecord::kResultsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-DNSessions::DNSessions()
+DNSessionsRecord::DNSessionsRecord()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessions();
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionsRecord();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.DNSessions)
+  // @@protoc_insertion_point(constructor:pb.DNSessionsRecord)
 }
-DNSessions::DNSessions(const DNSessions& from)
+DNSessionsRecord::DNSessionsRecord(const DNSessionsRecord& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       results_(from.results_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   published_ = from.published_;
-  // @@protoc_insertion_point(copy_constructor:pb.DNSessions)
+  // @@protoc_insertion_point(copy_constructor:pb.DNSessionsRecord)
 }
 
-void DNSessions::SharedCtor() {
+void DNSessionsRecord::SharedCtor() {
   published_ = GOOGLE_ULONGLONG(0);
   _cached_size_ = 0;
 }
 
-DNSessions::~DNSessions() {
-  // @@protoc_insertion_point(destructor:pb.DNSessions)
+DNSessionsRecord::~DNSessionsRecord() {
+  // @@protoc_insertion_point(destructor:pb.DNSessionsRecord)
   SharedDtor();
 }
 
-void DNSessions::SharedDtor() {
+void DNSessionsRecord::SharedDtor() {
 }
 
-void DNSessions::SetCachedSize(int size) const {
+void DNSessionsRecord::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* DNSessions::descriptor() {
+const ::google::protobuf::Descriptor* DNSessionsRecord::descriptor() {
   ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const DNSessions& DNSessions::default_instance() {
-  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessions();
+const DNSessionsRecord& DNSessionsRecord::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionsRecord();
   return *internal_default_instance();
 }
 
-DNSessions* DNSessions::New(::google::protobuf::Arena* arena) const {
-  DNSessions* n = new DNSessions;
+DNSessionsRecord* DNSessionsRecord::New(::google::protobuf::Arena* arena) const {
+  DNSessionsRecord* n = new DNSessionsRecord;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void DNSessions::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.DNSessions)
+void DNSessionsRecord::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNSessionsRecord)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1267,11 +1267,11 @@ void DNSessions::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool DNSessions::MergePartialFromCodedStream(
+bool DNSessionsRecord::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.DNSessions)
+  // @@protoc_insertion_point(parse_start:pb.DNSessionsRecord)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1314,17 +1314,17 @@ bool DNSessions::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.DNSessions)
+  // @@protoc_insertion_point(parse_success:pb.DNSessionsRecord)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.DNSessions)
+  // @@protoc_insertion_point(parse_failure:pb.DNSessionsRecord)
   return false;
 #undef DO_
 }
 
-void DNSessions::SerializeWithCachedSizes(
+void DNSessionsRecord::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.DNSessions)
+  // @@protoc_insertion_point(serialize_start:pb.DNSessionsRecord)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1344,13 +1344,13 @@ void DNSessions::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:pb.DNSessions)
+  // @@protoc_insertion_point(serialize_end:pb.DNSessionsRecord)
 }
 
-::google::protobuf::uint8* DNSessions::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* DNSessionsRecord::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessions)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionsRecord)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1371,12 +1371,12 @@ void DNSessions::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessions)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionsRecord)
   return target;
 }
 
-size_t DNSessions::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.DNSessions)
+size_t DNSessionsRecord::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNSessionsRecord)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1409,23 +1409,23 @@ size_t DNSessions::ByteSizeLong() const {
   return total_size;
 }
 
-void DNSessions::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessions)
+void DNSessionsRecord::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionsRecord)
   GOOGLE_DCHECK_NE(&from, this);
-  const DNSessions* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessions>(
+  const DNSessionsRecord* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionsRecord>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessions)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionsRecord)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessions)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionsRecord)
     MergeFrom(*source);
   }
 }
 
-void DNSessions::MergeFrom(const DNSessions& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNSessions)
+void DNSessionsRecord::MergeFrom(const DNSessionsRecord& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNSessionsRecord)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1437,29 +1437,29 @@ void DNSessions::MergeFrom(const DNSessions& from) {
   }
 }
 
-void DNSessions::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessions)
+void DNSessionsRecord::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionsRecord)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void DNSessions::CopyFrom(const DNSessions& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNSessions)
+void DNSessionsRecord::CopyFrom(const DNSessionsRecord& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNSessionsRecord)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool DNSessions::IsInitialized() const {
+bool DNSessionsRecord::IsInitialized() const {
   return true;
 }
 
-void DNSessions::Swap(DNSessions* other) {
+void DNSessionsRecord::Swap(DNSessionsRecord* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void DNSessions::InternalSwap(DNSessions* other) {
+void DNSessionsRecord::InternalSwap(DNSessionsRecord* other) {
   using std::swap;
   results_.InternalSwap(&other->results_);
   swap(published_, other->published_);
@@ -1467,7 +1467,7 @@ void DNSessions::InternalSwap(DNSessions* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata DNSessions::GetMetadata() const {
+::google::protobuf::Metadata DNSessionsRecord::GetMetadata() const {
   protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }

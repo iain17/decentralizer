@@ -39,7 +39,7 @@ namespace protobuf_pb_2faddressbook_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[11];
+  static const ::google::protobuf::internal::ParseTable schema[10];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -49,10 +49,8 @@ void InitDefaultsPeer_DetailsEntry_DoNotUseImpl();
 void InitDefaultsPeer_DetailsEntry_DoNotUse();
 void InitDefaultsPeerImpl();
 void InitDefaultsPeer();
-void InitDefaultsDNPeerResponseImpl();
-void InitDefaultsDNPeerResponse();
-void InitDefaultsDNPeerRequestImpl();
-void InitDefaultsDNPeerRequest();
+void InitDefaultsDNPeerRecordImpl();
+void InitDefaultsDNPeerRecord();
 void InitDefaultsDNAddressbookImpl();
 void InitDefaultsDNAddressbook();
 void InitDefaultsRPCUpsertPeerRequestImpl();
@@ -70,8 +68,7 @@ void InitDefaultsRPCGetPeerResponse();
 inline void InitDefaults() {
   InitDefaultsPeer_DetailsEntry_DoNotUse();
   InitDefaultsPeer();
-  InitDefaultsDNPeerResponse();
-  InitDefaultsDNPeerRequest();
+  InitDefaultsDNPeerRecord();
   InitDefaultsDNAddressbook();
   InitDefaultsRPCUpsertPeerRequest();
   InitDefaultsRPCUpsertPeerResponse();
@@ -85,12 +82,9 @@ namespace pb {
 class DNAddressbook;
 class DNAddressbookDefaultTypeInternal;
 extern DNAddressbookDefaultTypeInternal _DNAddressbook_default_instance_;
-class DNPeerRequest;
-class DNPeerRequestDefaultTypeInternal;
-extern DNPeerRequestDefaultTypeInternal _DNPeerRequest_default_instance_;
-class DNPeerResponse;
-class DNPeerResponseDefaultTypeInternal;
-extern DNPeerResponseDefaultTypeInternal _DNPeerResponse_default_instance_;
+class DNPeerRecord;
+class DNPeerRecordDefaultTypeInternal;
+extern DNPeerRecordDefaultTypeInternal _DNPeerRecord_default_instance_;
 class Peer;
 class PeerDefaultTypeInternal;
 extern PeerDefaultTypeInternal _Peer_default_instance_;
@@ -224,40 +218,18 @@ class Peer : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 
   // accessors -------------------------------------------------------
 
-  // map<string, string> details = 3;
+  // map<string, string> details = 4;
   int details_size() const;
   void clear_details();
-  static const int kDetailsFieldNumber = 3;
+  static const int kDetailsFieldNumber = 4;
   const ::google::protobuf::Map< ::std::string, ::std::string >&
       details() const;
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_details();
 
-  // repeated string addrs = 4;
-  int addrs_size() const;
-  void clear_addrs();
-  static const int kAddrsFieldNumber = 4;
-  const ::std::string& addrs(int index) const;
-  ::std::string* mutable_addrs(int index);
-  void set_addrs(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_addrs(int index, ::std::string&& value);
-  #endif
-  void set_addrs(int index, const char* value);
-  void set_addrs(int index, const char* value, size_t size);
-  ::std::string* add_addrs();
-  void add_addrs(const ::std::string& value);
-  #if LANG_CXX11
-  void add_addrs(::std::string&& value);
-  #endif
-  void add_addrs(const char* value);
-  void add_addrs(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& addrs() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_addrs();
-
-  // string pId = 1;
+  // string pId = 2;
   void clear_pid();
-  static const int kPIdFieldNumber = 1;
+  static const int kPIdFieldNumber = 2;
   const ::std::string& pid() const;
   void set_pid(const ::std::string& value);
   #if LANG_CXX11
@@ -269,9 +241,15 @@ class Peer : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_pid();
   void set_allocated_pid(::std::string* pid);
 
-  // uint64 dnId = 2;
+  // uint64 published = 1;
+  void clear_published();
+  static const int kPublishedFieldNumber = 1;
+  ::google::protobuf::uint64 published() const;
+  void set_published(::google::protobuf::uint64 value);
+
+  // uint64 dnId = 3;
   void clear_dnid();
-  static const int kDnIdFieldNumber = 2;
+  static const int kDnIdFieldNumber = 3;
   ::google::protobuf::uint64 dnid() const;
   void set_dnid(::google::protobuf::uint64 value);
 
@@ -285,8 +263,8 @@ class Peer : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       0 > details_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> addrs_;
   ::google::protobuf::internal::ArenaStringPtr pid_;
+  ::google::protobuf::uint64 published_;
   ::google::protobuf::uint64 dnid_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2faddressbook_2eproto::TableStruct;
@@ -294,24 +272,24 @@ class Peer : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 };
 // -------------------------------------------------------------------
 
-class DNPeerResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNPeerResponse) */ {
+class DNPeerRecord : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNPeerRecord) */ {
  public:
-  DNPeerResponse();
-  virtual ~DNPeerResponse();
+  DNPeerRecord();
+  virtual ~DNPeerRecord();
 
-  DNPeerResponse(const DNPeerResponse& from);
+  DNPeerRecord(const DNPeerRecord& from);
 
-  inline DNPeerResponse& operator=(const DNPeerResponse& from) {
+  inline DNPeerRecord& operator=(const DNPeerRecord& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  DNPeerResponse(DNPeerResponse&& from) noexcept
-    : DNPeerResponse() {
+  DNPeerRecord(DNPeerRecord&& from) noexcept
+    : DNPeerRecord() {
     *this = ::std::move(from);
   }
 
-  inline DNPeerResponse& operator=(DNPeerResponse&& from) noexcept {
+  inline DNPeerRecord& operator=(DNPeerRecord&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -321,30 +299,30 @@ class DNPeerResponse : public ::google::protobuf::Message /* @@protoc_insertion_
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const DNPeerResponse& default_instance();
+  static const DNPeerRecord& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const DNPeerResponse* internal_default_instance() {
-    return reinterpret_cast<const DNPeerResponse*>(
-               &_DNPeerResponse_default_instance_);
+  static inline const DNPeerRecord* internal_default_instance() {
+    return reinterpret_cast<const DNPeerRecord*>(
+               &_DNPeerRecord_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     2;
 
-  void Swap(DNPeerResponse* other);
-  friend void swap(DNPeerResponse& a, DNPeerResponse& b) {
+  void Swap(DNPeerRecord* other);
+  friend void swap(DNPeerRecord& a, DNPeerRecord& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline DNPeerResponse* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline DNPeerRecord* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  DNPeerResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  DNPeerRecord* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const DNPeerResponse& from);
-  void MergeFrom(const DNPeerResponse& from);
+  void CopyFrom(const DNPeerRecord& from);
+  void MergeFrom(const DNPeerRecord& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -360,7 +338,7 @@ class DNPeerResponse : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(DNPeerResponse* other);
+  void InternalSwap(DNPeerRecord* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -376,115 +354,23 @@ class DNPeerResponse : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // .pb.Peer peer = 1;
+  // .pb.Peer peer = 2;
   bool has_peer() const;
   void clear_peer();
-  static const int kPeerFieldNumber = 1;
+  static const int kPeerFieldNumber = 2;
   const ::pb::Peer& peer() const;
   ::pb::Peer* release_peer();
   ::pb::Peer* mutable_peer();
   void set_allocated_peer(::pb::Peer* peer);
 
-  // @@protoc_insertion_point(class_scope:pb.DNPeerResponse)
+  // @@protoc_insertion_point(class_scope:pb.DNPeerRecord)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::pb::Peer* peer_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2faddressbook_2eproto::TableStruct;
-  friend void ::protobuf_pb_2faddressbook_2eproto::InitDefaultsDNPeerResponseImpl();
-};
-// -------------------------------------------------------------------
-
-class DNPeerRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNPeerRequest) */ {
- public:
-  DNPeerRequest();
-  virtual ~DNPeerRequest();
-
-  DNPeerRequest(const DNPeerRequest& from);
-
-  inline DNPeerRequest& operator=(const DNPeerRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  DNPeerRequest(DNPeerRequest&& from) noexcept
-    : DNPeerRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline DNPeerRequest& operator=(DNPeerRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const DNPeerRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const DNPeerRequest* internal_default_instance() {
-    return reinterpret_cast<const DNPeerRequest*>(
-               &_DNPeerRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
-
-  void Swap(DNPeerRequest* other);
-  friend void swap(DNPeerRequest& a, DNPeerRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline DNPeerRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  DNPeerRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const DNPeerRequest& from);
-  void MergeFrom(const DNPeerRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(DNPeerRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:pb.DNPeerRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2faddressbook_2eproto::TableStruct;
-  friend void ::protobuf_pb_2faddressbook_2eproto::InitDefaultsDNPeerRequestImpl();
+  friend void ::protobuf_pb_2faddressbook_2eproto::InitDefaultsDNPeerRecordImpl();
 };
 // -------------------------------------------------------------------
 
@@ -523,7 +409,7 @@ class DNAddressbook : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_DNAddressbook_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
+    3;
 
   void Swap(DNAddressbook* other);
   friend void swap(DNAddressbook& a, DNAddressbook& b) {
@@ -628,7 +514,7 @@ class RPCUpsertPeerRequest : public ::google::protobuf::Message /* @@protoc_inse
                &_RPCUpsertPeerRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
+    4;
 
   void Swap(RPCUpsertPeerRequest* other);
   friend void swap(RPCUpsertPeerRequest& a, RPCUpsertPeerRequest& b) {
@@ -730,7 +616,7 @@ class RPCUpsertPeerResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_RPCUpsertPeerResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    5;
 
   void Swap(RPCUpsertPeerResponse* other);
   friend void swap(RPCUpsertPeerResponse& a, RPCUpsertPeerResponse& b) {
@@ -822,7 +708,7 @@ class RPCGetPeerIdsRequest : public ::google::protobuf::Message /* @@protoc_inse
                &_RPCGetPeerIdsRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    6;
 
   void Swap(RPCGetPeerIdsRequest* other);
   friend void swap(RPCGetPeerIdsRequest& a, RPCGetPeerIdsRequest& b) {
@@ -944,7 +830,7 @@ class RPCGetPeerIdsResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_RPCGetPeerIdsResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
+    7;
 
   void Swap(RPCGetPeerIdsResponse* other);
   friend void swap(RPCGetPeerIdsResponse& a, RPCGetPeerIdsResponse& b) {
@@ -1059,7 +945,7 @@ class RPCGetPeerRequest : public ::google::protobuf::Message /* @@protoc_inserti
                &_RPCGetPeerRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
+    8;
 
   void Swap(RPCGetPeerRequest* other);
   friend void swap(RPCGetPeerRequest& a, RPCGetPeerRequest& b) {
@@ -1173,7 +1059,7 @@ class RPCGetPeerResponse : public ::google::protobuf::Message /* @@protoc_insert
                &_RPCGetPeerResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    10;
+    9;
 
   void Swap(RPCGetPeerResponse* other);
   friend void swap(RPCGetPeerResponse& a, RPCGetPeerResponse& b) {
@@ -1251,7 +1137,21 @@ class RPCGetPeerResponse : public ::google::protobuf::Message /* @@protoc_insert
 
 // Peer
 
-// string pId = 1;
+// uint64 published = 1;
+inline void Peer::clear_published() {
+  published_ = GOOGLE_ULONGLONG(0);
+}
+inline ::google::protobuf::uint64 Peer::published() const {
+  // @@protoc_insertion_point(field_get:pb.Peer.published)
+  return published_;
+}
+inline void Peer::set_published(::google::protobuf::uint64 value) {
+  
+  published_ = value;
+  // @@protoc_insertion_point(field_set:pb.Peer.published)
+}
+
+// string pId = 2;
 inline void Peer::clear_pid() {
   pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1304,7 +1204,7 @@ inline void Peer::set_allocated_pid(::std::string* pid) {
   // @@protoc_insertion_point(field_set_allocated:pb.Peer.pId)
 }
 
-// uint64 dnId = 2;
+// uint64 dnId = 3;
 inline void Peer::clear_dnid() {
   dnid_ = GOOGLE_ULONGLONG(0);
 }
@@ -1318,7 +1218,7 @@ inline void Peer::set_dnid(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:pb.Peer.dnId)
 }
 
-// map<string, string> details = 3;
+// map<string, string> details = 4;
 inline int Peer::details_size() const {
   return details_.size();
 }
@@ -1336,111 +1236,42 @@ Peer::mutable_details() {
   return details_.MutableMap();
 }
 
-// repeated string addrs = 4;
-inline int Peer::addrs_size() const {
-  return addrs_.size();
-}
-inline void Peer::clear_addrs() {
-  addrs_.Clear();
-}
-inline const ::std::string& Peer::addrs(int index) const {
-  // @@protoc_insertion_point(field_get:pb.Peer.addrs)
-  return addrs_.Get(index);
-}
-inline ::std::string* Peer::mutable_addrs(int index) {
-  // @@protoc_insertion_point(field_mutable:pb.Peer.addrs)
-  return addrs_.Mutable(index);
-}
-inline void Peer::set_addrs(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:pb.Peer.addrs)
-  addrs_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void Peer::set_addrs(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:pb.Peer.addrs)
-  addrs_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void Peer::set_addrs(int index, const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  addrs_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:pb.Peer.addrs)
-}
-inline void Peer::set_addrs(int index, const char* value, size_t size) {
-  addrs_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:pb.Peer.addrs)
-}
-inline ::std::string* Peer::add_addrs() {
-  // @@protoc_insertion_point(field_add_mutable:pb.Peer.addrs)
-  return addrs_.Add();
-}
-inline void Peer::add_addrs(const ::std::string& value) {
-  addrs_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:pb.Peer.addrs)
-}
-#if LANG_CXX11
-inline void Peer::add_addrs(::std::string&& value) {
-  addrs_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:pb.Peer.addrs)
-}
-#endif
-inline void Peer::add_addrs(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  addrs_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:pb.Peer.addrs)
-}
-inline void Peer::add_addrs(const char* value, size_t size) {
-  addrs_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:pb.Peer.addrs)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Peer::addrs() const {
-  // @@protoc_insertion_point(field_list:pb.Peer.addrs)
-  return addrs_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Peer::mutable_addrs() {
-  // @@protoc_insertion_point(field_mutable_list:pb.Peer.addrs)
-  return &addrs_;
-}
-
 // -------------------------------------------------------------------
 
-// DNPeerResponse
+// DNPeerRecord
 
-// .pb.Peer peer = 1;
-inline bool DNPeerResponse::has_peer() const {
+// .pb.Peer peer = 2;
+inline bool DNPeerRecord::has_peer() const {
   return this != internal_default_instance() && peer_ != NULL;
 }
-inline void DNPeerResponse::clear_peer() {
+inline void DNPeerRecord::clear_peer() {
   if (GetArenaNoVirtual() == NULL && peer_ != NULL) {
     delete peer_;
   }
   peer_ = NULL;
 }
-inline const ::pb::Peer& DNPeerResponse::peer() const {
+inline const ::pb::Peer& DNPeerRecord::peer() const {
   const ::pb::Peer* p = peer_;
-  // @@protoc_insertion_point(field_get:pb.DNPeerResponse.peer)
+  // @@protoc_insertion_point(field_get:pb.DNPeerRecord.peer)
   return p != NULL ? *p : *reinterpret_cast<const ::pb::Peer*>(
       &::pb::_Peer_default_instance_);
 }
-inline ::pb::Peer* DNPeerResponse::release_peer() {
-  // @@protoc_insertion_point(field_release:pb.DNPeerResponse.peer)
+inline ::pb::Peer* DNPeerRecord::release_peer() {
+  // @@protoc_insertion_point(field_release:pb.DNPeerRecord.peer)
   
   ::pb::Peer* temp = peer_;
   peer_ = NULL;
   return temp;
 }
-inline ::pb::Peer* DNPeerResponse::mutable_peer() {
+inline ::pb::Peer* DNPeerRecord::mutable_peer() {
   
   if (peer_ == NULL) {
     peer_ = new ::pb::Peer;
   }
-  // @@protoc_insertion_point(field_mutable:pb.DNPeerResponse.peer)
+  // @@protoc_insertion_point(field_mutable:pb.DNPeerRecord.peer)
   return peer_;
 }
-inline void DNPeerResponse::set_allocated_peer(::pb::Peer* peer) {
+inline void DNPeerRecord::set_allocated_peer(::pb::Peer* peer) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete peer_;
@@ -1456,12 +1287,8 @@ inline void DNPeerResponse::set_allocated_peer(::pb::Peer* peer) {
     
   }
   peer_ = peer;
-  // @@protoc_insertion_point(field_set_allocated:pb.DNPeerResponse.peer)
+  // @@protoc_insertion_point(field_set_allocated:pb.DNPeerRecord.peer)
 }
-
-// -------------------------------------------------------------------
-
-// DNPeerRequest
 
 // -------------------------------------------------------------------
 
@@ -1866,8 +1693,6 @@ inline void RPCGetPeerResponse::set_allocated_peer(::pb::Peer* peer) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -32,16 +32,16 @@ func (d *Decentralizer) initMatchmaking() {
 	}
 
 	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
-		var sessions pb.DNSessions
+		var sessions pb.DNSessionsRecord
 		err = gogoProto.Unmarshal(val, &sessions)
 		if err != nil {
 			return err
 		}
-		return validateDNSessions(&sessions)
+		return validateDNSessionsRecord(&sessions)
 	}, true)
 }
 
-func validateDNSessions(sessions *pb.DNSessions) error {
+func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	//Check publish time
 	now := time.Now().UTC()
 	publishedTime := time.Unix(int64(sessions.Published), 0).UTC()
@@ -115,7 +115,7 @@ func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint
 		return 0, err
 	}
 	timeout.Do(func(ctx context.Context) {
-		err = d.advertise(sessionType)
+		err = d.advertiseSessionsRecord(sessionType)
 		if err != nil {
 			err = fmt.Errorf("could not advertise session: %s", err.Error())
 		}
@@ -142,7 +142,7 @@ func (d *Decentralizer) InsertSession(session *pb.Session) (uint64, error) {
 }
 
 //Advertise all the session ids we have
-func (d *Decentralizer) advertise(sessionType uint64) error {
+func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 	//Before we override DHT with our advisement. Let us check others.
 	search := d.getSessionSearch(sessionType)
 	store, err := search.fetch()
@@ -153,11 +153,11 @@ func (d *Decentralizer) advertise(sessionType uint64) error {
 	if err != nil {
 		return err
 	}
-	sessions := &pb.DNSessions{
+	sessions := &pb.DNSessionsRecord{
 		Published: uint64(time.Now().UTC().Unix()),
 		Results: localSessions,
 	}
-	err = validateDNSessions(sessions)
+	err = validateDNSessionsRecord(sessions)
 	if err != nil {
 		return err
 	}

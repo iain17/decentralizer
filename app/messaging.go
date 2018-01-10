@@ -3,10 +3,10 @@ package app
 import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmT6n4mspWYEya864BhCUJEgyxiRfmiSY9ruQwTUNpRKaM/protobuf/proto"
 	inet "gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"github.com/iain17/framed"
+	"github.com/golang/protobuf/proto"
 )
 
 type DirectMessage struct {
