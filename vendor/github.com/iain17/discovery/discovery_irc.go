@@ -11,6 +11,7 @@ import (
 	"net"
 	"strconv"
 	"github.com/iain17/logger"
+	"io/ioutil"
 )
 
 type DiscoveryIRC struct {
@@ -30,6 +31,7 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 
 	name := randomdata.SillyName()
 	d.connection = irc.IRC(name, name)
+	d.connection.Log.SetOutput(ioutil.Discard)
 	//d.connection.Debug = true
 	d.connection.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	d.connection.UseTLS = true

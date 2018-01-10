@@ -101,7 +101,7 @@ func (d *Decentralizer) advertisePeerRecord() error {
 	if err != nil {
 		logger.Warning(err)
 	} else {
-		logger.Debug("Successfully provided self")
+		logger.Info("Successfully provided self")
 	}
 	return err
 }

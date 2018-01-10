@@ -123,7 +123,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					ignore,
 	}
-	instance.bootstrap()
+	go instance.bootstrap()
 
 	instance.initStorage()
 	instance.initMatchmaking()
