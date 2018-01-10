@@ -104,7 +104,7 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 			break
 		case *pb.Message_PeerInfo:
 			msg := packet.GetMsg().(*pb.Message_PeerInfo).PeerInfo
-			rn.info = msg.Info
+			rn.SetMapInfo(msg.Info)
 			break
 		}
 	}

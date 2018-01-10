@@ -24,6 +24,12 @@ func (n *Node) SetInfo(key string, value string) {
 	n.infoMutex.Unlock()
 }
 
+func (n *Node) SetMapInfo(info map[string]string) {
+	n.infoMutex.Lock()
+	n.info = info
+	n.infoMutex.Unlock()
+}
+
 func (n *Node) GetInfo(key string) string {
 	n.infoMutex.Lock()
 	defer n.infoMutex.Unlock()
