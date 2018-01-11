@@ -8,6 +8,7 @@ import (
 	"time"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
+	"gx/ipfs/QmefgzMbKZYsmHFkLqxgaTBG9ypeEjrdWRD5WXH4j1cWDL/go-libp2p/p2p/net/mock"
 )
 
 func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
@@ -20,12 +21,10 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	app2 := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, app2)
 
-	time.Sleep(500 * time.Millisecond)
-
 	sessId, err := app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{
 		"cool": "no",
 	})
-		assert.NoError(t, err)
+	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
 	time.Sleep(500 * time.Millisecond)
@@ -92,6 +91,46 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 	assert.Equal(t, 3, app1Store.Len())
 	assert.Equal(t, 3, app2Store.Len())
 	assert.Equal(t, 3, app3Store.Len())
+}
+
+//2 peer have published their session. Then all a third peer joins the network. He should have two sessions.
+func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
+	EXPIRE_TIME_SESSION = 3 * time.Hour
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	mn := mocknet.New(ctx)
+	nodes := ipfs.FakeNewIPFSNodesNetworked(mn, ctx, 5, nil)
+	app1 := fakeNew(ctx, nodes[0], false)
+	assert.NotNil(t, app1)
+	app2 := fakeNew(ctx, nodes[1], false)
+	assert.NotNil(t, app2)
+
+	_, err := app1.UpsertSession(1337, "App 1 session :D", 304, map[string]string{
+		"cool": "no",
+	})
+	assert.NoError(t, err)
+
+	_, err = app2.UpsertSession(1337, "App 2 session :D", 308, map[string]string{
+		"cool": "no",
+	})
+	assert.NoError(t, err)
+
+	time.Sleep(500 * time.Millisecond)
+
+	//App 1 gets only non cool sessions
+	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
+	assert.NoError(t, err)
+	assert.Equal(t, 2, len(sessions))
+
+	//Now the late joiner
+	lateNodes := ipfs.FakeNewIPFSNodesNetworked(mn, ctx, 2, nodes)
+
+	app3 := fakeNew(ctx, lateNodes[1], false)
+	assert.NotNil(t, app2)
+
+	sessions, err = app3.GetSessionsByDetails(1337, "cool", "no")
+	assert.NoError(t, err)
+	assert.Equal(t, 2, len(sessions))
 }
 
 func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {

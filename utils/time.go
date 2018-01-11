@@ -1,4 +1,4 @@
-package app
+package utils
 
 import (
 	"time"
@@ -8,7 +8,7 @@ import (
 )
 
 //Returns true if the second passed record is newer than the first one.
-func isNewerRecord(current uint64, new uint64) bool {
+func IsNewerRecord(current uint64, new uint64) bool {
 	if new == 0 {
 		return false
 	}

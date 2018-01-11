@@ -9,6 +9,7 @@ import (
 	"github.com/iain17/ipinfo"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"fmt"
+	"github.com/iain17/decentralizer/utils"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -54,7 +55,7 @@ func (d *Decentralizer) initAddressbook() {
 				logger.Warning(err)
 				continue
 			}
-			if isNewerRecord(currPeer.Published, record.Peer.Published) {
+			if utils.IsNewerRecord(currPeer.Published, record.Peer.Published) {
 				currPeer = *record.Peer
 				best = i
 			}

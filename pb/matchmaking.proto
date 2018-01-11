@@ -11,12 +11,30 @@ message Session {
     uint32 address = 6;
     uint32 port = 7;
     map<string, string> details = 8;
+    uint64 published = 9;
 }
 
 //DN messages
 message DNSessionsRecord {
     uint64 published = 1;
     repeated Session results = 2;
+}
+
+message DNSessionsResponse {
+    repeated Session results = 1;
+}
+
+message DNSessionsRequest {
+    uint64 type = 1;
+    repeated uint64 sessionIds = 2;
+}
+
+message DNSessionidsResponse {
+    repeated uint64 sessionIds = 1;
+}
+
+message DNSessionidsRequest {
+    uint64 type = 1;
 }
 
 //RPC messages

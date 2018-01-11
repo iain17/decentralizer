@@ -35,6 +35,26 @@ class DNSessionsRecordDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<DNSessionsRecord>
       _instance;
 } _DNSessionsRecord_default_instance_;
+class DNSessionsResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DNSessionsResponse>
+      _instance;
+} _DNSessionsResponse_default_instance_;
+class DNSessionsRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DNSessionsRequest>
+      _instance;
+} _DNSessionsRequest_default_instance_;
+class DNSessionidsResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DNSessionidsResponse>
+      _instance;
+} _DNSessionidsResponse_default_instance_;
+class DNSessionidsRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DNSessionidsRequest>
+      _instance;
+} _DNSessionidsRequest_default_instance_;
 class RPCUpsertSessionRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<RPCUpsertSessionRequest>
@@ -144,6 +164,91 @@ void InitDefaultsDNSessionsRecordImpl() {
 void InitDefaultsDNSessionsRecord() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionsRecordImpl);
+}
+
+void InitDefaultsDNSessionsResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_pb_2fmatchmaking_2eproto::InitDefaultsSession();
+  {
+    void* ptr = &::pb::_DNSessionsResponse_default_instance_;
+    new (ptr) ::pb::DNSessionsResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::DNSessionsResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsDNSessionsResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionsResponseImpl);
+}
+
+void InitDefaultsDNSessionsRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_DNSessionsRequest_default_instance_;
+    new (ptr) ::pb::DNSessionsRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::DNSessionsRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsDNSessionsRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionsRequestImpl);
+}
+
+void InitDefaultsDNSessionidsResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_DNSessionidsResponse_default_instance_;
+    new (ptr) ::pb::DNSessionidsResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::DNSessionidsResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsDNSessionidsResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionidsResponseImpl);
+}
+
+void InitDefaultsDNSessionidsRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::pb::_DNSessionidsRequest_default_instance_;
+    new (ptr) ::pb::DNSessionidsRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::DNSessionidsRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsDNSessionidsRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDNSessionidsRequestImpl);
 }
 
 void InitDefaultsRPCUpsertSessionRequestImpl() {
@@ -337,7 +442,7 @@ void InitDefaultsRPCGetSessionResponse() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsRPCGetSessionResponseImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[12];
+::google::protobuf::Metadata file_level_metadata[16];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session_DetailsEntry_DoNotUse, _has_bits_),
@@ -362,6 +467,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, address_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, port_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, details_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::Session, published_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRecord, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -369,6 +475,31 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRecord, published_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRecord, results_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsResponse, results_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRequest, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionsRequest, sessionids_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionidsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionidsResponse, sessionids_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionidsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::DNSessionidsRequest, type_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::RPCUpsertSessionRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -429,22 +560,30 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::pb::Session_DetailsEntry_DoNotUse)},
   { 9, -1, sizeof(::pb::Session)},
-  { 22, -1, sizeof(::pb::DNSessionsRecord)},
-  { 29, -1, sizeof(::pb::RPCUpsertSessionRequest)},
-  { 35, -1, sizeof(::pb::RPCUpsertSessionResponse)},
-  { 41, -1, sizeof(::pb::RPCDeleteSessionRequest)},
-  { 47, -1, sizeof(::pb::RPCDeleteSessionResponse)},
-  { 53, -1, sizeof(::pb::RPCGetSessionIdsByDetailsRequest)},
-  { 61, -1, sizeof(::pb::RPCGetSessionIdsByPeerIdsRequest)},
-  { 67, -1, sizeof(::pb::RPCGetSessionIdsResponse)},
-  { 73, -1, sizeof(::pb::RPCGetSessionRequest)},
-  { 79, -1, sizeof(::pb::RPCGetSessionResponse)},
+  { 23, -1, sizeof(::pb::DNSessionsRecord)},
+  { 30, -1, sizeof(::pb::DNSessionsResponse)},
+  { 36, -1, sizeof(::pb::DNSessionsRequest)},
+  { 43, -1, sizeof(::pb::DNSessionidsResponse)},
+  { 49, -1, sizeof(::pb::DNSessionidsRequest)},
+  { 55, -1, sizeof(::pb::RPCUpsertSessionRequest)},
+  { 61, -1, sizeof(::pb::RPCUpsertSessionResponse)},
+  { 67, -1, sizeof(::pb::RPCDeleteSessionRequest)},
+  { 73, -1, sizeof(::pb::RPCDeleteSessionResponse)},
+  { 79, -1, sizeof(::pb::RPCGetSessionIdsByDetailsRequest)},
+  { 87, -1, sizeof(::pb::RPCGetSessionIdsByPeerIdsRequest)},
+  { 93, -1, sizeof(::pb::RPCGetSessionIdsResponse)},
+  { 99, -1, sizeof(::pb::RPCGetSessionRequest)},
+  { 105, -1, sizeof(::pb::RPCGetSessionResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Session_DetailsEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Session_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionsRecord_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionsResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionsRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionidsResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_DNSessionidsRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCUpsertSessionRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCUpsertSessionResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_RPCDeleteSessionRequest_default_instance_),
@@ -472,35 +611,40 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 12);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 16);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\024pb/matchmaking.proto\022\002pb\"\315\001\n\007Session\022\013"
+      "\n\024pb/matchmaking.proto\022\002pb\"\340\001\n\007Session\022\013"
       "\n\003pId\030\001 \001(\t\022\014\n\004dnId\030\002 \001(\004\022\021\n\tsessionId\030\003"
       " \001(\004\022\014\n\004type\030\004 \001(\004\022\014\n\004name\030\005 \001(\t\022\017\n\007addr"
       "ess\030\006 \001(\r\022\014\n\004port\030\007 \001(\r\022)\n\007details\030\010 \003(\013"
-      "2\030.pb.Session.DetailsEntry\032.\n\014DetailsEnt"
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"C\n\020DN"
-      "SessionsRecord\022\021\n\tpublished\030\001 \001(\004\022\034\n\007res"
-      "ults\030\002 \003(\0132\013.pb.Session\"7\n\027RPCUpsertSess"
-      "ionRequest\022\034\n\007session\030\001 \001(\0132\013.pb.Session"
-      "\"-\n\030RPCUpsertSessionResponse\022\021\n\tsessionI"
-      "d\030\001 \001(\004\",\n\027RPCDeleteSessionRequest\022\021\n\tse"
-      "ssionId\030\001 \001(\004\"*\n\030RPCDeleteSessionRespons"
-      "e\022\016\n\006result\030\001 \001(\010\"L\n RPCGetSessionIdsByD"
-      "etailsRequest\022\014\n\004type\030\001 \001(\004\022\013\n\003key\030\002 \001(\t"
-      "\022\r\n\005value\030\003 \001(\t\"3\n RPCGetSessionIdsByPee"
-      "rIdsRequest\022\017\n\007peerIds\030\001 \003(\t\".\n\030RPCGetSe"
-      "ssionIdsResponse\022\022\n\nsessionIds\030\001 \003(\004\")\n\024"
-      "RPCGetSessionRequest\022\021\n\tsessionId\030\001 \001(\004\""
-      "5\n\025RPCGetSessionResponse\022\034\n\007session\030\001 \001("
-      "\0132\013.pb.Sessionb\006proto3"
+      "2\030.pb.Session.DetailsEntry\022\021\n\tpublished\030"
+      "\t \001(\004\032.\n\014DetailsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va"
+      "lue\030\002 \001(\t:\0028\001\"C\n\020DNSessionsRecord\022\021\n\tpub"
+      "lished\030\001 \001(\004\022\034\n\007results\030\002 \003(\0132\013.pb.Sessi"
+      "on\"2\n\022DNSessionsResponse\022\034\n\007results\030\001 \003("
+      "\0132\013.pb.Session\"5\n\021DNSessionsRequest\022\014\n\004t"
+      "ype\030\001 \001(\004\022\022\n\nsessionIds\030\002 \003(\004\"*\n\024DNSessi"
+      "onidsResponse\022\022\n\nsessionIds\030\001 \003(\004\"#\n\023DNS"
+      "essionidsRequest\022\014\n\004type\030\001 \001(\004\"7\n\027RPCUps"
+      "ertSessionRequest\022\034\n\007session\030\001 \001(\0132\013.pb."
+      "Session\"-\n\030RPCUpsertSessionResponse\022\021\n\ts"
+      "essionId\030\001 \001(\004\",\n\027RPCDeleteSessionReques"
+      "t\022\021\n\tsessionId\030\001 \001(\004\"*\n\030RPCDeleteSession"
+      "Response\022\016\n\006result\030\001 \001(\010\"L\n RPCGetSessio"
+      "nIdsByDetailsRequest\022\014\n\004type\030\001 \001(\004\022\013\n\003ke"
+      "y\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\"3\n RPCGetSessionI"
+      "dsByPeerIdsRequest\022\017\n\007peerIds\030\001 \003(\t\".\n\030R"
+      "PCGetSessionIdsResponse\022\022\n\nsessionIds\030\001 "
+      "\003(\004\")\n\024RPCGetSessionRequest\022\021\n\tsessionId"
+      "\030\001 \001(\004\"5\n\025RPCGetSessionResponse\022\034\n\007sessi"
+      "on\030\001 \001(\0132\013.pb.Sessionb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 782);
+      descriptor, 989);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/matchmaking.proto", &protobuf_RegisterTypes);
 }
@@ -548,6 +692,7 @@ const int Session::kNameFieldNumber;
 const int Session::kAddressFieldNumber;
 const int Session::kPortFieldNumber;
 const int Session::kDetailsFieldNumber;
+const int Session::kPublishedFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Session::Session()
@@ -573,8 +718,8 @@ Session::Session(const Session& from)
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
   ::memcpy(&dnid_, &from.dnid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&port_) -
-    reinterpret_cast<char*>(&dnid_)) + sizeof(port_));
+    static_cast<size_t>(reinterpret_cast<char*>(&published_) -
+    reinterpret_cast<char*>(&dnid_)) + sizeof(published_));
   // @@protoc_insertion_point(copy_constructor:pb.Session)
 }
 
@@ -582,8 +727,8 @@ void Session::SharedCtor() {
   pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&dnid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&port_) -
-      reinterpret_cast<char*>(&dnid_)) + sizeof(port_));
+      reinterpret_cast<char*>(&published_) -
+      reinterpret_cast<char*>(&dnid_)) + sizeof(published_));
   _cached_size_ = 0;
 }
 
@@ -630,8 +775,8 @@ void Session::Clear() {
   pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&dnid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&port_) -
-      reinterpret_cast<char*>(&dnid_)) + sizeof(port_));
+      reinterpret_cast<char*>(&published_) -
+      reinterpret_cast<char*>(&dnid_)) + sizeof(published_));
   _internal_metadata_.Clear();
 }
 
@@ -774,6 +919,20 @@ bool Session::MergePartialFromCodedStream(
         break;
       }
 
+      // uint64 published = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &published_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -898,6 +1057,11 @@ void Session::SerializeWithCachedSizes(
     }
   }
 
+  // uint64 published = 9;
+  if (this->published() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(9, this->published(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1016,6 +1180,11 @@ void Session::SerializeWithCachedSizes(
     }
   }
 
+  // uint64 published = 9;
+  if (this->published() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(9, this->published(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -1096,6 +1265,13 @@ size_t Session::ByteSizeLong() const {
         this->port());
   }
 
+  // uint64 published = 9;
+  if (this->published() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->published());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -1149,6 +1325,9 @@ void Session::MergeFrom(const Session& from) {
   if (from.port() != 0) {
     set_port(from.port());
   }
+  if (from.published() != 0) {
+    set_published(from.published());
+  }
 }
 
 void Session::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1183,6 +1362,7 @@ void Session::InternalSwap(Session* other) {
   swap(type_, other->type_);
   swap(address_, other->address_);
   swap(port_, other->port_);
+  swap(published_, other->published_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -1468,6 +1648,1050 @@ void DNSessionsRecord::InternalSwap(DNSessionsRecord* other) {
 }
 
 ::google::protobuf::Metadata DNSessionsRecord::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void DNSessionsResponse::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DNSessionsResponse::kResultsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DNSessionsResponse::DNSessionsResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionsResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.DNSessionsResponse)
+}
+DNSessionsResponse::DNSessionsResponse(const DNSessionsResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      results_(from.results_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:pb.DNSessionsResponse)
+}
+
+void DNSessionsResponse::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+DNSessionsResponse::~DNSessionsResponse() {
+  // @@protoc_insertion_point(destructor:pb.DNSessionsResponse)
+  SharedDtor();
+}
+
+void DNSessionsResponse::SharedDtor() {
+}
+
+void DNSessionsResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DNSessionsResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DNSessionsResponse& DNSessionsResponse::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionsResponse();
+  return *internal_default_instance();
+}
+
+DNSessionsResponse* DNSessionsResponse::New(::google::protobuf::Arena* arena) const {
+  DNSessionsResponse* n = new DNSessionsResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DNSessionsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNSessionsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  results_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool DNSessionsResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.DNSessionsResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .pb.Session results = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_results()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.DNSessionsResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.DNSessionsResponse)
+  return false;
+#undef DO_
+}
+
+void DNSessionsResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.DNSessionsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .pb.Session results = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->results_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->results(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.DNSessionsResponse)
+}
+
+::google::protobuf::uint8* DNSessionsResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .pb.Session results = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->results_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->results(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionsResponse)
+  return target;
+}
+
+size_t DNSessionsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNSessionsResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .pb.Session results = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->results_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->results(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DNSessionsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNSessionsResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionsResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionsResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionsResponse)
+    MergeFrom(*source);
+  }
+}
+
+void DNSessionsResponse::MergeFrom(const DNSessionsResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNSessionsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  results_.MergeFrom(from.results_);
+}
+
+void DNSessionsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DNSessionsResponse::CopyFrom(const DNSessionsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNSessionsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DNSessionsResponse::IsInitialized() const {
+  return true;
+}
+
+void DNSessionsResponse::Swap(DNSessionsResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DNSessionsResponse::InternalSwap(DNSessionsResponse* other) {
+  using std::swap;
+  results_.InternalSwap(&other->results_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DNSessionsResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void DNSessionsRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DNSessionsRequest::kTypeFieldNumber;
+const int DNSessionsRequest::kSessionIdsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DNSessionsRequest::DNSessionsRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionsRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.DNSessionsRequest)
+}
+DNSessionsRequest::DNSessionsRequest(const DNSessionsRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      sessionids_(from.sessionids_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  type_ = from.type_;
+  // @@protoc_insertion_point(copy_constructor:pb.DNSessionsRequest)
+}
+
+void DNSessionsRequest::SharedCtor() {
+  type_ = GOOGLE_ULONGLONG(0);
+  _cached_size_ = 0;
+}
+
+DNSessionsRequest::~DNSessionsRequest() {
+  // @@protoc_insertion_point(destructor:pb.DNSessionsRequest)
+  SharedDtor();
+}
+
+void DNSessionsRequest::SharedDtor() {
+}
+
+void DNSessionsRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DNSessionsRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DNSessionsRequest& DNSessionsRequest::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionsRequest();
+  return *internal_default_instance();
+}
+
+DNSessionsRequest* DNSessionsRequest::New(::google::protobuf::Arena* arena) const {
+  DNSessionsRequest* n = new DNSessionsRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DNSessionsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNSessionsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  sessionids_.Clear();
+  type_ = GOOGLE_ULONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+bool DNSessionsRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.DNSessionsRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // uint64 type = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &type_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated uint64 sessionIds = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, this->mutable_sessionids())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 1, 18u, input, this->mutable_sessionids())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.DNSessionsRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.DNSessionsRequest)
+  return false;
+#undef DO_
+}
+
+void DNSessionsRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.DNSessionsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->type(), output);
+  }
+
+  // repeated uint64 sessionIds = 2;
+  if (this->sessionids_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _sessionids_cached_byte_size_));
+  }
+  for (int i = 0, n = this->sessionids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64NoTag(
+      this->sessionids(i), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.DNSessionsRequest)
+}
+
+::google::protobuf::uint8* DNSessionsRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->type(), target);
+  }
+
+  // repeated uint64 sessionIds = 2;
+  if (this->sessionids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      2,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _sessionids_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt64NoTagToArray(this->sessionids_, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionsRequest)
+  return target;
+}
+
+size_t DNSessionsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNSessionsRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated uint64 sessionIds = 2;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      UInt64Size(this->sessionids_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _sessionids_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->type());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DNSessionsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNSessionsRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionsRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionsRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionsRequest)
+    MergeFrom(*source);
+  }
+}
+
+void DNSessionsRequest::MergeFrom(const DNSessionsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNSessionsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  sessionids_.MergeFrom(from.sessionids_);
+  if (from.type() != 0) {
+    set_type(from.type());
+  }
+}
+
+void DNSessionsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DNSessionsRequest::CopyFrom(const DNSessionsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNSessionsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DNSessionsRequest::IsInitialized() const {
+  return true;
+}
+
+void DNSessionsRequest::Swap(DNSessionsRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DNSessionsRequest::InternalSwap(DNSessionsRequest* other) {
+  using std::swap;
+  sessionids_.InternalSwap(&other->sessionids_);
+  swap(type_, other->type_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DNSessionsRequest::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void DNSessionidsResponse::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DNSessionidsResponse::kSessionIdsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DNSessionidsResponse::DNSessionidsResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionidsResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.DNSessionidsResponse)
+}
+DNSessionidsResponse::DNSessionidsResponse(const DNSessionidsResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      sessionids_(from.sessionids_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:pb.DNSessionidsResponse)
+}
+
+void DNSessionidsResponse::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+DNSessionidsResponse::~DNSessionidsResponse() {
+  // @@protoc_insertion_point(destructor:pb.DNSessionidsResponse)
+  SharedDtor();
+}
+
+void DNSessionidsResponse::SharedDtor() {
+}
+
+void DNSessionidsResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DNSessionidsResponse::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DNSessionidsResponse& DNSessionidsResponse::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionidsResponse();
+  return *internal_default_instance();
+}
+
+DNSessionidsResponse* DNSessionidsResponse::New(::google::protobuf::Arena* arena) const {
+  DNSessionidsResponse* n = new DNSessionidsResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DNSessionidsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNSessionidsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  sessionids_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool DNSessionidsResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.DNSessionidsResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated uint64 sessionIds = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, this->mutable_sessionids())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 1, 10u, input, this->mutable_sessionids())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.DNSessionidsResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.DNSessionidsResponse)
+  return false;
+#undef DO_
+}
+
+void DNSessionidsResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.DNSessionidsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated uint64 sessionIds = 1;
+  if (this->sessionids_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(1, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _sessionids_cached_byte_size_));
+  }
+  for (int i = 0, n = this->sessionids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64NoTag(
+      this->sessionids(i), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.DNSessionidsResponse)
+}
+
+::google::protobuf::uint8* DNSessionidsResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionidsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated uint64 sessionIds = 1;
+  if (this->sessionids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      1,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _sessionids_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt64NoTagToArray(this->sessionids_, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionidsResponse)
+  return target;
+}
+
+size_t DNSessionidsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNSessionidsResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated uint64 sessionIds = 1;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      UInt64Size(this->sessionids_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _sessionids_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DNSessionidsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionidsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNSessionidsResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionidsResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionidsResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionidsResponse)
+    MergeFrom(*source);
+  }
+}
+
+void DNSessionidsResponse::MergeFrom(const DNSessionidsResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNSessionidsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  sessionids_.MergeFrom(from.sessionids_);
+}
+
+void DNSessionidsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionidsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DNSessionidsResponse::CopyFrom(const DNSessionidsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNSessionidsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DNSessionidsResponse::IsInitialized() const {
+  return true;
+}
+
+void DNSessionidsResponse::Swap(DNSessionidsResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DNSessionidsResponse::InternalSwap(DNSessionidsResponse* other) {
+  using std::swap;
+  sessionids_.InternalSwap(&other->sessionids_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DNSessionidsResponse::GetMetadata() const {
+  protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void DNSessionidsRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DNSessionidsRequest::kTypeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DNSessionidsRequest::DNSessionidsRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionidsRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.DNSessionidsRequest)
+}
+DNSessionidsRequest::DNSessionidsRequest(const DNSessionidsRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  type_ = from.type_;
+  // @@protoc_insertion_point(copy_constructor:pb.DNSessionidsRequest)
+}
+
+void DNSessionidsRequest::SharedCtor() {
+  type_ = GOOGLE_ULONGLONG(0);
+  _cached_size_ = 0;
+}
+
+DNSessionidsRequest::~DNSessionidsRequest() {
+  // @@protoc_insertion_point(destructor:pb.DNSessionidsRequest)
+  SharedDtor();
+}
+
+void DNSessionidsRequest::SharedDtor() {
+}
+
+void DNSessionidsRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DNSessionidsRequest::descriptor() {
+  ::protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DNSessionidsRequest& DNSessionidsRequest::default_instance() {
+  ::protobuf_pb_2fmatchmaking_2eproto::InitDefaultsDNSessionidsRequest();
+  return *internal_default_instance();
+}
+
+DNSessionidsRequest* DNSessionidsRequest::New(::google::protobuf::Arena* arena) const {
+  DNSessionidsRequest* n = new DNSessionidsRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DNSessionidsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.DNSessionidsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  type_ = GOOGLE_ULONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+bool DNSessionidsRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.DNSessionidsRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // uint64 type = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &type_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.DNSessionidsRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.DNSessionidsRequest)
+  return false;
+#undef DO_
+}
+
+void DNSessionidsRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.DNSessionidsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->type(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.DNSessionidsRequest)
+}
+
+::google::protobuf::uint8* DNSessionidsRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.DNSessionidsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->type(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.DNSessionidsRequest)
+  return target;
+}
+
+size_t DNSessionidsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.DNSessionidsRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // uint64 type = 1;
+  if (this->type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->type());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DNSessionidsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.DNSessionidsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DNSessionidsRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DNSessionidsRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.DNSessionidsRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.DNSessionidsRequest)
+    MergeFrom(*source);
+  }
+}
+
+void DNSessionidsRequest::MergeFrom(const DNSessionidsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.DNSessionidsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.type() != 0) {
+    set_type(from.type());
+  }
+}
+
+void DNSessionidsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.DNSessionidsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DNSessionidsRequest::CopyFrom(const DNSessionidsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.DNSessionidsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DNSessionidsRequest::IsInitialized() const {
+  return true;
+}
+
+void DNSessionidsRequest::Swap(DNSessionidsRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DNSessionidsRequest::InternalSwap(DNSessionidsRequest* other) {
+  using std::swap;
+  swap(type_, other->type_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DNSessionidsRequest::GetMetadata() const {
   protobuf_pb_2fmatchmaking_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_pb_2fmatchmaking_2eproto::file_level_metadata[kIndexInFileMessages];
 }
