@@ -11,6 +11,7 @@ import (
 	"time"
 	"strings"
 	"context"
+	"fmt"
 )
 
 type DirectMessage struct {
@@ -70,6 +71,7 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 		return err
 	}
 	defer stream.Close()
+	logger.Infof("Opened a dialogue with %s", id.Pretty())
 
 	//Request
 	reqData, err := proto.Marshal(&pb.DNDirectMessageRequest{
@@ -77,21 +79,29 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 		Message: message,
 	})
 	if err != nil {
+		err = fmt.Errorf("[%s] Could not marshal request: %s", id.Pretty(), err.Error())
+		logger.Warning(err)
 		return err
 	}
 	err = framed.Write(stream, reqData)
 	if err != nil {
+		err = fmt.Errorf("[%s] write failed: %s", id.Pretty(), err.Error())
+		logger.Warning(err)
 		return err
 	}
 
 	//Response
 	resData, err := framed.Read(stream)
 	if err != nil {
+		err = fmt.Errorf("[%s] read failed: %s", id.Pretty(), err.Error())
+		logger.Warning(err)
 		return err
 	}
 	var response pb.DNDirectMessageResponse
 	err = proto.Unmarshal(resData, &response)
 	if err != nil {
+		err = fmt.Errorf("[%s] Could not unmarshal response: %s", id.Pretty(), err.Error())
+		logger.Warning(err)
 		return err
 	}
 	return nil
