@@ -118,7 +118,8 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 	var request pb.DNDirectMessageRequest
 	err = proto.Unmarshal(reqData, &request)
 	if err != nil {
-		logger.Error(err)
+		err = fmt.Errorf("[%s] Could not unmarshal request: %s", from.Pretty(), err.Error())
+		logger.Warning(err)
 		return
 	}
 
@@ -134,12 +135,14 @@ func (d *Decentralizer) directMessageReceived(stream inet.Stream) {
 		Delivered: true,
 	})
 	if err != nil {
-		logger.Error(err)
+		err = fmt.Errorf("[%s] Could not marshal response back: %s", from.Pretty(), err.Error())
+		logger.Warning(err)
 		return
 	}
 	err = framed.Write(stream, response)
 	if err != nil {
-		logger.Error(err)
+		err = fmt.Errorf("[%s] Write failed: %s", from.Pretty(), err.Error())
+		logger.Warning(err)
 		return
 	}
 }
