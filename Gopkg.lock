@@ -68,6 +68,12 @@
   revision = "2eeb3906e78fc89e76ba11e5694adeb64c0a0b43"
 
 [[projects]]
+  name = "github.com/giantswarm/retry-go"
+  packages = ["."]
+  revision = "867bc2467430df5c49fb33e54d648f5fc0e73bf1"
+  version = "0.5.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/golang/glog"
   packages = ["."]
@@ -200,6 +206,12 @@
   revision = "9d7fd7aa17f229da501a53ec2de5d2b8612cc65b"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/juju/errgo"
+  packages = ["."]
+  revision = "08cceb5d0b5331634b9826762a8fd53b29b86ad8"
+
+[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "d419a98cdbed11a922bf76f257b7c4be79b50e73"
@@ -227,7 +239,7 @@
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "06020f85339e21b2478f756a78e295255ffa4d6a"
+  revision = "b4575eea38cca1123ec2dc90c26529b5c5acfcff"
 
 [[projects]]
   branch = "master"
@@ -329,13 +341,13 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "b3c9a1d25cfbbbab0ff4780b71c4f54e6e92a0de"
+  revision = "5f55bce93ad2c89f411e009659bb1fd83da36e7b"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["bpf","context","http2","http2/hpack","idna","internal/iana","internal/socket","internal/timeseries","ipv4","ipv6","lex/httplex","trace"]
-  revision = "434ec0c7fe3742c984919a691b2018a6e9694425"
+  revision = "ab555f366c4508dbe0802550b1b20c46c5c18aa0"
 
 [[projects]]
   branch = "master"
@@ -370,6 +382,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7a19c7e04170437ec95e3956ba2de3a9064788c0ba31da2a0af762975ee27dbf"
+  inputs-digest = "f76b8bde8761b3a01ce9b2714e7e01445ce5e0a507d27b31ef0c79c49fb6e41e"
   solver-name = "gps-cdcl"
   solver-version = 1
