@@ -22,6 +22,7 @@ func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 }
 
 func (d *Decentralizer) initMatchmaking() {
+	d.initMatchmakingStream()
 	go d.GetIP()
 	d.sessions 					= make(map[uint64]*sessionstore.Store)
 	d.sessionIdToSessionType	= make(map[uint64]uint64)
@@ -50,7 +51,7 @@ func (d *Decentralizer) initMatchmaking() {
 				logger.Warning(err)
 				continue
 			}
-			if isNewerRecord(currRecord.Published, record.Published) {
+			if utils.IsNewerRecord(currRecord.Published, record.Published) {
 				currRecord = record
 				best = i
 			}
@@ -81,11 +82,15 @@ func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	return nil
 }
 
+func (d *Decentralizer) hasSessionStorage(sessionType uint64) bool {
+	d.matchmakingMutex.Lock()
+	defer d.matchmakingMutex.Unlock()
+	return d.sessions[sessionType] != nil
+}
+
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
 	d.matchmakingMutex.Lock()
-	defer func() {
-		d.matchmakingMutex.Unlock()
-	}()
+	defer d.matchmakingMutex.Unlock()
 	if d.sessions[sessionType] == nil {
 		var err error
 		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration(EXPIRE_TIME_SESSION), d.i.Identity)
@@ -122,6 +127,7 @@ func (d *Decentralizer) getSessionSearch(sessionType uint64) (result *search) {
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	session := &pb.Session{
+		Published: uint64(time.Now().UTC().Unix()),
 		PId:     "self",
 		Type:    sessionType,
 		Name:    name,

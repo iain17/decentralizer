@@ -6,6 +6,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"strconv"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"github.com/iain17/decentralizer/utils"
 )
 
 func getDecentralizedIdKey(decentralizedId uint64) string {
@@ -42,7 +43,7 @@ func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, er
 			logger.Warning(err)
 			continue
 		}
-		if result == nil || isNewerRecord(result.Published, record.Peer.Published) {
+		if result == nil || utils.IsNewerRecord(result.Published, record.Peer.Published) {
 			updated = true
 			result = record.Peer
 		}

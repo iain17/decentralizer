@@ -24,6 +24,10 @@ It has these top-level messages:
 	RPCGetPeerResponse
 	Session
 	DNSessionsRecord
+	DNSessionsResponse
+	DNSessionsRequest
+	DNSessionidsResponse
+	DNSessionidsRequest
 	RPCUpsertSessionRequest
 	RPCUpsertSessionResponse
 	RPCDeleteSessionRequest
