@@ -3,21 +3,17 @@ package pb;
 
 //DN
 message PublisherDefinition {
-    int64 created = 1;
+    uint64 published = 1;//Unix timestamp. When created, published.
     map<string, bytes> files = 2;//name, data: Essential to the network. Every peer will have them.
     map<string, string> links = 3;//name, ipfs path: Can be larger files. Updates or extra downloadable content.
     map<string, string> details = 4;//Anything at all
     bool status = 5;//Network alive or not. This gives the publisher the power to kill a network.
 }
 
-message PublisherUpdate {
-    bytes signature = 2;
-    bytes definition = 3;
-}
-
-message DNPublisherUpdateRequest {}
-message DNPublisherUpdateResponse {
-    PublisherUpdate update = 1;
+message DNPublisherRecord {
+    bytes signature = 1;
+    string path = 2;//IPFS path to the PublisherDefinition
+    bytes definition = 3;//Empty on DHT. Filled when saved to disk
 }
 
 //RPC

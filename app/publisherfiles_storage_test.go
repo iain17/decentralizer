@@ -18,7 +18,7 @@ func TestDecentralizer_GetPublisherFile(t *testing.T) {
 	expected := []byte("Ok")
 
 	//Mocked publisher update
-	app1.publisherUpdate = &pb.PublisherUpdate{}
+	app1.publisherRecord = &pb.DNPublisherRecord{}
 	app1.publisherDefinition = &pb.PublisherDefinition{
 		Status: true,
 		Files: map[string][]byte {
@@ -46,7 +46,7 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 	ipfsPath, err := app2.SavePeerFile(filename, expected)
 	assert.NoError(t, err)
 
-	publisherUpdate := &pb.PublisherUpdate{}
+	publisherUpdate := &pb.DNPublisherRecord{}
 	definition := &pb.PublisherDefinition{
 		Status: true,
 		Links: map[string]string {
@@ -55,9 +55,9 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 	}
 	//
 	////Mocked publisher update
-	app1.publisherUpdate = publisherUpdate
+	app1.publisherRecord = publisherUpdate
 	app1.publisherDefinition = definition
-	app2.publisherUpdate = publisherUpdate
+	app2.publisherRecord = publisherUpdate
 	app2.publisherDefinition = definition
 
 	data, err := app1.GetPublisherFile(filename)

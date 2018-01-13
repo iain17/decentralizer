@@ -39,7 +39,7 @@ namespace protobuf_pb_2fpublisher_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[11];
+  static const ::google::protobuf::internal::ParseTable schema[9];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -53,12 +53,8 @@ void InitDefaultsPublisherDefinition_DetailsEntry_DoNotUseImpl();
 void InitDefaultsPublisherDefinition_DetailsEntry_DoNotUse();
 void InitDefaultsPublisherDefinitionImpl();
 void InitDefaultsPublisherDefinition();
-void InitDefaultsPublisherUpdateImpl();
-void InitDefaultsPublisherUpdate();
-void InitDefaultsDNPublisherUpdateRequestImpl();
-void InitDefaultsDNPublisherUpdateRequest();
-void InitDefaultsDNPublisherUpdateResponseImpl();
-void InitDefaultsDNPublisherUpdateResponse();
+void InitDefaultsDNPublisherRecordImpl();
+void InitDefaultsDNPublisherRecord();
 void InitDefaultsRPCPublishPublisherUpdateRequestImpl();
 void InitDefaultsRPCPublishPublisherUpdateRequest();
 void InitDefaultsRPCGetPublisherFileRequestImpl();
@@ -72,9 +68,7 @@ inline void InitDefaults() {
   InitDefaultsPublisherDefinition_LinksEntry_DoNotUse();
   InitDefaultsPublisherDefinition_DetailsEntry_DoNotUse();
   InitDefaultsPublisherDefinition();
-  InitDefaultsPublisherUpdate();
-  InitDefaultsDNPublisherUpdateRequest();
-  InitDefaultsDNPublisherUpdateResponse();
+  InitDefaultsDNPublisherRecord();
   InitDefaultsRPCPublishPublisherUpdateRequest();
   InitDefaultsRPCGetPublisherFileRequest();
   InitDefaultsRPCGetPublisherFileResponse();
@@ -82,12 +76,9 @@ inline void InitDefaults() {
 }
 }  // namespace protobuf_pb_2fpublisher_2eproto
 namespace pb {
-class DNPublisherUpdateRequest;
-class DNPublisherUpdateRequestDefaultTypeInternal;
-extern DNPublisherUpdateRequestDefaultTypeInternal _DNPublisherUpdateRequest_default_instance_;
-class DNPublisherUpdateResponse;
-class DNPublisherUpdateResponseDefaultTypeInternal;
-extern DNPublisherUpdateResponseDefaultTypeInternal _DNPublisherUpdateResponse_default_instance_;
+class DNPublisherRecord;
+class DNPublisherRecordDefaultTypeInternal;
+extern DNPublisherRecordDefaultTypeInternal _DNPublisherRecord_default_instance_;
 class GetPublisherDefinitionRequest;
 class GetPublisherDefinitionRequestDefaultTypeInternal;
 extern GetPublisherDefinitionRequestDefaultTypeInternal _GetPublisherDefinitionRequest_default_instance_;
@@ -103,9 +94,6 @@ extern PublisherDefinition_FilesEntry_DoNotUseDefaultTypeInternal _PublisherDefi
 class PublisherDefinition_LinksEntry_DoNotUse;
 class PublisherDefinition_LinksEntry_DoNotUseDefaultTypeInternal;
 extern PublisherDefinition_LinksEntry_DoNotUseDefaultTypeInternal _PublisherDefinition_LinksEntry_DoNotUse_default_instance_;
-class PublisherUpdate;
-class PublisherUpdateDefaultTypeInternal;
-extern PublisherUpdateDefaultTypeInternal _PublisherUpdate_default_instance_;
 class RPCGetPublisherFileRequest;
 class RPCGetPublisherFileRequestDefaultTypeInternal;
 extern RPCGetPublisherFileRequestDefaultTypeInternal _RPCGetPublisherFileRequest_default_instance_;
@@ -293,11 +281,11 @@ class PublisherDefinition : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::Map< ::std::string, ::std::string >*
       mutable_details();
 
-  // int64 created = 1;
-  void clear_created();
-  static const int kCreatedFieldNumber = 1;
-  ::google::protobuf::int64 created() const;
-  void set_created(::google::protobuf::int64 value);
+  // uint64 published = 1;
+  void clear_published();
+  static const int kPublishedFieldNumber = 1;
+  ::google::protobuf::uint64 published() const;
+  void set_published(::google::protobuf::uint64 value);
 
   // bool status = 5;
   void clear_status();
@@ -327,7 +315,7 @@ class PublisherDefinition : public ::google::protobuf::Message /* @@protoc_inser
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       0 > details_;
-  ::google::protobuf::int64 created_;
+  ::google::protobuf::uint64 published_;
   bool status_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
@@ -335,24 +323,24 @@ class PublisherDefinition : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
-class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.PublisherUpdate) */ {
+class DNPublisherRecord : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNPublisherRecord) */ {
  public:
-  PublisherUpdate();
-  virtual ~PublisherUpdate();
+  DNPublisherRecord();
+  virtual ~DNPublisherRecord();
 
-  PublisherUpdate(const PublisherUpdate& from);
+  DNPublisherRecord(const DNPublisherRecord& from);
 
-  inline PublisherUpdate& operator=(const PublisherUpdate& from) {
+  inline DNPublisherRecord& operator=(const DNPublisherRecord& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  PublisherUpdate(PublisherUpdate&& from) noexcept
-    : PublisherUpdate() {
+  DNPublisherRecord(DNPublisherRecord&& from) noexcept
+    : DNPublisherRecord() {
     *this = ::std::move(from);
   }
 
-  inline PublisherUpdate& operator=(PublisherUpdate&& from) noexcept {
+  inline DNPublisherRecord& operator=(DNPublisherRecord&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -362,30 +350,30 @@ class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const PublisherUpdate& default_instance();
+  static const DNPublisherRecord& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PublisherUpdate* internal_default_instance() {
-    return reinterpret_cast<const PublisherUpdate*>(
-               &_PublisherUpdate_default_instance_);
+  static inline const DNPublisherRecord* internal_default_instance() {
+    return reinterpret_cast<const DNPublisherRecord*>(
+               &_DNPublisherRecord_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     4;
 
-  void Swap(PublisherUpdate* other);
-  friend void swap(PublisherUpdate& a, PublisherUpdate& b) {
+  void Swap(DNPublisherRecord* other);
+  friend void swap(DNPublisherRecord& a, DNPublisherRecord& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline PublisherUpdate* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline DNPublisherRecord* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  PublisherUpdate* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  DNPublisherRecord* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const PublisherUpdate& from);
-  void MergeFrom(const PublisherUpdate& from);
+  void CopyFrom(const DNPublisherRecord& from);
+  void MergeFrom(const DNPublisherRecord& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -401,7 +389,7 @@ class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(PublisherUpdate* other);
+  void InternalSwap(DNPublisherRecord* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -417,9 +405,9 @@ class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // bytes signature = 2;
+  // bytes signature = 1;
   void clear_signature();
-  static const int kSignatureFieldNumber = 2;
+  static const int kSignatureFieldNumber = 1;
   const ::std::string& signature() const;
   void set_signature(const ::std::string& value);
   #if LANG_CXX11
@@ -430,6 +418,20 @@ class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* mutable_signature();
   ::std::string* release_signature();
   void set_allocated_signature(::std::string* signature);
+
+  // string path = 2;
+  void clear_path();
+  static const int kPathFieldNumber = 2;
+  const ::std::string& path() const;
+  void set_path(const ::std::string& value);
+  #if LANG_CXX11
+  void set_path(::std::string&& value);
+  #endif
+  void set_path(const char* value);
+  void set_path(const char* value, size_t size);
+  ::std::string* mutable_path();
+  ::std::string* release_path();
+  void set_allocated_path(::std::string* path);
 
   // bytes definition = 3;
   void clear_definition();
@@ -445,209 +447,16 @@ class PublisherUpdate : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_definition();
   void set_allocated_definition(::std::string* definition);
 
-  // @@protoc_insertion_point(class_scope:pb.PublisherUpdate)
+  // @@protoc_insertion_point(class_scope:pb.DNPublisherRecord)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr signature_;
+  ::google::protobuf::internal::ArenaStringPtr path_;
   ::google::protobuf::internal::ArenaStringPtr definition_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fpublisher_2eproto::InitDefaultsPublisherUpdateImpl();
-};
-// -------------------------------------------------------------------
-
-class DNPublisherUpdateRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNPublisherUpdateRequest) */ {
- public:
-  DNPublisherUpdateRequest();
-  virtual ~DNPublisherUpdateRequest();
-
-  DNPublisherUpdateRequest(const DNPublisherUpdateRequest& from);
-
-  inline DNPublisherUpdateRequest& operator=(const DNPublisherUpdateRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  DNPublisherUpdateRequest(DNPublisherUpdateRequest&& from) noexcept
-    : DNPublisherUpdateRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline DNPublisherUpdateRequest& operator=(DNPublisherUpdateRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const DNPublisherUpdateRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const DNPublisherUpdateRequest* internal_default_instance() {
-    return reinterpret_cast<const DNPublisherUpdateRequest*>(
-               &_DNPublisherUpdateRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
-
-  void Swap(DNPublisherUpdateRequest* other);
-  friend void swap(DNPublisherUpdateRequest& a, DNPublisherUpdateRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline DNPublisherUpdateRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  DNPublisherUpdateRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const DNPublisherUpdateRequest& from);
-  void MergeFrom(const DNPublisherUpdateRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(DNPublisherUpdateRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:pb.DNPublisherUpdateRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherUpdateRequestImpl();
-};
-// -------------------------------------------------------------------
-
-class DNPublisherUpdateResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.DNPublisherUpdateResponse) */ {
- public:
-  DNPublisherUpdateResponse();
-  virtual ~DNPublisherUpdateResponse();
-
-  DNPublisherUpdateResponse(const DNPublisherUpdateResponse& from);
-
-  inline DNPublisherUpdateResponse& operator=(const DNPublisherUpdateResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  DNPublisherUpdateResponse(DNPublisherUpdateResponse&& from) noexcept
-    : DNPublisherUpdateResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline DNPublisherUpdateResponse& operator=(DNPublisherUpdateResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const DNPublisherUpdateResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const DNPublisherUpdateResponse* internal_default_instance() {
-    return reinterpret_cast<const DNPublisherUpdateResponse*>(
-               &_DNPublisherUpdateResponse_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
-
-  void Swap(DNPublisherUpdateResponse* other);
-  friend void swap(DNPublisherUpdateResponse& a, DNPublisherUpdateResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline DNPublisherUpdateResponse* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  DNPublisherUpdateResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const DNPublisherUpdateResponse& from);
-  void MergeFrom(const DNPublisherUpdateResponse& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(DNPublisherUpdateResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // .pb.PublisherUpdate update = 1;
-  bool has_update() const;
-  void clear_update();
-  static const int kUpdateFieldNumber = 1;
-  const ::pb::PublisherUpdate& update() const;
-  ::pb::PublisherUpdate* release_update();
-  ::pb::PublisherUpdate* mutable_update();
-  void set_allocated_update(::pb::PublisherUpdate* update);
-
-  // @@protoc_insertion_point(class_scope:pb.DNPublisherUpdateResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::pb::PublisherUpdate* update_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
-  friend void ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherUpdateResponseImpl();
+  friend void ::protobuf_pb_2fpublisher_2eproto::InitDefaultsDNPublisherRecordImpl();
 };
 // -------------------------------------------------------------------
 
@@ -686,7 +495,7 @@ class RPCPublishPublisherUpdateRequest : public ::google::protobuf::Message /* @
                &_RPCPublishPublisherUpdateRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    5;
 
   void Swap(RPCPublishPublisherUpdateRequest* other);
   friend void swap(RPCPublishPublisherUpdateRequest& a, RPCPublishPublisherUpdateRequest& b) {
@@ -788,7 +597,7 @@ class RPCGetPublisherFileRequest : public ::google::protobuf::Message /* @@proto
                &_RPCGetPublisherFileRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
+    6;
 
   void Swap(RPCGetPublisherFileRequest* other);
   friend void swap(RPCGetPublisherFileRequest& a, RPCGetPublisherFileRequest& b) {
@@ -895,7 +704,7 @@ class RPCGetPublisherFileResponse : public ::google::protobuf::Message /* @@prot
                &_RPCGetPublisherFileResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
+    7;
 
   void Swap(RPCGetPublisherFileResponse* other);
   friend void swap(RPCGetPublisherFileResponse& a, RPCGetPublisherFileResponse& b) {
@@ -1002,7 +811,7 @@ class GetPublisherDefinitionRequest : public ::google::protobuf::Message /* @@pr
                &_GetPublisherDefinitionRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    10;
+    8;
 
   void Swap(GetPublisherDefinitionRequest* other);
   friend void swap(GetPublisherDefinitionRequest& a, GetPublisherDefinitionRequest& b) {
@@ -1074,18 +883,18 @@ class GetPublisherDefinitionRequest : public ::google::protobuf::Message /* @@pr
 
 // PublisherDefinition
 
-// int64 created = 1;
-inline void PublisherDefinition::clear_created() {
-  created_ = GOOGLE_LONGLONG(0);
+// uint64 published = 1;
+inline void PublisherDefinition::clear_published() {
+  published_ = GOOGLE_ULONGLONG(0);
 }
-inline ::google::protobuf::int64 PublisherDefinition::created() const {
-  // @@protoc_insertion_point(field_get:pb.PublisherDefinition.created)
-  return created_;
+inline ::google::protobuf::uint64 PublisherDefinition::published() const {
+  // @@protoc_insertion_point(field_get:pb.PublisherDefinition.published)
+  return published_;
 }
-inline void PublisherDefinition::set_created(::google::protobuf::int64 value) {
+inline void PublisherDefinition::set_published(::google::protobuf::uint64 value) {
   
-  created_ = value;
-  // @@protoc_insertion_point(field_set:pb.PublisherDefinition.created)
+  published_ = value;
+  // @@protoc_insertion_point(field_set:pb.PublisherDefinition.published)
 }
 
 // map<string, bytes> files = 2;
@@ -1158,170 +967,165 @@ inline void PublisherDefinition::set_status(bool value) {
 
 // -------------------------------------------------------------------
 
-// PublisherUpdate
+// DNPublisherRecord
 
-// bytes signature = 2;
-inline void PublisherUpdate::clear_signature() {
+// bytes signature = 1;
+inline void DNPublisherRecord::clear_signature() {
   signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& PublisherUpdate::signature() const {
-  // @@protoc_insertion_point(field_get:pb.PublisherUpdate.signature)
+inline const ::std::string& DNPublisherRecord::signature() const {
+  // @@protoc_insertion_point(field_get:pb.DNPublisherRecord.signature)
   return signature_.GetNoArena();
 }
-inline void PublisherUpdate::set_signature(const ::std::string& value) {
+inline void DNPublisherRecord::set_signature(const ::std::string& value) {
   
   signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.PublisherUpdate.signature)
+  // @@protoc_insertion_point(field_set:pb.DNPublisherRecord.signature)
 }
 #if LANG_CXX11
-inline void PublisherUpdate::set_signature(::std::string&& value) {
+inline void DNPublisherRecord::set_signature(::std::string&& value) {
   
   signature_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.PublisherUpdate.signature)
+  // @@protoc_insertion_point(field_set_rvalue:pb.DNPublisherRecord.signature)
 }
 #endif
-inline void PublisherUpdate::set_signature(const char* value) {
+inline void DNPublisherRecord::set_signature(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.PublisherUpdate.signature)
+  // @@protoc_insertion_point(field_set_char:pb.DNPublisherRecord.signature)
 }
-inline void PublisherUpdate::set_signature(const void* value, size_t size) {
+inline void DNPublisherRecord::set_signature(const void* value, size_t size) {
   
   signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.PublisherUpdate.signature)
+  // @@protoc_insertion_point(field_set_pointer:pb.DNPublisherRecord.signature)
 }
-inline ::std::string* PublisherUpdate::mutable_signature() {
+inline ::std::string* DNPublisherRecord::mutable_signature() {
   
-  // @@protoc_insertion_point(field_mutable:pb.PublisherUpdate.signature)
+  // @@protoc_insertion_point(field_mutable:pb.DNPublisherRecord.signature)
   return signature_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* PublisherUpdate::release_signature() {
-  // @@protoc_insertion_point(field_release:pb.PublisherUpdate.signature)
+inline ::std::string* DNPublisherRecord::release_signature() {
+  // @@protoc_insertion_point(field_release:pb.DNPublisherRecord.signature)
   
   return signature_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void PublisherUpdate::set_allocated_signature(::std::string* signature) {
+inline void DNPublisherRecord::set_allocated_signature(::std::string* signature) {
   if (signature != NULL) {
     
   } else {
     
   }
   signature_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), signature);
-  // @@protoc_insertion_point(field_set_allocated:pb.PublisherUpdate.signature)
+  // @@protoc_insertion_point(field_set_allocated:pb.DNPublisherRecord.signature)
+}
+
+// string path = 2;
+inline void DNPublisherRecord::clear_path() {
+  path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DNPublisherRecord::path() const {
+  // @@protoc_insertion_point(field_get:pb.DNPublisherRecord.path)
+  return path_.GetNoArena();
+}
+inline void DNPublisherRecord::set_path(const ::std::string& value) {
+  
+  path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.DNPublisherRecord.path)
+}
+#if LANG_CXX11
+inline void DNPublisherRecord::set_path(::std::string&& value) {
+  
+  path_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.DNPublisherRecord.path)
+}
+#endif
+inline void DNPublisherRecord::set_path(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.DNPublisherRecord.path)
+}
+inline void DNPublisherRecord::set_path(const char* value, size_t size) {
+  
+  path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.DNPublisherRecord.path)
+}
+inline ::std::string* DNPublisherRecord::mutable_path() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.DNPublisherRecord.path)
+  return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DNPublisherRecord::release_path() {
+  // @@protoc_insertion_point(field_release:pb.DNPublisherRecord.path)
+  
+  return path_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DNPublisherRecord::set_allocated_path(::std::string* path) {
+  if (path != NULL) {
+    
+  } else {
+    
+  }
+  path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
+  // @@protoc_insertion_point(field_set_allocated:pb.DNPublisherRecord.path)
 }
 
 // bytes definition = 3;
-inline void PublisherUpdate::clear_definition() {
+inline void DNPublisherRecord::clear_definition() {
   definition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& PublisherUpdate::definition() const {
-  // @@protoc_insertion_point(field_get:pb.PublisherUpdate.definition)
+inline const ::std::string& DNPublisherRecord::definition() const {
+  // @@protoc_insertion_point(field_get:pb.DNPublisherRecord.definition)
   return definition_.GetNoArena();
 }
-inline void PublisherUpdate::set_definition(const ::std::string& value) {
+inline void DNPublisherRecord::set_definition(const ::std::string& value) {
   
   definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.PublisherUpdate.definition)
+  // @@protoc_insertion_point(field_set:pb.DNPublisherRecord.definition)
 }
 #if LANG_CXX11
-inline void PublisherUpdate::set_definition(::std::string&& value) {
+inline void DNPublisherRecord::set_definition(::std::string&& value) {
   
   definition_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:pb.PublisherUpdate.definition)
+  // @@protoc_insertion_point(field_set_rvalue:pb.DNPublisherRecord.definition)
 }
 #endif
-inline void PublisherUpdate::set_definition(const char* value) {
+inline void DNPublisherRecord::set_definition(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.PublisherUpdate.definition)
+  // @@protoc_insertion_point(field_set_char:pb.DNPublisherRecord.definition)
 }
-inline void PublisherUpdate::set_definition(const void* value, size_t size) {
+inline void DNPublisherRecord::set_definition(const void* value, size_t size) {
   
   definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.PublisherUpdate.definition)
+  // @@protoc_insertion_point(field_set_pointer:pb.DNPublisherRecord.definition)
 }
-inline ::std::string* PublisherUpdate::mutable_definition() {
+inline ::std::string* DNPublisherRecord::mutable_definition() {
   
-  // @@protoc_insertion_point(field_mutable:pb.PublisherUpdate.definition)
+  // @@protoc_insertion_point(field_mutable:pb.DNPublisherRecord.definition)
   return definition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* PublisherUpdate::release_definition() {
-  // @@protoc_insertion_point(field_release:pb.PublisherUpdate.definition)
+inline ::std::string* DNPublisherRecord::release_definition() {
+  // @@protoc_insertion_point(field_release:pb.DNPublisherRecord.definition)
   
   return definition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void PublisherUpdate::set_allocated_definition(::std::string* definition) {
+inline void DNPublisherRecord::set_allocated_definition(::std::string* definition) {
   if (definition != NULL) {
     
   } else {
     
   }
   definition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), definition);
-  // @@protoc_insertion_point(field_set_allocated:pb.PublisherUpdate.definition)
-}
-
-// -------------------------------------------------------------------
-
-// DNPublisherUpdateRequest
-
-// -------------------------------------------------------------------
-
-// DNPublisherUpdateResponse
-
-// .pb.PublisherUpdate update = 1;
-inline bool DNPublisherUpdateResponse::has_update() const {
-  return this != internal_default_instance() && update_ != NULL;
-}
-inline void DNPublisherUpdateResponse::clear_update() {
-  if (GetArenaNoVirtual() == NULL && update_ != NULL) {
-    delete update_;
-  }
-  update_ = NULL;
-}
-inline const ::pb::PublisherUpdate& DNPublisherUpdateResponse::update() const {
-  const ::pb::PublisherUpdate* p = update_;
-  // @@protoc_insertion_point(field_get:pb.DNPublisherUpdateResponse.update)
-  return p != NULL ? *p : *reinterpret_cast<const ::pb::PublisherUpdate*>(
-      &::pb::_PublisherUpdate_default_instance_);
-}
-inline ::pb::PublisherUpdate* DNPublisherUpdateResponse::release_update() {
-  // @@protoc_insertion_point(field_release:pb.DNPublisherUpdateResponse.update)
-  
-  ::pb::PublisherUpdate* temp = update_;
-  update_ = NULL;
-  return temp;
-}
-inline ::pb::PublisherUpdate* DNPublisherUpdateResponse::mutable_update() {
-  
-  if (update_ == NULL) {
-    update_ = new ::pb::PublisherUpdate;
-  }
-  // @@protoc_insertion_point(field_mutable:pb.DNPublisherUpdateResponse.update)
-  return update_;
-}
-inline void DNPublisherUpdateResponse::set_allocated_update(::pb::PublisherUpdate* update) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete update_;
-  }
-  if (update) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      update = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, update, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  update_ = update;
-  // @@protoc_insertion_point(field_set_allocated:pb.DNPublisherUpdateResponse.update)
+  // @@protoc_insertion_point(field_set_allocated:pb.DNPublisherRecord.definition)
 }
 
 // -------------------------------------------------------------------
@@ -1499,10 +1303,6 @@ inline void RPCGetPublisherFileResponse::set_allocated_file(::std::string* file)
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

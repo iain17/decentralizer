@@ -25,6 +25,7 @@ const MAX_SESSION_SEARCHES = 10
 const MESSAGE_DEADLINE = time.Minute * 10
 const DHT_PEER_KEY_TYPE = "dPeer"
 const DHT_SESSIONS_KEY_TYPE = "sessions"
+const DHT_PUBLISHER_KEY_TYPE = "publisher"
 var FILE_EXPIRE = time.Hour * 1
 
 func init() {

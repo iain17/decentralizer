@@ -60,8 +60,8 @@ type Decentralizer struct {
 	directMessageChannels  map[uint32]chan *pb.RPCDirectMessage
 
 	//Publisher files
-	publisherUpdate  	   *pb.PublisherUpdate
-	publisherDefinition	   *pb.PublisherDefinition
+	publisherRecord     *pb.DNPublisherRecord
+	publisherDefinition *pb.PublisherDefinition
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
