@@ -159,10 +159,12 @@ func (d *Decentralizer) saveSelf() error {
 	}
 
 	//Add self
-	err = d.UpsertPeer("self", details)
-	if err != nil {
-		return err
-	}
+	go func() {
+		err = d.UpsertPeer("self", details)
+		if err != nil {
+			logger.Warningf("Could no save self: %s", err.Error())
+		}
+	}()
 	d.uploadPeers()
 	return nil
 }
