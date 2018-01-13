@@ -29,7 +29,7 @@ ci:
 	gitlab-runner --debug exec docker test
 
 test:
-	go test -cover ./...
+	go test -v -cover github.com/iain17/decentralizer/app
 gx:
 	rm -rf vendor/gx
 	gx install
