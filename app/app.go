@@ -23,6 +23,7 @@ import (
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
 	"github.com/iain17/kvcache/lttlru"
 	"github.com/spf13/afero"
+	"github.com/hashicorp/golang-lru"
 )
 
 type Decentralizer struct {
@@ -39,6 +40,7 @@ type Decentralizer struct {
 
 	//Peer ids that did not respond to our queries.
 	ignore 				   *lttlru.LruWithTTL
+	dhtCache			   *lru.Cache//Cache our result to certain DHT values.
 
 	//Storage
 	filesApi       		   *ipfs.FilesAPI
@@ -113,6 +115,10 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
+	dhtCache, err := lru.New(MAX_DHTCACHE)
+	if err != nil {
+		return nil, err
+	}
 	instance := &Decentralizer{
 		ctx:					ctx,
 		cron: 				    gocron.NewScheduler(),
@@ -123,6 +129,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		api:					coreapi.NewCoreAPI(i),
 		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					ignore,
+		dhtCache:				dhtCache,
 	}
 	go instance.bootstrap()
 

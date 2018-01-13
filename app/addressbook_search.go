@@ -23,30 +23,28 @@ func reverseDecentralizedIdKey(key string) (uint64, error) {
 
 //Fetches a new peer from the network. If there isn't a new record it'll return nil
 func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, error) {
+	//Never query self from network
 	self, _ := d.peers.FindByPeerId("self")
 	if self.DnId == decentralizedId {
 		return self, nil
 	}
+
 	logger.Infof("Querying network for peer %d", decentralizedId)
-	values, err := d.b.GetValues(d.i.Context(), DHT_PEER_KEY_TYPE, getDecentralizedIdKey(decentralizedId), 1)
+	data, err := d.b.GetValue(d.i.Context(), DHT_PEER_KEY_TYPE, getDecentralizedIdKey(decentralizedId))
 	if err != nil {
 		logger.Warningf("Could not find peer with id %d: %s", err.Error(), decentralizedId)
 		return nil, err
 	}
-	logger.Infof("Found %d possible values for peer %d", len(values), decentralizedId)
 	result, _ := d.peers.FindByDecentralizedId(decentralizedId)
 	updated := false
-	for _, value := range values {
-		var record pb.DNPeerRecord
-		err = gogoProto.Unmarshal(value.Val, &record)
-		if err != nil {
-			logger.Warning(err)
-			continue
-		}
-		if result == nil || utils.IsNewerRecord(result.Published, record.Peer.Published) {
-			updated = true
-			result = record.Peer
-		}
+	var record pb.DNPeerRecord
+	err = gogoProto.Unmarshal(data, &record)
+	if err != nil {
+		return nil, err
+	}
+	if result == nil || utils.IsNewerRecord(result.Published, record.Peer.Published) {
+		updated = true
+		result = record.Peer
 	}
 	if result == nil {
 		return nil, errors.New("could not find peer in the network")
