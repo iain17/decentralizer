@@ -134,8 +134,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
 			session, err := requestSessionId(stream, sessionId)
 			if err != nil {
 				err = fmt.Errorf("failed to receive %d from %s: %s", sessionId, stream.Conn().RemotePeer().Pretty(), err.Error())
-				logger.Warning(err)
-				continue
+				break
 			}
 			if session.PId == d.i.Identity.Pretty() {
 				err = fmt.Errorf("we will not allow another peer to dictate our sessions. skipping")
