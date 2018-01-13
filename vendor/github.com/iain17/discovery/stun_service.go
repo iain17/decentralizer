@@ -15,34 +15,45 @@ type StunService struct {
 	context context.Context
 }
 
-func (s *StunService) Init(ctx context.Context, ln *LocalNode) error {
-	s.logger = logger.New("Stun")
-	s.localNode = ln
+func (d *StunService) String() string {
+	return "Stun"
+}
+
+func (s *StunService) init(ctx context.Context) error {
+	s.logger = logger.New(s.String())
 	s.context = ctx
 	s.client = stun.NewClientWithConnection(s.localNode.listenerService.socket)
-	go s.Run()
 	return nil
 }
 
-func (s *StunService) Stop() {
-
-}
-
-func (s *StunService) Run() {
+func (s *StunService) Serve(ctx context.Context) {
 	defer s.Stop()
+	//We run last.
+	if s.localNode.wg != nil {
+		s.localNode.wg.Done()
+	}
+	s.localNode.waitTilReady()
 
+	if err := s.init(ctx); err != nil {
+		s.localNode.lastError = err
+		panic(err)
+	}
+	ticker := time.Tick(1 * time.Minute)
 	for {
 		select {
 		case <-s.context.Done():
 			return
-		default:
+		case <-ticker:
 			err := s.process()
 			if err != nil {
 				s.logger.Debugf("error on forwarding process, %v", err)
 			}
-			time.Sleep(time.Minute)
 		}
 	}
+}
+
+func (s *StunService) Stop() {
+
 }
 
 func (s *StunService) process() (err error) {

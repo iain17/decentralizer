@@ -26,8 +26,8 @@ func TestNetTableService_GetPeers(t *testing.T) {
 		panic(err)
 	}
 
-	app1Peers := app1.WaitForPeers(1, 10 * time.Second)
-	app2Peers := app2.WaitForPeers(1, 10 * time.Second)
+	app1Peers := app1.WaitForPeers(1, 1 * time.Second)
+	app2Peers := app2.WaitForPeers(1, 1 * time.Second)
 
 	assert.Len(t, app1Peers, 1)
 	assert.Len(t, app2Peers, 1)

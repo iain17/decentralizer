@@ -169,10 +169,14 @@ func (d *Decentralizer) GetIP() net.IP {
 	return *d.ip
 }
 
+func (d *Decentralizer) IsEnoughPeers() bool {
+	lenPeers := len(d.i.PeerHost.Network().Peers())
+	return lenPeers >= MIN_CONNECTED_PEERS
+}
+
 func (d *Decentralizer) WaitTilEnoughPeers() {
 	for {
-		lenPeers := len(d.i.PeerHost.Network().Peers())
-		if lenPeers >= MIN_CONNECTED_PEERS {
+		if d.IsEnoughPeers() {
 			break
 		}
 		time.Sleep(300 * time.Millisecond)

@@ -3,12 +3,14 @@ package discovery
 import (
 	"github.com/iain17/discovery/env"
 	"github.com/iain17/discovery/pb"
-	"github.com/iain17/freeport"
 	"github.com/iain17/logger"
 	"github.com/rs/xid"
 	"github.com/golang/protobuf/proto"
 	"io"
 	"github.com/iain17/framed"
+	"cirello.io/supervisor"
+	"sync"
+	"github.com/iain17/freeport"
 )
 
 type LocalNode struct {
@@ -16,6 +18,10 @@ type LocalNode struct {
 	discovery *Discovery
 	ip        string //Gets filled in by stun service.
 	port      int
+	outgoingPort      int
+	wg		  *sync.WaitGroup
+	lastError error
+	supervisor supervisor.Supervisor
 	//Services
 	listenerService ListenerService
 	upNpService     UPnPService
@@ -28,51 +34,50 @@ type LocalNode struct {
 }
 
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {
-	instance := &LocalNode{
+	i := &LocalNode{
 		Node: Node{
 			id:        xid.New().String(),
 			logger: logger.New("LocalNode"),
 			info:   map[string]string{},
 		},
 		discovery: discovery,
-		port:      freeport.GetPortRange("udp", 10),
+		port:      freeport.GetPortRange("udp", PORT_RANGE),
+		wg: &sync.WaitGroup{},
 	}
-	err := instance.listenerService.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
+	i.supervisor.Log = func(s interface{}) {
+		logger.Debugf("[supervisor]: %s", s)
 	}
+	i.upNpService.localNode = i
+	i.supervisor.Add(&i.upNpService, supervisor.Temporary)
+	i.StunService.localNode = i
+	i.supervisor.Add(&i.StunService, supervisor.Temporary)
+	if !i.discovery.limited {
+		i.discoveryDHT.localNode = i
+		i.supervisor.Add(&i.discoveryDHT, supervisor.Permanent)
+	}
+	i.discoveryIRC.localNode = i
+	i.supervisor.Add(&i.discoveryIRC, supervisor.Permanent)
+	i.discoveryMDNS.localNode = i
+	i.supervisor.Add(&i.discoveryMDNS, supervisor.Permanent)
 
-	err = instance.netTableService.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
-	}
+	i.netTableService.localNode = i
+	i.supervisor.Add(&i.netTableService, supervisor.Transient)
+	i.listenerService.localNode = i
+	i.supervisor.Add(&i.listenerService, supervisor.Permanent)
 
-	err = instance.upNpService.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
-	}
+	numServices := len(i.supervisor.Services())
+	i.wg.Add(numServices)
+	go i.supervisor.Serve(discovery.ctx)
+	i.waitTilReady()
+	i.wg = nil
+	return i, i.lastError
+}
 
-	err = instance.StunService.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
+//Hangs until all servers have at least initialized once
+func (ln *LocalNode) waitTilReady() {
+	if ln.wg != nil {
+		ln.wg.Wait()
 	}
-
-	err = instance.discoveryDHT.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
-	}
-
-	err = instance.discoveryIRC.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
-	}
-
-	err = instance.discoveryMDNS.Init(discovery.ctx, instance)
-	if err != nil {
-		return nil, err
-	}
-
-	return instance, nil
 }
 
 func (ln *LocalNode) sendPeerInfo(w io.Writer) error {
