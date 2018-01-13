@@ -8,8 +8,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"github.com/iain17/logger"
-	"github.com/golang/protobuf/proto"
-)
+	)
 
 func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -138,16 +137,9 @@ func TestDecentralizer_publishStopper(t *testing.T) {
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
 	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
-	time.Sleep(1 * time.Second)
-
-	data, err := proto.Marshal(&pb.PublisherDefinition{
+	// Mocked publisher update
+	app1.publisherDefinition = &pb.PublisherDefinition{
 		Status: false,
-	})
-	assert.NoError(t, err)
-	publisherUpdate := &pb.PublisherUpdate{
-		Definition: data,
 	}
-	////Mocked publisher update
-	app1.publisherUpdate = publisherUpdate
 	app1.runPublisherInstructions()
 }
