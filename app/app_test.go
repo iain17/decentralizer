@@ -23,10 +23,10 @@ var testSlaveNetwork *network.Network//just the public key
 func init() {
 	MIN_CONNECTED_PEERS = 1
 	logger.AddOutput(logger.Stdout{
-		MinLevel: logger.DEBUG, //logger.DEBUG,
+		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
-	logging.Configure(logging.LevelDebug)
+	logging.Configure(logging.LevelInfo)
 	configPath = configdir.New("ECorp", "Decentralizer-test")
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	testNetwork, _ = network.New()
