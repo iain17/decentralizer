@@ -104,33 +104,48 @@ func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
 	assert.NotNil(t, app1)
 	app2 := fakeNew(ctx, nodes[1], false)
 	assert.NotNil(t, app2)
+	app3 := fakeNew(ctx, nodes[2], false)
+	assert.NotNil(t, app3)
 
 	_, err := app1.UpsertSession(1337, "App 1 session :D", 304, map[string]string{
 		"cool": "no",
 	})
 	assert.NoError(t, err)
 
-	_, err = app2.UpsertSession(1337, "App 2 session :D", 308, map[string]string{
-		"cool": "no",
+	_, err = app2.UpsertSession(1337, "App 2 session :D", 305, map[string]string{
+		"cool": "maybe",
+	})
+	assert.NoError(t, err)
+
+	_, err = app3.UpsertSession(1337, "App 3 session :D", 306, map[string]string{
+		"cool": "yes",
 	})
 	assert.NoError(t, err)
 
 	time.Sleep(500 * time.Millisecond)
 
-	//App 1 gets only non cool sessions
-	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
-	assert.NoError(t, err)
-	assert.Equal(t, 2, len(sessions))
+	app1Search := app1.getSessionSearch(1337)
+	app1Search.refresh(ctx)
+
+	time.Sleep(1 * time.Second)
+
+	assert.Equal(t, 3, app1Search.storage.Len())
 
 	//Now the late joiner
 	lateNodes := ipfs.FakeNewIPFSNodesNetworked(mn, ctx, 2, nodes)
 
-	app3 := fakeNew(ctx, lateNodes[1], false)
+	app4 := fakeNew(ctx, lateNodes[1], false)
 	assert.NotNil(t, app2)
 
-	sessions, err = app3.GetSessionsByDetails(1337, "cool", "no")
-	assert.NoError(t, err)
-	assert.Equal(t, 2, len(sessions))
+	app4Search := app4.getSessionSearch(1337)
+
+	time.Sleep(500 * time.Millisecond)
+
+	app4Search.refresh(ctx)
+
+	time.Sleep(1 * time.Second)
+
+	assert.Equal(t, 3, app4Search.storage.Len())
 }
 
 func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {

@@ -94,6 +94,13 @@ func (s *Store) Contains(sessionId uint64) bool {
 	return s.sessionIds.Contains(sessionId)
 }
 
+func (s *Store) IsExternalSession(sessionId uint64) bool {
+	if value, ok := s.sessionIds.Get(sessionId); ok {
+		return value.(bool)
+	}
+	return false
+}
+
 func (s *Store) IsNewer(info *pb.Session) bool {
 	existingSession, _ := s.FindSessionId(info.SessionId)
 	var published uint64
