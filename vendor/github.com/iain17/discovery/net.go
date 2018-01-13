@@ -1,7 +1,6 @@
 package discovery
 
 import (
-	"github.com/anacrolix/utp"
 	"github.com/iain17/discovery/pb"
 	"net"
 	"time"
@@ -10,15 +9,11 @@ import (
 //Initiate a handshake procedure.
 //See (l *ListenerService) process(c net.Conn) error for the receiving side.
 func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
-	s, errSocket := utp.NewSocket("udp", ":0")
-	if errSocket != nil {
-		return nil, errSocket
-	}
 	accepted := false
-	s.SetDeadline(time.Now().Add(2 * time.Second))
 
-	conn, errDial := s.Dial(h.String())
+	conn, errDial := ln.listenerService.socket.DialContext(ln.discovery.ctx, h.String())
 	defer func() {
+		//s.Close()
 		if !accepted && conn != nil{
 			conn.Close()
 		}
@@ -26,6 +21,8 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	if errDial != nil {
 		return nil, errDial
 	}
+	conn.SetDeadline(time.Now().Add(300 * time.Millisecond))
+
 	rn := NewRemoteNode(conn, ln)
 
 	//Handshake dance.

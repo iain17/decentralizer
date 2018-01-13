@@ -20,8 +20,8 @@ func IsNewerRecord(current uint64, new uint64) bool {
 	publishedTimeText := publishedTime.String()
 	expireTime := time.Unix(int64(current), 0).UTC()
 	expireTimeText := expireTime.String()
-	if publishedTime.Before(expireTime) {
-		err := fmt.Errorf("new peer with publish date %s has expired. It was before %s", publishedTimeText, expireTimeText)
+	if !publishedTime.After(expireTime) {
+		err := fmt.Errorf("record with publish date %s is not newer than %s", publishedTimeText, expireTimeText)
 		logger.Warning(err)
 		return false
 	}
@@ -30,5 +30,6 @@ func IsNewerRecord(current uint64, new uint64) bool {
 		logger.Warning(err)
 		return false
 	}
+	logger.Info("record with publish date %s IS newer than %s", publishedTimeText, expireTimeText)
 	return true
 }

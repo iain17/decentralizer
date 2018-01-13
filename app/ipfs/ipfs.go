@@ -36,8 +36,8 @@ func OpenIPFSRepo(ctx context.Context, path string, limited bool) (*core.IpfsNod
 		Online:    true,
 		Permament: !limited,
 		ExtraOpts: map[string]bool{
-			"mplex":  false,
-			"pubsub": true,
+			"mplex":  true,
+			"pubsub": false,
 		},
 	}
 	//if limited {

@@ -124,18 +124,26 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
 
 	//Request missing session ids
 	store := search.storage
-	var sessionId uint64
-	for err = binary.Read(idsResponse, binary.LittleEndian, &sessionId); err == nil; {
+	seen := map[uint64]bool{}
+	for err == nil {
+		var sessionId uint64
+		binary.Read(idsResponse, binary.LittleEndian, &sessionId)
 		if sessionId == 0 {
+			logger.Warningf("Received stop sign.", sessionId)
 			break
 		}
+		if seen[sessionId] {
+			logger.Warningf("%d sessionId dup boasting detected.", sessionId)
+			break
+		}
+		seen[sessionId] = true
 		if !store.Contains(sessionId) {
 			logger.Debugf("Missing session %d. Asking %s for it", sessionId, stream.Conn().RemotePeer().Pretty())
 			session, err := requestSessionId(stream, sessionId)
 			if err != nil {
 				err = fmt.Errorf("failed to receive %d from %s: %s", sessionId, stream.Conn().RemotePeer().Pretty(), err.Error())
 				logger.Warning(err)
-				continue
+				break
 			}
 			if session.PId == d.i.Identity.Pretty() {
 				err = fmt.Errorf("we will not allow another peer to dictate our sessions. skipping")
@@ -154,7 +162,7 @@ func requestSessionId(w io.ReadWriter, sessionId uint64) (*pb.Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	framed.Write(w, buf.Bytes())
+	err = framed.Write(w, buf.Bytes())
 	if err != nil {
 		return nil, err
 	}

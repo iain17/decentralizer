@@ -19,12 +19,14 @@ const ADDRESS_BOOK_FILE = "addressbook.dat"
 const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
 const MAX_SIZE = int64(10 * datasize.MB)
 const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
+const MAX_DHTCACHE = 4096
 const CONCURRENT_SESSION_REQUEST = 10
 const GET_SESSION_REQ = "/decentralizer/sessions/1.0.0/get"
 const MAX_SESSION_SEARCHES = 10
 const MESSAGE_DEADLINE = time.Minute * 10
 const DHT_PEER_KEY_TYPE = "dPeer"
 const DHT_SESSIONS_KEY_TYPE = "sessions"
+const DHT_PUBLISHER_KEY_TYPE = "publisher"
 var FILE_EXPIRE = time.Hour * 1
 
 func init() {

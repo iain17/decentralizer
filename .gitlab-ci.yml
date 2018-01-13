@@ -21,7 +21,7 @@ test:
   stage: test
   script:
     - cd $REPO_BASE
-    - go test -cover ./...
+    - make test
 
 build:
   stage: build

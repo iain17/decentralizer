@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "cirello.io/supervisor"
+  packages = ["."]
+  revision = "3ae4051c50e006498b4b8aee130185a53caab86e"
+  version = "v0.5.3"
+
+[[projects]]
   branch = "master"
   name = "github.com/Pallinder/go-randomdata"
   packages = ["."]
@@ -11,7 +17,7 @@
   branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [".","assert","inproc","pproffd"]
-  revision = "645547693a6802592a8b638b068b9176d6d86084"
+  revision = "87aae9c529891d465611bc99b63e1e673a73f1ae"
 
 [[projects]]
   branch = "master"
@@ -143,7 +149,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "d46200168ed98c54891980619150b924a1aad4b5"
+  revision = "f9de3287aa7964e07f10adf2bc692c89744b99f8"
 
 [[projects]]
   branch = "master"
@@ -341,13 +347,13 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "5f55bce93ad2c89f411e009659bb1fd83da36e7b"
+  revision = "13931e22f9e72ea58bb73048bc752b48c6d4d4ac"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["bpf","context","http2","http2/hpack","idna","internal/iana","internal/socket","internal/timeseries","ipv4","ipv6","lex/httplex","trace"]
-  revision = "ab555f366c4508dbe0802550b1b20c46c5c18aa0"
+  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
 
 [[projects]]
   branch = "master"

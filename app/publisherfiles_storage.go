@@ -7,7 +7,7 @@ import (
 )
 
 func (d * Decentralizer) GetPublisherFile(name string) ([]byte, error) {
-	if d.publisherUpdate == nil {
+	if d.publisherRecord == nil {
 		return nil, errors.New("Publisher definition not defined")
 	}
 	var result []byte

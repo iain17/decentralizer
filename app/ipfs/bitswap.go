@@ -97,6 +97,12 @@ func (b *BitswapService) GetValues(ctx context.Context, keyType string, rawKey s
 	return b.node.Routing.GetValues(ctx, key, count)
 }
 
+func (b *BitswapService) GetValue(ctx context.Context, keyType string, rawKey string) ([]byte, error) {
+	logger.Infof("Get best value for type %s for key %s", keyType, rawKey)
+	key := b.getKey(keyType, rawKey)
+	return b.node.Routing.GetValue(ctx, key)
+}
+
 func StringToCid(value string) *cid.Cid {
 	block := blocks.NewBlock([]byte(value))
 	return block.Cid()

@@ -19,16 +19,21 @@ type DiscoveryDHT struct {
 	logger *logger.Logger
 }
 
-func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
-	if ln.discovery.limited {
-		return
-	}
-	d.logger = logger.New("DiscoveryDHT")
-	d.localNode = ln
+func (d *DiscoveryDHT) String() string {
+	return "DiscoveryDHT"
+}
+
+func (d *DiscoveryDHT) init(ctx context.Context) (err error) {
+	defer func() {
+		if d.localNode.wg != nil {
+			d.localNode.wg.Done()
+		}
+	}()
+	d.logger = logger.New(d.String())
 	d.context = ctx
 
 	cfg := dht.NewConfig()
-	cfg.Port = d.localNode.port+10
+	cfg.Port = d.localNode.port + PORT_RANGE
 	cfg.NumTargetPeers = d.localNode.discovery.max
 	cfg.MaxNodes = 100
 	d.node, err = dht.New(cfg)
@@ -42,40 +47,30 @@ func (d *DiscoveryDHT) Init(ctx context.Context, ln *LocalNode) (err error) {
 	if err != nil {
 		return
 	}
-	go d.process()
-	go d.Run()
 	return
 }
 
-func (d *DiscoveryDHT) Stop() {
-	if d.node != nil {
-		d.node.Stop()
-	}
-}
-
-func (d *DiscoveryDHT) process() {
-	for {
-		select {
-		case <-d.context.Done():
-			return
-		default:
-			time.Sleep(10 * time.Second)//Give us time to find peers on other ways. Existing peers etc.
-			d.request()
-		}
-	}
-}
-
-func (d *DiscoveryDHT) Run() {
+func (d *DiscoveryDHT) Serve(ctx context.Context) {
 	defer d.Stop()
-	if d.node == nil {
-		d.logger.Error("Can't initiate DHT.")
-		return
+	if err := d.init(ctx); err != nil {
+		d.localNode.lastError = err
+		panic(err)
 	}
-
+	d.localNode.waitTilReady()
+	if d.node == nil {
+		panic("Can't initiate DHT.")
+	}
+	ticker := time.Tick(HEARTBEAT_DELAY * time.Second)
 	for {
 		select {
 		case <-d.context.Done():
 			return
+		case _, ok := <-ticker:
+			if !ok {
+				break
+			}
+			d.request()
+			break
 		case r, _ := <-d.node.PeersRequestResults:
 			if !d.localNode.netTableService.isEnoughPeers() {
 				for _, peers := range r {
@@ -92,13 +87,20 @@ func (d *DiscoveryDHT) Run() {
 						}
 						addr := &net.UDPAddr{
 							IP:   net.ParseIP(host),
-							Port: int(port-10),
+							Port: int(port-PORT_RANGE),
 						}
 						go d.localNode.netTableService.Discovered(addr)
 					}
 				}
 			}
+			break
 		}
+	}
+}
+
+func (d *DiscoveryDHT) Stop() {
+	if d.node != nil {
+		d.node.Stop()
 	}
 }
 

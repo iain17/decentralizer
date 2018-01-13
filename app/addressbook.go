@@ -20,9 +20,13 @@ func (d *Decentralizer) initAddressbook() {
 	}
 	d.downloadPeers()
 	d.saveSelf()
-	go d.advertisePeerRecord()
 	d.cron.Every(30).Seconds().Do(d.uploadPeers)
-	d.cron.Every(5).Minutes().Do(d.advertisePeerRecord)
+	d.cron.Every(5).Minutes().Do(func() {
+		if !d.IsEnoughPeers() {
+			return
+		}
+		d.advertisePeerRecord()
+	})
 
 	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
 		var record pb.DNPeerRecord
@@ -155,10 +159,12 @@ func (d *Decentralizer) saveSelf() error {
 	}
 
 	//Add self
-	err = d.UpsertPeer("self", details)
-	if err != nil {
-		return err
-	}
+	go func() {
+		err = d.UpsertPeer("self", details)
+		if err != nil {
+			logger.Warningf("Could no save self: %s", err.Error())
+		}
+	}()
 	d.uploadPeers()
 	return nil
 }

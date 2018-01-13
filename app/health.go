@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Decentralizer) Health() (bool, error) {
-	if d.publisherUpdate == nil {
+	if d.publisherRecord == nil {
 		return false, errors.New(fmt.Sprintf("Not ready yet. Waiting for publisher file..."))
 	}
 	if !d.publisherDefinition.Status {
