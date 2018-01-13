@@ -138,6 +138,8 @@ func TestDecentralizer_publishStopper(t *testing.T) {
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
 	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
+	time.Sleep(1 * time.Second)
+
 	data, err := proto.Marshal(&pb.PublisherDefinition{
 		Status: false,
 	})
