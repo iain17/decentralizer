@@ -6,6 +6,7 @@ import (
 	"time"
 	"net"
 	"github.com/iain17/timeout"
+	"github.com/iain17/logger"
 )
 
 type Discovery struct {
@@ -20,15 +21,15 @@ type Discovery struct {
 
 func New(ctx context.Context, network *network.Network, max int, limitedConnection bool) (*Discovery, error) {
 	ctx, cancel := context.WithCancel(ctx)
-	//defer func() {
-	//	if r := recover(); r != nil {
-	//		var ok bool
-	//		err, ok := r.(error)
-	//		if !ok {
-	//			logger.Errorf("panic in discovery package: %v", err)
-	//		}
-	//	}
-	//}()
+	defer func() {
+		if r := recover(); r != nil {
+			var ok bool
+			err, ok := r.(error)
+			if !ok {
+				logger.Errorf("panic in discovery package: %v", err)
+			}
+		}
+	}()
 	self := &Discovery{
 		max: max,
 		ctx: ctx,
