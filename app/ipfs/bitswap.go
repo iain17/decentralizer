@@ -17,6 +17,9 @@ import (
 	"fmt"
 	"gx/ipfs/QmbxkgUceEcuSZ4ZdBA3x74VUDSSYjHYmmeEqkjxbtZ6Jg/go-libp2p-record"
 	"strings"
+	"github.com/hashicorp/golang-lru"
+	"hash/crc32"
+	"hash"
 )
 
 //Find other peers around a subject.
@@ -24,13 +27,21 @@ import (
 type BitswapService struct {
 	node    *core.IpfsNode
 	dht		*ipdht.IpfsDHT
+	dhtCache	*lru.Cache//Cache our result to certain DHT values.
 	test map[string][]byte
+	crcTable hash.Hash32
 }
 
 func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
+	dhtCache, err := lru.New(4096)
+	if err != nil {
+		return nil, err
+	}
 	if dht, ok := node.Routing.(*ipdht.IpfsDHT); ok {
 		return &BitswapService{
 			node:    node,
+			dhtCache: dhtCache,
+			crcTable: crc32.NewIEEE(),
 			dht: dht,
 			test: make(map[string][]byte),
 		}, nil
@@ -39,9 +50,29 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 	}
 }
 
+func (b *BitswapService) getValidatorKey(keyType string, data []byte) string {
+	b.crcTable.Reset()
+	b.crcTable.Write(data)
+	return fmt.Sprintf("%s/%d", keyType, b.crcTable.Sum32())
+}
+
 func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.ValidatorFunc, sign bool) {
 	b.dht.Validator[keyType] = &record.ValidChecker{
-		Func: validatorFunc,
+		Func: func(key string, value[]byte) error {
+			cacheKey := b.getValidatorKey(keyType, value)
+			if cacheVal, ok := b.dhtCache.Get(cacheKey); ok {
+				if val, ok := cacheVal.(bool); ok {
+					if val {
+						return nil
+					} else {
+						return errors.New("cache validator return error previously")
+					}
+				}
+			}
+			result := validatorFunc(key, value)
+			b.dhtCache.Add(cacheKey, result == nil)
+			return result
+		},
 		Sign: sign,
 	}
 }
