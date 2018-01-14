@@ -10,6 +10,8 @@ import (
 	"github.com/iain17/timeout"
 	"github.com/iain17/kvcache/lttlru"
 	"gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
+	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
+	"fmt"
 )
 
 type search struct {
@@ -34,9 +36,17 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		storage: storage,
 		seen: seen,
 	}
-	instance.fetch()
-	d.cron.Every(30).Seconds().Do(instance.fetch)
+	go instance.search()
+	d.cron.Every(30).Seconds().Do(instance.search)
 	return instance, nil
+}
+
+//Takes as long as it needs
+func (s *search) search() error {
+	//ctx, cancel := context.WithCancel(s.ctx)
+	//defer cancel()
+	s.connectToProviders()
+	return s.run(s.ctx)
 }
 
 func (s *search) run(ctx context.Context) error {
@@ -48,14 +58,18 @@ func (s *search) run(ctx context.Context) error {
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
 	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 1024)
 	if err != nil {
-		return err
+		return fmt.Errorf("could not find session with type %d: %s", s.sessionType, err.Error())
 	}
 	queried := 0
 	total := 0
 	s.seen.Purge()
+	self := s.d.i.Identity.Pretty()
 	for _, value := range values {
 		total++
 		id := value.From.Pretty()
+		if id == self {
+			continue
+		}
 		if s.d.ignore.Contains(id) {
 			logger.Debugf("%s is on the ignore list", id)
 			continue
@@ -74,6 +88,9 @@ func (s *search) run(ctx context.Context) error {
 		}
 		logger.Infof("Got %d sessions from %s", len(record.Results), id)
 		for _, session := range record.Results {
+			if session.PId == self {
+				continue
+			}
 			s.d.setSessionIdToType(session.SessionId, session.Type)
 			s.storage.Insert(session)
 		}
@@ -87,6 +104,28 @@ func (s *search) run(ctx context.Context) error {
 	}
 	logger.Infof("Queried %d of the %d for sessions of type %d", queried, total, s.sessionType)
 	return nil
+}
+
+func (s *search) connectToProviders() {
+	values := s.d.b.Find(s.d.getMatchmakingKey(s.sessionType), 1)
+	seen := make(map[string]bool)
+	for value := range values {
+		id := value.ID.Pretty()
+		if seen[id] {
+			continue
+		}
+		seen[id] = true
+		go s.d.i.PeerHost.Connect(s.d.i.Context(), pstore.PeerInfo{
+			ID:    value.ID,
+			Addrs: value.Addrs,
+		})
+		if s.d.i.PeerHost.Network().Connectedness(value.ID) == net.Connected {
+			s.d.sessionQueries <- sessionRequest{
+				search: s,
+				id:     value.ID,
+			}
+		}
+	}
 }
 
 func (s *search) refresh(ctx context.Context) error {

@@ -6,8 +6,8 @@ import (
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/config"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/repo/fsrepo"
-	//bitswap "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/network"
-	//dht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
+	bitswap "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/exchange/bitswap/network"
+	dht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
 	utilmain "github.com/iain17/decentralizer/app/ipfs/util"
 	"os"
 	"strings"
@@ -26,8 +26,8 @@ func patchSystem() error {
 	return nil
 }
 
-func OpenIPFSRepo(ctx context.Context, path string, limited bool) (*core.IpfsNode, error) {
-	r, err := getIPFSRepo(path, limited)
+func OpenIPFSRepo(ctx context.Context, path string, limited bool, swarmkey []byte) (*core.IpfsNode, error) {
+	r, err := getIPFSRepo(path, limited, swarmkey)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func OpenIPFSRepo(ctx context.Context, path string, limited bool) (*core.IpfsNod
 	return node, nil
 }
 
-func getIPFSRepo(path string, limited bool) (repo.Repo, error) {
+func getIPFSRepo(path string, limited bool, swarmkey []byte) (repo.Repo, error) {
 	r, err := fsrepo.Open(path)
 	if _, ok := err.(fsrepo.NoRepoError); ok {
 		var conf *config.Config
@@ -107,7 +107,20 @@ func getIPFSRepo(path string, limited bool) (repo.Repo, error) {
 	}
 
 	err = changeConfig(r, limited)
-	return r, err
+	return makePrivateRepo(r, swarmkey), err
+}
+
+type privateRepo struct{
+	repo.Repo
+	swarmkey []byte
+}
+
+func makePrivateRepo(r repo.Repo, swarmkey []byte) repo.Repo {
+	return &privateRepo{Repo: r, swarmkey:swarmkey}
+}
+
+func (r *privateRepo) SwarmKey() ([]byte, error) {
+	return r.swarmkey, nil
 }
 
 func changeConfig(r repo.Repo, limited bool) error {
@@ -121,8 +134,8 @@ func changeConfig(r repo.Repo, limited bool) error {
 	//gatewayPort := fmt.Sprintf("808%d", 12)
 	swarmPort := "4123"
 
-	//bitswap.ProtocolBitswap = "/decentralizer/bitswap/testnet/1.1.0"
-	//dht.ProtocolDHT = "/decentralizer/kad/testnet/1.0.0"
+	bitswap.ProtocolBitswap = "/decentralizer/bitswap/testnet/1.1.0"
+	dht.ProtocolDHT = "/decentralizer/kad/testnet/1.0.0"
 
 	//rc.Addresses.API = strings.Replace(rc.Addresses.API, "5001", apiPort, -1)
 	//rc.Addresses.Gateway = strings.Replace(rc.Addresses.Gateway, "8080", gatewayPort, -1)

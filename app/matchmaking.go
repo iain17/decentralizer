@@ -23,7 +23,6 @@ func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 
 func (d *Decentralizer) initMatchmaking() {
 	d.initMatchmakingStream()
-	go d.GetIP()
 	d.sessions 					= make(map[uint64]*sessionstore.Store)
 	d.sessionIdToSessionType	= make(map[uint64]uint64)
 	var err error
@@ -190,6 +189,12 @@ func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 	if err != nil {
 		return err
 	}
+	go func() {
+		err := d.b.Provide(d.getMatchmakingKey(sessionType))
+		if err != nil {
+			logger.Warning("Could not become a provider of sessions: %s", err.Error())
+		}
+	}()
 	return d.b.PutValue(DHT_SESSIONS_KEY_TYPE, d.getMatchmakingKey(sessionType), data)
 }
 

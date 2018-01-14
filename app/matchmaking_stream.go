@@ -41,7 +41,10 @@ func (d *Decentralizer) processSessionRequest() {
 			if !ok {
 				return
 			}
-			d.getSessionsRequest(req.id, req.search)
+			err := d.getSessionsRequest(req.id, req.search)
+			if err != nil {
+				logger.Debugf("Could not query session from %s: %s", req.id.Pretty(), err.Error())
+			}
 		}
 	}
 }

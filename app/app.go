@@ -95,10 +95,15 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
+	swarmKey, err := Asset("static/swarm.key")
+	if err != nil {
+		return nil, err
+	}
+
 	ipfsPath := Base.Path+"/ipfs"
 	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
-	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection)
+	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection, swarmKey)
 	if err != nil {
 		return nil, err
 	}
