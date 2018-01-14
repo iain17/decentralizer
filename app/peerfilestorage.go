@@ -19,7 +19,7 @@ func (d *Decentralizer) initStorage() {
 	var err error
 	d.filesApi, err = ipfs.NewFilesAPI(d.ctx, d.i, d.api)
 	if err != nil {
-		logger.Fatalf("Could not start filesapi: %s", err.Error())
+		logger.Fatalf("Could not start files api: %s", err.Error())
 	}
 	paths := configPath.QueryFolders(configdir.Global)
 	if len(paths) == 0 {
@@ -27,7 +27,7 @@ func (d *Decentralizer) initStorage() {
 	}
 	base := afero.NewBasePathFs(afero.NewOsFs(), paths[0].Path+"/peer-data")
 	layer := afero.NewMemMapFs()
-	d.ufs = afero.NewCacheOnReadFs(base, layer, 100 * time.Second)
+	d.ufs = afero.NewCacheOnReadFs(base, layer, 30 * time.Minute)
 
 	go d.republishPeerFiles()
 }

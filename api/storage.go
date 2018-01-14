@@ -6,6 +6,8 @@ import (
 	"github.com/iain17/logger"
 	"time"
 	"github.com/iain17/timeout"
+	//"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/namesys"
+	"github.com/giantswarm/retry-go"
 )
 
 //
@@ -28,7 +30,17 @@ func (s *Server) WritePeerFile(ctx context.Context, request *pb.RPCWritePeerFile
 // Get a user file. Takes a file name, returns the file.
 func (s *Server) GetPeerFile(ctx context.Context, request *pb.RPCGetPeerFileRequest) (*pb.RPCGetPeerFileResponse, error) {
 	time_start := time.Now()
-	file, err := s.App.GetPeerFile(request.PId, request.Name)
+	var file []byte
+	err := retry.Do(func() error {
+		var err error
+		file, err = s.App.GetPeerFile(request.PId, request.Name)
+		return err
+	},
+	retry.RetryChecker(func(err error) bool {
+		return true
+	}),
+	retry.Timeout(10 * time.Second),
+	retry.Sleep(3 * time.Second))
 	if err != nil {
 		logger.Warning(err)
 	}
