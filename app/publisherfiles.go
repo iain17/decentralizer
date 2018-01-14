@@ -20,7 +20,7 @@ func (d *Decentralizer) getPublisherKey() string {
 func (d *Decentralizer) initPublisherFiles() {
 	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(key string, val []byte) error{
 		var record pb.DNPublisherRecord
-		err := gogoProto.Unmarshal(val, &record)
+		err := d.unmarshal(val, &record)
 		if err != nil {
 			return err
 		}

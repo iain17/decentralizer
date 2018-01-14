@@ -19,6 +19,7 @@ const ADDRESS_BOOK_FILE = "addressbook.dat"
 const PUBLISHER_DEFINITION_FILE = "publisherDefinition.dat"
 const MAX_SIZE = int64(10 * datasize.MB)
 const MAX_IGNORE = 4096//If a peer isn't using our protocol. max ignore
+const MAX_UNMARSHAL_CACHE = 500//If a peer isn't using our protocol. max ignore
 const CONCURRENT_SESSION_REQUEST = 10
 const GET_SESSION_REQ = "/decentralizer/sessions/1.0.0/get"
 const MAX_SESSION_SEARCHES = 10

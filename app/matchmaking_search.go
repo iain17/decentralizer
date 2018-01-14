@@ -9,7 +9,6 @@ import (
 	"time"
 	"github.com/iain17/timeout"
 	"github.com/iain17/kvcache/lttlru"
-	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
 )
 
@@ -68,7 +67,7 @@ func (s *search) run(ctx context.Context) error {
 		s.seen.Add(id, true)
 
 		var record pb.DNSessionsRecord
-		err = gogoProto.Unmarshal(value.Val, &record)
+		err = s.d.unmarshal(value.Val, &record)
 		if err != nil {
 			logger.Warning(err)
 			continue

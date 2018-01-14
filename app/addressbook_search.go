@@ -5,7 +5,6 @@ import (
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
 	"strconv"
-	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/decentralizer/utils"
 )
 
@@ -38,7 +37,7 @@ func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, er
 	result, _ := d.peers.FindByDecentralizedId(decentralizedId)
 	updated := false
 	var record pb.DNPeerRecord
-	err = gogoProto.Unmarshal(data, &record)
+	err = d.unmarshal(data, &record)
 	if err != nil {
 		return nil, err
 	}

@@ -50,10 +50,11 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 	}
 }
 
-func (b *BitswapService) getValidatorKey(keyType string, data []byte) string {
+func (b *BitswapService) getValidatorKey(keyType string, data []byte) uint32 {
 	b.crcTable.Reset()
 	b.crcTable.Write(data)
-	return fmt.Sprintf("%s/%d", keyType, b.crcTable.Sum32())
+	//return fmt.Sprintf("%s/%d", keyType, b.crcTable.Sum32())
+	return b.crcTable.Sum32()
 }
 
 func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.ValidatorFunc, sign bool) {

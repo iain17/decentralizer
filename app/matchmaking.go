@@ -34,7 +34,7 @@ func (d *Decentralizer) initMatchmaking() {
 
 	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
 		var sessions pb.DNSessionsRecord
-		err = gogoProto.Unmarshal(val, &sessions)
+		err = d.unmarshal(val, &sessions)
 		if err != nil {
 			return err
 		}
@@ -46,7 +46,7 @@ func (d *Decentralizer) initMatchmaking() {
 		best := 0
 		for i, val := range values {
 			var record pb.DNSessionsRecord
-			err = gogoProto.Unmarshal(val, &record)
+			err = d.unmarshal(val, &record)
 			if err != nil {
 				logger.Warning(err)
 				continue

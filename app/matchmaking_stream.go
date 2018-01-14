@@ -129,7 +129,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
 		var sessionId uint64
 		binary.Read(idsResponse, binary.LittleEndian, &sessionId)
 		if sessionId == 0 {
-			logger.Warningf("Received stop sign.", sessionId)
+			logger.Warning("Received stop sign.")
 			break
 		}
 		if seen[sessionId] {
@@ -139,7 +139,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
 		seen[sessionId] = true
 		if !store.Contains(sessionId) {
 			logger.Debugf("Missing session %d. Asking %s for it", sessionId, stream.Conn().RemotePeer().Pretty())
-			session, err := requestSessionId(stream, sessionId)
+			session, err := d.requestSessionId(stream, sessionId)
 			if err != nil {
 				err = fmt.Errorf("failed to receive %d from %s: %s", sessionId, stream.Conn().RemotePeer().Pretty(), err.Error())
 				logger.Warning(err)
@@ -156,7 +156,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
 	return nil
 }
 
-func requestSessionId(w io.ReadWriter, sessionId uint64) (*pb.Session, error) {
+func (d *Decentralizer) requestSessionId(w io.ReadWriter, sessionId uint64) (*pb.Session, error) {
 	buf := new(bytes.Buffer)
 	err := binary.Write(buf, binary.LittleEndian, sessionId)
 	if err != nil {
@@ -171,6 +171,6 @@ func requestSessionId(w io.ReadWriter, sessionId uint64) (*pb.Session, error) {
 		return nil, err
 	}
 	var session pb.Session
-	err = gogoProto.Unmarshal(resData, &session)
+	err = d.unmarshal(resData, &session)
 	return &session, err
 }

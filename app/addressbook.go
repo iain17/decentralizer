@@ -54,7 +54,7 @@ func (d *Decentralizer) initAddressbook() {
 		best := 0
 		for i, val := range values {
 			var record pb.DNPeerRecord
-			err = gogoProto.Unmarshal(val, &record)
+			err = d.unmarshal(val, &record)
 			if err != nil {
 				logger.Warning(err)
 				continue
