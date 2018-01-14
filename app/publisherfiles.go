@@ -56,7 +56,10 @@ func (d *Decentralizer) initPublisherFiles() {
 		}
 		return best, nil
 	})
-	go d.restorePublisherDefinition()
+	err := d.restorePublisherDefinition()
+	if err != nil {
+		logger.Warning(err)
+	}
 	go d.updatePublisherDefinition()
 	d.cron.Every(30).Seconds().Do(func() {
 		err := d.updatePublisherDefinition()
@@ -86,9 +89,9 @@ func (d *Decentralizer) unmarshalDNPublisherRecord(record *pb.DNPublisherRecord)
 	}
 	err = d.n.Verify(record.Definition, record.Signature)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("signature verification '%s':%d failed: %s", record.Signature, len(record.Definition), err.Error()))
+		return nil, errors.New(fmt.Sprintf("signature verification '%x':%d failed: %s", record.Signature, len(record.Definition), err.Error()))
 	}
-	logger.Infof("Publisher record unmarshaled. Signature '%s':%d validated", record.Signature, len(record.Definition))
+	logger.Debugf("Publisher record unmarshaled. Signature '%x':%d validated", record.Signature, len(record.Definition))
 	return &definition, err
 }
 
@@ -115,7 +118,7 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 
 func (d *Decentralizer) readPublisherRecordFromNetwork() ([]byte, error) {
 	d.WaitTilEnoughPeers()
-	logger.Infof("Asking the network for a publisher record")
+	logger.Debugf("Asking the network for a publisher record")
 	data, err := d.b.GetValue(d.ctx, DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey())
 	if err != nil {
 		return nil, fmt.Errorf("failed to get best publisher record value: %s", err.Error())
@@ -138,20 +141,12 @@ func (d *Decentralizer) updatePublisherDefinition() error {
 }
 
 //Restores from disk
-func (d *Decentralizer) restorePublisherDefinition() {
+func (d *Decentralizer) restorePublisherDefinition() error {
 	data, err := d.readPublisherRecordFromDisk()
 	if err != nil {
-		fmt.Errorf("could not restore publisher file from disk: %s", err.Error())
-		err = d.updatePublisherDefinition()
-		if err != nil {
-			logger.Warning(err)
-		}
-		return
+		return fmt.Errorf("could not restore publisher file from disk: %s", err.Error())
 	}
-	err = d.readPublisherDefinition(data)
-	if err != nil {
-		logger.Warning(err)
-	}
+	return d.readPublisherDefinition(data)
 }
 
 func (d *Decentralizer) readPublisherDefinition(data []byte) error {

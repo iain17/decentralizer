@@ -22,14 +22,14 @@ func IsNewerRecord(current uint64, new uint64) bool {
 	expireTimeText := expireTime.String()
 	if !publishedTime.After(expireTime) {
 		err := fmt.Errorf("record with publish date %s is not newer than %s", publishedTimeText, expireTimeText)
-		logger.Warning(err)
+		logger.Debug(err)
 		return false
 	}
 	if publishedTime.After(now) {
 		err := errors.New("new peer with publish date %s was published in the future")
-		logger.Warning(err)
+		logger.Debug(err)
 		return false
 	}
-	logger.Infof("record with publish date %s IS newer than %s", publishedTimeText, expireTimeText)
+	logger.Debugf("record with publish date %s IS newer than %s", publishedTimeText, expireTimeText)
 	return true
 }

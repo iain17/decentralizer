@@ -55,7 +55,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 	binary.Read(bytes.NewReader(resData), binary.LittleEndian, &sessionType)
 
 	if !d.hasSessionStorage(sessionType) {
-		err = fmt.Errorf("we don't have this session type")
+		err = fmt.Errorf("we don't have session type %d", sessionType)
 		logger.Warning(err)
 		return
 	}
