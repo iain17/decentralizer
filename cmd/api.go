@@ -122,6 +122,10 @@ var apiCmd = &cobra.Command{
 }
 
 func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
+	s.App.WaitTilEnoughPeers()
+	for ok, _ := s.App.Health(); !ok; {
+		time.Sleep(500 * time.Millisecond)
+	}
 	logger.Warning("Killing on idle")
 	var free time.Time
 	for {

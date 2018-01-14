@@ -114,7 +114,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 				numNodesOnOldUpdate++
 			} else {
 				//People that have updated. Should also be able to set this DHT value.
-				err = slaves[i].PushPublisherUpdate()
+				err = slaves[i].PushPublisherRecord()
 				assert.NoError(t, err)
 			}
 		}

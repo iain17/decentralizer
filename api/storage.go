@@ -15,7 +15,7 @@ import (
 func (s *Server) WritePeerFile(ctx context.Context, request *pb.RPCWritePeerFileRequest) (*pb.RPCWritePeerFileResponse, error) {
 	var err error
 	timeout.Do(func(ctx context.Context) {
-		_, err = s.app.SavePeerFile(request.Name, request.File)
+		_, err = s.App.SavePeerFile(request.Name, request.File)
 		if err != nil {
 			logger.Warning(err)
 		}
@@ -28,7 +28,7 @@ func (s *Server) WritePeerFile(ctx context.Context, request *pb.RPCWritePeerFile
 // Get a user file. Takes a file name, returns the file.
 func (s *Server) GetPeerFile(ctx context.Context, request *pb.RPCGetPeerFileRequest) (*pb.RPCGetPeerFileResponse, error) {
 	time_start := time.Now()
-	file, err := s.app.GetPeerFile(request.PId, request.Name)
+	file, err := s.App.GetPeerFile(request.PId, request.Name)
 	if err != nil {
 		logger.Warning(err)
 	}

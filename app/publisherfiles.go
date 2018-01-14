@@ -86,8 +86,9 @@ func (d *Decentralizer) unmarshalDNPublisherRecord(record *pb.DNPublisherRecord)
 	}
 	err = d.n.Verify(record.Definition, record.Signature)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("signature verification failed: %s", err.Error()))
+		return nil, errors.New(fmt.Sprintf("signature verification '%s':%d failed: %s", record.Signature, len(record.Definition), err.Error()))
 	}
+	logger.Infof("Publisher record unmarshaled. Signature '%s':%d validated", record.Signature, len(record.Definition))
 	return &definition, err
 }
 
@@ -124,9 +125,14 @@ func (d *Decentralizer) readPublisherRecordFromNetwork() ([]byte, error) {
 
 func (d *Decentralizer) updatePublisherDefinition() error {
 	data, err := d.readPublisherRecordFromNetwork()
+	if data == nil || len(data) == 0 {
+		err := d.PushPublisherRecord()
+		if err != nil {
+			logger.Warningf("Could not push publisher record: %s", err.Error())
+		}
+	}
 	if err != nil {
-		fmt.Errorf("could not update publisher file from network: %s", err.Error())
-		return err
+		return fmt.Errorf("could not update publisher file from network: %s", err.Error())
 	}
 	return d.readPublisherDefinition(data)
 }
@@ -200,7 +206,7 @@ func (d *Decentralizer) loadNewPublisherRecord(record *pb.DNPublisherRecord) err
 	d.savePublisherRecordToDisk()
 	d.savePublisherRecordToIpfs()
 	d.runPublisherInstructions()
-	d.PushPublisherUpdate()
+	d.PushPublisherRecord()
 	return nil
 }
 
@@ -230,19 +236,19 @@ func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinitio
 	if err != nil {
 		return err
 	}
-	err = d.PushPublisherUpdate()
+	err = d.PushPublisherRecord()
 	if err != nil {
 		if err.Error() == "failed to find any peer in table" {
 			err = nil
 		}
 	}
 	if err == nil {
-		d.cron.Every(10).Seconds().Do(d.PushPublisherUpdate)
+		d.cron.Every(10).Seconds().Do(d.PushPublisherRecord)
 	}
 	return err
 }
 
-func (d *Decentralizer) PushPublisherUpdate() error {
+func (d *Decentralizer) PushPublisherRecord() error {
 	if d.publisherRecord == nil {
 		return errors.New("no update set")
 	}

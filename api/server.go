@@ -11,7 +11,7 @@ import (
 
 type Server struct {
 	ctx               context.Context
-	app               *app.Decentralizer
+	App               *app.Decentralizer
 	grpc              *grpc.Server
 	endpoint          string
 	mutex             sync.Mutex
@@ -31,12 +31,12 @@ func New(ctx context.Context, port int) (*Server, error) {
 			logger.Fatalf("GRPC API error: %s", err)
 		}
 	}()
-	//go func() {
-	//	err := i.initHTTP(port + 1)
-	//	if err != nil {
-	//		logger.Fatalf("HTTP API error: %s", err)
-	//	}
-	//}()
+	go func() {
+		err := i.initHTTP(port + 1)
+		if err != nil {
+			logger.Fatalf("HTTP API error: %s", err)
+		}
+	}()
 	return i, nil
 }
 
@@ -45,7 +45,7 @@ func (s *Server) Stop() {
 	if s.grpc != nil {
 		s.grpc.Stop()
 	}
-	if s.app != nil {
-		s.app.Stop()
+	if s.App != nil {
+		s.App.Stop()
 	}
 }

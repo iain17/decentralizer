@@ -13,7 +13,7 @@ import (
 //
 // Send another peer a direct message. Takes a peer id and the data it should send
 func (s *Server) SendDirectMessage(ctx context.Context, request *pb.RPCDirectMessage) (*pb.Empty, error) {
-	err := s.app.SendMessage(request.Channel, request.PId, request.Message)
+	err := s.App.SendMessage(request.Channel, request.PId, request.Message)
 	return &pb.Empty{}, err
 }
 
@@ -28,7 +28,7 @@ func (s *Server) ReceiveDirectMessage(request *pb.RPCReceiveDirectMessageRequest
 		s.listeningChannels[request.Channel] = false
 	}()
 
-	messageChannel := s.app.GetMessagingChan(request.Channel)
+	messageChannel := s.App.GetMessagingChan(request.Channel)
 	for {
 		select {
 		case <-stream.Context().Done():

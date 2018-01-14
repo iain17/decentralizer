@@ -119,8 +119,8 @@ func (b *BitswapService) getKey(keyType string, rawKey string) string {
 }
 
 func (b *BitswapService) PutValue(keyType string, rawKey string, data []byte) error {
+	logger.Infof("Put value for type %s for key %s", keyType, rawKey)
 	key := b.getKey(keyType, rawKey)
-	logger.Infof("Put value: %s", key)
 	return b.node.Routing.PutValue(b.node.Context(), key, data)
 	//return b.node.Routing.PutValue(b.node.Context(), key, data)
 }

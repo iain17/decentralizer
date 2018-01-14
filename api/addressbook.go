@@ -10,9 +10,9 @@ import (
 //
 // Create or update a peer. Takes peer info, returns if it was a success.
 func (s *Server) UpsertPeer(ctx context.Context, request *pb.RPCUpsertPeerRequest) (*pb.RPCUpsertPeerResponse, error) {
-	err := s.app.UpsertPeer(request.Peer.PId, request.Peer.Details)
+	err := s.App.UpsertPeer(request.Peer.PId, request.Peer.Details)
 	if err == nil && request.Peer.PId == "self" {
-		err = s.app.AdvertisePeerRecord()
+		err = s.App.AdvertisePeerRecord()
 	}
 	return &pb.RPCUpsertPeerResponse{}, err
 }
@@ -22,9 +22,9 @@ func (s *Server) GetPeerIds(ctx context.Context, request *pb.RPCGetPeerIdsReques
 	var peers []*pb.Peer
 	var err error
 	if request.Key == "" && request.Value == "" {
-		peers, err = s.app.GetPeers()
+		peers, err = s.App.GetPeers()
 	} else {
-		peers, err = s.app.GetPeersByDetails(request.Key, request.Value)
+		peers, err = s.App.GetPeersByDetails(request.Key, request.Value)
 	}
 	var peerIds []string
 	for _, peer := range peers {
@@ -40,10 +40,10 @@ func (s *Server) GetPeer(ctx context.Context, request *pb.RPCGetPeerRequest) (*p
 	var peer *pb.Peer
 	var err error
 	if request.PId != "" {
-		peer, err = s.app.FindByPeerId(request.PId)
+		peer, err = s.App.FindByPeerId(request.PId)
 	}
 	if peer == nil && request.DnId != 0 {
-		peer, err = s.app.FindByDecentralizedId(request.DnId)
+		peer, err = s.App.FindByDecentralizedId(request.DnId)
 	}
 	return &pb.RPCGetPeerResponse{
 		Peer: peer,

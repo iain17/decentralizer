@@ -60,7 +60,7 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 	if len(meta["limited"]) != 0 {
 		limitedConnection = meta["limited"][0] == "1"
 	}
-	if s.app == nil && networkKey != "" {
+	if s.App == nil && networkKey != "" {
 		logger.Info("Joining network...")
 		err := s.SetNetwork(clientVersion, networkKey, isPrivateKey, limitedConnection)
 		if err != nil {
@@ -70,13 +70,13 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 			logger.Info("Joined network.")
 		}
 	}
-	if s.app == nil {
+	if s.App == nil {
 		return ctx, errors.New("network is not set. Please set the network first")
 	}
 
 	//Check health
 	if len(meta["health"]) == 0 {
-		ready, err := s.app.Health()
+		ready, err := s.App.Health()
 		if err != nil {
 			return ctx, err
 		}

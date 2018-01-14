@@ -9,12 +9,12 @@ import (
 
 //Publish a new publisher update. (Only if you have the private key!)
 func (s *Server) PublishPublisherUpdate(ctx context.Context, req *pb.RPCPublishPublisherUpdateRequest) (*pb.Empty, error) {
-	return &pb.Empty{}, s.app.PublishPublisherRecord(req.Definition)
+	return &pb.Empty{}, s.App.PublishPublisherRecord(req.Definition)
 }
 
 // Get the full publisher definition
 func (s *Server) GetPublisherDefinition(context.Context, *pb.GetPublisherDefinitionRequest) (*pb.PublisherDefinition, error) {
-	definition := s.app.PublisherDefinition()
+	definition := s.App.PublisherDefinition()
 	if definition == nil {
 		return nil, errors.New("No publisher definition set.")
 	}
@@ -23,7 +23,7 @@ func (s *Server) GetPublisherDefinition(context.Context, *pb.GetPublisherDefinit
 
 // Get a publisher file.
 func (s *Server) GetPublisherFile(ctx context.Context, req *pb.RPCGetPublisherFileRequest) (*pb.RPCGetPublisherFileResponse, error) {
-	file, err := s.app.GetPublisherFile(req.Name)
+	file, err := s.App.GetPublisherFile(req.Name)
 	if err != nil {
 		logger.Warning(err)
 	}

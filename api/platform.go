@@ -15,7 +15,7 @@ import (
 //
 func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RPCHealthReply, error) {
 	logger.Info("Getting health..")
-	ready, err := s.app.Health()
+	ready, err := s.App.Health()
 	var error string
 	if err != nil {
 		error = err.Error()
@@ -32,7 +32,7 @@ func (s *Server) SetNetwork(clientVersion string, networkKey string, isPrivateKe
 	defer func () {
 		s.mutex.Unlock()
 	}()
-	if s.app != nil {
+	if s.App != nil {
 		return errors.New("network already set")
 	}
 	v, err := version.NewVersion(clientVersion)
@@ -44,7 +44,7 @@ func (s *Server) SetNetwork(clientVersion string, networkKey string, isPrivateKe
 		return errors.New("please update your client")
 	}
 	make:
-	s.app, err = app.New(s.ctx, networkKey, isPrivateKey, limitedConnection)
+	s.App, err = app.New(s.ctx, networkKey, isPrivateKey, limitedConnection)
 	if err != nil && strings.Contains(err.Error(), "corrupted") {
 		logger.Warningf("%s: Resetting...", err)
 		app.Reset()

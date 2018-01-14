@@ -17,7 +17,7 @@ func (s *Server) UpsertSession(ctx context.Context, request *pb.RPCUpsertSession
 		request.Session.Details = make(map[string]string)
 	}
 	request.Session.Details["updated"] = time.Now().String()
-	sessId, err := s.app.UpsertSession(request.Session.Type, request.Session.Name, request.Session.Port, request.Session.Details)
+	sessId, err := s.App.UpsertSession(request.Session.Type, request.Session.Name, request.Session.Port, request.Session.Details)
 	return &pb.RPCUpsertSessionResponse{
 		SessionId: sessId,
 	}, err
@@ -26,7 +26,7 @@ func (s *Server) UpsertSession(ctx context.Context, request *pb.RPCUpsertSession
 // Delete a session. Takes session id, returns bool informing if the deletion was a success
 func (s *Server) DeleteSession(ctx context.Context, request *pb.RPCDeleteSessionRequest) (*pb.RPCDeleteSessionResponse, error) {
 	logger.Infof("Delete session request received")
-	err := s.app.DeleteSession(request.SessionId)
+	err := s.App.DeleteSession(request.SessionId)
 	return &pb.RPCDeleteSessionResponse{
 		Result: err == nil,
 	}, err
@@ -51,9 +51,9 @@ func (s *Server) GetSessionIdsByDetails(ctx context.Context, request *pb.RPCGetS
 	var sessions []*pb.Session
 	var err error
 	if request.Key == "" && request.Value == "" {
-		sessions, err = s.app.GetSessions(request.Type)
+		sessions, err = s.App.GetSessions(request.Type)
 	} else {
-		sessions, err = s.app.GetSessionsByDetails(request.Type, request.Key, request.Value)
+		sessions, err = s.App.GetSessionsByDetails(request.Type, request.Key, request.Value)
 	}
 	if err != nil {
 		logger.Warning(err)
@@ -71,7 +71,7 @@ func (s *Server) GetSessionIdsByDetails(ctx context.Context, request *pb.RPCGetS
 func (s *Server) GetSessionIdsByPeerIds(ctx context.Context, req *pb.RPCGetSessionIdsByPeerIdsRequest) (*pb.RPCGetSessionIdsResponse, error) {
 	var sessions []*pb.Session
 	for _, peerId := range req.PeerIds {
-		s, err := s.app.GetSessionsByPeer(peerId)
+		s, err := s.App.GetSessionsByPeer(peerId)
 		if err != nil {
 			logger.Warning(err)
 			continue
@@ -87,7 +87,7 @@ func (s *Server) GetSessionIdsByPeerIds(ctx context.Context, req *pb.RPCGetSessi
 // Get an individual session. Takes session id and returns session info.
 func (s *Server) GetSession(ctx context.Context, request *pb.RPCGetSessionRequest) (*pb.RPCGetSessionResponse, error) {
 	logger.Infof("Get session request received")
-	session, err := s.app.GetSession(request.SessionId)
+	session, err := s.App.GetSession(request.SessionId)
 	if err != nil {
 		logger.Warning(err)
 	}
