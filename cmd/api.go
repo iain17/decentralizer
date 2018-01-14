@@ -122,10 +122,6 @@ var apiCmd = &cobra.Command{
 }
 
 func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
-	s.App.WaitTilEnoughPeers()
-	for ok, _ := s.App.Health(); !ok; {
-		time.Sleep(500 * time.Millisecond)
-	}
 	logger.Warning("Killing on idle")
 	var free time.Time
 	for {
@@ -133,7 +129,10 @@ func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
 		s.Wg.Wait()
 		free = time.Now()
 		s.Wg.Wait()
-		if free.Add(MAX_IDLE_TIME).After(time.Now()) {
+		if s.App != nil {
+			s.App.WaitTilEnoughPeers()
+		}
+		if s.App != nil && free.Add(MAX_IDLE_TIME).After(time.Now()) {
 			logger.Warning("Idle. Closing process.")
 			cancel()
 		}

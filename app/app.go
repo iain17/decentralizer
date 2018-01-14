@@ -177,6 +177,9 @@ func (d *Decentralizer) GetIP() net.IP {
 }
 
 func (d *Decentralizer) IsEnoughPeers() bool {
+	if d.i == nil {
+		return false
+	}
 	lenPeers := len(d.i.PeerHost.Network().Peers())
 	return lenPeers >= MIN_CONNECTED_PEERS
 }
