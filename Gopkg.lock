@@ -149,7 +149,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "f9de3287aa7964e07f10adf2bc692c89744b99f8"
+  revision = "101288c86bde495f0046003e92da2c76f39d1a9a"
 
 [[projects]]
   branch = "master"
@@ -204,12 +204,6 @@
   name = "github.com/jasonlvhit/gocron"
   packages = ["."]
   revision = "3c914c8681c3998f1dd463d84a4d8c29345e47a4"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/jeffchao/backoff"
-  packages = ["."]
-  revision = "9d7fd7aa17f229da501a53ec2de5d2b8612cc65b"
 
 [[projects]]
   branch = "master"
@@ -388,6 +382,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f76b8bde8761b3a01ce9b2714e7e01445ce5e0a507d27b31ef0c79c49fb6e41e"
+  inputs-digest = "42ac61fa924139eeb467e0fbc5654f9e492b7215df9e3893ceac9f108612d314"
   solver-name = "gps-cdcl"
   solver-version = 1
