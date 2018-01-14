@@ -53,7 +53,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	i.supervisor.AddService(&i.StunService, supervisor.Temporary)
 	if !i.discovery.limited {
 		i.discoveryDHT.localNode = i
-		i.supervisor.AddService(&i.discoveryDHT, supervisor.Permanent)
+		i.supervisor.AddService(&i.discoveryDHT, supervisor.Temporary)
 	}
 	i.discoveryIRC.localNode = i
 	i.supervisor.AddService(&i.discoveryIRC, supervisor.Permanent)
