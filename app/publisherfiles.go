@@ -56,11 +56,12 @@ func (d *Decentralizer) initPublisherFiles() {
 		}
 		return best, nil
 	})
-	d.restorePublisherDefinition()
+	go d.restorePublisherDefinition()
+	go d.updatePublisherDefinition()
 	d.cron.Every(30).Seconds().Do(func() {
-		err := d.updatePublisherDefinition
+		err := d.updatePublisherDefinition()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warning(err.Error())
 		}
 	})
 }
@@ -112,6 +113,7 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 }
 
 func (d *Decentralizer) readPublisherRecordFromNetwork() ([]byte, error) {
+	d.WaitTilEnoughPeers()
 	logger.Infof("Asking the network for a publisher record")
 	data, err := d.b.GetValue(d.ctx, DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey())
 	if err != nil {
@@ -219,6 +221,7 @@ func (d *Decentralizer) signPublisherRecord(definition *pb.PublisherDefinition) 
 }
 
 func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) error {
+	d.WaitTilEnoughPeers()
 	update, err := d.signPublisherRecord(definition)
 	if err != nil {
 		return err
