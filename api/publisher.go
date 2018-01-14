@@ -9,7 +9,7 @@ import (
 
 //Publish a new publisher update. (Only if you have the private key!)
 func (s *Server) PublishPublisherUpdate(ctx context.Context, req *pb.RPCPublishPublisherUpdateRequest) (*pb.Empty, error) {
-	return &pb.Empty{}, s.app.PublishPublisherUpdate(req.Definition)
+	return &pb.Empty{}, s.app.PublishPublisherRecord(req.Definition)
 }
 
 // Get the full publisher definition
