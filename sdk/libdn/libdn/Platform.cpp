@@ -18,10 +18,7 @@ namespace libdn {
 
 	//Will hang until we are connected and DN is ready.
 	LIBDN_API void LIBDN_CALL WaitUntilReady() {
-		try {
-			std::lock_guard<std::mutex> lock(context.mutex);
-		} catch (std::exception e) {}
-
+		std::lock_guard<std::mutex> lock(context.healthMutex);
 		auto health = Health();
 		while (!health || !health->ready) {
 			health = Health();
