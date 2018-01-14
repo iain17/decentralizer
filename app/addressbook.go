@@ -27,12 +27,13 @@ func (d *Decentralizer) initAddressbook() {
 		}
 		d.AdvertisePeerRecord()
 	})
+	go d.AdvertisePeerRecord()
 
 	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
 		var record pb.DNPeerRecord
 		err = d.unmarshal(val, &record)
 		if err != nil {
-			return fmt.Errorf("record invalid. could not unmarshal: %s", err.Error())
+			return fmt.Errorf("peer record invalid. could not unmarshal: %s", err.Error())
 		}
 		//Check key
 		key, err := d.b.DecodeKey(rawKey)
@@ -109,6 +110,13 @@ func (d *Decentralizer) AdvertisePeerRecord() error {
 		return err
 	}
 	err = d.b.PutValue(DHT_PEER_KEY_TYPE, getDecentralizedIdKey(peer.DnId), data)
+	if err != nil {
+		logger.Warning(err)
+	} else {
+		logger.Info("Successfully provided self")
+	}
+	//Back-up for if it fails.
+	err = d.b.Provide(getDecentralizedIdKey(peer.DnId))
 	if err != nil {
 		logger.Warning(err)
 	} else {

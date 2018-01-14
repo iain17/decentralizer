@@ -8,8 +8,6 @@ import (
 	"gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
 	b58 "gx/ipfs/QmT8rehPR3F6bmwL6zjUN8XpiDBFFpMP2myPdC6ApsWfJf/go-base58"
 	"gx/ipfs/QmPR2JzfKd9poHx9XBhzoFeBBC31ZM3W5iUPKJZWyaoZZm/go-libp2p-routing"
-	"github.com/iain17/timeout"
-	"time"
 	"context"
 	"github.com/iain17/logger"
 	ipdht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
@@ -93,17 +91,7 @@ func (b *BitswapService) Find(subject string, num int) <-chan pstore.PeerInfo {
 }
 
 func (b *BitswapService) Provide(subject string) error {
-	var err error
-	completed := false
-	timeout.Do(func(ctx context.Context) {
-		err = b.node.Routing.Provide(b.node.Context(), StringToCid(subject), true)
-		completed = true
-		logger.Debugf("Provided subject: %s", subject)
-	}, 5*time.Second)
-	//if !completed {
-	//	err = errors.New("could not provide '%s' in under 15 seconds. Check if you are connected to enough peers")
-	//}
-	return err
+	return b.node.Routing.Provide(b.node.Context(), StringToCid(subject), true)
 }
 
 func (b *BitswapService) DecodeKey(key string) (string, error) {
