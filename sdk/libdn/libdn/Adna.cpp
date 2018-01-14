@@ -83,6 +83,10 @@ namespace libdn {
 		ADNA_Shutdown();
 		ADNA_setupPipe();
 
+		if (IsProcessRunning(adnaExecutable)) {
+			return nullptr;
+		}
+
 		PROCESS_INFORMATION piProcInfo;
 		STARTUPINFO siStartInfo;
 		bool bSuccess = FALSE;
@@ -101,9 +105,14 @@ namespace libdn {
 		if (removeLock) {
 			extraParams += "--removeLock ";
 		}
-		LPSTR params = (LPSTR)va("%s api -p %i %s", adnaExecutable, context.port, extraParams.c_str());
-		//MessageBoxA(NULL, params, "libdn", MB_OK);
+
+		if (&piProcInfo) {
+		//	CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
+		}
+
+		LPSTR params = (LPSTR)va("adna api -p %i -l \"\" %s", context.port, extraParams);
 		const char* exec = va("%s\\%s", basePath, adnaExecutable);
+		//MessageBoxA(NULL, va("%s %s", exec, params), "libdn", MB_OK);
 		if (!FileExists(exec)) {
 			MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
 			exit(0);
@@ -113,21 +122,18 @@ namespace libdn {
 			NULL,          // process security attributes 
 			NULL,          // primary thread security attributes 
 			TRUE,          // handles are inherited 
-			CREATE_NO_WINDOW,             // creation flags 
+			NULL,             // creation flags  CREATE_NO_WINDOW
 			NULL,          // use parent's environment 
 			(LPSTR)va("%s\\", basePath),          // use parent's current directory 
 			&siStartInfo,  // STARTUPINFO pointer 
 			&piProcInfo);  // receives PROCESS_INFORMATION
 		//CloseHandle(g_hChildStd_ERR_Wr);
 		//CloseHandle(g_hChildStd_OUT_Wr);
+
 		// If an error occurs, exit the application. 
 		if (!bSuccess) {
-			//MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
+			MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
 			return nullptr;
-		}
-
-		if (&piProcInfo) {
-			CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
 		}
 
 		if (!IsProcessRunning(adnaExecutable)) {

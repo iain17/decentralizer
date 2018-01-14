@@ -50,6 +50,7 @@ extern struct DN_state_s {
 	std::mutex AdnaMutex;
 	std::mutex selfMutex;
 	std::mutex mutex;
+	std::mutex healthMutex;
 	libdn::DecentralizerClient* client;
 	bool initialized = false;
 	const char* host;
