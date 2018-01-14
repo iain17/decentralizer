@@ -49,6 +49,7 @@ extern const char * VERSION;
 extern struct DN_state_s {
 	std::mutex AdnaMutex;
 	std::mutex selfMutex;
+	std::mutex mutex;
 	libdn::DecentralizerClient* client;
 	bool initialized = false;
 	const char* host;

@@ -2,24 +2,26 @@
 namespace libdn {
 
 	void fixImproperShutdown(const char* basePath) {
-		Log_Print("Improper shutdown detected. Trying to auto fix.");
-		const char* lockFile = va("%s\\ipfs\\repo.lock", basePath);
-		int i = remove(lockFile);
-		if (i == 0) {
-			Log_Print("Could not delete lock file. Please do so manually: %s", lockFile);
-			Sleep(8000);
-		} else {
-			Log_Print("Lock file %s deleted. Restarting...", lockFile);
-			bool adna = ADNA_Ensure_Process();
-			if (!adna) {
-				exit(0);
-			}
+		Log_Print("Improper shutdown detected. Autofixing...");
+		ADNA_Shutdown();
+		Sleep(500);
+		bool adna = ADNA_Ensure_Process(true);
+		if (!adna) {
+			exit(0);
 		}
-		Sleep(1000);
+		auto health = Health();
+		if (!health->ready) {
+			MessageBoxA(NULL, health->message.c_str(), "could not start", MB_OK);
+			exit(0);
+		}
 	}
 
 	//Will hang until we are connected and DN is ready.
 	LIBDN_API void LIBDN_CALL WaitUntilReady() {
+		try {
+			std::lock_guard<std::mutex> lock(context.mutex);
+		} catch (std::exception e) {}
+
 		auto health = Health();
 		while (!health || !health->ready) {
 			health = Health();
@@ -41,7 +43,7 @@ namespace libdn {
 			return result;
 		}
 
-		bool adna = ADNA_Ensure_Process();
+		bool adna = ADNA_Ensure_Process(false);
 		if (!adna) {
 			result->message = "Failed to connect";
 			return result;

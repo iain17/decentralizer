@@ -79,7 +79,7 @@ namespace libdn {
 		return reachable;
 	}
 
-	PROCESS_INFORMATION* NewAdnaInstance() {
+	PROCESS_INFORMATION* NewAdnaInstance(bool removeLock) {
 		ADNA_Shutdown();
 		ADNA_setupPipe();
 
@@ -97,9 +97,17 @@ namespace libdn {
 		siStartInfo.hStdError = g_hChildStd_ERR_Wr;
 		siStartInfo.hStdOutput = g_hChildStd_OUT_Wr;
 		siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
-
-		LPSTR params = (LPSTR)va("%s api -p %i", adnaExecutable, context.port);
+		std::string extraParams = "";
+		if (removeLock) {
+			extraParams += "--removeLock ";
+		}
+		LPSTR params = (LPSTR)va("%s api -p %i %s", adnaExecutable, context.port, extraParams.c_str());
+		//MessageBoxA(NULL, params, "libdn", MB_OK);
 		const char* exec = va("%s\\%s", basePath, adnaExecutable);
+		if (!FileExists(exec)) {
+			MessageBoxA(NULL, va("Error starting %s.\n", exec), "libdn", MB_OK);
+			exit(0);
+		}
 		bSuccess = CreateProcess(exec,
 			params,
 			NULL,          // process security attributes 
@@ -133,7 +141,7 @@ namespace libdn {
 		return &piProcInfo;
 	}
 
-	bool ADNA_Ensure_Process_do() {
+	bool ADNA_Ensure_Process_do(bool removeLock) {
 		if (context.host == nullptr || context.port == 0) {
 			return false;
 		}
@@ -149,9 +157,10 @@ namespace libdn {
 		while(!reachable) {
 			//If local, spawn one
 			if ((std::strcmp(context.host, "localhost") == 0 || std::strcmp(context.host, "127.0.0.1") == 0) && !IsProcessRunning(adnaExecutable)) {
-				PROCESS_INFORMATION* piProcInfo = NewAdnaInstance();
+				PROCESS_INFORMATION* piProcInfo = NewAdnaInstance(removeLock);
 				if (!piProcInfo) {
 					context.port++;
+					Log_Print("Trying another port next time...");
 				}
 			}
 
@@ -164,15 +173,15 @@ namespace libdn {
 			}
 
 			Sleep(1000);
-			Log_Print("Trying another port...");
+			Log_Print("Retrying...");
 			tries++;
 		}
 		return reachable;
 	}
 
-	bool ADNA_Ensure_Process() {
+	bool ADNA_Ensure_Process(bool removeLock) {
 		context.AdnaMutex.lock();
-		bool result = ADNA_Ensure_Process_do();
+		bool result = ADNA_Ensure_Process_do(removeLock);
 		context.AdnaMutex.unlock();
 		return result;
 	}

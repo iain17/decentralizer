@@ -13,6 +13,7 @@ namespace libdn {
 	}
 
 	LIBDN_API void LIBDN_CALL Init(LogCB logCallback) {
+		std::lock_guard<std::mutex> lock(context.mutex);
 		if (context.initialized) {
 			return;
 		}
