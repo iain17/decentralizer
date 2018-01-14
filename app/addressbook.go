@@ -25,7 +25,7 @@ func (d *Decentralizer) initAddressbook() {
 		if !d.IsEnoughPeers() {
 			return
 		}
-		d.advertisePeerRecord()
+		d.AdvertisePeerRecord()
 	})
 
 	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
@@ -66,6 +66,11 @@ func (d *Decentralizer) initAddressbook() {
 		}
 		return best, nil
 	})
+
+	self, _ := d.peers.FindByPeerId("self")
+	if self != nil {
+		logger.Infof("Initialized: PeerID '%s', decentralized id '%d': %v", self.PId, self.DnId, self.Details)
+	}
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -90,7 +95,7 @@ func (d *Decentralizer) downloadPeers() {
 	logger.Info("Restored address book")
 }
 
-func (d *Decentralizer) advertisePeerRecord() error {
+func (d *Decentralizer) AdvertisePeerRecord() error {
 	d.WaitTilEnoughPeers()
 	peer, err := d.FindByPeerId("self")
 	if err != nil {
@@ -159,14 +164,20 @@ func (d *Decentralizer) saveSelf() error {
 	}
 
 	//Add self
-	go func() {
-		err = d.UpsertPeer("self", details)
-		if err != nil {
-			logger.Warningf("Could no save self: %s", err.Error())
-		}
-	}()
+	err = d.UpsertPeer("self", details)
+	if err != nil {
+		return fmt.Errorf("could no save self: %s", err.Error())
+	}
 	d.uploadPeers()
 	return nil
+}
+
+func (d *Decentralizer) UpdateSelf(details map[string]string) error {
+	err := d.UpsertPeer("self", details)
+	if err != nil {
+		return err
+	}
+	return d.AdvertisePeerRecord()
 }
 
 func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error {
@@ -176,9 +187,6 @@ func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error 
 		Details: details,
 	})
 	d.addressBookChanged = true
-	if pId == "self" {
-		err = d.advertisePeerRecord()
-	}
 	return err
 }
 

@@ -143,10 +143,6 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	instance.initAddressbook()
 	instance.initPublisherFiles()
 	instance.cronChan = instance.cron.Start()
-
-	self, err := instance.peers.FindByPeerId(instance.i.Identity.Pretty())
-	logger.Infof("Initialized: PeerID '%s', decentralized id '%d': %v", self.PId, self.DnId, self.Details)
-
 	return instance, err
 }
 

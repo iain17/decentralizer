@@ -231,6 +231,11 @@ func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinitio
 		return err
 	}
 	err = d.PushPublisherUpdate()
+	if err != nil {
+		if err.Error() == "failed to find any peer in table" {
+			err = nil
+		}
+	}
 	if err == nil {
 		d.cron.Every(10).Seconds().Do(d.PushPublisherUpdate)
 	}
