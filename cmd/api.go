@@ -26,8 +26,9 @@ import (
 	"os/signal"
 	"syscall"
 	"github.com/iain17/decentralizer/pb"
+	"github.com/iain17/decentralizer/app"
 )
-var verbose, daemon, isPrivateKey, isLimited bool
+var verbose, daemon, isPrivateKey, isLimited, removeLock bool
 var logPath, networkKey string
 var port int
 
@@ -41,6 +42,7 @@ func init() {
 	apiCmd.Flags().StringVarP(&networkKey, "network", "n", "", "Network key we should initialize with")
 	apiCmd.Flags().BoolVar(&isPrivateKey, "isPrivate", false, "Is network key a private key or not (not used if network key not set)")
 	apiCmd.Flags().BoolVar(&isLimited, "limited", false, "If we are on a limited (slower) connection (not used if network key not set)")
+	apiCmd.Flags().BoolVar(&removeLock, "removeLock", false, "If set to true. It will remove to lock file")
 }
 
 const MAX_IDLE_TIME = 15 * time.Second//Ignored in daemon mode
@@ -72,6 +74,12 @@ var apiCmd = &cobra.Command{
 			if verbose {
 				ipfsLogOption := logging.Output(fileOut)
 				logging.Configure(ipfsLogOption)
+			}
+		}
+		if removeLock {
+			err := os.Remove(app.Base.Path+"/ipfs/repo.lock")
+			if err != nil {
+				logger.Warning(err)
 			}
 		}
 
