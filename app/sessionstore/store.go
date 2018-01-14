@@ -110,6 +110,7 @@ func (s *Store) IsNewer(info *pb.Session) bool {
 	return utils.IsNewerRecord(published, info.Published)
 }
 
+//Do not call this directly. setSessionIdToType needs to be called as well!
 func (s *Store) Insert(info *pb.Session) (uint64, error) {
 	if info == nil {
 		return 0, errors.New("tried inserting nil value")

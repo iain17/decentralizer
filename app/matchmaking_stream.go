@@ -150,6 +150,7 @@ func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
 				logger.Warning(err)
 				continue
 			}
+			d.setSessionIdToType(session.SessionId, session.Type)
 			search.storage.Insert(session)
 		}
 	}

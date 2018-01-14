@@ -74,6 +74,7 @@ func (s *search) run(ctx context.Context) error {
 		}
 		logger.Infof("Got %d sessions from %s", len(record.Results), id)
 		for _, session := range record.Results {
+			s.d.setSessionIdToType(session.SessionId, session.Type)
 			s.storage.Insert(session)
 		}
 		if s.d.i.PeerHost.Network().Connectedness(value.From) == net.Connected {

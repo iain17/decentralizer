@@ -162,7 +162,7 @@ func (d *Decentralizer) InsertSession(session *pb.Session) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
-	d.sessionIdToSessionType[sessionId] = session.Type
+	d.setSessionIdToType(sessionId, session.Type)
 	return sessionId, nil
 }
 
@@ -201,7 +201,7 @@ func (d *Decentralizer) setSessionIdToType(sessionId uint64, sessionType uint64)
 
 func (d *Decentralizer) DeleteSession(sessionId uint64) error {
 	if d.sessionIdToSessionType[sessionId] == 0 {
-		return errors.New("no such session exists")
+		return fmt.Errorf("session %d does not exists in sessionIdToSessionType", sessionId)
 	}
 	sessionType := d.sessionIdToSessionType[sessionId]
 	sessions := d.getSessionStorage(sessionType)
@@ -210,7 +210,7 @@ func (d *Decentralizer) DeleteSession(sessionId uint64) error {
 
 func (d *Decentralizer) GetSession(sessionId uint64) (*pb.Session, error) {
 	if d.sessionIdToSessionType[sessionId] == 0 {
-		return nil, errors.New("no such session exists")
+		return nil, fmt.Errorf("session %d does not exists in sessionIdToSessionType", sessionId)
 	}
 	sessionType := d.sessionIdToSessionType[sessionId]
 	sessions := d.getSessionStorage(sessionType)
