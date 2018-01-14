@@ -1,4 +1,4 @@
-package assert
+package assert // import "github.com/anacrolix/missinggo/assert"
 
 import (
 	"database/sql"
@@ -54,5 +54,11 @@ var Ok = True
 func False(b bool) {
 	if b {
 		panic(b)
+	}
+}
+
+func Zero(x interface{}) {
+	if x != reflect.Zero(reflect.TypeOf(x)).Interface() {
+		panic(x)
 	}
 }

@@ -9,7 +9,7 @@ import (
 	"time"
 	"github.com/iain17/timeout"
 	"github.com/iain17/kvcache/lttlru"
-	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"gx/ipfs/QmNa31VPzC561NWwRsJLE7nGYZYuuD2QfpK2b1q9BK54J1/go-libp2p-net"
 )
 
 type search struct {
@@ -19,16 +19,11 @@ type search struct {
 	ctx context.Context
 	storage *sessionstore.Store
 	seen *lttlru.LruWithTTL//Tells us if we've already pased the result of this peer.
-	publication *lttlru.LruWithTTL//Tell us if the record we are about to insert is from a newer source.
 }
 
 func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*search, error) {
 	storage := d.getSessionStorage(sessionType)
 	seen, err := lttlru.NewTTL(MAX_IGNORE)
-	if err != nil {
-		return nil, err
-	}
-	publication, err := lttlru.NewTTL(MAX_SESSIONS)
 	if err != nil {
 		return nil, err
 	}
@@ -38,10 +33,9 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 		ctx: ctx,
 		storage: storage,
 		seen: seen,
-		publication: publication,
 	}
 	instance.fetch()
-	//d.cron.Every(30).Seconds().Do(instance.fetch)
+	d.cron.Every(30).Seconds().Do(instance.fetch)
 	return instance, nil
 }
 
@@ -52,7 +46,7 @@ func (s *search) run(ctx context.Context) error {
 	defer s.mutex.Unlock()
 
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 99999)
+	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 1024)
 	if err != nil {
 		return err
 	}
@@ -72,35 +66,23 @@ func (s *search) run(ctx context.Context) error {
 		}
 		s.seen.Add(id, true)
 
-		var response pb.DNSessionsRecord
-		err = gogoProto.Unmarshal(value.Val, &response)
+		var record pb.DNSessionsRecord
+		err = s.d.unmarshal(value.Val, &record)
 		if err != nil {
 			logger.Warning(err)
 			continue
 		}
-		logger.Infof("Got %d sessions from %s", len(response.Results), id)
-		publishedTime := time.Unix(int64(response.Published), 0)
-		for _, session := range response.Results {
-			//if session.PId != value.From.Pretty() {
-			//	logger.Warningf("We can't accept sessions that aren't yours %s", id)
-			//	s.d.ignore.AddWithTTL(id, true, 5 * time.Minute)
-			//	break
-			//}
-			if rawLastInserted, ok := s.publication.Get(session.SessionId); ok {
-				LastInserted := time.Unix(rawLastInserted.(int64), 0).UTC()
-				if publishedTime.Before(LastInserted) || publishedTime.Equal(LastInserted) {
-					logger.Debugf("Received older record. Skipping: this: %s, last: %s", publishedTime.String(), LastInserted.String())
-					continue
-				}
-			}
-			_, err := s.d.InsertSession(session)
-			if err != nil {
-				logger.Warning(err)
-			} else {
-				s.publication.Add(session.SessionId, time.Now().UTC().Unix())
-			}
+		logger.Infof("Got %d sessions from %s", len(record.Results), id)
+		for _, session := range record.Results {
+			s.storage.Insert(session)
 		}
-		queried++
+		if s.d.i.PeerHost.Network().Connectedness(value.From) == net.Connected {
+			s.d.sessionQueries <- sessionRequest{
+				search: s,
+				id:     value.From,
+			}
+			queried++
+		}
 	}
 	logger.Infof("Queried %d of the %d for sessions of type %d", queried, total, s.sessionType)
 	return nil
@@ -135,6 +117,5 @@ func (s *search) fetch() (*sessionstore.Store, error) {
 		}
 	}, 5 * time.Second)
 	cancel()
-	//TODO: Return err
-	return s.storage, nil
+	return s.storage, err
 }

@@ -9,7 +9,8 @@ import (
 	"github.com/iain17/framed"
 )
 
-func Decode(r io.Reader) (result *Message, err error) {
+func Decode(r io.Reader) (*Message, error) {
+	var err error
 	defer func() {
 		if r := recover(); r != nil {
 			if err, ok := r.(error); ok {
@@ -18,7 +19,8 @@ func Decode(r io.Reader) (result *Message, err error) {
 			return
 		}
 	}()
-	data, err := framed.Read(r)
+	var data []byte
+	data, err = framed.Read(r)
 	if err != nil {
 		return nil, err
 	}
@@ -26,11 +28,10 @@ func Decode(r io.Reader) (result *Message, err error) {
 	if err := proto.Unmarshal(data, &msg); err != nil {
 		return nil, err
 	}
-	if result.Version != env.VERSION {
-		return nil, errors.New(fmt.Sprintf("Invalid version. Received %d, expected %d", result.Version, env.VERSION))
+	if msg.Version != env.VERSION {
+		return nil, errors.New(fmt.Sprintf("Invalid version. Received %d, expected %d", msg.Version, env.VERSION))
 	}
-	result = &msg
-	return
+	return &msg, err
 }
 
 func DecodeHeartBeat(r io.Reader) error {

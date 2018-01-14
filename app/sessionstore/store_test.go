@@ -16,6 +16,7 @@ func TestSessionsStore_FindByPeerId(t *testing.T) {
 	store, err := New(ctx,10, 1 * time.Hour, self)
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 1,
 		Type: 1,
@@ -26,6 +27,7 @@ func TestSessionsStore_FindByPeerId(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 2,
 		Type: 1,
@@ -50,6 +52,7 @@ func TestSessionsStore_Expire(t *testing.T) {
 	assert.NoError(t, err)
 	//Our own sessions never expire.
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 1,
 		DnId: 1,
@@ -61,6 +64,7 @@ func TestSessionsStore_Expire(t *testing.T) {
 	assert.NoError(t, err)
 	//others do.
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 2,
 		DnId: 2,
@@ -89,6 +93,7 @@ func TestSessionsStore_Limit(t *testing.T) {
 	assert.NoError(t, err)
 	//Because self has added this. we'll have 2
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 1,
 		DnId: 1,
@@ -98,6 +103,7 @@ func TestSessionsStore_Limit(t *testing.T) {
 		},
 	})
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 2,
 		DnId: 2,
@@ -108,6 +114,7 @@ func TestSessionsStore_Limit(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 3,
 		DnId: 3,
@@ -130,6 +137,7 @@ func TestSessionsStore_FindByDetails(t *testing.T) {
 	store, err := New(ctx,10, 1 * time.Hour, self)
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 1,
 		DnId: 1,
@@ -140,6 +148,7 @@ func TestSessionsStore_FindByDetails(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
+		Published: uint64(time.Now().UTC().Unix()),
 		Address: 1,
 		Port: 2,
 		DnId: 2,

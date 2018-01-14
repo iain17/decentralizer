@@ -24,6 +24,10 @@ It has these top-level messages:
 	RPCGetPeerResponse
 	Session
 	DNSessionsRecord
+	DNSessionsResponse
+	DNSessionsRequest
+	DNSessionidsResponse
+	DNSessionidsRequest
 	RPCUpsertSessionRequest
 	RPCUpsertSessionResponse
 	RPCDeleteSessionRequest
@@ -41,9 +45,7 @@ It has these top-level messages:
 	RPCHealthRequest
 	RPCHealthReply
 	PublisherDefinition
-	PublisherUpdate
-	DNPublisherUpdateRequest
-	DNPublisherUpdateResponse
+	DNPublisherRecord
 	RPCPublishPublisherUpdateRequest
 	RPCGetPublisherFileRequest
 	RPCGetPublisherFileResponse

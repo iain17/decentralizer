@@ -15,6 +15,8 @@ import (
 	"github.com/spf13/afero"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"context"
+	"hash/crc32"
+	"github.com/hashicorp/golang-lru"
 )
 
 var testNetwork *network.Network
@@ -23,10 +25,10 @@ var testSlaveNetwork *network.Network//just the public key
 func init() {
 	MIN_CONNECTED_PEERS = 1
 	logger.AddOutput(logger.Stdout{
-		MinLevel: logger.DEBUG, //logger.DEBUG,
+		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
-	logging.Configure(logging.LevelDebug)
+	logging.Configure(logging.LevelInfo)
 	configPath = configdir.New("ECorp", "Decentralizer-test")
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	testNetwork, _ = network.New()
@@ -52,7 +54,10 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 	if err != nil {
 		panic(err)
 	}
-
+	unmarshalCache, err := lru.New(MAX_UNMARSHAL_CACHE)
+	if err != nil {
+		panic(err)
+	}
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
 		ctx:					ctx,
@@ -64,6 +69,8 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 		api:					coreapi.NewCoreAPI(node),
 		directMessageChannels: 	make(map[uint32]chan *pb.RPCDirectMessage),
 		ignore:					ignore,
+		unmarshalCache:			unmarshalCache,
+		crcTable:				crc32.NewIEEE(),
 	}
 	instance.cronChan = instance.cron.Start()
 	instance.initStorage()

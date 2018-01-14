@@ -9,6 +9,7 @@ import (
 	"github.com/iain17/ipinfo"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"fmt"
+	"github.com/iain17/decentralizer/utils"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -19,13 +20,17 @@ func (d *Decentralizer) initAddressbook() {
 	}
 	d.downloadPeers()
 	d.saveSelf()
-	go d.advertisePeerRecord()
 	d.cron.Every(30).Seconds().Do(d.uploadPeers)
-	d.cron.Every(5).Minutes().Do(d.advertisePeerRecord)
+	d.cron.Every(5).Minutes().Do(func() {
+		if !d.IsEnoughPeers() {
+			return
+		}
+		d.AdvertisePeerRecord()
+	})
 
 	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
 		var record pb.DNPeerRecord
-		err = gogoProto.Unmarshal(val, &record)
+		err = d.unmarshal(val, &record)
 		if err != nil {
 			return fmt.Errorf("record invalid. could not unmarshal: %s", err.Error())
 		}
@@ -42,24 +47,30 @@ func (d *Decentralizer) initAddressbook() {
 			return fmt.Errorf("reversing decentralized key id failed. Expected %d, received %d", expectedDecentralizedId, record.Peer.DnId)
 		}
 		return nil
-	}, true)
+	}, true, true)
 
 	d.b.RegisterSelector(DHT_PEER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
-		var peer *pb.Peer
+		var currPeer pb.Peer
 		best := 0
 		for i, val := range values {
 			var record pb.DNPeerRecord
-			err = gogoProto.Unmarshal(val, &record)
+			err = d.unmarshal(val, &record)
 			if err != nil {
 				logger.Warning(err)
 				continue
 			}
-			if d.isNewerPeer(peer, record.Peer) {
+			if utils.IsNewerRecord(currPeer.Published, record.Peer.Published) {
+				currPeer = *record.Peer
 				best = i
 			}
 		}
 		return best, nil
 	})
+
+	self, _ := d.peers.FindByPeerId("self")
+	if self != nil {
+		logger.Infof("Initialized: PeerID '%s', decentralized id '%d': %v", self.PId, self.DnId, self.Details)
+	}
 }
 
 func (d *Decentralizer) downloadPeers() {
@@ -69,7 +80,7 @@ func (d *Decentralizer) downloadPeers() {
 		return
 	}
 	var addressbook pb.DNAddressbook
-	err = gogoProto.Unmarshal(data, &addressbook)
+	err = d.unmarshal(data, &addressbook)
 	if err != nil {
 		logger.Warningf("Could not restore address book: %v", err)
 		return
@@ -84,7 +95,7 @@ func (d *Decentralizer) downloadPeers() {
 	logger.Info("Restored address book")
 }
 
-func (d *Decentralizer) advertisePeerRecord() error {
+func (d *Decentralizer) AdvertisePeerRecord() error {
 	d.WaitTilEnoughPeers()
 	peer, err := d.FindByPeerId("self")
 	if err != nil {
@@ -101,7 +112,7 @@ func (d *Decentralizer) advertisePeerRecord() error {
 	if err != nil {
 		logger.Warning(err)
 	} else {
-		logger.Debug("Successfully provided self")
+		logger.Info("Successfully provided self")
 	}
 	return err
 }
@@ -155,10 +166,18 @@ func (d *Decentralizer) saveSelf() error {
 	//Add self
 	err = d.UpsertPeer("self", details)
 	if err != nil {
-		return err
+		return fmt.Errorf("could no save self: %s", err.Error())
 	}
 	d.uploadPeers()
 	return nil
+}
+
+func (d *Decentralizer) UpdateSelf(details map[string]string) error {
+	err := d.UpsertPeer("self", details)
+	if err != nil {
+		return err
+	}
+	return d.AdvertisePeerRecord()
 }
 
 func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error {
@@ -168,9 +187,6 @@ func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error 
 		Details: details,
 	})
 	d.addressBookChanged = true
-	if pId == "self" {
-		err = d.advertisePeerRecord()
-	}
 	return err
 }
 

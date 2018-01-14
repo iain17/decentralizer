@@ -11,6 +11,7 @@ import (
 	"net"
 	"strconv"
 	"github.com/iain17/logger"
+	"io/ioutil"
 )
 
 type DiscoveryIRC struct {
@@ -21,15 +22,24 @@ type DiscoveryIRC struct {
 	logger *logger.Logger
 }
 
-func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
-	d.logger = logger.New("DiscoveryIRC")
-	d.localNode = ln
+func (d *DiscoveryIRC) String() string {
+	return "DiscoveryIRC"
+}
+
+func (d *DiscoveryIRC) init(ctx context.Context) (err error) {
+	defer func() {
+		if d.localNode.wg != nil {
+			d.localNode.wg.Done()
+		}
+	}()
+	d.logger = logger.New(d.String())
 	d.context = ctx
 	infoHash := d.localNode.discovery.network.InfoHash()
 	d.channel = "#"+hex.EncodeToString(infoHash[:])
 
 	name := randomdata.SillyName()
 	d.connection = irc.IRC(name, name)
+	d.connection.Log.SetOutput(ioutil.Discard)
 	//d.connection.Debug = true
 	d.connection.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	d.connection.UseTLS = true
@@ -45,7 +55,7 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 			return
 		}
 		message := event.Message()
-		d.logger.Debugf("Received message: %s", message)
+		//d.logger.Debugf("Received message: %s", message)
 		if strings.HasPrefix(message, IRC_PREFIX) {
 			ipPort := strings.Split(message[len(IRC_PREFIX):], ":")
 			if len(ipPort) != 2 {
@@ -66,32 +76,28 @@ func (d *DiscoveryIRC) Init(ctx context.Context, ln *LocalNode) (err error) {
 		}
 	})
 	err = d.connection.Connect(IRC_SERVER)
-	go d.Run()
 	return err
 }
 
-func (d *DiscoveryIRC) Stop() {
-	if d.connection != nil && d.connection.Connected() {
-		d.connection.Disconnect()
+func (d *DiscoveryIRC) Serve(ctx context.Context) {
+	defer d.Stop()
+	if err := d.init(ctx); err != nil {
+		d.localNode.lastError = err
+		panic(err)
 	}
-}
-
-func (d *DiscoveryIRC) Run() {
-	defer func () {
-		d.logger.Info("Stopping...")
-		d.Stop()
-	}()
+	d.localNode.waitTilReady()
 	retries := 0
+	ticker := time.Tick(30 * time.Second)
 	for {
 		select {
 		case <-d.context.Done():
 			return
-		default:
+		case <-ticker:
 			if !d.connection.Connected() {
 				if retries > 10 {
 					return
 				}
-				time.Sleep(1 * time.Second)
+				time.Sleep(5 * time.Second)
 				d.logger.Warning("Reconnecting...")
 				err := d.connection.Connect(IRC_SERVER)
 				if err != nil {
@@ -101,8 +107,13 @@ func (d *DiscoveryIRC) Run() {
 				continue
 			}
 			d.Advertise()
-			time.Sleep(30 * time.Second)
 		}
+	}
+}
+
+func (d *DiscoveryIRC) Stop() {
+	if d.connection != nil && d.connection.Connected() {
+		d.connection.Disconnect()
 	}
 }
 

@@ -22,6 +22,7 @@ func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
 }
 
 func (d *Decentralizer) initMatchmaking() {
+	d.initMatchmakingStream()
 	go d.GetIP()
 	d.sessions 					= make(map[uint64]*sessionstore.Store)
 	d.sessionIdToSessionType	= make(map[uint64]uint64)
@@ -33,14 +34,33 @@ func (d *Decentralizer) initMatchmaking() {
 
 	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
 		var sessions pb.DNSessionsRecord
-		err = gogoProto.Unmarshal(val, &sessions)
+		err = d.unmarshal(val, &sessions)
 		if err != nil {
 			return err
 		}
 		return validateDNSessionsRecord(&sessions)
-	}, true)
+	}, true, false)
+
+	d.b.RegisterSelector(DHT_SESSIONS_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+		var currRecord pb.DNSessionsRecord
+		best := 0
+		for i, val := range values {
+			var record pb.DNSessionsRecord
+			err = d.unmarshal(val, &record)
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			if utils.IsNewerRecord(currRecord.Published, record.Published) {
+				currRecord = record
+				best = i
+			}
+		}
+		return best, nil
+	})
 }
 
+//Checks if its past the publication time
 func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	//Check publish time
 	now := time.Now().UTC()
@@ -62,11 +82,15 @@ func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	return nil
 }
 
+func (d *Decentralizer) hasSessionStorage(sessionType uint64) bool {
+	d.matchmakingMutex.Lock()
+	defer d.matchmakingMutex.Unlock()
+	return d.sessions[sessionType] != nil
+}
+
 func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Store {
 	d.matchmakingMutex.Lock()
-	defer func() {
-		d.matchmakingMutex.Unlock()
-	}()
+	defer d.matchmakingMutex.Unlock()
 	if d.sessions[sessionType] == nil {
 		var err error
 		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration(EXPIRE_TIME_SESSION), d.i.Identity)
@@ -103,6 +127,7 @@ func (d *Decentralizer) getSessionSearch(sessionType uint64) (result *search) {
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	session := &pb.Session{
+		Published: uint64(time.Now().UTC().Unix()),
 		PId:     "self",
 		Type:    sessionType,
 		Name:    name,
@@ -146,7 +171,7 @@ func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 	//Before we override DHT with our advisement. Let us check others.
 	search := d.getSessionSearch(sessionType)
 	store, err := search.fetch()
-	if err != nil {
+	if err != nil && err.Error() != "routing: not found" {
 		return err
 	}
 	localSessions, err := store.FindByPeerId(d.i.Identity.Pretty())

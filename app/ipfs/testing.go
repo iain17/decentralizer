@@ -14,6 +14,25 @@ import (
 func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
 	// create network
 	mn := mocknet.New(ctx)
+	return FakeNewIPFSNodesNetworked(mn, ctx, numPeers, nil)
+}
+
+func connectNodes(ctx context.Context, nodes []*core.IpfsNode) {
+	for i, n1 := range nodes {
+		ii := i + 1
+		if ii > len(nodes)-1 {
+			continue
+		}
+		logger.Debugf("Connecting node %d with %d", i, ii)
+		n2 := nodes[ii]
+		p2 := n2.PeerHost.Peerstore().PeerInfo(n2.PeerHost.ID())
+		if err := n1.PeerHost.Connect(ctx, p2); err != nil {
+			panic(err)
+		}
+	}
+}
+
+func FakeNewIPFSNodesNetworked(mn mocknet.Mocknet, ctx context.Context, numPeers int, existing []*core.IpfsNode) []*core.IpfsNode {
 
 	var nodes []*core.IpfsNode
 	for i := 0; i < numPeers; i++ {
@@ -35,25 +54,24 @@ func FakeNewIPFSNodes(ctx context.Context, numPeers int) []*core.IpfsNode {
 
 	mn.LinkAll()
 
-	// connect them
-	for i, n1 := range nodes {
-		ii := i + 1
-		if ii > len(nodes)-1 {
-			continue
-		}
-		logger.Debugf("Connecting node %d with %d", i, ii)
-		n2 := nodes[ii]
-		p2 := n2.PeerHost.Peerstore().PeerInfo(n2.PeerHost.ID())
-		if err := n1.PeerHost.Connect(ctx, p2); err != nil {
-			panic(err)
-		}
-	}
+	var bsinf core.BootstrapConfig
 
-	bsinf := core.BootstrapConfigWithPeers(
-		[]pstore.PeerInfo{
-			nodes[0].Peerstore.PeerInfo(nodes[0].Identity),
-		},
-	)
+	// connect them
+	connectNodes(ctx, nodes)
+	if existing != nil {
+		connectNodes(ctx, existing)
+		bsinf = core.BootstrapConfigWithPeers(
+			[]pstore.PeerInfo{
+				existing[0].Peerstore.PeerInfo(existing[0].Identity),
+			},
+		)
+	} else {
+		bsinf = core.BootstrapConfigWithPeers(
+			[]pstore.PeerInfo{
+				nodes[0].Peerstore.PeerInfo(nodes[0].Identity),
+			},
+		)
+	}
 
 	for _, n := range nodes[1:] {
 		if err := n.Bootstrap(bsinf); err != nil {

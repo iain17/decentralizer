@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "cirello.io/supervisor"
+  packages = ["."]
+  revision = "3ae4051c50e006498b4b8aee130185a53caab86e"
+  version = "v0.5.3"
+
+[[projects]]
   branch = "master"
   name = "github.com/Pallinder/go-randomdata"
   packages = ["."]
@@ -11,7 +17,7 @@
   branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [".","assert","inproc","pproffd"]
-  revision = "645547693a6802592a8b638b068b9176d6d86084"
+  revision = "87aae9c529891d465611bc99b63e1e673a73f1ae"
 
 [[projects]]
   branch = "master"
@@ -66,6 +72,12 @@
   name = "github.com/getlantern/testify"
   packages = ["assert"]
   revision = "2eeb3906e78fc89e76ba11e5694adeb64c0a0b43"
+
+[[projects]]
+  name = "github.com/giantswarm/retry-go"
+  packages = ["."]
+  revision = "867bc2467430df5c49fb33e54d648f5fc0e73bf1"
+  version = "0.5.0"
 
 [[projects]]
   branch = "master"
@@ -137,7 +149,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "e8807df7b5fd634309f00a9390e57f43e9c74ddd"
+  revision = "101288c86bde495f0046003e92da2c76f39d1a9a"
 
 [[projects]]
   branch = "master"
@@ -195,9 +207,9 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/jeffchao/backoff"
+  name = "github.com/juju/errgo"
   packages = ["."]
-  revision = "9d7fd7aa17f229da501a53ec2de5d2b8612cc65b"
+  revision = "08cceb5d0b5331634b9826762a8fd53b29b86ad8"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -227,7 +239,7 @@
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "06020f85339e21b2478f756a78e295255ffa4d6a"
+  revision = "b4575eea38cca1123ec2dc90c26529b5c5acfcff"
 
 [[projects]]
   branch = "master"
@@ -329,13 +341,13 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "b3c9a1d25cfbbbab0ff4780b71c4f54e6e92a0de"
+  revision = "13931e22f9e72ea58bb73048bc752b48c6d4d4ac"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["bpf","context","http2","http2/hpack","idna","internal/iana","internal/socket","internal/timeseries","ipv4","ipv6","lex/httplex","trace"]
-  revision = "434ec0c7fe3742c984919a691b2018a6e9694425"
+  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
 
 [[projects]]
   branch = "master"
@@ -370,6 +382,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7a19c7e04170437ec95e3956ba2de3a9064788c0ba31da2a0af762975ee27dbf"
+  inputs-digest = "42ac61fa924139eeb467e0fbc5654f9e492b7215df9e3893ceac9f108612d314"
   solver-name = "gps-cdcl"
   solver-version = 1

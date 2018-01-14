@@ -14,6 +14,7 @@ import (
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/blockservice"
 	dag "gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/merkledag"
 	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/commands/files"
+	"bytes"
 )
 
 //Simplifies all the interactions with IPFS.
@@ -30,6 +31,14 @@ func NewFilesAPI(ctx context.Context, node *core.IpfsNode, api iface.CoreAPI) (*
 		api: api,
 	}
 	return instance, nil
+}
+
+func (d *FilesAPI) SaveFile(data []byte) (string, error) {
+	path, err := coreunix.Add(d.i, bytes.NewBuffer(data))
+	if err != nil {
+		return "", err
+	}
+	return "/ipfs/"+path, err
 }
 
 func (d *FilesAPI) PublishPeerFiles(files []files.File) (string, error) {
@@ -94,11 +103,11 @@ func (d *FilesAPI) GetFile(path string) ([]byte, error) {
 	pth := coreapi.ResolvedPath(path, nil, nil)
 	_, err := d.api.ResolvePath(d.i.Context(), pth)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("could not get file %s. Could not resolve path: %s", path, err.Error())
 	}
 	r, err := d.api.Unixfs().Cat(d.i.Context(), pth)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("could not get file %s: %s", path, err.Error())
 	}
 	return ioutil.ReadAll(r)
 }

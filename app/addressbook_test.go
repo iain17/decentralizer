@@ -15,7 +15,7 @@ func TestDecentralizer_FindSelf(t *testing.T) {
 	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
 
-	err := app1.UpsertPeer("self", map[string]string{
+	err := app1.UpdateSelf(map[string]string{
 		"quote": "these violent delights have violent ends",
 	})
 	assert.NoError(t, err)
@@ -36,17 +36,17 @@ func TestDecentralizer_FindByPeerIdAndUpdate(t *testing.T) {
 	assert.NotNil(t, app2)
 
 	//Simple set
-	err := app1.UpsertPeer("self", map[string]string{
+	err := app1.UpdateSelf(map[string]string{
 		"quote": "these violent delights have cool beginnings",
 	})
 	assert.NoError(t, err)
 
 	//Update
-	err = app2.UpsertPeer("self", map[string]string{
+	err = app2.UpdateSelf(map[string]string{
 		"quote": "these violent delights have violent ends",
 	})
 	assert.NoError(t, err)
-	err = app2.UpsertPeer("self", map[string]string{
+	err = app2.UpdateSelf(map[string]string{
 		"quote": "these violent delights have violent beginnings",
 	})
 
@@ -76,12 +76,12 @@ func TestDecentralizer_FindUnknownId(t *testing.T) {
 	app2 := fakeNew(ctx, nodes[3], false)
 	assert.NotNil(t, app2)
 
-	err := app2.UpsertPeer("self", map[string]string{
+	err := app2.UpdateSelf(map[string]string{
 		"quote": "these violent delights have violent ends",
 	})
 	assert.NoError(t, err)
 
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(1 * time.Second)
 
 	peer, err := app2.FindByPeerId("self")
 	assert.NoError(t, err)

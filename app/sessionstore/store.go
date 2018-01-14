@@ -10,6 +10,7 @@ import (
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"context"
+	"github.com/iain17/decentralizer/utils"
 )
 
 type Store struct {
@@ -89,7 +90,33 @@ func (s *Store) decodeId(id string) (libp2pPeer.ID, error) {
 	return libp2pPeer.IDB58Decode(id)
 }
 
+func (s *Store) Contains(sessionId uint64) bool {
+	return s.sessionIds.Contains(sessionId)
+}
+
+func (s *Store) IsExternalSession(sessionId uint64) bool {
+	if value, ok := s.sessionIds.Get(sessionId); ok {
+		return value.(bool)
+	}
+	return false
+}
+
+func (s *Store) IsNewer(info *pb.Session) bool {
+	existingSession, _ := s.FindSessionId(info.SessionId)
+	var published uint64
+	if existingSession != nil {
+		published = existingSession.Published
+	}
+	return utils.IsNewerRecord(published, info.Published)
+}
+
 func (s *Store) Insert(info *pb.Session) (uint64, error) {
+	if info == nil {
+		return 0, errors.New("tried inserting nil value")
+	}
+	if !s.IsNewer(info) {
+		return 0, errors.New("record is older")
+	}
 	logger.Infof("Inserting session: %v", info)
 	info.SessionId = GetId(info)
 	pId, err := s.decodeId(info.PId)
