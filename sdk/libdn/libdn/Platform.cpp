@@ -28,6 +28,12 @@ namespace libdn {
 			//Did we close improperly?
 			if (health->message.find(".lock") != std::string::npos) {
 				fixImproperShutdown(health->basePath.c_str());
+				continue;
+			}
+			//Something about binding.
+			if (health->message.find("bind") != std::string::npos) {
+				fixImproperShutdown(health->basePath.c_str());
+				continue;
 			}
 			Sleep(100);
 		}
