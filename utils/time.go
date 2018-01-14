@@ -30,6 +30,6 @@ func IsNewerRecord(current uint64, new uint64) bool {
 		logger.Warning(err)
 		return false
 	}
-	logger.Info("record with publish date %s IS newer than %s", publishedTimeText, expireTimeText)
+	logger.Infof("record with publish date %s IS newer than %s", publishedTimeText, expireTimeText)
 	return true
 }

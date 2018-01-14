@@ -32,14 +32,14 @@ func (d *Decentralizer) initPublisherFiles() {
 			return fmt.Errorf("you're doing it wrong! Path should not be empty")
 		}
 		return d.validateDNPublisherRecord(&record)
-	}, false)
+	}, false, true)
 
 	d.b.RegisterSelector(DHT_PUBLISHER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
 		var currDefinition *pb.PublisherDefinition
 		best := 0
 		for i, val := range values {
 			var record pb.DNPublisherRecord
-			err := gogoProto.Unmarshal(val, &record)
+			err := d.unmarshal(val, &record)
 			if err != nil {
 				logger.Warning(err)
 				continue
@@ -79,7 +79,7 @@ func (d *Decentralizer) unmarshalDNPublisherRecord(record *pb.DNPublisherRecord)
 		return nil, err
 	}
 	var definition pb.PublisherDefinition
-	err = gogoProto.Unmarshal(record.Definition, &definition)
+	err = d.unmarshal(record.Definition, &definition)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (d *Decentralizer) restorePublisherDefinition() {
 
 func (d *Decentralizer) readPublisherDefinition(data []byte) error {
 	var record pb.DNPublisherRecord
-	err := gogoProto.Unmarshal(data, &record)
+	err := d.unmarshal(data, &record)
 	if err != nil {
 		return fmt.Errorf("could not read publisher file: %s", err.Error())
 	}

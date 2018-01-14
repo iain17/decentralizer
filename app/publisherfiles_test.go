@@ -129,20 +129,20 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 }
 
 //If the publisher has set the network to status false. Stop the process.
-//func TestDecentralizer_publishStopper(t *testing.T) {
-//	defer func() {
-//		if r := recover(); r == nil {
-//			t.Errorf("The code did not panic")
-//		}
-//	}()
-//	ctx, cancel := context.WithCancel(context.Background())
-//	defer cancel()
-//	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
-//	app1 := fakeNew(ctx, nodes[0], false)
-//	assert.NotNil(t, app1)
-//	// Mocked publisher update
-//	app1.publisherDefinition = &pb.PublisherDefinition{
-//		Status: false,
-//	}
-//	app1.runPublisherInstructions()
-//}
+func TestDecentralizer_publishStopper(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
+	app1 := fakeNew(ctx, nodes[0], false)
+	assert.NotNil(t, app1)
+	// Mocked publisher update
+	app1.publisherDefinition = &pb.PublisherDefinition{
+		Status: false,
+	}
+	app1.runPublisherInstructions()
+}

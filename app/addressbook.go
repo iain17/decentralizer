@@ -30,7 +30,7 @@ func (d *Decentralizer) initAddressbook() {
 
 	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
 		var record pb.DNPeerRecord
-		err = gogoProto.Unmarshal(val, &record)
+		err = d.unmarshal(val, &record)
 		if err != nil {
 			return fmt.Errorf("record invalid. could not unmarshal: %s", err.Error())
 		}
@@ -47,7 +47,7 @@ func (d *Decentralizer) initAddressbook() {
 			return fmt.Errorf("reversing decentralized key id failed. Expected %d, received %d", expectedDecentralizedId, record.Peer.DnId)
 		}
 		return nil
-	}, true)
+	}, true, true)
 
 	d.b.RegisterSelector(DHT_PEER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
 		var currPeer pb.Peer
@@ -75,7 +75,7 @@ func (d *Decentralizer) downloadPeers() {
 		return
 	}
 	var addressbook pb.DNAddressbook
-	err = gogoProto.Unmarshal(data, &addressbook)
+	err = d.unmarshal(data, &addressbook)
 	if err != nil {
 		logger.Warningf("Could not restore address book: %v", err)
 		return

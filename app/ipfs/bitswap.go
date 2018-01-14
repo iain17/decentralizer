@@ -57,7 +57,7 @@ func (b *BitswapService) getValidatorKey(keyType string, data []byte) uint32 {
 	return b.crcTable.Sum32()
 }
 
-func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.ValidatorFunc, sign bool) {
+func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.ValidatorFunc, sign bool, cache bool) {
 	b.dht.Validator[keyType] = &record.ValidChecker{
 		Func: func(key string, value[]byte) error {
 			cacheKey := b.getValidatorKey(keyType, value)
@@ -75,6 +75,9 @@ func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.
 			return result
 		},
 		Sign: sign,
+	}
+	if !cache {
+		b.dht.Validator[keyType].Func = validatorFunc
 	}
 }
 

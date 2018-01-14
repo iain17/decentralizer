@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/golang-lru"
 	"github.com/iain17/decentralizer/pb"
 	"time"
-	"github.com/gogo/protobuf/proto"
+	"gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 )
 
 var benchData = buildPb()

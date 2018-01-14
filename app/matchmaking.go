@@ -39,7 +39,7 @@ func (d *Decentralizer) initMatchmaking() {
 			return err
 		}
 		return validateDNSessionsRecord(&sessions)
-	}, true)
+	}, true, false)
 
 	d.b.RegisterSelector(DHT_SESSIONS_KEY_TYPE, func(key string, values [][]byte) (int, error) {
 		var currRecord pb.DNSessionsRecord
