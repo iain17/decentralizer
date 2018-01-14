@@ -13,7 +13,6 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"net"
 	"time"
-	"github.com/ccding/go-stun/stun"
 	"github.com/jasonlvhit/gocron"
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
@@ -154,26 +153,16 @@ func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 }
 
 func (d *Decentralizer) GetIP() net.IP {
-	d.mutex.Lock()
-	defer d.mutex.Unlock()
-	if d.d != nil {
-		ip := d.d.GetIP()
-		d.ip = &ip
+	if d.ip != nil {
+		return *d.ip
 	}
-	if d.ip == nil {
-		stun := stun.NewClient()
-		nat, host, err := stun.Discover()
-		if err != nil {
-			logger.Error(err)
-			time.Sleep(5 * time.Second)
-			return d.GetIP()
-		}
-		logger.Infof("NAT type: %s", nat.String())
-		ip := net.ParseIP(host.IP())
-		d.ip = &ip
+	self, err := d.peers.FindByPeerId("self")
+	if err != nil || self.Details["ip"] == "" {
+		return net.ParseIP("127.0.0.1")
 	}
-
-	return *d.ip
+	ip := net.ParseIP(self.Details["ip"])
+	d.ip = &ip
+	return ip
 }
 
 func (d *Decentralizer) IsEnoughPeers() bool {
