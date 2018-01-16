@@ -9,7 +9,9 @@ import "google/api/annotations.proto";
 
 message empty {}
 
-message RPCHealthRequest {}
+message RPCHealthRequest {
+	bool waitForMinConnections = 1;
+}
 
 message RPCHealthReply {
 	bool ready = 1;

@@ -34,6 +34,7 @@
 #include "pb/storage.pb.h"
 #include "pb/messaging.pb.h"
 #include "pb/publisher.pb.h"
+#include "google/api/annotations.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace protobuf_pb_2fplatform_2eproto {
@@ -248,10 +249,17 @@ class RPCHealthRequest : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
+  // bool waitForMinConnections = 1;
+  void clear_waitforminconnections();
+  static const int kWaitForMinConnectionsFieldNumber = 1;
+  bool waitforminconnections() const;
+  void set_waitforminconnections(bool value);
+
   // @@protoc_insertion_point(class_scope:pb.RPCHealthRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool waitforminconnections_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
   friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthRequestImpl();
@@ -399,6 +407,20 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
 // -------------------------------------------------------------------
 
 // RPCHealthRequest
+
+// bool waitForMinConnections = 1;
+inline void RPCHealthRequest::clear_waitforminconnections() {
+  waitforminconnections_ = false;
+}
+inline bool RPCHealthRequest::waitforminconnections() const {
+  // @@protoc_insertion_point(field_get:pb.RPCHealthRequest.waitForMinConnections)
+  return waitforminconnections_;
+}
+inline void RPCHealthRequest::set_waitforminconnections(bool value) {
+  
+  waitforminconnections_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCHealthRequest.waitForMinConnections)
+}
 
 // -------------------------------------------------------------------
 

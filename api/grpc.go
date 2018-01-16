@@ -76,7 +76,7 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 
 	//Check health
 	if len(meta["health"]) == 0 {
-		ready, err := s.App.Health()
+		ready, err := s.App.Health(false)
 		if err != nil {
 			return ctx, err
 		}
