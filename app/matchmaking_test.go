@@ -43,7 +43,7 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(1500 * time.Millisecond)
 
 	sessions, err = app1.GetSessionsByDetails(1337, "cool", "yes")
 	assert.NoError(t, err)

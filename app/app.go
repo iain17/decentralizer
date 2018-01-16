@@ -38,6 +38,7 @@ type Decentralizer struct {
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
 	api 				   coreiface.CoreAPI
+	limitedConnection	   bool
 
 	//Peer ids that did not respond to our queries.
 	ignore 				   *lttlru.LruWithTTL
@@ -127,6 +128,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		return nil, err
 	}
 	instance := &Decentralizer{
+		limitedConnection:		limitedConnection,
 		ctx:					ctx,
 		cron: 				    gocron.NewScheduler(),
 		n:   					n,

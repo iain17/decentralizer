@@ -244,6 +244,9 @@ func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinitio
 }
 
 func (d *Decentralizer) PushPublisherRecord() error {
+	if d.limitedConnection {
+		return errors.New("can't push on a limited connection")
+	}
 	if d.publisherRecord == nil {
 		return errors.New("no update set")
 	}
