@@ -3,8 +3,8 @@ package discovery
 import (
 	"context"
 	"github.com/ccding/go-stun/stun"
-	"fmt"
 	"github.com/iain17/logger"
+	"fmt"
 )
 
 type StunService struct {
@@ -19,7 +19,7 @@ func (d *StunService) String() string {
 	return "Stun"
 }
 
-func (s *StunService) init(ctx context.Context) error {
+func (s *StunService) init(ctx context.Context) (err error) {
 	if s.initialized {
 		return nil
 	}
@@ -74,4 +74,3 @@ func (s *StunService) Serve(ctx context.Context) (err error) {
 	s.logger.Info("NAT open!")
 	return nil
 }
-

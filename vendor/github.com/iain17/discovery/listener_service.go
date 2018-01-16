@@ -8,11 +8,14 @@ import (
 	"github.com/iain17/logger"
 	"errors"
 	"fmt"
+	"github.com/iain17/timeout"
+	"time"
 )
 
 type ListenerService struct {
 	localNode *LocalNode
 	context context.Context
+	listener	  net.PacketConn
 	socket    *utp.Socket
 
 	logger *logger.Logger
@@ -27,11 +30,14 @@ func (l *ListenerService) init(ctx context.Context) error {
 		if l.localNode.wg != nil {
 			l.localNode.wg.Done()
 		}
+		if l.localNode.coreWg != nil {
+			l.localNode.coreWg.Done()
+			l.localNode.coreWg = nil
+		}
 	}()
 	l.logger = logger.New(l.String())
 	l.context = ctx
 
-	//Open a new socket on a free UDP port.
 	var err error
 	l.socket, err = utp.NewSocket("udp4", ":0")
 	if err != nil {
@@ -41,10 +47,12 @@ func (l *ListenerService) init(ctx context.Context) error {
 	l.localNode.port = addr.Port
 	l.logger.Infof("listening on %d", l.localNode.port)
 
-	stunErr := l.localNode.StunService.Serve(ctx)
-	if stunErr != nil {
-		logger.Warningf("Encountered a NAT. Not to worry though, we should be fine. You're nat type is: %s", stunErr)
-	}
+	timeout.Do(func(ctx context.Context) {
+		stunErr := l.localNode.StunService.Serve(ctx)
+		if stunErr != nil {
+			logger.Warningf("Stun error: %s", stunErr)
+		}
+	}, 2 * time.Second)
 	return err
 }
 
@@ -54,6 +62,7 @@ func (l *ListenerService) Serve(ctx context.Context) {
 		l.localNode.lastError = err
 		panic(err)
 	}
+	l.localNode.waitTilReady()
 
 	for {
 		select {

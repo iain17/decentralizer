@@ -72,6 +72,9 @@ func evicted(_ interface{}, value interface{}) {
 }
 
 func (nt *NetTableService) Serve(ctx context.Context) {
+	nt.localNode.waitTilCoreReady()
+	defer nt.Stop()
+
 	if err := nt.init(ctx); err != nil {
 		nt.localNode.lastError = err
 		panic(err)
@@ -86,7 +89,6 @@ func (nt *NetTableService) Serve(ctx context.Context) {
 }
 
 func (nt *NetTableService) processNewConnection() {
-	defer nt.Stop()
 	for {
 		select {
 		case <-nt.context.Done():

@@ -85,10 +85,10 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		rn.conn.SetDeadline(time.Now().Add((HEARTBEAT_DELAY * 1.5) * time.Second))
 		packet, err := pb.Decode(rn.conn)
 		if err != nil {
+			rn.logger.Debugf("decode error, %v", err)
 			if err == io.EOF || err.Error() == "no packet read timeout" || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
 				break
 			}
-			rn.logger.Debugf("decode error, %v", err)
 			continue
 		}
 		//rn.logger.Debugf("received, %+v", packet)

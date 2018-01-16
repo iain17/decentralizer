@@ -3,6 +3,8 @@ package discovery
 import (
 	"github.com/shibukawa/configdir"
 	"time"
+	"github.com/iain17/framed"
+	"github.com/c2h5oh/datasize"
 )
 
 const CONCCURENT_NEW_CONNECTION = 50
@@ -15,3 +17,7 @@ const NET_TABLE_FILE = "peers.data"
 const SERVICE = "_decentralizer._tcp"
 const DEADLINE_DURATION = 1 * time.Second
 var configPath = configdir.New("ECorp", "Decentralizer")
+
+func init()  {
+	framed.MAX_SIZE = int64(5 * datasize.MB)
+}

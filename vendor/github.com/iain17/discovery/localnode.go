@@ -14,13 +14,14 @@ import (
 
 type LocalNode struct {
 	Node
-	discovery *Discovery
-	ip        string //Gets filled in by stun service.
-	port      int
-	outgoingPort      int
-	wg		  *sync.WaitGroup
-	lastError error
-	supervisor supervisor.Supervisor
+	discovery    *Discovery
+	ip           string //Gets filled in by stun service.
+	port         int
+	outgoingPort int
+	coreWg       *sync.WaitGroup
+	wg           *sync.WaitGroup
+	lastError    error
+	supervisor   supervisor.Supervisor
 	//Services
 	listenerService ListenerService
 	upNpService     UPnPService
@@ -40,7 +41,8 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 			info:   map[string]string{},
 		},
 		discovery: discovery,
-		wg: &sync.WaitGroup{},
+		wg:        &sync.WaitGroup{},
+		coreWg:    &sync.WaitGroup{},
 	}
 	i.supervisor.Log = func(s interface{}) {
 		logger.Debugf("[supervisor]: %s", s)
@@ -62,6 +64,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	//Listener and stun service
 	i.StunService.localNode = i
 	i.listenerService.localNode = i
+	i.coreWg.Add(1)
 	i.supervisor.AddService(&i.listenerService, supervisor.Permanent)
 
 	numServices := len(i.supervisor.Services())
@@ -75,6 +78,14 @@ func (ln *LocalNode) waitTilReady() {
 	if ln.wg != nil {
 		ln.wg.Wait()
 		ln.wg = nil
+	}
+}
+
+//The core is the listener and any other service that has to start before all others.
+func (ln *LocalNode) waitTilCoreReady() {
+	if ln.coreWg != nil {
+		ln.coreWg.Wait()
+		ln.coreWg = nil
 	}
 }
 

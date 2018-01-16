@@ -44,6 +44,8 @@ func (d *DiscoveryMDNS) init(ctx context.Context) (err error) {
 
 func (d *DiscoveryMDNS) Serve(ctx context.Context) {
 	defer d.Stop()
+	d.localNode.waitTilCoreReady()
+
 	if err := d.init(ctx); err != nil {
 		d.localNode.lastError = err
 		panic(err)

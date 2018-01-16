@@ -131,7 +131,7 @@
   branch = "master"
   name = "github.com/hashicorp/go-immutable-radix"
   packages = ["."]
-  revision = "8aac2701530899b64bdea735a1de8da899815220"
+  revision = "59b67882ec612f43b9d4c4fd97cebd507be4b3ee"
 
 [[projects]]
   branch = "master"
@@ -167,7 +167,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "20e3e4400eea005f0a9b2059bf41b593ddaf437e"
+  revision = "eec1b8488e7e88b3555fea0186d27362d98662c4"
 
 [[projects]]
   branch = "master"

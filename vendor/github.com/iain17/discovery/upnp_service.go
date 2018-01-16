@@ -35,7 +35,9 @@ func (s *UPnPService) Stop() {
 }
 
 func (s *UPnPService) Serve(ctx context.Context) {
+	s.localNode.waitTilCoreReady()
 	defer s.Stop()
+
 	if err := s.init(ctx); err != nil {
 		s.localNode.lastError = err
 		panic(err)
