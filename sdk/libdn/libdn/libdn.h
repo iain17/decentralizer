@@ -36,7 +36,7 @@ namespace libdn {
 	LIBDN_API void LIBDN_CALL WaitUntilReady();
 
 	// Fetch the health of the DN server.
-	LIBDN_API std::shared_ptr<HealthResult> LIBDN_CALL Health();
+	LIBDN_API std::shared_ptr<Promise<HealthResult>> LIBDN_CALL Health(bool waitforminconnections);
 
 	// ----------------------------------------------------------
 	// Storage
