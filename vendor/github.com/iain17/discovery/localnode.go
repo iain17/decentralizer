@@ -10,7 +10,6 @@ import (
 	"github.com/iain17/framed"
 	"cirello.io/supervisor"
 	"sync"
-	"github.com/iain17/freeport"
 )
 
 type LocalNode struct {
@@ -41,7 +40,6 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 			info:   map[string]string{},
 		},
 		discovery: discovery,
-		port:      freeport.GetPortRange("udp", PORT_RANGE),
 		wg: &sync.WaitGroup{},
 	}
 	i.supervisor.Log = func(s interface{}) {
@@ -53,7 +51,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	i.supervisor.AddService(&i.StunService, supervisor.Temporary)
 	if !i.discovery.limited {
 		i.discoveryDHT.localNode = i
-		i.supervisor.AddService(&i.discoveryDHT, supervisor.Temporary)
+		i.supervisor.AddService(&i.discoveryDHT, supervisor.Permanent)
 	}
 	i.discoveryIRC.localNode = i
 	i.supervisor.AddService(&i.discoveryIRC, supervisor.Permanent)

@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 	"sync"
+	"fmt"
 )
 
 type NetTableService struct {
@@ -246,18 +247,24 @@ func (nt *NetTableService) heartbeat() {
 	}
 }
 
-func (nt *NetTableService) tryConnect(h *net.UDPAddr) error {
+func (nt *NetTableService) tryConnect(h *net.UDPAddr) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("tryConnect panic: %s", r)
+		}
+	}()
 	if nt.isEnoughPeers() {
 		return errors.New("will not connected. Reached max")
 	}
-	rn, err := connect(h, nt.localNode)
+	var rn *RemoteNode
+	rn, err = connect(h, nt.localNode)
 	if err != nil {
 		nt.addToBlackList(h)
 		return err
 	}
 	nt.logger.Debug("adding remote node...")
 	nt.AddRemoteNode(rn)
-	return nil
+	return err
 }
 
 //The black list is just a list of nodes we've already tried and or are connected to.

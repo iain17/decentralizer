@@ -12,6 +12,7 @@ import (
 
 type ListenerService struct {
 	localNode *LocalNode
+	listener net.PacketConn
 	context context.Context
 	socket    *utp.Socket
 
@@ -33,7 +34,11 @@ func (l *ListenerService) init(ctx context.Context) error {
 
 	//Open a new socket on a free UDP port.
 	var err error
-	l.socket, err = utp.NewSocket("udp4", fmt.Sprintf(":%d", l.localNode.port))
+	l.listener, err = net.ListenPacket("udp4", ":0")
+	if err != nil {
+		return fmt.Errorf("could not listen: %s", err.Error())
+	}
+	l.socket, err = utp.NewSocketFromPacketConn(l.listener)
 	if err == nil {
 		addr := l.socket.Addr().(*net.UDPAddr)
 		l.localNode.port = addr.Port

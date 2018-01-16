@@ -21,6 +21,8 @@ func TestNetTableService_GetPeers(t *testing.T) {
 		panic(err)
 	}
 
+	time.Sleep(1 * time.Second)
+
 	app2, err := New(ctx, n, 10, false)
 	if err != nil {
 		panic(err)
