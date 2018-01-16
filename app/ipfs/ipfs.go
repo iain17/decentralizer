@@ -40,11 +40,11 @@ func OpenIPFSRepo(ctx context.Context, path string, limited bool, swarmkey []byt
 			"pubsub": false,
 		},
 	}
-	//if limited {
-	//	buildCfg.Routing = core.DHTClientOption
-	//} else {
+	if limited {
+		buildCfg.Routing = core.DHTClientOption
+	} else {
 		buildCfg.Routing = core.DHTOption
-	//}
+	}
 
 	err = patchSystem()
 	if err != nil {
