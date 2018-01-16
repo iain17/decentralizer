@@ -12,7 +12,6 @@ import (
 
 type ListenerService struct {
 	localNode *LocalNode
-	listener net.PacketConn
 	context context.Context
 	socket    *utp.Socket
 
@@ -34,15 +33,17 @@ func (l *ListenerService) init(ctx context.Context) error {
 
 	//Open a new socket on a free UDP port.
 	var err error
-	l.listener, err = net.ListenPacket("udp4", ":0")
+	l.socket, err = utp.NewSocket("udp4", ":0")
 	if err != nil {
 		return fmt.Errorf("could not listen: %s", err.Error())
 	}
-	l.socket, err = utp.NewSocketFromPacketConn(l.listener)
-	if err == nil {
-		addr := l.socket.Addr().(*net.UDPAddr)
-		l.localNode.port = addr.Port
-		l.logger.Infof("listening on %d", l.localNode.port)
+	addr := l.socket.Addr().(*net.UDPAddr)
+	l.localNode.port = addr.Port
+	l.logger.Infof("listening on %d", l.localNode.port)
+
+	stunErr := l.localNode.StunService.Serve(ctx)
+	if stunErr != nil {
+		logger.Warningf("Encountered a NAT. Not to worry though, we should be fine. You're nat type is: %s", stunErr)
 	}
 	return err
 }

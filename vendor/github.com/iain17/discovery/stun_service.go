@@ -3,12 +3,12 @@ package discovery
 import (
 	"context"
 	"github.com/ccding/go-stun/stun"
-	"time"
 	"fmt"
 	"github.com/iain17/logger"
 )
 
 type StunService struct {
+	initialized bool
 	client *stun.Client
 	localNode *LocalNode
 	logger  *logger.Logger
@@ -20,43 +20,27 @@ func (d *StunService) String() string {
 }
 
 func (s *StunService) init(ctx context.Context) error {
+	if s.initialized {
+		return nil
+	}
+	s.initialized = true
 	s.logger = logger.New(s.String())
 	s.context = ctx
 	s.client = stun.NewClientWithConnection(s.localNode.listenerService.socket)
 	return nil
 }
 
-func (s *StunService) Serve(ctx context.Context) {
-	defer s.Stop()
-	//We run last.
-	if s.localNode.wg != nil {
-		s.localNode.wg.Done()
-	}
-	s.localNode.waitTilReady()
-
-	if err := s.init(ctx); err != nil {
-		s.localNode.lastError = err
-		panic(err)
-	}
-	ticker := time.Tick(1 * time.Minute)
-	for {
-		select {
-		case <-s.context.Done():
-			return
-		case <-ticker:
-			err := s.process()
-			if err != nil {
-				s.logger.Debugf("error on forwarding process, %v", err)
-			}
-		}
-	}
-}
-
 func (s *StunService) Stop() {
 
 }
 
-func (s *StunService) process() (err error) {
+func (s *StunService) Serve(ctx context.Context) (err error) {
+	err = s.init(ctx)
+	if err != nil {
+		return err
+	}
+	s.logger.Info("Running")
+
 	nat, host, err := s.client.Discover()
 	if err != nil {
 		return err
@@ -69,7 +53,7 @@ func (s *StunService) process() (err error) {
 
 	switch nat {
 	case stun.NATError:
-		return fmt.Errorf("test failed")
+		return fmt.Errorf("NAT error")
 	case stun.NATUnknown:
 		return fmt.Errorf("unexpected response from the STUN server")
 	case stun.NATBlocked:
