@@ -107,10 +107,10 @@ namespace libdn {
 		}
 
 		if (&piProcInfo) {
-		//	CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
+			CreateThread(0, 0, ADNA_read, &piProcInfo, 0, NULL);
 		}
-
-		LPSTR params = (LPSTR)va("adna api -p %i -l \"\" %s", context.port, extraParams.c_str());
+		//disable logging: -l \"\"
+		LPSTR params = (LPSTR)va("adna api -p %i %s", context.port, extraParams.c_str());
 		const char* exec = va("%s\\%s", basePath, adnaExecutable);
 		//MessageBoxA(NULL, va("%s %s", exec, params), "libdn", MB_OK);
 		if (!FileExists(exec)) {
@@ -122,7 +122,7 @@ namespace libdn {
 			NULL,          // process security attributes 
 			NULL,          // primary thread security attributes 
 			TRUE,          // handles are inherited 
-			CREATE_NO_WINDOW,             // creation flags  CREATE_NO_WINDOW
+			CREATE_NO_WINDOW,             // creation flags
 			NULL,          // use parent's environment 
 			(LPSTR)va("%s\\", basePath),          // use parent's current directory 
 			&siStartInfo,  // STARTUPINFO pointer 
