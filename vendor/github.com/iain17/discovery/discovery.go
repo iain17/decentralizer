@@ -52,6 +52,7 @@ func (d *Discovery) Stop() {
 
 func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {
 	timeout.Do(func(ctx context.Context) {
+		d.LocalNode.waitTilReady()
 		for d.LocalNode.netTableService.peers.Len() < num {
 			time.Sleep(100 * time.Millisecond)
 		}
@@ -60,11 +61,6 @@ func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {
 }
 
 func (d *Discovery) GetIP() net.IP {
-	for {
-		if d.LocalNode.ip != "" {
-			break
-		}
-		time.Sleep(100 * time.Millisecond)
-	}
+	d.LocalNode.waitTilReady()
 	return net.ParseIP(d.LocalNode.ip)
 }

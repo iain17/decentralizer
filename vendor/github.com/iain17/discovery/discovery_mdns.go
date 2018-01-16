@@ -80,7 +80,7 @@ func (d *DiscoveryMDNS) Serve(ctx context.Context) {
 				Port: entry.Port,
 			}
 			d.logger.Debugf("Discovered local peer %s %v", entry.HostName, addr)
-			go d.localNode.netTableService.Discovered(addr)
+			d.localNode.netTableService.Discovered(addr)
 		}
 	}
 }

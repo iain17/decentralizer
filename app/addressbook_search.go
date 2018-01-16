@@ -6,6 +6,8 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"strconv"
 	"github.com/iain17/decentralizer/utils"
+	"github.com/iain17/decentralizer/app/peerstore"
+	"time"
 )
 
 func getDecentralizedIdKey(decentralizedId uint64) string {
@@ -51,5 +53,34 @@ func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, er
 	if updated {
 		err = d.peers.Upsert(result)
 	}
+	if result == nil {
+		result, err = d.getPeerFromNetworkBackup(decentralizedId)
+	}
 	return result, err
+}
+
+//Using providers we try and figure it out.
+func (d *Decentralizer) getPeerFromNetworkBackup(decentralizedId uint64) (*pb.Peer, error) {
+	values := d.b.Find(getDecentralizedIdKey(decentralizedId), 1024)
+	seen := make(map[string]bool)
+	for value := range values {
+		id := value.ID.Pretty()
+		if seen[id] {
+			continue
+		}
+		seen[id] = true
+		_, possibleId := peerstore.PeerToDnId(value.ID)
+		if possibleId == decentralizedId {
+			logger.Infof("Resolved %d == %s", id)
+			return &pb.Peer{
+				Published: uint64(time.Now().UTC().Unix()),
+				PId: id,
+				DnId: decentralizedId,
+				Details: map[string]string{
+					"backup": "true",
+				},
+			}, nil
+		}
+	}
+	return nil, errors.New("could not find peer in network. Even with trying the backup method")
 }

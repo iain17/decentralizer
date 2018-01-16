@@ -93,6 +93,10 @@ func (d *DiscoveryIRC) Serve(ctx context.Context) {
 		case <-d.context.Done():
 			return
 		case <-ticker:
+			if d.localNode.netTableService.isEnoughPeers() {
+				d.connection.Disconnect()
+				continue
+			}
 			if !d.connection.Connected() {
 				if retries > 10 {
 					return

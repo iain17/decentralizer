@@ -13,7 +13,6 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"net"
 	"time"
-	"github.com/ccding/go-stun/stun"
 	"github.com/jasonlvhit/gocron"
 	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
@@ -39,6 +38,7 @@ type Decentralizer struct {
 	b                      *ipfs.BitswapService
 	ip                     *net.IP
 	api 				   coreiface.CoreAPI
+	limitedConnection	   bool
 
 	//Peer ids that did not respond to our queries.
 	ignore 				   *lttlru.LruWithTTL
@@ -96,10 +96,15 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
+	swarmKey, err := Asset("static/swarm.key")
+	if err != nil {
+		return nil, err
+	}
+
 	ipfsPath := Base.Path+"/ipfs"
 	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
-	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection)
+	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection, swarmKey)
 	if err != nil {
 		return nil, err
 	}
@@ -123,6 +128,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		return nil, err
 	}
 	instance := &Decentralizer{
+		limitedConnection:		limitedConnection,
 		ctx:					ctx,
 		cron: 				    gocron.NewScheduler(),
 		n:   					n,
@@ -154,26 +160,16 @@ func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
 }
 
 func (d *Decentralizer) GetIP() net.IP {
-	d.mutex.Lock()
-	defer d.mutex.Unlock()
-	if d.d != nil {
-		ip := d.d.GetIP()
-		d.ip = &ip
+	if d.ip != nil {
+		return *d.ip
 	}
-	if d.ip == nil {
-		stun := stun.NewClient()
-		nat, host, err := stun.Discover()
-		if err != nil {
-			logger.Error(err)
-			time.Sleep(5 * time.Second)
-			return d.GetIP()
-		}
-		logger.Infof("NAT type: %s", nat.String())
-		ip := net.ParseIP(host.IP())
-		d.ip = &ip
+	self, err := d.peers.FindByPeerId("self")
+	if err != nil || self.Details["ip"] == "" {
+		return net.ParseIP("127.0.0.1")
 	}
-
-	return *d.ip
+	ip := net.ParseIP(self.Details["ip"])
+	d.ip = &ip
+	return ip
 }
 
 func (d *Decentralizer) IsEnoughPeers() bool {

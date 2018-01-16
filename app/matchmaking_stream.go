@@ -23,7 +23,9 @@ type sessionRequest struct{
 //in one go as we want. By querying the peers that are giving these session from DHT (already connected etc) we can fetch the bigger list.
 func (d *Decentralizer) initMatchmakingStream() {
 	d.sessionQueries 			= make(chan sessionRequest, CONCURRENT_SESSION_REQUEST)
-	d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
+	if !d.limitedConnection {
+		d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
+	}
 	//Spawn some workers
 	logger.Debugf("Running %d session request workers", CONCURRENT_SESSION_REQUEST)
 	for i := 0; i < CONCURRENT_SESSION_REQUEST; i++ {
@@ -41,7 +43,10 @@ func (d *Decentralizer) processSessionRequest() {
 			if !ok {
 				return
 			}
-			d.getSessionsRequest(req.id, req.search)
+			err := d.getSessionsRequest(req.id, req.search)
+			if err != nil {
+				logger.Debugf("Could not query session from %s: %s", req.id.Pretty(), err.Error())
+			}
 		}
 	}
 }

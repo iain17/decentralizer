@@ -36,6 +36,18 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 	if len(sessions) != 0 {
 		assert.Equal(t, sessions[0].Name, "App 2 session :D")
 	}
+
+	sessId, err = app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{
+		"cool": "yes",
+	})
+	assert.NoError(t, err)
+	assert.True(t, sessId > 0)
+
+	time.Sleep(1500 * time.Millisecond)
+
+	sessions, err = app1.GetSessionsByDetails(1337, "cool", "yes")
+	assert.NoError(t, err)
+	assert.Equal(t, 1, len(sessions))
 }
 
 func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {

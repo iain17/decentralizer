@@ -33,11 +33,17 @@ func (l *ListenerService) init(ctx context.Context) error {
 
 	//Open a new socket on a free UDP port.
 	var err error
-	l.socket, err = utp.NewSocket("udp4", fmt.Sprintf(":%d", l.localNode.port))
-	if err == nil {
-		addr := l.socket.Addr().(*net.UDPAddr)
-		l.localNode.port = addr.Port
-		l.logger.Infof("listening on %d", l.localNode.port)
+	l.socket, err = utp.NewSocket("udp4", ":0")
+	if err != nil {
+		return fmt.Errorf("could not listen: %s", err.Error())
+	}
+	addr := l.socket.Addr().(*net.UDPAddr)
+	l.localNode.port = addr.Port
+	l.logger.Infof("listening on %d", l.localNode.port)
+
+	stunErr := l.localNode.StunService.Serve(ctx)
+	if stunErr != nil {
+		logger.Warningf("Encountered a NAT. Not to worry though, we should be fine. You're nat type is: %s", stunErr)
 	}
 	return err
 }

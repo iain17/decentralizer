@@ -10,7 +10,6 @@ import (
 	"github.com/iain17/framed"
 	"cirello.io/supervisor"
 	"sync"
-	"github.com/iain17/freeport"
 )
 
 type LocalNode struct {
@@ -41,7 +40,6 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 			info:   map[string]string{},
 		},
 		discovery: discovery,
-		port:      freeport.GetPortRange("udp", PORT_RANGE),
 		wg: &sync.WaitGroup{},
 	}
 	i.supervisor.Log = func(s interface{}) {
@@ -49,8 +47,6 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 	}
 	i.upNpService.localNode = i
 	i.supervisor.AddService(&i.upNpService, supervisor.Temporary)
-	i.StunService.localNode = i
-	i.supervisor.AddService(&i.StunService, supervisor.Temporary)
 	if !i.discovery.limited {
 		i.discoveryDHT.localNode = i
 		i.supervisor.AddService(&i.discoveryDHT, supervisor.Permanent)
@@ -62,14 +58,15 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 
 	i.netTableService.localNode = i
 	i.supervisor.AddService(&i.netTableService, supervisor.Transient)
+
+	//Listener and stun service
+	i.StunService.localNode = i
 	i.listenerService.localNode = i
 	i.supervisor.AddService(&i.listenerService, supervisor.Permanent)
 
 	numServices := len(i.supervisor.Services())
 	i.wg.Add(numServices)
 	go i.supervisor.Serve(discovery.ctx)
-	i.waitTilReady()
-	i.wg = nil
 	return i, i.lastError
 }
 
@@ -77,6 +74,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 func (ln *LocalNode) waitTilReady() {
 	if ln.wg != nil {
 		ln.wg.Wait()
+		ln.wg = nil
 	}
 }
 
@@ -111,8 +109,10 @@ func (ln *LocalNode) SetInfo(key string, value string) {
 	ln.infoMutex.Lock()
 	defer ln.infoMutex.Unlock()
 
-	ln.info[key] = value
-	for _, peer := range ln.netTableService.GetPeers() {
-		go ln.sendPeerInfo(peer.conn)
+	if ln.wg == nil {
+		ln.info[key] = value
+		for _, peer := range ln.netTableService.GetPeers() {
+			go ln.sendPeerInfo(peer.conn)
+		}
 	}
 }

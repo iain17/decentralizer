@@ -72,7 +72,7 @@ func (rn *RemoteNode) Close() {
 func (rn *RemoteNode) listen(ln *LocalNode) {
 	defer func() {
 		if r := recover(); r != nil {
-			rn.logger.Errorf("panic: %s", r)
+			rn.logger.Errorf("[%s]: %s", rn.id, r)
 		}
 		rn.logger.Debug("Stopping with listening.")
 		rn.conn.Close()

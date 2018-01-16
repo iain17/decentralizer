@@ -1,7 +1,6 @@
 package discovery
 
 import (
-	"fmt"
 	"github.com/miolini/upnp"
 	"time"
 	"context"
@@ -57,11 +56,6 @@ func (s *UPnPService) Serve(ctx context.Context) {
 }
 
 func (s *UPnPService) process(port int) (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("panic: %s", r)
-		}
-	}()
 	s.logger.Debugf("trying to map port %d...", port)
 	if err := s.mapping.AddPortMapping(port, port, "UDP"); err == nil {
 		if s.mapping.GatewayOutsideIP != "" {
