@@ -6,6 +6,7 @@ import (
 	"time"
 	"net"
 	"github.com/iain17/timeout"
+	"github.com/iain17/logger"
 )
 
 type Discovery struct {
