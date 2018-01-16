@@ -29,14 +29,6 @@ func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, error) {
 		}
 		numPeers = len(d.i.PeerHost.Network().Peers())
 		if numPeers < MIN_CONNECTED_PEERS {
-			addrs := ""
-			for _, addr := range d.i.PeerHost.Network().ListenAddresses() {
-				protocols := addr.Protocols()
-				if protocols[0].Name != "ip4" && protocols[0].Name != "ip6" {
-					continue
-				}
-				addrs += ", " + addr.String()
-			}
 			err := d.bootstrap()
 			if err != nil {
 				return false, err
@@ -46,12 +38,12 @@ func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, error) {
 				total := float64(MIN_CONNECTED_PEERS)
 				percentage = float64(numPeers) / total * 100
 			}
-			return false, errors.New(fmt.Sprintf("%.2f %% ready (Try portforwarding %s)", percentage, addrs))
+			return false, errors.New(fmt.Sprintf("Bootstrapping to ADNA. %.2f %% complete", percentage))
 		}
 	}
 
 	if d.publisherRecord == nil {
-		return false, errors.New(fmt.Sprintf("Not ready yet. Waiting for publisher file..."))
+		return false, errors.New(fmt.Sprintf("Waiting for publisher file..."))
 	}
 	if !d.publisherDefinition.Status {
 		return false, errors.New("closed")
