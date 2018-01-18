@@ -8,8 +8,6 @@ import (
 	"github.com/iain17/logger"
 	"errors"
 	"fmt"
-	"github.com/iain17/timeout"
-	"time"
 )
 
 type ListenerService struct {
@@ -47,12 +45,13 @@ func (l *ListenerService) init(ctx context.Context) error {
 	l.localNode.port = addr.Port
 	l.logger.Infof("listening on %d", l.localNode.port)
 
-	timeout.Do(func(ctx context.Context) {
-		stunErr := l.localNode.StunService.Serve(ctx)
-		if stunErr != nil {
-			logger.Warningf("Stun error: %s", stunErr)
-		}
-	}, 2 * time.Second)
+	//Disabled: Just fucks with the initial connections.
+	//timeout.Do(func(ctx context.Context) {
+	//	stunErr := l.localNode.StunService.Serve(ctx)
+	//	if stunErr != nil {
+	//		logger.Warningf("Stun error: %s", stunErr)
+	//	}
+	//}, 2 * time.Second)
 	return err
 }
 
@@ -69,21 +68,20 @@ func (l *ListenerService) Serve(ctx context.Context) {
 		case <-l.context.Done():
 			return
 		default:
-			l.logger.Info("Listing for new connections")
 			conn, err := l.socket.Accept()
 			if err != nil {
 				logger.Warning(err)
 				break
 			}
 
-			l.logger.Debugf("new connection from %q", conn.RemoteAddr().String())
+			l.logger.Debugf("new connection from %s", conn.RemoteAddr().String())
 
 			if err = l.process(conn); err != nil {
 				conn.Close()
 				if err.Error() == "peer reset" || err.Error() == "we can't add ourselves" {
 					continue
 				}
-				l.logger.Errorf("error on process, %v", err)
+				l.logger.Warningf("[%s] error on processing new connection, %s", conn.RemoteAddr().String(), err)
 			}
 		}
 	}
