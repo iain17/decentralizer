@@ -4,17 +4,13 @@ stages:
   - build
   - pack
 
-cache:
-  paths:
-    - $CI_PROJECT_DIR/binaries
-
 variables:
   REPO_BASE: github.com/iain17/decentralizer
 
 before_script:
   - export REPO_BASE=$GOPATH/src/$REPO_BASE
   - mkdir -p $REPO_BASE
-  - cp -r $CI_PROJECT_DIR/* $REPO_BASE
+  - ln -s $CI_PROJECT_DIR/* $REPO_BASE
   - cd $REPO_BASE
 
 test:
