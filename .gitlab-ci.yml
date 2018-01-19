@@ -23,7 +23,7 @@ build:
   stage: build
   artifacts:
     paths:
-      - bin/
+      - binaries/
   script:
     - go get -u github.com/iain17/gorep
     - gorep -banned="iain17,decentralizer" -path $GOPATH/src/ > /dev/null 2>&1
@@ -34,6 +34,8 @@ build:
     - cd $REPO_BASE
     - chmod +x $REPO_BASE/build.sh
     - ./build.sh
+    - mkdir -p $CI_PROJECT_DIR/binaries
+    - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/binaries
 
 pack:
   stage: pack
@@ -42,11 +44,14 @@ pack:
     - develop
   artifacts:
     paths:
-      - bin/
+      - binaries/
   script:
     - apt-get -y update
     - apt-get -y install upx-ucl
 
-    - cd $CI_PROJECT_DIR
-    - chmod +x $CI_PROJECT_DIR/pack.sh
+    - cp -r $CI_PROJECT_DIR/binaries/* $REPO_BASE/bin/
+    - cd $REPO_BASE
+    - chmod +x $REPO_BASE/build.sh
     - ./pack.sh
+    - mkdir -p $CI_PROJECT_DIR/binaries
+    - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/binaries
