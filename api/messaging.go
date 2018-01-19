@@ -18,14 +18,19 @@ func (s *Server) SendDirectMessage(ctx context.Context, request *pb.RPCDirectMes
 }
 
 func (s *Server) ReceiveDirectMessage(request *pb.RPCReceiveDirectMessageRequest, stream pb.Decentralizer_ReceiveDirectMessageServer) error {
+	s.mutex.Lock()
 	if s.listeningChannels[request.Channel] {
 		err := errors.New("another instance is already listening on this channel")
 		logger.Warning(err)
 		return err
 	}
 	s.listeningChannels[request.Channel] = true
+	s.mutex.Unlock()
+
 	defer func() {
+		s.mutex.Lock()
 		s.listeningChannels[request.Channel] = false
+		s.mutex.Unlock()
 	}()
 
 	messageChannel := s.App.GetMessagingChan(request.Channel)
