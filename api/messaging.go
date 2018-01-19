@@ -43,8 +43,6 @@ func (s *Server) ReceiveDirectMessage(request *pb.RPCReceiveDirectMessageRequest
 				PId: msg.PId,
 				Message: msg.Message,
 			})
-		default:
-			time.Sleep(100 * time.Millisecond)
 		}
 	}
 }
