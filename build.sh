@@ -18,6 +18,14 @@ echo $FAIL
 
 if [ "$FAIL" == "0" ];
 then
+    if [ -e bin/linux/unpacked-adna ]
+    then
+        echo "found executable"
+    else
+        echo "could not find executable"
+        exit 255
+    fi
+
     if [ "$HOSTNAME" = "Iains-MacBook.local" ]; then
        cp bin/linux/unpacked-adna /Users/iain17/work/src/gitlab.com/atlascorporation/publisher/bin/adna
     fi
