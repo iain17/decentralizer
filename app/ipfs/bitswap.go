@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/golang-lru"
 	"hash/crc32"
 	"hash"
+	"sync"
 )
 
 //Find other peers around a subject.
@@ -26,8 +27,8 @@ type BitswapService struct {
 	node    *core.IpfsNode
 	dht		*ipdht.IpfsDHT
 	dhtCache	*lru.Cache//Cache our result to certain DHT values.
-	test map[string][]byte
 	crcTable hash.Hash32
+	mutex sync.Mutex
 }
 
 func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
@@ -41,7 +42,6 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 			dhtCache: dhtCache,
 			crcTable: crc32.NewIEEE(),
 			dht: dht,
-			test: make(map[string][]byte),
 		}, nil
 	} else {
 		return nil, errors.New("interface conversion: node.Routing is not *ipdht.IpfsDHT")
@@ -56,6 +56,8 @@ func (b *BitswapService) getValidatorKey(keyType string, data []byte) uint32 {
 }
 
 func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.ValidatorFunc, sign bool, cache bool) {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
 	b.dht.Validator[keyType] = &record.ValidChecker{
 		Func: func(key string, value[]byte) error {
 			cacheKey := b.getValidatorKey(keyType, value)
@@ -80,6 +82,8 @@ func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.
 }
 
 func (b *BitswapService) RegisterSelector(keyType string, selectorFunc record.SelectorFunc) {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
 	b.dht.Selector[keyType] = selectorFunc
 }
 
