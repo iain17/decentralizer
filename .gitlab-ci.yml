@@ -10,7 +10,7 @@ variables:
 before_script:
   - export REPO_BASE=$GOPATH/src/$REPO_BASE
   - mkdir -p $REPO_BASE
-  - ln -s $CI_PROJECT_DIR/* $REPO_BASE
+  - cp -r $CI_PROJECT_DIR/* $REPO_BASE
   - cd $REPO_BASE
 
 test:
@@ -47,6 +47,6 @@ pack:
     - apt-get -y update
     - apt-get -y install upx-ucl
 
-    - cd $REPO_BASE
-    - chmod +x $REPO_BASE/pack.sh
+    - cd $CI_PROJECT_DIR
+    - chmod +x $CI_PROJECT_DIR/pack.sh
     - ./pack.sh
