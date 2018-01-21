@@ -73,7 +73,7 @@ func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 		return err
 	}
 	if publishedTime.After(now) {
-		err := errors.New("record with publish date %s was published in the future")
+		err := fmt.Errorf("record with publish date %s was published in the future", publishedTimeText)
 		logger.Warning(err)
 		return err
 	}
