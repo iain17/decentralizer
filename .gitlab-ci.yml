@@ -7,6 +7,11 @@ stages:
 variables:
   REPO_BASE: github.com/iain17/decentralizer
 
+cache:
+  key: "$CI_COMMIT_SHA"
+  paths:
+    - $CI_PROJECT_DIR/bin
+
 before_script:
   - export REPO_BASE=$GOPATH/src/$REPO_BASE
   - mkdir -p $REPO_BASE
@@ -22,6 +27,7 @@ test:
 build:
   stage: build
   artifacts:
+    name: "$CI_COMMIT_REF_NAME ADNA @$CI_COMMIT_SHA (unpacked)"
     paths:
       - bin/
   script:
@@ -42,6 +48,7 @@ pack:
     - master
     - develop
   artifacts:
+    name: "$CI_COMMIT_REF_NAME ADNA @$CI_COMMIT_SHA (packed)"
     paths:
       - bin/
   script:
