@@ -7,10 +7,10 @@ stages:
 variables:
   REPO_BASE: github.com/iain17/decentralizer
 
-cache:
-  key: "$CI_COMMIT_SHA"
-  paths:
-    - $CI_PROJECT_DIR/bin
+#cache:
+#  key: "$CI_COMMIT_SHA"
+#  paths:
+#    - $CI_PROJECT_DIR/bin
 
 before_script:
   - export REPO_BASE=$GOPATH/src/$REPO_BASE

@@ -22,7 +22,7 @@ build:
 	GOOS=$(ARCH) GOARCH=amd64 go build -ldflags "-s -w" -o bin/$(ARCH)/unpacked-$(TARGET) main.go
 
 pack:
-	rm bin/$(ARCH)/$(TARGET)
+	rm bin/$(ARCH)/$(TARGET) || true
 	upx --brute -o bin/$(ARCH)/$(TARGET) bin/$(ARCH)/unpacked-$(TARGET)
 
 ci:
