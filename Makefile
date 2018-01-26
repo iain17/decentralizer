@@ -1,5 +1,6 @@
 TARGET:=adna
-ARCH:=windows#darwin, linux
+ARCH:=amd64
+GOOSE:=windows#darwin, linux
 #docker run -d -v /Users/iain17/work/src/github.com/iain17/decentralizer/:/app -i golang
 
 #apt-get -y update
@@ -16,14 +17,16 @@ install:
 	find vendor/gx/ -name '*.bak' -type f -exec rm -f {} +
 	$(GOPATH)/bin/dep ensure
 
+clean:
+	rm -rf bin/$(GOOSE)/
+
 build:
-	mkdir -p bin/$(ARCH)/
-	rm -rf bin/$(ARCH)/*
-	GOOS=$(ARCH) GOARCH=amd64 go build -ldflags "-s -w" -o bin/$(ARCH)/unpacked-$(TARGET) main.go
+	mkdir -p bin/$(GOOSE)/$(ARCH)
+	GOOS=$(GOOSE) GOARCH=$(ARCH) go build -ldflags "-s -w" -o bin/$(GOOSE)/$(ARCH)/unpacked-$(TARGET) main.go
 
 pack:
 	rm bin/$(ARCH)/$(TARGET) || true
-	upx --brute -o bin/$(ARCH)/$(TARGET) bin/$(ARCH)/unpacked-$(TARGET)
+	upx -o bin/$(GOOSE)/$(ARCH)/$(TARGET) bin/$(GOOSE)/$(ARCH)/unpacked-$(TARGET)
 
 ci:
 	gitlab-runner --debug exec docker test
