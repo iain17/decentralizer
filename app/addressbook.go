@@ -14,13 +14,12 @@ import (
 
 func (d *Decentralizer) initAddressbook() {
 	var err error
-	d.peers, err = peerstore.New(d.ctx, MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity)
+	d.peers, err = peerstore.New(d.ctx, MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity, Base.Path+"/"+ADDRESS_BOOK_FILE)
 	if err != nil {
 		logger.Fatal(err)
 	}
-	d.downloadPeers()
 	d.saveSelf()
-	d.cron.Every(30).Seconds().Do(d.uploadPeers)
+	d.cron.Every(30).Seconds().Do(d.peers.Save)
 	d.cron.Every(5).Minutes().Do(func() {
 		if !d.IsEnoughPeers() {
 			return
@@ -74,28 +73,6 @@ func (d *Decentralizer) initAddressbook() {
 	}
 }
 
-func (d *Decentralizer) downloadPeers() {
-	data, err := Base.ReadFile(ADDRESS_BOOK_FILE)
-	if err != nil {
-		//logger.Warningf("Could not restore address book: %v", err)
-		return
-	}
-	var addressbook pb.DNAddressbook
-	err = d.unmarshal(data, &addressbook)
-	if err != nil {
-		logger.Warningf("Could not restore address book: %v", err)
-		return
-	}
-	for _, peer := range addressbook.Peers {
-		err = d.peers.Upsert(peer)
-		if err != nil {
-			logger.Warningf("Error saving peer: %s", peer.PId)
-			continue
-		}
-	}
-	logger.Info("Restored address book")
-}
-
 func (d *Decentralizer) AdvertisePeerRecord() error {
 	d.WaitTilEnoughPeers()
 	peer, err := d.FindByPeerId("self")
@@ -125,31 +102,6 @@ func (d *Decentralizer) AdvertisePeerRecord() error {
 	return err
 }
 
-func (d *Decentralizer) uploadPeers() {
-	if !d.addressBookChanged {
-		return
-	}
-	peers, err := d.peers.FindAll()
-	if err != nil {
-		logger.Warningf("Could not save address book: %v", err)
-		return
-	}
-	data, err := gogoProto.Marshal(&pb.DNAddressbook{
-		Peers: peers,
-	})
-	if err != nil {
-		logger.Warningf("Could not save address book: %v", err)
-		return
-	}
-	err = Base.WriteFile(ADDRESS_BOOK_FILE, data)
-	if err != nil {
-		logger.Warningf("Could not save address book: %v", err)
-		return
-	}
-	d.addressBookChanged = false
-	logger.Info("Saved address book")
-}
-
 //Save our self at least in the address book.
 func (d *Decentralizer) saveSelf() error {
 	self, err := d.peers.FindByPeerId("self")
@@ -176,7 +128,7 @@ func (d *Decentralizer) saveSelf() error {
 	if err != nil {
 		return fmt.Errorf("could no save self: %s", err.Error())
 	}
-	d.uploadPeers()
+	d.peers.Save()
 	return nil
 }
 
@@ -194,7 +146,6 @@ func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error 
 		PId:     pId,
 		Details: details,
 	})
-	d.addressBookChanged = true
 	return err
 }
 

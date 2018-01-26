@@ -59,7 +59,6 @@ type Decentralizer struct {
 
 	//addressbook
 	peers                  *peerstore.Store
-	addressBookChanged     bool
 
 	//messaging
 	directMessageChannels  map[uint32]chan *pb.RPCDirectMessage

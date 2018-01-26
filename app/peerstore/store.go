@@ -9,6 +9,8 @@ import (
 	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
 	"time"
 	"context"
+	"github.com/golang/protobuf/proto"
+	"io/ioutil"
 )
 
 type Store struct {
@@ -16,6 +18,8 @@ type Store struct {
 	db         *memdb.MemDB
 	sessionIds *lru.LruWithTTL
 	expireAt   time.Duration
+	changed     bool
+	path	   string
 }
 
 const TABLE = "peers"
@@ -45,7 +49,7 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID, path string) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
@@ -54,9 +58,58 @@ func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.
 		self:     self,
 		db:       db,
 		expireAt: expireAt,
+		path: path,
 	}
 	instance.sessionIds, err = lru.NewTTLWithEvict(ctx, size, instance.onEvicted)
+	instance.restore()
 	return instance, err
+}
+
+func (s *Store) restore() {
+	data, err := ioutil.ReadFile(s.path)
+	if err != nil {
+		logger.Warningf("Could not restore peer store: %s", err.Error())
+		return
+	}
+	var addressbook pb.DNAddressbook
+	err = proto.Unmarshal(data, &addressbook)
+	if err != nil {
+		logger.Warningf("Could not restore peer store: %v", err)
+		return
+	}
+	for _, peer := range addressbook.Peers {
+		err = s.Upsert(peer)
+		if err != nil {
+			logger.Warningf("Error saving peer: %s", peer.PId)
+			continue
+		}
+	}
+	logger.Info("Restored peer store")
+}
+
+func (s *Store) Save() {
+	if !s.changed {
+		return
+	}
+	peers, err := s.FindAll()
+	if err != nil {
+		logger.Warningf("Could not save peer store: %v", err)
+		return
+	}
+	data, err := proto.Marshal(&pb.DNAddressbook{
+		Peers: peers,
+	})
+	if err != nil {
+		logger.Warningf("Could not save peer store: %v", err)
+		return
+	}
+	err = ioutil.WriteFile(s.path, data, 0777)
+	if err != nil {
+		logger.Warningf("Could not save peer store: %v", err)
+		return
+	}
+	s.changed = false
+	logger.Info("Saved peer store")
 }
 
 func (s *Store) decodeId(id string) (libp2pPeer.ID, error) {
@@ -97,6 +150,7 @@ func (s *Store) Upsert(info *pb.Peer) error {
 	if err == nil && info.PId != s.self.Pretty() {
 		s.sessionIds.AddWithTTL(info.PId, true, s.expireAt)
 	}
+	s.changed = true
 	return err
 }
 

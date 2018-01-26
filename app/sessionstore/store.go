@@ -219,7 +219,7 @@ func (s *Store) FindSessionId(sessionId uint64) (*pb.Session, error) {
 	}
 	record := p.Next()
 	if record == nil {
-		return nil, errors.New("Could not find session.")
+		return nil, errors.New("could not find session")
 	}
 	if session, ok := record.(*pb.Session); ok {
 		return session, nil
