@@ -61,7 +61,7 @@ func (d *Decentralizer) initPublisherFiles() {
 		logger.Warning(err)
 	}
 	go d.updatePublisherDefinition()
-	d.cron.Every(30).Seconds().Do(func() {
+	d.cron.Every(300).Seconds().Do(func() {
 		err := d.updatePublisherDefinition()
 		if err != nil {
 			logger.Warning(err.Error())

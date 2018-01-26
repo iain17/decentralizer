@@ -23,6 +23,7 @@ It has these top-level messages:
 	RPCGetPeerRequest
 	RPCGetPeerResponse
 	Session
+	DNSessionStore
 	DNSessionsRecord
 	DNSessionsResponse
 	DNSessionsRequest

@@ -15,6 +15,10 @@ message Session {
 }
 
 //DN messages
+message DNSessionStore {
+    repeated Session sessions = 1;
+}
+
 message DNSessionsRecord {
     uint64 published = 1;
     repeated Session results = 2;

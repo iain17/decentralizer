@@ -92,7 +92,7 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 	defer d.matchmakingMutex.Unlock()
 	if d.sessions[sessionType] == nil {
 		var err error
-		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration(EXPIRE_TIME_SESSION), d.i.Identity)
+		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration(EXPIRE_TIME_SESSION), d.i.Identity, Base.Path+"/"+SESSIONS_FILE)
 		if err != nil {
 			logger.Warningf("Could not get session storage: %v", err)
 			return nil

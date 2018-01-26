@@ -11,6 +11,8 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 	"context"
 	"github.com/iain17/decentralizer/utils"
+	"io/ioutil"
+	"github.com/golang/protobuf/proto"
 )
 
 type Store struct {
@@ -18,6 +20,8 @@ type Store struct {
 	db *memdb.MemDB
 	sessionIds *lru.LruWithTTL
 	expireAt time.Duration
+	changed     bool
+	path	   string
 }
 
 const TABLE = "sessions"
@@ -47,7 +51,7 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID, path string) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
@@ -56,9 +60,58 @@ func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.
 		self:     self,
 		db: db,
 		expireAt: expireAt,
+		path: path,
 	}
 	instance.sessionIds, err = lru.NewTTLWithEvict(ctx, size, instance.onEvicted)
+	instance.restore()
 	return instance, err
+}
+
+func (s *Store) restore() {
+	data, err := ioutil.ReadFile(s.path)
+	if err != nil {
+		logger.Warningf("Could not restore session store: %s", err.Error())
+		return
+	}
+	var store pb.DNSessionStore
+	err = proto.Unmarshal(data, &store)
+	if err != nil {
+		logger.Warningf("Could not restore session store: %v", err)
+		return
+	}
+	for _, session := range store.Sessions {
+		_, err = s.Insert(session)
+		if err != nil {
+			logger.Warningf("Error saving session: %s", session.PId)
+			continue
+		}
+	}
+	logger.Info("Restored peer store")
+}
+
+func (s *Store) Save() {
+	if !s.changed {
+		return
+	}
+	sessions, err := s.FindAll()
+	if err != nil {
+		logger.Warningf("Could not save session store: %v", err)
+		return
+	}
+	data, err := proto.Marshal(&pb.DNSessionStore{
+		Sessions: sessions,
+	})
+	if err != nil {
+		logger.Warningf("Could not save session store: %v", err)
+		return
+	}
+	err = ioutil.WriteFile(s.path, data, 0777)
+	if err != nil {
+		logger.Warningf("Could not save session store: %v", err)
+		return
+	}
+	s.changed = false
+	logger.Info("Saved session store")
 }
 
 func (s *Store) onEvicted(key interface{}, value interface{}) {
