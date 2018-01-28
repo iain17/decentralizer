@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/iain17/decentralizer/pb"
-	"time"
 	"context"
 	"github.com/iain17/logger"
+	"github.com/iain17/decentralizer/stime"
 )
 
 //
@@ -16,7 +16,7 @@ func (s *Server) UpsertSession(ctx context.Context, request *pb.RPCUpsertSession
 	if request.Session.Details == nil {
 		request.Session.Details = make(map[string]string)
 	}
-	request.Session.Details["updated"] = time.Now().String()
+	request.Session.Details["updated"] = stime.Now().String()
 	sessId, err := s.App.UpsertSession(request.Session.Type, request.Session.Name, request.Session.Port, request.Session.Details)
 	return &pb.RPCUpsertSessionResponse{
 		SessionId: sessId,

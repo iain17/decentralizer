@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/iain17/logger"
 	"errors"
+	"github.com/iain17/decentralizer/stime"
 )
 
 //Returns true if the second passed record is newer than the first one.
@@ -15,7 +16,7 @@ func IsNewerRecord(current uint64, new uint64) bool {
 	if current == 0 && new != 0 {
 		return true
 	}
-	now := time.Now().UTC()
+	now := stime.Now()
 	publishedTime := time.Unix(int64(new), 0).UTC()
 	publishedTimeText := publishedTime.String()
 	expireTime := time.Unix(int64(current), 0).UTC()

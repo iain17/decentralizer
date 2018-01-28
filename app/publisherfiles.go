@@ -10,6 +10,7 @@ import (
 	"encoding/hex"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/decentralizer/utils"
+	"github.com/iain17/decentralizer/stime"
 )
 
 func (d *Decentralizer) getPublisherKey() string {
@@ -206,7 +207,7 @@ func (d *Decentralizer) loadNewPublisherRecord(record *pb.DNPublisherRecord) err
 }
 
 func (d *Decentralizer) signPublisherRecord(definition *pb.PublisherDefinition) (*pb.DNPublisherRecord, error) {
-	definition.Published = uint64(time.Now().UTC().Unix())
+	definition.Published = uint64(stime.Now().Unix())
 	data, err := gogoProto.Marshal(definition)
 	if err != nil {
 		return nil, err

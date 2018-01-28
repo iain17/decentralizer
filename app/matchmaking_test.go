@@ -9,6 +9,7 @@ import (
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
 	"gx/ipfs/QmefgzMbKZYsmHFkLqxgaTBG9ypeEjrdWRD5WXH4j1cWDL/go-libp2p/p2p/net/mock"
+	"github.com/iain17/decentralizer/stime"
 )
 
 func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
@@ -265,23 +266,23 @@ func TestValidateDNSessions(t *testing.T) {
 
 	//Future
 	assert.Error(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
-		Published: uint64(time.Now().Add(2 * time.Hour).Unix()),
+		Published: uint64(stime.Now().Add(2 * time.Hour).Unix()),
 	}))
 
 	//Expired
 	assert.Error(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
-		Published: uint64(time.Now().AddDate(-3, 0, 0).Unix()),
+		Published: uint64(stime.Now().AddDate(-3, 0, 0).Unix()),
 	}))
 
 	//Alright
 	assert.NoError(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
-		Published: uint64(time.Now().Unix()),
+		Published: uint64(stime.Now().Unix()),
 	}))
 
 	EXPIRE_TIME_SESSION = 1 * time.Second
 	//Just in time
 	assert.NoError(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
-		Published: uint64(time.Now().Unix()),
+		Published: uint64(stime.Now().Unix()),
 	}))
 }
 

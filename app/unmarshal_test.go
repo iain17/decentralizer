@@ -7,13 +7,14 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"github.com/iain17/decentralizer/stime"
 )
 
 var benchData = buildPb()
 
 func buildPb() []byte {
 	var data, err = proto.Marshal(&pb.Peer{
-		Published: uint64(time.Now().UTC().Unix()),
+		Published: uint64(stime.Now().Unix()),
 		PId: "test123",
 		DnId: 1231231,
 		Details: map[string]string{

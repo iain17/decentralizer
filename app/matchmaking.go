@@ -14,6 +14,7 @@ import (
 	"context"
 	"github.com/iain17/kvcache/lttlru"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"github.com/iain17/decentralizer/stime"
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
@@ -62,7 +63,7 @@ func (d *Decentralizer) initMatchmaking() {
 //Checks if its past the publication time
 func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	//Check publish time
-	now := time.Now().UTC()
+	now := stime.Now()
 	publishedTime := time.Unix(int64(sessions.Published), 0).UTC()
 	publishedTimeText := publishedTime.String()
 	expireTime := now.Add(-EXPIRE_TIME_SESSION)
@@ -126,7 +127,7 @@ func (d *Decentralizer) getSessionSearch(sessionType uint64) (result *search) {
 
 func (d *Decentralizer) UpsertSession(sessionType uint64, name string, port uint32, details map[string]string) (uint64, error) {
 	session := &pb.Session{
-		Published: uint64(time.Now().UTC().Unix()),
+		Published: uint64(stime.Now().Unix()),
 		PId:     "self",
 		Type:    sessionType,
 		Name:    name,

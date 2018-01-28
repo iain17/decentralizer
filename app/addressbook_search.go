@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/decentralizer/app/peerstore"
-	"time"
+	"github.com/iain17/decentralizer/stime"
 )
 
 func getDecentralizedIdKey(decentralizedId uint64) string {
@@ -73,7 +73,7 @@ func (d *Decentralizer) getPeerFromNetworkBackup(decentralizedId uint64) (*pb.Pe
 		if possibleId == decentralizedId {
 			logger.Infof("Resolved %d == %s", id)
 			return &pb.Peer{
-				Published: uint64(time.Now().UTC().Unix()),
+				Published: uint64(stime.Now().Unix()),
 				PId: id,
 				DnId: decentralizedId,
 				Details: map[string]string{

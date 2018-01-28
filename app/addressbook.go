@@ -10,6 +10,7 @@ import (
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"fmt"
 	"github.com/iain17/decentralizer/utils"
+	"github.com/iain17/decentralizer/stime"
 )
 
 func (d *Decentralizer) initAddressbook() {
@@ -142,7 +143,7 @@ func (d *Decentralizer) UpdateSelf(details map[string]string) error {
 
 func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error {
 	err := d.peers.Upsert(&pb.Peer{
-		Published: uint64(time.Now().UTC().Unix()),
+		Published: uint64(stime.Now().Unix()),
 		PId:     pId,
 		Details: details,
 	})
