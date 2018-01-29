@@ -84,7 +84,7 @@ func checkAddr(addr ma.Multiaddr, acceptPrivate bool, onlyPlain bool, debug bool
 	if onlyPlain && !isPlain {
 		return false
 	}
-	logger.Debugf("%s is isPlain(%t) isTcp(%t)", addr.String(), isPlain, isTcp)
+	//logger.Debugf("%s is isPlain(%t) isTcp(%t)", addr.String(), isPlain, isTcp)
 	if isPlain {
 		netAddr, err := manet.ToNetAddr(addr)
 		if err != nil {
@@ -96,13 +96,13 @@ func checkAddr(addr ma.Multiaddr, acceptPrivate bool, onlyPlain bool, debug bool
 		if !acceptPrivate {
 			err = isPrivate(ip)
 			if err != nil {
-				logger.Debugf("%s is private", netAddrText)
+				//logger.Debugf("%s is private", netAddrText)
 				return false
 			}
 		}
 		if isTcp {
 			if !isReachable(netAddrText) {
-				logger.Debugf("%s is NOT reachable", netAddrText)
+				//logger.Debugf("%s is NOT reachable", netAddrText)
 				return false
 			}
 		}
@@ -120,7 +120,7 @@ func IsAddrReachable(addr ma.Multiaddr, acceptPrivate bool, onlyPlain bool, debu
 	if reachableCache.Contains(key) {
 		value, ok := reachableCache.Get(key)
 		if ok {
-			logger.Debugf("returning cache: %s = %t", key, value.(bool))
+			//logger.Debugf("returning cache: %s = %t", key, value.(bool))
 			return value.(bool)
 		}
 	}

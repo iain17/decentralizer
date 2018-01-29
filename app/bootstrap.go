@@ -57,8 +57,18 @@ func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
 
 func (d *Decentralizer) bootstrap() error {
 	if USE_OWN_BOOTSTRAPPING {
+		var err error
+		d.d, err = discovery.New(d.ctx, d.n, MAX_DISCOVERED_PEERS, d.limitedConnection, map[string]string{
+			"peerId": d.i.Identity.Pretty(),
+			"addr": getAddrs(d.i.PeerHost.Addrs()),
+		})
+		if err != nil {
+			return err
+		}
+
 		bs := core.DefaultBootstrapConfig
 		bs.BootstrapPeers = d.discover
+		bs.Period = 1 * time.Second
 		bs.MinPeerThreshold = MIN_CONNECTED_PEERS
 		core.DefaultBootstrapConfig = bs
 		return d.i.Bootstrap(bs)
@@ -77,10 +87,10 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := getInfo(peer)
 		if err != nil {
-			logger.Warningf("Could not bootstrap %s: %s", peer.String(), err)
+			//logger.Warningf("Could not bootstrap %s: %s", peer.String(), err)
 			continue
 		}
-		logger.Infof("Bootstrapping: %v", peerInfo)
+		//logger.Infof("Bootstrapping: %v", peerInfo)
 		peers = append(peers, *peerInfo)
 
 		if d.i.PeerHost.Network().Connectedness(peerInfo.ID) == net.Connected {
@@ -99,19 +109,21 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	return peers
 }
 
+func getAddrs(multiAddrs []ma.Multiaddr) string {
+	addrs := ""
+	for _, addr := range multiAddrs {
+		addrs += addr.String() + DELIMITER_ADDR
+	}
+	return addrs
+}
+
 func (d *Decentralizer) setInfo() {
 	if d.d == nil {
 		return
 	}
-	ln := d.d.LocalNode
-	addrs := ""
-	for _, addr := range d.i.PeerHost.Addrs() {
-		addrs += addr.String() + DELIMITER_ADDR
-	}
-
-	ln.SetInfo("peerId", d.i.Identity.Pretty())
-	logger.Infof("Broadcasting: %s", addrs)
-	ln.SetInfo("addr", addrs)
+	addrs := getAddrs(d.i.PeerHost.Addrs())
+	//logger.Infof("Broadcasting: %s", addrs)
+	d.d.LocalNode.SetInfo("addr", addrs)
 }
 
 func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
@@ -140,6 +152,14 @@ func getInfo(remoteNode *discovery.RemoteNode) (*pstore.PeerInfo, error) {
 			addrs = append(addrs, addr)
 		}
 	}
+	addr, _ :=  ma.NewMultiaddr("/ip4/"+remoteNode.GetIp().String()+"/tcp/4123")
+	if addr != nil {
+		if ipfs.IsAddrReachable(addr, false, true, false) {
+			addrs = append(addrs, addr)
+		}
+	}
+	remoteNode.SetInfo("addr", getAddrs(addrs))
+
 	if len(addrs) == 0 {
 		return nil, errors.New("no addr set")
 	}

@@ -272,7 +272,7 @@ func (d *Decentralizer) runPublisherInstructions() {
 		panic("Publisher has closed this network!")
 		return
 	}
-	logger.Infof("Publisher instructions loaded: %s", time.Unix(int64(d.publisherDefinition.Published), 0).Format(time.RFC822))
+	logger.Infof("Publisher instructions loaded: %s", time.Unix(int64(d.publisherDefinition.Published), 0).UTC().Format(time.RFC822))
 }
 
 func (d *Decentralizer) PublisherDefinition() *pb.PublisherDefinition {

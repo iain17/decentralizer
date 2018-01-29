@@ -107,13 +107,6 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
-	var d *discovery.Discovery
-	if USE_OWN_BOOTSTRAPPING {
-		d, err = discovery.New(ctx, n, MAX_DISCOVERED_PEERS, limitedConnection)
-		if err != nil {
-			return nil, err
-		}
-	}
 	b, err := ipfs.NewBitSwap(i)
 	if err != nil {
 		return nil, err
@@ -131,7 +124,6 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		ctx:					ctx,
 		cron: 				    gocron.NewScheduler(),
 		n:   					n,
-		d:                      d,
 		i:                      i,
 		b:                      b,
 		api:					coreapi.NewCoreAPI(i),
