@@ -80,7 +80,7 @@ func (s *Store) restore() {
 	for _, peer := range addressbook.Peers {
 		err = s.Upsert(peer)
 		if err != nil {
-			logger.Warningf("Error saving peer: %s", peer.PId)
+			logger.Warningf("Error saving peer %s: %s", peer.PId, err.Error())
 			continue
 		}
 	}

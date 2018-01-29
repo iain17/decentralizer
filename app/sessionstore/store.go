@@ -80,9 +80,12 @@ func (s *Store) restore() {
 		return
 	}
 	for _, session := range store.Sessions {
+		if session.PId == s.self.Pretty() {
+			continue
+		}
 		_, err = s.Insert(session)
 		if err != nil {
-			logger.Warningf("Error saving session: %s", session.PId)
+			logger.Warningf("Error saving session %s: %s", session.PId, err.Error())
 			continue
 		}
 	}
@@ -188,6 +191,7 @@ func (s *Store) Insert(info *pb.Session) (uint64, error) {
 			s.sessionIds.Add(info.SessionId, false)
 		}
 	}
+	s.changed = true
 	return info.SessionId, err
 }
 
