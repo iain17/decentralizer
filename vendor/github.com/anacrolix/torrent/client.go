@@ -8,12 +8,13 @@ import (
 	"expvar"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/anacrolix/log"
 
 	"github.com/anacrolix/dht"
 	"github.com/anacrolix/dht/krpc"
@@ -41,6 +42,7 @@ type Client struct {
 	closed missinggo.Event
 
 	config Config
+	logger *log.Logger
 
 	halfOpenLimit  int
 	peerID         PeerID
@@ -221,6 +223,20 @@ func listen(tcp, utp bool, networkSuffix, addr string) (tcpL net.Listener, utpSo
 	return
 }
 
+const debugLogValue = "debug"
+
+func (cl *Client) debugLogFilter(m *log.Msg) bool {
+	if !cl.config.Debug {
+		_, ok := m.Values()[debugLogValue]
+		return !ok
+	}
+	return true
+}
+
+func (cl *Client) initLogger() {
+	cl.logger = log.Default.Clone().AddValue(cl).AddFilter(log.NewFilter(cl.debugLogFilter))
+}
+
 // Creates a new client.
 func NewClient(cfg *Config) (cl *Client, err error) {
 	if cfg == nil {
@@ -246,6 +262,7 @@ func NewClient(cfg *Config) (cl *Client, err error) {
 		dopplegangerAddrs: make(map[string]struct{}),
 		torrents:          make(map[metainfo.Hash]*Torrent),
 	}
+	cl.initLogger()
 	defer func() {
 		if err == nil {
 			return
@@ -303,6 +320,7 @@ func NewClient(cfg *Config) (cl *Client, err error) {
 	if err != nil {
 		return
 	}
+	go cl.forwardPort()
 	if cl.tcpListener != nil {
 		go cl.acceptConnections(cl.tcpListener, false)
 	}
@@ -848,7 +866,7 @@ func (cl *Client) runHandshookConn(c *connection, t *Torrent, outgoing bool) {
 	cl.sendInitialMessages(c, t)
 	err := c.mainReadLoop()
 	if err != nil && cl.config.Debug {
-		log.Printf("error during connection loop: %s", err)
+		log.Printf("error during connection main read loop: %s", err)
 	}
 }
 
@@ -1039,6 +1057,7 @@ func (cl *Client) newTorrent(ih metainfo.Hash, specStorage storage.ClientImpl) (
 			L: &cl.mu,
 		},
 	}
+	t.logger = cl.logger.Clone().AddValue(t)
 	t.setChunkSize(defaultChunkSize)
 	return
 }
@@ -1249,7 +1268,10 @@ func (cl *Client) newConnection(nc net.Conn) (c *connection) {
 	}
 	c.writerCond.L = &cl.mu
 	c.setRW(connStatsReadWriter{nc, &cl.mu, c})
-	c.r = rateLimitedReader{cl.downloadLimit, c.r}
+	c.r = &rateLimitedReader{
+		l: cl.downloadLimit,
+		r: c.r,
+	}
 	return
 }
 

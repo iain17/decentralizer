@@ -23,7 +23,7 @@
   branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [".","assert","inproc","pproffd","slices"]
-  revision = "87aae9c529891d465611bc99b63e1e673a73f1ae"
+  revision = "f900f5599b1e80f980f84d22b8f76fc2b1727b4b"
 
 [[projects]]
   branch = "master"
@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/anacrolix/torrent"
   packages = ["bencode","iplist","logonce","metainfo","util"]
-  revision = "696595a76ea0a4796a74a89d79ceb91f1b17b642"
+  revision = "64c40a45b41db8c727112899a50e180b1eb8a111"
 
 [[projects]]
   branch = "master"
@@ -48,6 +48,12 @@
   name = "github.com/aybabtme/color"
   packages = [".","brush"]
   revision = "28ad4cc941d69a60df8d0af1233fd5a2793c2801"
+
+[[projects]]
+  name = "github.com/beevik/ntp"
+  packages = ["."]
+  revision = "62c80a04de2086884d8296004b6d74ee1846c582"
+  version = "v0.2.0"
 
 [[projects]]
   branch = "master"
@@ -107,7 +113,7 @@
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["jsonpb","proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/struct","ptypes/timestamp"]
-  revision = "1e59b77b52bf8e4b449a57e6f79f21226d571845"
+  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
 
 [[projects]]
   branch = "master"
@@ -131,7 +137,7 @@
   branch = "master"
   name = "github.com/hashicorp/go-immutable-radix"
   packages = ["."]
-  revision = "59b67882ec612f43b9d4c4fd97cebd507be4b3ee"
+  revision = "7f3cd4390caab3250a57f30efdb2a65dd7649ecf"
 
 [[projects]]
   branch = "master"
@@ -167,7 +173,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "f72b038c6e8819d2ef6ef87a34399d5d61bfc86f"
+  revision = "b7e83a80990d078d89a481714ff5311e2b1ed07d"
 
 [[projects]]
   branch = "master"
@@ -226,8 +232,8 @@
 [[projects]]
   name = "github.com/miekg/dns"
   packages = ["."]
-  revision = "5ec25f2a5044291b6c8abf43ed8a201da241e69e"
-  version = "v1.0.3"
+  revision = "5364553f1ee9cddc7ac8b62dce148309c386695b"
+  version = "v1.0.4"
 
 [[projects]]
   branch = "master"
@@ -250,8 +256,8 @@
 [[projects]]
   name = "github.com/pelletier/go-toml"
   packages = ["."]
-  revision = "16398bac157da96aa88f98a2df640c7f32af1da2"
-  version = "v1.0.1"
+  revision = "acdc4509485b587f5e675510c4f2c63e90ff68a8"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -347,19 +353,19 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "13931e22f9e72ea58bb73048bc752b48c6d4d4ac"
+  revision = "1875d0a70c90e57f11972aefd42276df65e895b9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["bpf","context","http2","http2/hpack","idna","internal/iana","internal/socket","internal/timeseries","ipv4","ipv6","lex/httplex","trace"]
-  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
+  revision = "0ed95abb35c445290478a5348a7b38bb154135fd"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "fff93fa7cd278d84afc205751523809c464168ab"
+  revision = "ff2a66f350cefa5c93a634eadb5d25bb60c85a9c"
 
 [[projects]]
   branch = "master"
@@ -371,13 +377,13 @@
   branch = "master"
   name = "google.golang.org/genproto"
   packages = ["googleapis/api/annotations","googleapis/rpc/status"]
-  revision = "a8101f21cf983e773d0c1133ebc5424792003214"
+  revision = "4eb30f4778eed4c258ba66527a0d4f9ec8a36c45"
 
 [[projects]]
   name = "google.golang.org/grpc"
   packages = [".","balancer","balancer/base","balancer/roundrobin","codes","connectivity","credentials","encoding","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","reflection","reflection/grpc_reflection_v1alpha","resolver","resolver/dns","resolver/passthrough","stats","status","tap","transport"]
-  revision = "7cea4cc846bcf00cbb27595b07da5de875ef7de9"
-  version = "v1.9.1"
+  revision = "6b51017f791ae1cfbec89c52efdf444b13b550ef"
+  version = "v1.9.2"
 
 [[projects]]
   branch = "v2"
@@ -388,6 +394,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a4a984259b436043edb3bed8d02a64ac90eef7417969ea5ccee241a23c41e02b"
+  inputs-digest = "119e31a6949e1e44f2cacc856bb0fea64b9d0f3b89a4992f455d131e945beb6b"
   solver-name = "gps-cdcl"
   solver-version = 1

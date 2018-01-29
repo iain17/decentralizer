@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/anacrolix/torrent/metainfo"
+	pwp "github.com/anacrolix/torrent/peer_protocol"
 )
 
 // Provides access to regions of torrent data that correspond to its files.
@@ -13,6 +14,7 @@ type File struct {
 	offset int64
 	length int64
 	fi     metainfo.FileInfo
+	prio   piecePriority
 }
 
 func (f *File) Torrent() *Torrent {
@@ -44,7 +46,7 @@ func (f *File) Length() int64 {
 func (f *File) DisplayPath() string {
 	fip := f.FileInfo().Path
 	if len(fip) == 0 {
-		return f.t.Info().Name
+		return f.t.info.Name
 	}
 	return strings.Join(fip, "/")
 
@@ -81,18 +83,7 @@ func (f *File) State() (ret []FilePieceState) {
 
 // Requests that all pieces containing data in the file be downloaded.
 func (f *File) Download() {
-	f.t.DownloadPieces(f.t.byteRegionPieces(f.offset, f.length))
-}
-
-// Deprecated: Use File.DownloadRegion.
-func (f *File) PrioritizeRegion(off, len int64) {
-	f.DownloadRegion(off, len)
-}
-
-// Requests that torrent pieces containing bytes in the given region of the
-// file be downloaded.
-func (f *File) DownloadRegion(off, len int64) {
-	f.t.DownloadPieces(f.t.byteRegionPieces(f.offset+off, len))
+	f.SetPriority(PiecePriorityNormal)
 }
 
 func byteRegionExclusivePieces(off, size, pieceSize int64) (begin, end int) {
@@ -105,8 +96,9 @@ func (f *File) exclusivePieces() (begin, end int) {
 	return byteRegionExclusivePieces(f.offset, f.length, int64(f.t.usualPieceSize()))
 }
 
+// Deprecated: Use File.SetPriority.
 func (f *File) Cancel() {
-	f.t.CancelPieces(f.exclusivePieces())
+	f.SetPriority(PiecePriorityNone)
 }
 
 func (f *File) NewReader() Reader {
@@ -119,4 +111,36 @@ func (f *File) NewReader() Reader {
 	}
 	f.t.addReader(&tr)
 	return &tr
+}
+
+// Sets the minimum priority for pieces in the File.
+func (f *File) SetPriority(prio piecePriority) {
+	f.t.cl.mu.Lock()
+	defer f.t.cl.mu.Unlock()
+	if prio == f.prio {
+		return
+	}
+	f.prio = prio
+	f.t.updatePiecePriorities(f.firstPieceIndex().Int(), f.endPieceIndex().Int())
+}
+
+// Returns the priority per File.SetPriority.
+func (f *File) Priority() piecePriority {
+	f.t.cl.mu.Lock()
+	defer f.t.cl.mu.Unlock()
+	return f.prio
+}
+
+func (f *File) firstPieceIndex() pwp.Integer {
+	if f.t.usualPieceSize() == 0 {
+		return 0
+	}
+	return pwp.Integer(f.offset / int64(f.t.usualPieceSize()))
+}
+
+func (f *File) endPieceIndex() pwp.Integer {
+	if f.t.usualPieceSize() == 0 {
+		return 0
+	}
+	return pwp.Integer((f.offset+f.length-1)/int64(f.t.usualPieceSize())) + 1
 }

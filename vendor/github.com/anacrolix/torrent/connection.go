@@ -82,7 +82,7 @@ type connection struct {
 	peerPieces bitmap.Bitmap
 	// The peer has everything. This can occur due to a special message, when
 	// we may not even know the number of pieces in the torrent yet.
-	peerHasAll bool
+	peerSentHaveAll bool
 	// The highest possible number of pieces the torrent could have based on
 	// communication with the peer. Generally only useful until we have the
 	// torrent info.
@@ -100,6 +100,16 @@ type connection struct {
 	postedBuffer bytes.Buffer
 	uploadTimer  *time.Timer
 	writerCond   sync.Cond
+}
+
+func (cn *connection) peerHasAllPieces() (all bool, known bool) {
+	if cn.peerSentHaveAll {
+		return true, true
+	}
+	if !cn.t.haveInfo() {
+		return false, false
+	}
+	return bitmap.Flip(cn.peerPieces, 0, cn.t.numPieces()).IsEmpty(), true
 }
 
 func (cn *connection) mu() sync.Locker {
@@ -234,7 +244,7 @@ func (cn *connection) Close() {
 }
 
 func (cn *connection) PeerHasPiece(piece int) bool {
-	return cn.peerHasAll || cn.peerPieces.Contains(piece)
+	return cn.peerSentHaveAll || cn.peerPieces.Contains(piece)
 }
 
 func (cn *connection) Post(msg pp.Message) {
@@ -514,6 +524,7 @@ func nextRequestState(
 }
 
 func (cn *connection) updateRequests() {
+	// log.Print("update requests")
 	cn.tickleWriter()
 }
 
@@ -614,9 +625,9 @@ func (cn *connection) stopRequestingPiece(piece int) bool {
 }
 
 // This is distinct from Torrent piece priority, which is the user's
-// preference. Connection piece priority is specific to a connection,
-// pseudorandomly avoids connections always requesting the same pieces and
-// thus wasting effort.
+// preference. Connection piece priority is specific to a connection and is
+// used to pseudorandomly avoid connections always requesting the same pieces
+// and thus wasting effort.
 func (cn *connection) updatePiecePriority(piece int) bool {
 	tpp := cn.t.piecePriority(piece)
 	if !cn.PeerHasPiece(piece) {
@@ -640,7 +651,7 @@ func (cn *connection) updatePiecePriority(piece int) bool {
 		prio += piece / 3
 	default:
 	}
-	return cn.pieceRequestOrder.Set(piece, prio)
+	return cn.pieceRequestOrder.Set(piece, prio) || cn.shouldRequestWithoutBias()
 }
 
 func (cn *connection) getPieceInclination() []int {
@@ -694,7 +705,7 @@ func (cn *connection) peerSentHave(piece int) error {
 }
 
 func (cn *connection) peerSentBitfield(bf []bool) error {
-	cn.peerHasAll = false
+	cn.peerSentHaveAll = false
 	if len(bf)%8 != 0 {
 		panic("expected bitfield length divisible by 8")
 	}
@@ -715,8 +726,8 @@ func (cn *connection) peerSentBitfield(bf []bool) error {
 	return nil
 }
 
-func (cn *connection) peerSentHaveAll() error {
-	cn.peerHasAll = true
+func (cn *connection) onPeerSentHaveAll() error {
+	cn.peerSentHaveAll = true
 	cn.peerPieces.Clear()
 	cn.peerPiecesChanged()
 	return nil
@@ -724,7 +735,7 @@ func (cn *connection) peerSentHaveAll() error {
 
 func (cn *connection) peerSentHaveNone() error {
 	cn.peerPieces.Clear()
-	cn.peerHasAll = false
+	cn.peerSentHaveAll = false
 	cn.peerPiecesChanged()
 	return nil
 }
@@ -882,7 +893,7 @@ func (c *connection) mainReadLoop() error {
 		case pp.Bitfield:
 			err = c.peerSentBitfield(msg.Bitfield)
 		case pp.HaveAll:
-			err = c.peerSentHaveAll()
+			err = c.onPeerSentHaveAll()
 		case pp.HaveNone:
 			err = c.peerSentHaveNone()
 		case pp.Piece:

@@ -75,13 +75,18 @@ func TestTorrentString(t *testing.T) {
 // a large torrent with small pieces had a lot of overhead in recalculating
 // piece priorities everytime a reader (possibly in another Torrent) changed.
 func BenchmarkUpdatePiecePriorities(b *testing.B) {
+	const (
+		numPieces   = 13410
+		pieceLength = 256 << 10
+	)
 	cl := &Client{}
+	cl.initLogger()
 	t := cl.newTorrent(metainfo.Hash{}, nil)
-	t.info = &metainfo.Info{
-		Pieces:      make([]byte, 20*13410),
-		PieceLength: 256 << 10,
-	}
-	t.makePieces()
+	require.NoError(b, t.setInfo(&metainfo.Info{
+		Pieces:      make([]byte, metainfo.HashSize*numPieces),
+		PieceLength: pieceLength,
+		Length:      pieceLength * numPieces,
+	}))
 	assert.EqualValues(b, 13410, t.numPieces())
 	for range iter.N(7) {
 		r := t.NewReader()
@@ -89,10 +94,10 @@ func BenchmarkUpdatePiecePriorities(b *testing.B) {
 		r.Seek(3500000, 0)
 	}
 	assert.Len(b, t.readers, 7)
-	t.pendPieceRange(0, t.numPieces())
 	for i := 0; i < t.numPieces(); i += 3 {
 		t.completedPieces.Set(i, true)
 	}
+	t.DownloadPieces(0, t.numPieces())
 	for range iter.N(b.N) {
 		t.updateAllPiecePriorities()
 	}
@@ -142,12 +147,10 @@ func TestEmptyFilesAndZeroPieceLengthWithMMapStorage(t *testing.T) {
 
 func TestPieceHashFailed(t *testing.T) {
 	mi := testutil.GreetingMetaInfo()
-	tt := Torrent{
-		cl:            new(Client),
-		infoHash:      mi.HashInfoBytes(),
-		storageOpener: storage.NewClient(badStorage{}),
-		chunkSize:     2,
-	}
+	cl := new(Client)
+	cl.initLogger()
+	tt := cl.newTorrent(mi.HashInfoBytes(), badStorage{})
+	tt.setChunkSize(2)
 	require.NoError(t, tt.setInfoBytes(mi.InfoBytes))
 	tt.cl.mu.Lock()
 	tt.pieces[1].dirtyChunks.AddRange(0, 3)
