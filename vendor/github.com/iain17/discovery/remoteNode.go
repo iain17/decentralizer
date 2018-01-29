@@ -35,6 +35,14 @@ func NewRemoteNode(conn net.Conn, ln *LocalNode) *RemoteNode {
 	}
 }
 
+func (rn *RemoteNode) GetIp() net.IP {
+	parts := strings.Split(rn.conn.RemoteAddr().String(), ":")
+	if len(parts) != 2 {
+		return net.IP{}
+	}
+	return net.ParseIP(parts[0])
+}
+
 func (rn *RemoteNode) sendHeartBeat() error {
 	rn.logger.Debug("sending heartbeat...")
 	heartbeat, err := proto.Marshal(&pb.Message{

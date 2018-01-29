@@ -46,12 +46,12 @@ func (l *ListenerService) init(ctx context.Context) error {
 	l.logger.Infof("listening on %d", l.localNode.port)
 
 	//Stun Disabled: Just fucks with the initial connections.
-	go func() {
-		stunErr := l.localNode.StunService.Serve(ctx)
-		if stunErr != nil {
-			logger.Warningf("Stun error: %s", stunErr)
-		}
-	}()
+	//go func() {
+	//	stunErr := l.localNode.StunService.Serve(ctx)
+	//	if stunErr != nil {
+	//		logger.Warningf("Stun error: %s", stunErr)
+	//	}
+	//}()
 	return err
 }
 
