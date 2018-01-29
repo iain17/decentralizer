@@ -15,7 +15,7 @@ func TestStore_FindByPeerId(t *testing.T) {
 
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(ctx,10, 1*time.Hour, self)
+	store, err := New(ctx,10, 1*time.Hour, self, "")
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -45,7 +45,7 @@ func TestStore_Expire(t *testing.T) {
 
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(ctx, 10, 1*time.Second, self)
+	store, err := New(ctx, 10, 1*time.Second, self, "")
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -70,7 +70,7 @@ func TestStore_Limit(t *testing.T) {
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(ctx,1, 2*time.Hour, self)
+	store, err := New(ctx,1, 2*time.Hour, self, "")
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -100,7 +100,7 @@ func TestStore_Self(t *testing.T) {
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ")
 	assert.NoError(t, err)
-	store, err := New(ctx,1, 2*time.Hour, self)
+	store, err := New(ctx,1, 2*time.Hour, self, "")
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,
@@ -141,7 +141,7 @@ func TestStore_FindByDetails(t *testing.T) {
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
 	assert.NoError(t, err)
-	store, err := New(ctx,10, 1*time.Hour, self)
+	store, err := New(ctx,10, 1*time.Hour, self, "")
 	assert.NoError(t, err)
 	err = store.Upsert(&pb.Peer{
 		DnId: 1,

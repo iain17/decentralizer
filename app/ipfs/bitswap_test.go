@@ -28,8 +28,8 @@ func TestDHTSimple(t *testing.T) {
 	app2, err := NewBitSwap(nodes[1])
 	assert.NoError(t, err)
 
-	app1.RegisterValidator(KEYTYPE, validatorFunc, true)
-	app2.RegisterValidator(KEYTYPE, validatorFunc, true)
+	app1.RegisterValidator(KEYTYPE, validatorFunc, true, false)
+	app2.RegisterValidator(KEYTYPE, validatorFunc, true, false)
 
 	fmt.Printf("app1 = %s\n", nodes[0].Identity.Pretty())
 	fmt.Printf("app2 = %s\n", nodes[1].Identity.Pretty())
