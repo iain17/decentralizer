@@ -81,7 +81,7 @@ func TestDecentralizer_FindUnknownId(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	peer, err := app2.FindByPeerId("self")
 	assert.NoError(t, err)
