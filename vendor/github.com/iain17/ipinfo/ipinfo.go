@@ -29,7 +29,7 @@ type optionA struct {
 
 //Option A
 func getIpWithOptionA() (*ipInfo, error) {
-	res, err := http.Get("http://ip-api.com/json/")
+	res, err := http.Get("http://www.ip-api.com/json/")
 	if err != nil {
 		return nil, err
 	}
