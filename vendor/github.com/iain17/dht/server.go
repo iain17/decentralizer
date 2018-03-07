@@ -8,6 +8,8 @@ import (
 	"io"
 	"log"
 	"net"
+	"os"
+	"strings"
 	"sync"
 	"text/tabwriter"
 	"time"
@@ -241,6 +243,12 @@ func (s *Server) serve() error {
 	for {
 		n, addr, err := s.socket.ReadFrom(b[:])
 		if err != nil {
+			if opErr, ok := err.(*net.OpError); ok {
+				if scErr, ok := opErr.Err.(*os.SyscallError); ok && strings.Contains(scErr.Error(), "keep-alive") {
+					continue
+				}
+			}
+
 			return err
 		}
 		read.Add(1)

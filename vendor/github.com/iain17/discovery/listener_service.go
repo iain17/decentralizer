@@ -8,6 +8,8 @@ import (
 	"github.com/iain17/logger"
 	"errors"
 	"fmt"
+	"os"
+	"strings"
 )
 
 type ListenerService struct {
@@ -70,6 +72,11 @@ func (l *ListenerService) Serve(ctx context.Context) {
 			conn, err := l.socket.Accept()
 			if err != nil {
 				logger.Warning(err)
+				if opErr, ok := err.(*net.OpError); ok {
+					if scErr, ok := opErr.Err.(*os.SyscallError); ok && strings.Contains(scErr.Error(), "keep-alive") {
+						return
+					}
+				}
 				break
 			}
 			key := conn.RemoteAddr().String()
