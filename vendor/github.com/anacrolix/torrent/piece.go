@@ -49,7 +49,6 @@ type Piece struct {
 	dirtyChunks bitmap.Bitmap
 
 	hashing             bool
-	everHashed          bool
 	numVerifies         int64
 	storageCompletionOk bool
 
@@ -59,6 +58,10 @@ type Piece struct {
 	pendingWritesMutex sync.Mutex
 	pendingWrites      int
 	noPendingWrites    sync.Cond
+
+	// Connections that have written data to this piece since its last check.
+	// This can include connections that have closed.
+	dirtiers map[*connection]struct{}
 }
 
 func (p *Piece) String() string {
@@ -91,6 +94,7 @@ func (p *Piece) numDirtyChunks() (ret int) {
 
 func (p *Piece) unpendChunkIndex(i int) {
 	p.dirtyChunks.Add(i)
+	p.t.tickleReaders()
 }
 
 func (p *Piece) pendChunkIndex(i int) {

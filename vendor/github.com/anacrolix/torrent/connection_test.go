@@ -20,17 +20,19 @@ import (
 // Have that would potentially alter it.
 func TestSendBitfieldThenHave(t *testing.T) {
 	r, w := io.Pipe()
-	c := &connection{
-		t: &Torrent{
-			cl: &Client{},
-		},
-		r: r,
-		w: w,
-	}
-	c.writerCond.L = &c.t.cl.mu
+	var cl Client
+	cl.initLogger()
+	c := cl.newConnection(nil)
+	c.setTorrent(cl.newTorrent(metainfo.Hash{}, nil))
+	c.t.setInfo(&metainfo.Info{
+		Pieces: make([]byte, metainfo.HashSize*3),
+	})
+	c.r = r
+	c.w = w
 	go c.writer(time.Minute)
 	c.mu().Lock()
-	c.Bitfield([]bool{false, true, false})
+	c.t.completedPieces.Add(1)
+	c.PostBitfield( /*[]bool{false, true, false}*/ )
 	c.mu().Unlock()
 	c.mu().Lock()
 	c.Have(2)
@@ -130,7 +132,7 @@ func BenchmarkConnectionMainReadLoop(b *testing.B) {
 	}
 	w.Close()
 	require.NoError(b, <-mrlErr)
-	require.EqualValues(b, b.N, cn.UsefulChunksReceived)
+	require.EqualValues(b, b.N, cn.stats.ChunksReadUseful)
 }
 
 func TestConnectionReceiveBadChunkIndex(t *testing.T) {
@@ -138,8 +140,8 @@ func TestConnectionReceiveBadChunkIndex(t *testing.T) {
 		t: &Torrent{},
 	}
 	require.False(t, cn.t.haveInfo())
-	assert.NotPanics(t, func() { cn.receiveChunk(&pp.Message{}) })
+	assert.NotPanics(t, func() { cn.receiveChunk(&pp.Message{Type: pp.Piece}) })
 	cn.t.info = &metainfo.Info{}
 	require.True(t, cn.t.haveInfo())
-	assert.NotPanics(t, func() { cn.receiveChunk(&pp.Message{}) })
+	assert.NotPanics(t, func() { cn.receiveChunk(&pp.Message{Type: pp.Piece}) })
 }

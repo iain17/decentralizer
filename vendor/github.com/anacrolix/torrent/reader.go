@@ -1,13 +1,13 @@
 package torrent
 
 import (
+	"context"
 	"errors"
 	"io"
 	"log"
 	"sync"
 
 	"github.com/anacrolix/missinggo"
-	"golang.org/x/net/context"
 )
 
 type Reader interface {
@@ -147,7 +147,7 @@ func (r *reader) ReadContext(ctx context.Context, b []byte) (n int, err error) {
 			<-ctx.Done()
 			r.t.cl.mu.Lock()
 			ctxErr = ctx.Err()
-			r.t.cl.event.Broadcast()
+			r.t.tickleReaders()
 			r.t.cl.mu.Unlock()
 		}()
 	}
