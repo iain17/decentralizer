@@ -17,6 +17,7 @@ import (
 	"context"
 	"hash/crc32"
 	"github.com/hashicorp/golang-lru"
+	"time"
 )
 
 var testNetwork *network.Network
@@ -72,6 +73,14 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 		unmarshalCache:			unmarshalCache,
 		crcTable:				crc32.NewIEEE(),
 	}
+	//Mock UFS
+	instance.ufs = afero.NewMemMapFs()
+	instance.WaitTilEnoughPeers()
+	Base = &configdir.Config{
+		Type: configdir.Cache,
+		Path: "/tmp/"+time.Now().Format("ANSIC"),
+	}
+
 	instance.cronChan = instance.cron.Start()
 	instance.initStorage()
 	instance.initMatchmaking()
@@ -83,10 +92,6 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 		<- instance.ctx.Done()
 		instance.cronChan <- false
 	}()
-
-	//Mock UFS
-	instance.ufs = afero.NewMemMapFs()
-	instance.WaitTilEnoughPeers()
 
 	return instance
 }

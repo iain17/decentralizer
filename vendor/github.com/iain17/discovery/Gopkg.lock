@@ -11,13 +11,19 @@
   branch = "master"
   name = "github.com/Pallinder/go-randomdata"
   packages = ["."]
-  revision = "442d37d9dbc782dbd737af9ec575d8858b79261b"
+  revision = "0eb4fb8a64d92747aa9c557b4c3cafca945802cd"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/anacrolix/dht"
+  packages = [".","krpc"]
+  revision = "0f2c5cd8da39f173f4337a5b40fa58f0b8a099d4"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/missinggo"
-  packages = [".","assert","inproc","pproffd"]
-  revision = "87aae9c529891d465611bc99b63e1e673a73f1ae"
+  packages = [".","inproc","pproffd","slices"]
+  revision = "f32f2dc367fb4fc0167b83145459f567abd59c49"
 
 [[projects]]
   branch = "master"
@@ -27,15 +33,27 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/anacrolix/torrent"
+  packages = ["bencode","iplist","logonce","metainfo"]
+  revision = "5a7c4fc135eda0996079a46b43bc0ee8116d7093"
+
+[[projects]]
+  branch = "master"
   name = "github.com/anacrolix/utp"
   packages = ["."]
-  revision = "87ba7933b8d7520e5e6e27460e25e42c2fccab9f"
+  revision = "9e0e1d1d0572f5a09a669d4ea0372d8e8078dcc9"
 
 [[projects]]
   branch = "master"
   name = "github.com/aybabtme/color"
   packages = [".","brush"]
   revision = "28ad4cc941d69a60df8d0af1233fd5a2793c2801"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/bradfitz/iter"
+  packages = ["."]
+  revision = "454541ec3da2a73fc34fd049b19ee5777bf19345"
 
 [[projects]]
   branch = "master"
@@ -63,21 +81,15 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/golang/glog"
+  name = "github.com/edsrzf/mmap-go"
   packages = ["."]
-  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/golang/groupcache"
-  packages = ["lru"]
-  revision = "84a468cf14b4376def5d68c722b139b881c450a4"
+  revision = "0bce6a6887123b67a60366d2c9fe2dfb74289d2e"
 
 [[projects]]
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "1e59b77b52bf8e4b449a57e6f79f21226d571845"
+  revision = "bbd03ef6da3a115852eaf24c8a1c46aeb39aa175"
 
 [[projects]]
   branch = "master"
@@ -89,19 +101,13 @@
   branch = "master"
   name = "github.com/hashicorp/golang-lru"
   packages = [".","simplelru"]
-  revision = "0a025b7e63adc15a622f29b0b2c4c3848243bbf6"
+  revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/framed"
   packages = ["."]
   revision = "89d391c9e037b3e26186779264ccc69a1036566e"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/iain17/freeport"
-  packages = ["."]
-  revision = "a39186c51499dad93b1b5220f04c888ff95fce8d"
 
 [[projects]]
   branch = "master"
@@ -122,34 +128,16 @@
   revision = "648cd1776b0827c6fe51effa719a67eca6dae3f1"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/jackpal/bencode-go"
-  packages = ["."]
-  revision = "8b8d9a9b37fcd43f365439810d725081b114af68"
-
-[[projects]]
   name = "github.com/miekg/dns"
   packages = ["."]
-  revision = "5ec25f2a5044291b6c8abf43ed8a201da241e69e"
-  version = "v1.0.3"
+  revision = "5364553f1ee9cddc7ac8b62dce148309c386695b"
+  version = "v1.0.4"
 
 [[projects]]
   branch = "master"
   name = "github.com/miolini/upnp"
   packages = ["."]
   revision = "5a16783aedfedeb1de52eeee4d015f04190b37d0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/nictuku/dht"
-  packages = ["."]
-  revision = "f929f301e23c84bb4ddaac58b92588d88237a38c"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/nictuku/nettools"
-  packages = ["."]
-  revision = "8867a2107ad3a0998e2d36c67ed2115d9a399df8"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -176,10 +164,16 @@
   revision = "e180dbdc8da04c4fa04272e875ce64949f38bd3e"
 
 [[projects]]
+  name = "github.com/spaolacci/murmur3"
+  packages = ["."]
+  revision = "9f5d223c60793748f04a9d5b4b4eacddfc1f755d"
+  version = "v1.1"
+
+[[projects]]
   name = "github.com/stretchr/testify"
   packages = ["assert"]
-  revision = "b91bfb9ebec76498946beb6af7c0230c7cc7ba6c"
-  version = "v1.2.0"
+  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
+  version = "v1.2.1"
 
 [[projects]]
   name = "github.com/thoj/go-ircevent"
@@ -188,26 +182,32 @@
   version = "0.1"
 
 [[projects]]
-  name = "github.com/youtube/vitess"
-  packages = ["go/cache"]
-  revision = "89cc312b4da3004d3b5382cf2b37d70e901b1c36"
-  version = "v2.1.1"
+  name = "github.com/willf/bitset"
+  packages = ["."]
+  revision = "d860f346b89450988a379d7d705e83c58d1ea227"
+  version = "v1.1.3"
+
+[[projects]]
+  name = "github.com/willf/bloom"
+  packages = ["."]
+  revision = "54e3b963ee1652b06c4562cb9b6020ebc6e36e59"
+  version = "v2.0.3"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "13931e22f9e72ea58bb73048bc752b48c6d4d4ac"
+  revision = "b4956d363a8b14623cc81db401707679605930a3"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["bpf","context","internal/iana","internal/socket","ipv4","ipv6"]
-  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
+  revision = "e0c57d8f86c17f0724497efcb3bc617e82834821"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cd57a11c35a8827fd5b781f774fc4720316c76a45389af7fe4e3a0699bc48e67"
+  inputs-digest = "1ef2fb195a4e80610f858d33e29020324ef190a27469d94445d55e9f6618ab7a"
   solver-name = "gps-cdcl"
   solver-version = 1

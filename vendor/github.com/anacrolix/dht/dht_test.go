@@ -21,19 +21,19 @@ func TestSetNilBigInt(t *testing.T) {
 }
 
 func TestMarshalCompactNodeInfo(t *testing.T) {
-	cni := krpc.NodeInfo{
+	cni := krpc.CompactIPv4NodeInfo{krpc.NodeInfo{
 		ID: [20]byte{'a', 'b', 'c'},
-	}
+	}}
 	addr, err := net.ResolveUDPAddr("udp4", "1.2.3.4:5")
 	require.NoError(t, err)
-	cni.Addr = addr
-	var b [krpc.CompactIPv4NodeInfoLen]byte
-	err = cni.PutCompact(b[:])
+	cni[0].Addr.FromUDPAddr(addr)
+	cni[0].Addr.IP = cni[0].Addr.IP.To4()
+	b, err := cni.MarshalBinary()
 	require.NoError(t, err)
 	var bb [26]byte
 	copy(bb[:], []byte("abc"))
 	copy(bb[20:], []byte("\x01\x02\x03\x04\x00\x05"))
-	assert.EqualValues(t, bb, b)
+	assert.EqualValues(t, string(bb[:]), string(b))
 }
 
 const zeroID = "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
@@ -214,4 +214,14 @@ func TestResolveBadAddr(t *testing.T) {
 	ua, err := net.ResolveUDPAddr("udp", "0.131.255.145:33085")
 	require.NoError(t, err)
 	assert.False(t, validNodeAddr(NewAddr(ua)))
+}
+
+func TestGlobalBootstrapAddrs(t *testing.T) {
+	addrs, err := GlobalBootstrapAddrs()
+	if err != nil {
+		t.Skip(err)
+	}
+	for _, a := range addrs {
+		t.Log(a)
+	}
 }

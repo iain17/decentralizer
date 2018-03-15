@@ -17,15 +17,16 @@ func TestStore_FindByPeerId(t *testing.T) {
 	assert.NoError(t, err)
 	store, err := New(ctx,10, 1*time.Hour, self, "")
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	a := &pb.Peer{
 		DnId: 1,
 		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
 			"hey": "ho",
 		},
-	})
+	}
+	err = store.Insert(a)
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 2,
 		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
@@ -34,6 +35,7 @@ func TestStore_FindByPeerId(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	peer, err := store.FindByPeerId("QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ")
+	assert.Equal(t, a, peer)
 	assert.NoError(t, err)
 	assert.NotNil(t, peer)
 	assert.Equal(t, peer.PId, "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ")
@@ -47,7 +49,7 @@ func TestStore_Expire(t *testing.T) {
 	assert.NoError(t, err)
 	store, err := New(ctx, 10, 1*time.Second, self, "")
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 1,
 		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
@@ -72,7 +74,7 @@ func TestStore_Limit(t *testing.T) {
 	assert.NoError(t, err)
 	store, err := New(ctx,1, 2*time.Hour, self, "")
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 1,
 		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
@@ -80,7 +82,7 @@ func TestStore_Limit(t *testing.T) {
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 2,
 		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
@@ -102,7 +104,7 @@ func TestStore_Self(t *testing.T) {
 	assert.NoError(t, err)
 	store, err := New(ctx,1, 2*time.Hour, self, "")
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 1,
 		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
@@ -110,7 +112,7 @@ func TestStore_Self(t *testing.T) {
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 2,
 		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{
@@ -118,7 +120,7 @@ func TestStore_Self(t *testing.T) {
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 1,
 		PId:  "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381",
 		Details: map[string]string{
@@ -143,7 +145,7 @@ func TestStore_FindByDetails(t *testing.T) {
 	assert.NoError(t, err)
 	store, err := New(ctx,10, 1*time.Hour, self, "")
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 1,
 		PId:  "QmXjGNgJsaktGo7k6h8sBg9zt7fgNC8Rq9JaREVg4QKwuZ",
 		Details: map[string]string{
@@ -151,7 +153,7 @@ func TestStore_FindByDetails(t *testing.T) {
 		},
 	})
 	assert.NoError(t, err)
-	err = store.Upsert(&pb.Peer{
+	err = store.Insert(&pb.Peer{
 		DnId: 2,
 		PId:  "QmQc35EXfiSzJntQUuX8ExpEo6z7PQRriDVnSrtXsNVAdR",
 		Details: map[string]string{

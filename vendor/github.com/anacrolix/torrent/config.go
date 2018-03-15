@@ -77,8 +77,10 @@ type Config struct {
 
 	EncryptionPolicy
 
-	IPBlocklist iplist.Ranger
-	DisableIPv6 bool `long:"disable-ipv6"`
+	IPBlocklist      iplist.Ranger
+	DisableIPv6      bool `long:"disable-ipv6"`
+	DisableIPv4      bool
+	DisableIPv4Peers bool
 	// Perform logging and any other behaviour that will help debug.
 	Debug bool `help:"enable debugging"`
 
@@ -128,16 +130,17 @@ func (cfg *Config) setDefaults() {
 		cfg.MinDialTimeout = 5 * time.Second
 	}
 	if cfg.EstablishedConnsPerTorrent == 0 {
-		cfg.EstablishedConnsPerTorrent = 80
+		cfg.EstablishedConnsPerTorrent = 50
 	}
 	if cfg.HalfOpenConnsPerTorrent == 0 {
-		cfg.HalfOpenConnsPerTorrent = 80
+		cfg.HalfOpenConnsPerTorrent = (cfg.EstablishedConnsPerTorrent + 1) / 2
 	}
 	if cfg.TorrentPeersHighWater == 0 {
-		cfg.TorrentPeersHighWater = 200
+		// Memory and freshness are the concern here.
+		cfg.TorrentPeersHighWater = 500
 	}
 	if cfg.TorrentPeersLowWater == 0 {
-		cfg.TorrentPeersLowWater = 50
+		cfg.TorrentPeersLowWater = 2 * cfg.HalfOpenConnsPerTorrent
 	}
 	if cfg.HandshakesTimeout == 0 {
 		cfg.HandshakesTimeout = 20 * time.Second

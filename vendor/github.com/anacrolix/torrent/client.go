@@ -2,22 +2,22 @@ package torrent
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"crypto/rand"
+	"encoding/binary"
 	"errors"
 	"expvar"
 	"fmt"
 	"io"
 	"net"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/anacrolix/log"
-
 	"github.com/anacrolix/dht"
 	"github.com/anacrolix/dht/krpc"
+	"github.com/anacrolix/log"
 	"github.com/anacrolix/missinggo"
 	"github.com/anacrolix/missinggo/pproffd"
 	"github.com/anacrolix/missinggo/pubsub"
@@ -122,6 +122,7 @@ func (cl *Client) WriteStatus(_w io.Writer) {
 		fmt.Fprintln(w, "Not listening!")
 	}
 	fmt.Fprintf(w, "Peer ID: %+q\n", cl.PeerID())
+	fmt.Fprintf(w, "Announce key: %x\n", cl.announceKey())
 	fmt.Fprintf(w, "Banned IPs: %d\n", len(cl.badPeerIPsLocked()))
 	if dht := cl.DHT(); dht != nil {
 		dhtStats := dht.Stats()
@@ -237,6 +238,10 @@ func (cl *Client) initLogger() {
 	cl.logger = log.Default.Clone().AddValue(cl).AddFilter(log.NewFilter(cl.debugLogFilter))
 }
 
+func (cl *Client) announceKey() int32 {
+	return int32(binary.BigEndian.Uint32(cl.peerID[16:20]))
+}
+
 // Creates a new client.
 func NewClient(cfg *Config) (cl *Client, err error) {
 	if cfg == nil {
@@ -279,7 +284,7 @@ func NewClient(cfg *Config) (cl *Client, err error) {
 	} else {
 		cl.downloadLimit = cfg.DownloadRateLimiter
 	}
-	missinggo.CopyExact(&cl.extensionBytes, defaultExtensionBytes)
+	cl.extensionBytes = defaultPeerExtensionBytes()
 	cl.event.L = &cl.mu
 	storageImpl := cfg.DefaultStorage
 	if storageImpl == nil {
@@ -309,13 +314,10 @@ func NewClient(cfg *Config) (cl *Client, err error) {
 	cl.tcpListener, cl.utpSock, cl.listenAddr, err = listen(
 		!cl.config.DisableTCP,
 		!cl.config.DisableUTP,
-		func() string {
-			if cl.config.DisableIPv6 {
-				return "4"
-			} else {
-				return ""
-			}
-		}(),
+		// We'll listen to IPv4 for TCP even if IPv4 peer connections are
+		// disabled because we want to ensure peers don't connect to some
+		// other process on that port.
+		ipNetworkSuffix(!cl.config.DisableIPv4, !cl.config.DisableIPv6),
 		cl.config.ListenAddr)
 	if err != nil {
 		return
@@ -368,6 +370,12 @@ func firstNonEmptyString(ss ...string) string {
 	return ""
 }
 
+func (cl *Client) Closed() <-chan struct{} {
+	cl.mu.Lock()
+	defer cl.mu.Unlock()
+	return cl.closed.C()
+}
+
 // Stops the client. All connections to peers are closed and all activity will
 // come to a halt.
 func (cl *Client) Close() {
@@ -392,24 +400,16 @@ func (cl *Client) Close() {
 	cl.event.Broadcast()
 }
 
-var ipv6BlockRange = iplist.Range{Description: "non-IPv4 address"}
-
 func (cl *Client) ipBlockRange(ip net.IP) (r iplist.Range, blocked bool) {
 	if cl.ipBlockList == nil {
 		return
 	}
-	ip4 := ip.To4()
-	// If blocklists are enabled, then block non-IPv4 addresses, because
-	// blocklists do not yet support IPv6.
-	if ip4 == nil {
-		if missinggo.CryHeard() {
-			log.Printf("blocking non-IPv4 address: %s", ip)
-		}
-		r = ipv6BlockRange
-		blocked = true
-		return
-	}
-	return cl.ipBlockList.Lookup(ip4)
+	return cl.ipBlockList.Lookup(ip)
+}
+
+func (cl *Client) ipIsBlocked(ip net.IP) bool {
+	_, blocked := cl.ipBlockRange(ip)
+	return blocked
 }
 
 func (cl *Client) waitAccept() {
@@ -424,6 +424,21 @@ func (cl *Client) waitAccept() {
 		}
 		cl.event.Wait()
 	}
+}
+
+func (cl *Client) rejectAccepted(conn net.Conn) bool {
+	ra := conn.RemoteAddr()
+	rip := missinggo.AddrIP(ra)
+	if cl.config.DisableIPv4Peers && rip.To4() != nil {
+		return true
+	}
+	if cl.config.DisableIPv4 && len(rip) == net.IPv4len {
+		return true
+	}
+	if cl.config.DisableIPv6 && len(rip) == net.IPv6len && rip.To4() == nil {
+		return true
+	}
+	return cl.badPeerIPPort(rip, missinggo.AddrPort(ra))
 }
 
 func (cl *Client) acceptConnections(l net.Listener, utp bool) {
@@ -447,26 +462,20 @@ func (cl *Client) acceptConnections(l net.Listener, utp bool) {
 			// routine just fucked off.
 			return
 		}
+		log.Fmsg("accepted connection from %s", conn.RemoteAddr()).AddValue(debugLogValue).Log(cl.logger)
+		go torrent.Add(fmt.Sprintf("accepted conn remote IP len=%d", len(missinggo.AddrIP(conn.RemoteAddr()))), 1)
+		go torrent.Add(fmt.Sprintf("accepted conn network=%s", conn.RemoteAddr().Network()), 1)
 		if utp {
-			acceptUTP.Add(1)
+			go torrent.Add("accepted utp connections", 1)
 		} else {
-			acceptTCP.Add(1)
+			go torrent.Add("accepted tcp connections", 1)
 		}
-		if cl.config.Debug {
-			log.Printf("accepted connection from %s", conn.RemoteAddr())
-		}
-		reject := cl.badPeerIPPort(
-			missinggo.AddrIP(conn.RemoteAddr()),
-			missinggo.AddrPort(conn.RemoteAddr()))
-		if reject {
-			if cl.config.Debug {
-				log.Printf("rejecting connection from %s", conn.RemoteAddr())
-			}
-			acceptReject.Add(1)
+		if cl.rejectAccepted(conn) {
+			go torrent.Add("rejected accepted connections", 1)
 			conn.Close()
-			continue
+		} else {
+			go cl.incomingConnection(conn, utp)
 		}
-		go cl.incomingConnection(conn, utp)
 	}
 }
 
@@ -520,28 +529,14 @@ func (cl *Client) dopplegangerAddr(addr string) bool {
 	return ok
 }
 
-// Start the process of connecting to the given peer for the given torrent if
-// appropriate.
-func (cl *Client) initiateConn(peer Peer, t *Torrent) {
-	if peer.Id == cl.peerID {
-		return
-	}
-	if cl.badPeerIPPort(peer.IP, peer.Port) {
-		return
-	}
-	addr := net.JoinHostPort(peer.IP.String(), fmt.Sprintf("%d", peer.Port))
-	if t.addrActive(addr) {
-		return
-	}
-	t.halfOpen[addr] = peer
-	go cl.outgoingConnection(t, addr, peer.Source)
-}
-
 func (cl *Client) dialTCP(ctx context.Context, addr string) (c net.Conn, err error) {
 	d := net.Dialer{
-		// LocalAddr: cl.tcpListener.Addr(),
+	// Can't bind to the listen address, even though we intend to create an
+	// endpoint pair that is distinct. Oh well.
+
+	// LocalAddr: cl.tcpListener.Addr(),
 	}
-	c, err = d.DialContext(ctx, "tcp", addr)
+	c, err = d.DialContext(ctx, "tcp"+ipNetworkSuffix(!cl.config.DisableIPv4 && !cl.config.DisableIPv4Peers, !cl.config.DisableIPv6), addr)
 	countDialResult(err)
 	if err == nil {
 		c.(*net.TCPConn).SetLinger(0)
@@ -550,8 +545,37 @@ func (cl *Client) dialTCP(ctx context.Context, addr string) (c net.Conn, err err
 	return
 }
 
+func (cl *Client) utpDialNetwork() string {
+	// We want to restrict the addr resolve inside the utp library to the
+	// correct network, since the utp Socket may be listening to a broader
+	// network for DHT purposes or otherwise.
+	if !cl.config.DisableIPv4Peers {
+		return ""
+	}
+	n := cl.utpSock.Addr().Network()
+	switch n {
+	case "udp", "udp4", "udp6":
+		return "udp6"
+	default:
+		panic(n)
+	}
+}
+
+func ipNetworkSuffix(allowIpv4, allowIpv6 bool) string {
+	switch {
+	case allowIpv4 && allowIpv6:
+		return ""
+	case allowIpv4 && !allowIpv6:
+		return "4"
+	case !allowIpv4 && allowIpv6:
+		return "6"
+	default:
+		panic("unhandled ip network combination")
+	}
+}
+
 func (cl *Client) dialUTP(ctx context.Context, addr string) (c net.Conn, err error) {
-	c, err = cl.utpSock.DialContext(ctx, addr)
+	c, err = cl.utpSock.DialContext(ctx, cl.utpDialNetwork(), addr)
 	countDialResult(err)
 	return
 }
@@ -615,7 +639,7 @@ func (cl *Client) noLongerHalfOpen(t *Torrent, addr string) {
 		panic("invariant broken")
 	}
 	delete(t.halfOpen, addr)
-	cl.openNewConns(t)
+	t.openNewConns()
 }
 
 // Performs initiator handshakes and returns a connection. Returns nil
@@ -715,7 +739,7 @@ func (cl *Client) outgoingConnection(t *Torrent, addr string, ps peerSource) {
 	}
 	defer c.Close()
 	c.Discovery = ps
-	cl.runInitiatedHandshookConn(c, t)
+	cl.runHandshookConn(c, t, true)
 }
 
 // The port number for incoming peer connections. 0 if the client isn't
@@ -734,14 +758,14 @@ func (cl *Client) incomingPeerPort() int {
 func (cl *Client) initiateHandshakes(c *connection, t *Torrent) (ok bool, err error) {
 	if c.headerEncrypted {
 		var rw io.ReadWriter
-		rw, err = mse.InitiateHandshake(
+		rw, c.cryptoMethod, err = mse.InitiateHandshake(
 			struct {
 				io.Reader
 				io.Writer
 			}{c.r, c.w},
 			t.infoHash[:],
 			nil,
-			func() uint32 {
+			func() mse.CryptoMethod {
 				switch {
 				case cl.config.ForceEncryption:
 					return mse.CryptoMethodRC4
@@ -817,16 +841,6 @@ func (cl *Client) connBTHandshake(c *connection, ih *metainfo.Hash) (ret metainf
 	return
 }
 
-func (cl *Client) runInitiatedHandshookConn(c *connection, t *Torrent) {
-	if c.PeerID == cl.peerID {
-		connsToSelf.Add(1)
-		addr := c.conn.RemoteAddr().String()
-		cl.dopplegangerAddrs[addr] = struct{}{}
-		return
-	}
-	cl.runHandshookConn(c, t, true)
-}
-
 func (cl *Client) runReceivedConn(c *connection) {
 	err := c.conn.SetDeadline(time.Now().Add(cl.config.HandshakesTimeout))
 	if err != nil {
@@ -844,20 +858,30 @@ func (cl *Client) runReceivedConn(c *connection) {
 	}
 	cl.mu.Lock()
 	defer cl.mu.Unlock()
-	if c.PeerID == cl.peerID {
-		// Because the remote address is not necessarily the same as its
-		// client's torrent listen address, we won't record the remote address
-		// as a doppleganger. Instead, the initiator can record *us* as the
-		// doppleganger.
-		return
-	}
 	cl.runHandshookConn(c, t, false)
 }
 
 func (cl *Client) runHandshookConn(c *connection, t *Torrent, outgoing bool) {
+	t.reconcileHandshakeStats(c)
+	if c.PeerID == cl.peerID {
+		if outgoing {
+			connsToSelf.Add(1)
+			addr := c.conn.RemoteAddr().String()
+			cl.dopplegangerAddrs[addr] = struct{}{}
+		} else {
+			// Because the remote address is not necessarily the same as its
+			// client's torrent listen address, we won't record the remote address
+			// as a doppleganger. Instead, the initiator can record *us* as the
+			// doppleganger.
+		}
+		return
+	}
 	c.conn.SetWriteDeadline(time.Time{})
 	c.r = deadlineReader{c.conn, c.r}
 	completedHandshakeConnectionFlags.Add(c.connectionFlags(), 1)
+	if connIsIpv6(c.conn) {
+		torrent.Add("completed handshake over ipv6", 1)
+	}
 	if !t.addConnection(c, outgoing) {
 		return
 	}
@@ -871,6 +895,20 @@ func (cl *Client) runHandshookConn(c *connection, t *Torrent, outgoing bool) {
 }
 
 func (cl *Client) sendInitialMessages(conn *connection, torrent *Torrent) {
+	func() {
+		if conn.fastEnabled() {
+			if torrent.haveAllPieces() {
+				conn.Post(pp.Message{Type: pp.HaveAll})
+				conn.sentHaves.AddRange(0, conn.t.NumPieces())
+				return
+			} else if !torrent.haveAnyPieces() {
+				conn.Post(pp.Message{Type: pp.HaveNone})
+				conn.sentHaves.Clear()
+				return
+			}
+		}
+		conn.PostBitfield()
+	}()
 	if conn.PeerExtensionBytes.SupportsExtended() && cl.extensionBytes.SupportsExtended() {
 		conn.Post(pp.Message{
 			Type:       pp.Extended,
@@ -913,13 +951,6 @@ func (cl *Client) sendInitialMessages(conn *connection, torrent *Torrent) {
 			}(),
 		})
 	}
-	if torrent.haveAnyPieces() {
-		conn.Bitfield(torrent.bitfield())
-	} else if cl.extensionBytes.SupportsFast() && conn.PeerExtensionBytes.SupportsFast() {
-		conn.Post(pp.Message{
-			Type: pp.HaveNone,
-		})
-	}
 	if conn.PeerExtensionBytes.SupportsDHT() && cl.extensionBytes.SupportsDHT() && cl.dHT != nil {
 		conn.Post(pp.Message{
 			Type: pp.Port,
@@ -932,8 +963,9 @@ func (cl *Client) sendInitialMessages(conn *connection, torrent *Torrent) {
 func (cl *Client) gotMetadataExtensionMsg(payload []byte, t *Torrent, c *connection) error {
 	var d map[string]int
 	err := bencode.Unmarshal(payload, &d)
-	if err != nil {
-		return fmt.Errorf("error unmarshalling payload: %s: %q", err, payload)
+	if _, ok := err.(bencode.ErrUnusedTrailingBytes); ok {
+	} else if err != nil {
+		return fmt.Errorf("error unmarshalling bencode: %s", err)
 	}
 	msgType, ok := d["msg_type"]
 	if !ok {
@@ -951,7 +983,8 @@ func (cl *Client) gotMetadataExtensionMsg(payload []byte, t *Torrent, c *connect
 			return fmt.Errorf("data has bad offset in payload: %d", begin)
 		}
 		t.saveMetadataPiece(piece, payload[begin:])
-		c.UsefulChunksReceived++
+		c.stats.ChunksReadUseful++
+		c.t.stats.ChunksReadUseful++
 		c.lastUsefulChunkReceived = time.Now()
 		return t.maybeCompleteMetadata()
 	case pp.RequestMetadataExtensionMsgType:
@@ -966,52 +999,6 @@ func (cl *Client) gotMetadataExtensionMsg(payload []byte, t *Torrent, c *connect
 		return nil
 	default:
 		return errors.New("unknown msg_type value")
-	}
-}
-
-func (cl *Client) sendChunk(t *Torrent, c *connection, r request, msg func(pp.Message) bool) (more bool, err error) {
-	// Count the chunk being sent, even if it isn't.
-	b := make([]byte, r.Length)
-	p := t.info.Piece(int(r.Index))
-	n, err := t.readAt(b, p.Offset()+int64(r.Begin))
-	if n != len(b) {
-		if err == nil {
-			panic("expected error")
-		}
-		return
-	} else if err == io.EOF {
-		err = nil
-	}
-	more = msg(pp.Message{
-		Type:  pp.Piece,
-		Index: r.Index,
-		Begin: r.Begin,
-		Piece: b,
-	})
-	c.chunksSent++
-	uploadChunksPosted.Add(1)
-	c.lastChunkSent = time.Now()
-	return
-}
-
-func (cl *Client) openNewConns(t *Torrent) {
-	defer t.updateWantPeersEvent()
-	for len(t.peers) != 0 {
-		if !t.wantConns() {
-			return
-		}
-		if len(t.halfOpen) >= cl.halfOpenLimit {
-			return
-		}
-		var (
-			k peersKey
-			p Peer
-		)
-		for k, p = range t.peers {
-			break
-		}
-		delete(t.peers, k)
-		cl.initiateConn(p, t)
 	}
 }
 
@@ -1137,36 +1124,12 @@ func (cl *Client) dropTorrent(infoHash metainfo.Hash) (err error) {
 	return
 }
 
-func (cl *Client) prepareTrackerAnnounceUnlocked(announceURL string) (blocked bool, urlToUse string, host string, err error) {
-	_url, err := url.Parse(announceURL)
-	if err != nil {
-		return
-	}
-	hmp := missinggo.SplitHostMaybePort(_url.Host)
-	if hmp.Err != nil {
-		err = hmp.Err
-		return
-	}
-	addr, err := net.ResolveIPAddr("ip", hmp.Host)
-	if err != nil {
-		return
-	}
-	cl.mu.RLock()
-	_, blocked = cl.ipBlockRange(addr.IP)
-	cl.mu.RUnlock()
-	host = _url.Host
-	hmp.Host = addr.String()
-	_url.Host = hmp.String()
-	urlToUse = _url.String()
-	return
-}
-
 func (cl *Client) allTorrentsCompleted() bool {
 	for _, t := range cl.torrents {
 		if !t.haveInfo() {
 			return false
 		}
-		if t.numPiecesCompleted() != t.numPieces() {
+		if !t.haveAllPieces() {
 			return false
 		}
 	}
@@ -1242,7 +1205,7 @@ func (cl *Client) AddDHTNodes(nodes []string) {
 			continue
 		}
 		ni := krpc.NodeInfo{
-			Addr: &net.UDPAddr{
+			Addr: krpc.NodeAddr{
 				IP:   ip,
 				Port: hmp.Port,
 			},
@@ -1260,11 +1223,11 @@ func (cl *Client) banPeerIP(ip net.IP) {
 
 func (cl *Client) newConnection(nc net.Conn) (c *connection) {
 	c = &connection{
-		conn: nc,
-
+		conn:            nc,
 		Choked:          true,
 		PeerChoked:      true,
 		PeerMaxRequests: 250,
+		writeBuffer:     new(bytes.Buffer),
 	}
 	c.writerCond.L = &cl.mu
 	c.setRW(connStatsReadWriter{nc, &cl.mu, c})

@@ -8,7 +8,7 @@ import (
 
 const USE_OWN_BOOTSTRAPPING = true//If set to false. We join the public IPFS network.
 const MAX_DISCOVERED_PEERS = 30
-var MIN_CONNECTED_PEERS = 1//40
+var MIN_CONNECTED_PEERS = 2//40
 const DELIMITER_ADDR = ";;"
 var EXPIRE_TIME_SESSION = 30 * time.Minute
 const MAX_SESSIONS = 1000

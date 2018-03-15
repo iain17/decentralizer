@@ -80,7 +80,7 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 	if d.d == nil {
 		return nil
 	}
-	logger.Info("Bootstrapping")
+	//logger.Info("Bootstrapping")
 	d.setInfo()
 	var peers []pstore.PeerInfo
 	connected := 0
@@ -105,7 +105,7 @@ func (d *Decentralizer) discover() []pstore.PeerInfo {
 			}
 		}
 	}
-	logger.Infof("Bootstrapped %d peers. We are connected to %d of those. Total connections: %d", len(peers), connected, len(d.i.PeerHost.Network().Peers()))
+	logger.Debugf("Bootstrapped %d peers. We are connected to %d of those. Total connections: %d", len(peers), connected, len(d.i.PeerHost.Network().Peers()))
 	return peers
 }
 

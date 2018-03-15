@@ -11,15 +11,19 @@ import (
 	"context"
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
+	"sync"
 )
 
 type Store struct {
-	self       libp2pPeer.ID
+	selfId 		libp2pPeer.ID
+	Self		*pb.Peer
+	SelfMutex	sync.RWMutex
+
 	db         *memdb.MemDB
 	sessionIds *lru.LruWithTTL
 	expireAt   time.Duration
-	changed     bool
-	path	   string
+	Changed    bool
+	path       string
 }
 
 const TABLE = "peers"
@@ -49,13 +53,13 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID, path string) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, selfId libp2pPeer.ID, path string) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
 	}
 	instance := &Store{
-		self:     self,
+		selfId:   selfId,
 		db:       db,
 		expireAt: expireAt,
 		path: path,
@@ -78,9 +82,9 @@ func (s *Store) restore() {
 		return
 	}
 	for _, peer := range addressbook.Peers {
-		err = s.Upsert(peer)
+		err = s.Insert(peer)
 		if err != nil {
-			logger.Warningf("Error saving peer: %s", peer.PId)
+			logger.Warningf("Error saving peer %s: %s", peer.PId, err.Error())
 			continue
 		}
 	}
@@ -88,7 +92,11 @@ func (s *Store) restore() {
 }
 
 func (s *Store) Save() {
-	if !s.changed {
+	if !s.Changed {
+		return
+	}
+	s.Changed = false
+	if s.path == "" {
 		return
 	}
 	peers, err := s.FindAll()
@@ -108,13 +116,12 @@ func (s *Store) Save() {
 		logger.Warningf("Could not save peer store: %v", err)
 		return
 	}
-	s.changed = false
 	logger.Info("Saved peer store")
 }
 
 func (s *Store) decodeId(id string) (libp2pPeer.ID, error) {
 	if id == "self" {
-		return s.self, nil
+		return s.selfId, nil
 	}
 	return libp2pPeer.IDB58Decode(id)
 }
@@ -134,8 +141,10 @@ func (s *Store) onEvicted(key interface{}, value interface{}) {
 		}
 	}()
 }
-
-func (s *Store) Upsert(info *pb.Peer) error {
+/**
+Inserts a record. Takes a pointer peer. This pointer value is directly saved, meaning changes to this object will also change the value in the db.
+ */
+func (s *Store) Insert(info *pb.Peer) error {
 	if info == nil {
 		return errors.New("peer info not defined")
 	}
@@ -144,13 +153,18 @@ func (s *Store) Upsert(info *pb.Peer) error {
 		return err
 	}
 	info.PId, info.DnId = PeerToDnId(peerId)
+	//TODO: Remove later
+	existingPeer, _ := s.FindByPeerId(info.PId)
+	if existingPeer != nil {
+		panic("Trying to insert duplicate item...")
+	}
 	txn := s.db.Txn(true)
 	defer txn.Commit()
 	err = txn.Insert(TABLE, info)
-	if err == nil && info.PId != s.self.Pretty() {
+	if err == nil && info.PId != s.selfId.Pretty() {
 		s.sessionIds.AddWithTTL(info.PId, true, s.expireAt)
 	}
-	s.changed = true
+	s.Changed = true
 	return err
 }
 
@@ -219,6 +233,9 @@ func (s *Store) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer, error) 
 }
 
 func (s *Store) FindByPeerId(peerId string) (*pb.Peer, error) {
+	if s.Self != nil && peerId == "self" {
+		return s.Self, nil
+	}
 	id, err := s.decodeId(peerId)
 	if err != nil {
 		return nil, err

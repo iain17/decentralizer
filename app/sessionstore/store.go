@@ -80,9 +80,12 @@ func (s *Store) restore() {
 		return
 	}
 	for _, session := range store.Sessions {
+		if session.PId == s.self.Pretty() {
+			continue
+		}
 		_, err = s.Insert(session)
 		if err != nil {
-			logger.Warningf("Error saving session: %s", session.PId)
+			logger.Warningf("Error saving session %s: %s", session.PId, err.Error())
 			continue
 		}
 	}
@@ -91,6 +94,10 @@ func (s *Store) restore() {
 
 func (s *Store) Save() {
 	if !s.changed {
+		return
+	}
+	s.changed = false
+	if s.path == "" {
 		return
 	}
 	sessions, err := s.FindAll()
@@ -110,7 +117,6 @@ func (s *Store) Save() {
 		logger.Warningf("Could not save session store: %v", err)
 		return
 	}
-	s.changed = false
 	logger.Info("Saved session store")
 }
 
@@ -188,6 +194,7 @@ func (s *Store) Insert(info *pb.Session) (uint64, error) {
 			s.sessionIds.Add(info.SessionId, false)
 		}
 	}
+	s.changed = true
 	return info.SessionId, err
 }
 

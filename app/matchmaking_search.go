@@ -38,6 +38,7 @@ func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*sea
 	}
 	go instance.connectToProviders()
 	d.cron.Every(30).Seconds().Do(instance.search)
+	d.cron.Every(30).Seconds().Do(storage.Save)
 	return instance, nil
 }
 
@@ -92,7 +93,10 @@ func (s *search) run(ctx context.Context) error {
 				continue
 			}
 			s.d.setSessionIdToType(session.SessionId, session.Type)
-			s.storage.Insert(session)
+			_, err := s.storage.Insert(session)
+			if err != nil {
+				logger.Warning(err)
+			}
 		}
 		if s.d.i.PeerHost.Network().Connectedness(value.From) == net.Connected {
 			s.d.sessionQueries <- sessionRequest{
@@ -162,5 +166,6 @@ func (s *search) fetch() (*sessionstore.Store, error) {
 		logger.Warning(err)
 		err = nil
 	}
+	s.storage.Save()
 	return s.storage, err
 }

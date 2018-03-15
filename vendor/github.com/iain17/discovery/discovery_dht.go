@@ -1,7 +1,7 @@
 package discovery
 
 import (
-	"github.com/iain17/dht"
+	"github.com/anacrolix/dht"
 	"context"
 	"time"
 	"net"

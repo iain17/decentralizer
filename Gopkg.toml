@@ -20,30 +20,13 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/ChrisLundquist/golang-lru"
-
 [[constraint]]
   branch = "master"
   name = "github.com/Pallinder/go-randomdata"
 
 [[constraint]]
   branch = "master"
-  name = "github.com/anacrolix/utp"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/c2h5oh/datasize"
-
-[[constraint]]
-  name = "github.com/ccding/go-stun"
-  version = "0.1.0"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/getlantern/framed"
 
 [[constraint]]
   branch = "master"
@@ -55,15 +38,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/grandcat/zeroconf"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/hashicorp/go-memdb"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/iain17/freeport"
 
 [[constraint]]
   branch = "master"
@@ -75,23 +50,11 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/miolini/upnp"
-
-[[constraint]]
-  name = "github.com/rs/xid"
-  version = "1.1.0"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/shibukawa/configdir"
 
 [[constraint]]
   name = "github.com/stretchr/testify"
   version = "1.1.4"
-
-[[constraint]]
-  name = "github.com/thoj/go-ircevent"
-  version = "0.1.0"
 
 [[constraint]]
   branch = "master"
@@ -100,11 +63,3 @@
 [[constraint]]
   name = "google.golang.org/grpc"
   version = "1.8.2"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/golang/glog"
-
-[[constraint]]
-  name = "github.com/youtube/vitess"
-  version = "2.1.1"

@@ -10,7 +10,7 @@ import (
 //
 // Create or update a peer. Takes peer info, returns if it was a success.
 func (s *Server) UpsertPeer(ctx context.Context, request *pb.RPCUpsertPeerRequest) (*pb.RPCUpsertPeerResponse, error) {
-	err := s.App.UpsertPeer(request.Peer.PId, request.Peer.Details)
+	_, err := s.App.UpsertPeer(request.Peer.PId, request.Peer.Details)
 	if err == nil && request.Peer.PId == "self" {
 		err = s.App.AdvertisePeerRecord()
 	}

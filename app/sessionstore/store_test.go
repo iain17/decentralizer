@@ -10,6 +10,42 @@ import (
 	"github.com/iain17/decentralizer/stime"
 )
 
+func TestSessionsStore_Unique(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
+	store, err := New(ctx,10, 1 * time.Hour, self, "")
+	assert.NoError(t, err)
+
+	_, err = store.Insert(&pb.Session {
+		Published: 1,
+		Address: 1,
+		Port: 1,
+		Type: 1,
+		PId: "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381",
+		Details: map[string]string{
+			"hey": "ho",
+		},
+	})
+	assert.NoError(t, err)
+	_, err = store.Insert(&pb.Session {
+		Published: 2,
+		Address: 1,
+		Port: 1,
+		Type: 1,
+		PId: "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381",
+		Details: map[string]string{
+			"hey": "ho",
+		},
+	})
+	assert.NoError(t, err)
+
+	sessions, err := store.FindAll()
+	assert.NoError(t, err)
+	assert.Len(t, sessions, 1)
+}
+
+
 func TestSessionsStore_FindByPeerId(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
