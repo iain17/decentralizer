@@ -107,13 +107,13 @@ func (nt *NetTableService) processNewConnection() {
 			}
 			nt.seen.AddWithTTL(key, true, COOLDOWN_CONNECTION)
 
-			nt.logger.Debugf("new potential peer %q discovered", host)
+			//nt.logger.Debugf("new potential peer %q discovered", host)
 
 			if err := nt.tryConnect(host); err != nil {
 				if err.Error() == "error at waiting for their peer info: EOF" {
 					nt.seen.Remove(key)
 				}
-				nt.logger.Debugf("unable connect %s err: %s", host, err)
+				//nt.logger.Debugf("unable connect %s err: %s", host, err)
 			}
 		}
 	}

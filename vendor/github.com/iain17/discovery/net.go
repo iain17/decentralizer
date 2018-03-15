@@ -12,7 +12,7 @@ import (
 func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	accepted := false
 
-	conn, errDial := ln.listenerService.socket.DialContext(ln.discovery.ctx, h.String())
+	conn, errDial := ln.listenerService.socket.DialContext(ln.discovery.ctx, "udp4", h.String())
 	defer func() {
 		//s.Close()
 		if !accepted && conn != nil{
