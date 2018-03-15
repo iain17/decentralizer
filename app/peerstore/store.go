@@ -18,8 +18,8 @@ type Store struct {
 	db         *memdb.MemDB
 	sessionIds *lru.LruWithTTL
 	expireAt   time.Duration
-	changed     bool
-	path	   string
+	Changed    bool
+	path       string
 }
 
 const TABLE = "peers"
@@ -78,7 +78,7 @@ func (s *Store) restore() {
 		return
 	}
 	for _, peer := range addressbook.Peers {
-		err = s.Upsert(peer)
+		err = s.Insert(peer)
 		if err != nil {
 			logger.Warningf("Error saving peer %s: %s", peer.PId, err.Error())
 			continue
@@ -88,7 +88,11 @@ func (s *Store) restore() {
 }
 
 func (s *Store) Save() {
-	if !s.changed {
+	if !s.Changed {
+		return
+	}
+	s.Changed = false
+	if s.path == "" {
 		return
 	}
 	peers, err := s.FindAll()
@@ -108,7 +112,6 @@ func (s *Store) Save() {
 		logger.Warningf("Could not save peer store: %v", err)
 		return
 	}
-	s.changed = false
 	logger.Info("Saved peer store")
 }
 
@@ -134,8 +137,10 @@ func (s *Store) onEvicted(key interface{}, value interface{}) {
 		}
 	}()
 }
-
-func (s *Store) Upsert(info *pb.Peer) error {
+/**
+Inserts a record. Takes a pointer peer. This pointer value is directly saved, meaning changes to this object will also change the value in the db.
+ */
+func (s *Store) Insert(info *pb.Peer) error {
 	if info == nil {
 		return errors.New("peer info not defined")
 	}
@@ -144,13 +149,18 @@ func (s *Store) Upsert(info *pb.Peer) error {
 		return err
 	}
 	info.PId, info.DnId = PeerToDnId(peerId)
+	//TODO: Remove later
+	existingPeer, _ := s.FindByPeerId(info.PId)
+	if existingPeer != nil {
+		panic("Trying to insert duplicate item...")
+	}
 	txn := s.db.Txn(true)
 	defer txn.Commit()
 	err = txn.Insert(TABLE, info)
 	if err == nil && info.PId != s.self.Pretty() {
 		s.sessionIds.AddWithTTL(info.PId, true, s.expireAt)
 	}
-	s.changed = true
+	s.Changed = true
 	return err
 }
 

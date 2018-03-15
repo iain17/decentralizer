@@ -96,6 +96,10 @@ func (s *Store) Save() {
 	if !s.changed {
 		return
 	}
+	s.changed = false
+	if s.path == "" {
+		return
+	}
 	sessions, err := s.FindAll()
 	if err != nil {
 		logger.Warningf("Could not save session store: %v", err)
@@ -113,7 +117,6 @@ func (s *Store) Save() {
 		logger.Warningf("Could not save session store: %v", err)
 		return
 	}
-	s.changed = false
 	logger.Info("Saved session store")
 }
 

@@ -15,7 +15,7 @@ func TestDecentralizer_FindSelf(t *testing.T) {
 	app1 := fakeNew(ctx, nodes[0], false)
 	assert.NotNil(t, app1)
 
-	err := app1.UpdateSelf(map[string]string{
+	_, err := app1.UpsertPeer("self", map[string]string{
 		"quote": "these violent delights have violent ends",
 	})
 	assert.NoError(t, err)
@@ -36,18 +36,18 @@ func TestDecentralizer_FindByPeerIdAndUpdate(t *testing.T) {
 	assert.NotNil(t, app2)
 
 	//Simple set
-	err := app1.UpdateSelf(map[string]string{
+	_, err := app1.UpsertPeer("self", map[string]string{
 		"quote": "these violent delights have cool beginnings",
 	})
 	assert.NoError(t, err)
 
-	//Update
-	err = app2.UpdateSelf(map[string]string{
+	//App 2 set and then update.
+	_, err = app2.UpsertPeer("self", map[string]string{
 		"quote": "these violent delights have violent ends",
 	})
 	assert.NoError(t, err)
-	err = app2.UpdateSelf(map[string]string{
-		"quote": "these violent delights have violent beginnings",
+	_, err = app2.UpsertPeer("self", map[string]string{
+		"quote": "these violent delights have interesting beginnings",
 	})
 
 	//Find myself app1 find app1.
@@ -63,7 +63,7 @@ func TestDecentralizer_FindByPeerIdAndUpdate(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, peer)
 	if peer != nil {
-		assert.Equal(t, "these violent delights have violent beginnings", peer.Details["quote"])
+		assert.Equal(t, "these violent delights have interesting beginnings", peer.Details["quote"])
 	}
 }
 
@@ -76,7 +76,7 @@ func TestDecentralizer_FindUnknownId(t *testing.T) {
 	app2 := fakeNew(ctx, nodes[3], false)
 	assert.NotNil(t, app2)
 
-	err := app2.UpdateSelf(map[string]string{
+	_, err := app2.UpsertPeer("self", map[string]string{
 		"quote": "these violent delights have violent ends",
 	})
 	assert.NoError(t, err)

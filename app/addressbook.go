@@ -106,48 +106,49 @@ func (d *Decentralizer) AdvertisePeerRecord() error {
 //Save our self at least in the address book.
 func (d *Decentralizer) saveSelf() error {
 	self, err := d.peers.FindByPeerId("self")
-	var details map[string]string
 	if err != nil {
-		details = map[string]string{}
-	} else {
-		details = self.Details
-	}
-	if details["name"] == "" {
-		details["name"] = randomdata.SillyName()
+		self, err = d.InsertPeer("self", map[string]string{
+			"name": randomdata.SillyName(),
+		})
+		if err != nil {
+			return fmt.Errorf("could no save self: %s", err.Error())
+		}
 	}
 	info, err := ipinfo.GetIpInfo()
 	if err != nil {
 		logger.Warningf("Could not find ip info for our session: %s", err)
 	}
 	if info != nil {
-		details["country"] = info.CountryCode
-		details["ip"] = info.Ip
+		self.Details["country"] = info.CountryCode
+		self.Details["ip"] = info.Ip
 	}
-
-	//Add self
-	err = d.UpsertPeer("self", details)
-	if err != nil {
-		return fmt.Errorf("could no save self: %s", err.Error())
-	}
+	d.peers.Changed = true
 	d.peers.Save()
 	return nil
 }
 
-func (d *Decentralizer) UpdateSelf(details map[string]string) error {
-	err := d.UpsertPeer("self", details)
+func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) (*pb.Peer, error) {
+	peer, err := d.peers.FindByPeerId(pId)
 	if err != nil {
-		return err
+		peer, err = d.InsertPeer(pId, details)
+	} else {
+		peer.Details = details
+		d.peers.Changed = true
+		d.peers.Save()
 	}
-	return d.AdvertisePeerRecord()
+	if d.i.Identity.Pretty() == peer.PId {
+		d.AdvertisePeerRecord()
+	}
+	return peer, err
 }
 
-func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) error {
-	err := d.peers.Upsert(&pb.Peer{
+func (d *Decentralizer) InsertPeer(pId string, details map[string]string) (*pb.Peer, error) {
+	peer := &pb.Peer{
 		Published: uint64(stime.Now().Unix()),
 		PId:     pId,
 		Details: details,
-	})
-	return err
+	}
+	return peer, d.peers.Insert(peer)
 }
 
 func (d *Decentralizer) GetPeersByDetails(key, value string) ([]*pb.Peer, error) {
