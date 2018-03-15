@@ -76,25 +76,23 @@ func (d *Decentralizer) initAddressbook() {
 
 func (d *Decentralizer) AdvertisePeerRecord() error {
 	d.WaitTilEnoughPeers()
-	peer, err := d.FindByPeerId("self")
-	if err != nil {
-		logger.Warningf("Could not provide self: %v", err)
-		return err
-	}
+	d.peers.SelfMutex.RLock()
+	defer d.peers.SelfMutex.RUnlock()
+
 	data, err := gogoProto.Marshal(&pb.DNPeerRecord{
-		Peer: peer,
+		Peer: d.peers.Self,
 	})
 	if err != nil {
 		return err
 	}
-	err = d.b.PutValue(DHT_PEER_KEY_TYPE, getDecentralizedIdKey(peer.DnId), data)
+	err = d.b.PutValue(DHT_PEER_KEY_TYPE, getDecentralizedIdKey(d.peers.Self.DnId), data)
 	if err != nil {
 		logger.Warning(err)
 	} else {
 		logger.Info("Successfully provided self")
 	}
 	//Back-up for if it fails.
-	err = d.b.Provide(getDecentralizedIdKey(peer.DnId))
+	err = d.b.Provide(getDecentralizedIdKey(d.peers.Self.DnId))
 	if err != nil {
 		logger.Warning(err)
 	} else {
@@ -105,9 +103,13 @@ func (d *Decentralizer) AdvertisePeerRecord() error {
 
 //Save our self at least in the address book.
 func (d *Decentralizer) saveSelf() error {
-	self, err := d.peers.FindByPeerId("self")
+	d.peers.SelfMutex.Lock()
+	defer d.peers.SelfMutex.Unlock()
+
+	var err error
+	d.peers.Self, err = d.peers.FindByPeerId("self")
 	if err != nil {
-		self, err = d.InsertPeer("self", map[string]string{
+		d.peers.Self, err = d.InsertPeer("self", map[string]string{
 			"name": randomdata.SillyName(),
 		})
 		if err != nil {
@@ -119,24 +121,25 @@ func (d *Decentralizer) saveSelf() error {
 		logger.Warningf("Could not find ip info for our session: %s", err)
 	}
 	if info != nil {
-		self.Details["country"] = info.CountryCode
-		self.Details["ip"] = info.Ip
+		d.peers.Self.Details["country"] = info.CountryCode
+		d.peers.Self.Details["ip"] = info.Ip
 	}
 	d.peers.Changed = true
 	d.peers.Save()
 	return nil
 }
 
-func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) (*pb.Peer, error) {
-	peer, err := d.peers.FindByPeerId(pId)
-	if err != nil {
-		peer, err = d.InsertPeer(pId, details)
-	} else {
+func (d *Decentralizer) UpsertPeer(pId string, details map[string]string) (peer *pb.Peer, err error) {
+	peer, err = d.peers.FindByPeerId(pId)
+	isSelf := peer == d.peers.Self
+	if peer != nil {
 		peer.Details = details
 		d.peers.Changed = true
 		d.peers.Save()
+	} else {
+		peer, err = d.InsertPeer(pId, details)
 	}
-	if d.i.Identity.Pretty() == peer.PId {
+	if isSelf {
 		d.AdvertisePeerRecord()
 	}
 	return peer, err

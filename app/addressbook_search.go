@@ -25,9 +25,8 @@ func reverseDecentralizedIdKey(key string) (uint64, error) {
 //Fetches a new peer from the network. If there isn't a new record it'll return nil
 func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, error) {
 	//Never query self from network
-	self, _ := d.peers.FindByPeerId("self")
-	if self.DnId == decentralizedId {
-		return self, nil
+	if d.peers.Self.DnId == decentralizedId {
+		return d.peers.Self, nil
 	}
 	var err error
 	networkRecord, _ := d.getPeerFromDHT(decentralizedId)

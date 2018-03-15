@@ -11,10 +11,14 @@ import (
 	"context"
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
+	"sync"
 )
 
 type Store struct {
-	self       libp2pPeer.ID
+	selfId 		libp2pPeer.ID
+	Self		*pb.Peer
+	SelfMutex	sync.RWMutex
+
 	db         *memdb.MemDB
 	sessionIds *lru.LruWithTTL
 	expireAt   time.Duration
@@ -49,13 +53,13 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID, path string) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, selfId libp2pPeer.ID, path string) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
 	}
 	instance := &Store{
-		self:     self,
+		selfId:   selfId,
 		db:       db,
 		expireAt: expireAt,
 		path: path,
@@ -117,7 +121,7 @@ func (s *Store) Save() {
 
 func (s *Store) decodeId(id string) (libp2pPeer.ID, error) {
 	if id == "self" {
-		return s.self, nil
+		return s.selfId, nil
 	}
 	return libp2pPeer.IDB58Decode(id)
 }
@@ -157,7 +161,7 @@ func (s *Store) Insert(info *pb.Peer) error {
 	txn := s.db.Txn(true)
 	defer txn.Commit()
 	err = txn.Insert(TABLE, info)
-	if err == nil && info.PId != s.self.Pretty() {
+	if err == nil && (s.Self != nil && info.DnId != s.Self.DnId) {
 		s.sessionIds.AddWithTTL(info.PId, true, s.expireAt)
 	}
 	s.Changed = true
@@ -229,6 +233,9 @@ func (s *Store) FindByDecentralizedId(decentralizedId uint64) (*pb.Peer, error) 
 }
 
 func (s *Store) FindByPeerId(peerId string) (*pb.Peer, error) {
+	if s.Self != nil && peerId == "self" {
+		return s.Self, nil
+	}
 	id, err := s.decodeId(peerId)
 	if err != nil {
 		return nil, err
