@@ -161,7 +161,7 @@ func (s *Store) Insert(info *pb.Peer) error {
 	txn := s.db.Txn(true)
 	defer txn.Commit()
 	err = txn.Insert(TABLE, info)
-	if err == nil && (s.Self != nil && info.DnId != s.Self.DnId) {
+	if err == nil && info.PId != s.selfId.Pretty() {
 		s.sessionIds.AddWithTTL(info.PId, true, s.expireAt)
 	}
 	s.Changed = true
