@@ -14,7 +14,6 @@ import (
 	"errors"
 	"fmt"
 	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
-	"strings"
 	"github.com/hashicorp/golang-lru"
 	"hash/crc32"
 	"hash"
@@ -99,11 +98,7 @@ func (b *BitswapService) Provide(subject string) error {
 }
 
 func (b *BitswapService) DecodeKey(key string) (string, error) {
-	parts := strings.Split(key, "/")
-	if len(parts) != 3 {
-		return "", errors.New("invalid key")
-	}
-	data, err := b58.Decode(parts[2])
+	data, err := b58.Decode(key)
 	return string(data), err
 }
 
