@@ -8,7 +8,7 @@ import (
 	"time"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
-	"gx/ipfs/QmefgzMbKZYsmHFkLqxgaTBG9ypeEjrdWRD5WXH4j1cWDL/go-libp2p/p2p/net/mock"
+	"gx/ipfs/QmNh1kGFFdsPu79KNSaL4NUKUPb4Eiz4KHdMtFY6664RDp/go-libp2p/p2p/net/mock"
 	"github.com/iain17/decentralizer/stime"
 )
 

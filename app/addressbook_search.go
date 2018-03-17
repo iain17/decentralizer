@@ -8,6 +8,7 @@ import (
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/decentralizer/stime"
+	"fmt"
 )
 
 func getDecentralizedIdKey(decentralizedId uint64) string {
@@ -29,7 +30,10 @@ func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, er
 		return d.peers.Self, nil
 	}
 	var err error
-	networkRecord, _ := d.getPeerFromDHT(decentralizedId)
+	networkRecord, err := d.getPeerFromDHT(decentralizedId)
+	if err != nil {
+		logger.Warning(err)
+	}
 	if networkRecord == nil {
 		networkRecord, err = d.getPeerFromNetworkBackup(decentralizedId)
 	}
@@ -52,8 +56,7 @@ func (d *Decentralizer) getPeerFromDHT(decentralizedId uint64) (*pb.Peer, error)
 	logger.Infof("Querying DHT network for peer %d", decentralizedId)
 	data, err := d.b.GetValue(d.i.Context(), DHT_PEER_KEY_TYPE, getDecentralizedIdKey(decentralizedId))
 	if err != nil {
-		logger.Warningf("Could not find peer with id %d: %s", err.Error(), decentralizedId)
-		return nil, err
+		return nil, fmt.Errorf("could not find peer with id %d: %s", decentralizedId, err.Error())
 	}
 	var record pb.DNPeerRecord
 	err = d.unmarshal(data, &record)
@@ -76,7 +79,7 @@ func (d *Decentralizer) getPeerFromNetworkBackup(decentralizedId uint64) (*pb.Pe
 		seen[id] = true
 		_, possibleId := peerstore.PeerToDnId(value.ID)
 		if possibleId == decentralizedId {
-			logger.Infof("Resolved %d == %s", id)
+			logger.Infof("Resolved using backup %d == %s", decentralizedId, id)
 			return &pb.Peer{
 				Published: uint64(stime.Now().Unix()),
 				PId: id,

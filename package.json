@@ -6,9 +6,9 @@
   },
   "gxDependencies": [
     {
-      "hash": "QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5",
+      "hash": "QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT",
       "name": "go-ipfs",
-      "version": "0.4.13"
+      "version": "0.4.14-rc2"
     }
   ],
   "gxVersion": "0.11.0",

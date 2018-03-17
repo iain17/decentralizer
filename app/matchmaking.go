@@ -14,6 +14,7 @@ import (
 	"context"
 	"github.com/iain17/kvcache/lttlru"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 	"github.com/iain17/decentralizer/stime"
 )
 
@@ -32,9 +33,9 @@ func (d *Decentralizer) initMatchmaking() {
 		logger.Fatal(err)
 	}
 
-	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, val []byte) error{
+	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(r *record.ValidationRecord) error{
 		var sessions pb.DNSessionsRecord
-		err = d.unmarshal(val, &sessions)
+		err = d.unmarshal(r.Value, &sessions)
 		if err != nil {
 			return err
 		}

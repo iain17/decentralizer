@@ -8,6 +8,7 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/ipinfo"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
+	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 	"fmt"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/decentralizer/stime"
@@ -29,14 +30,14 @@ func (d *Decentralizer) initAddressbook() {
 	})
 	go d.AdvertisePeerRecord()
 
-	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(rawKey string, val []byte) error {
+	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(r *record.ValidationRecord) error {
 		var record pb.DNPeerRecord
-		err = d.unmarshal(val, &record)
+		err = d.unmarshal(r.Value, &record)
 		if err != nil {
 			return fmt.Errorf("peer record invalid. could not unmarshal: %s", err.Error())
 		}
 		//Check key
-		key, err := d.b.DecodeKey(rawKey)
+		key, err := d.b.DecodeKey(r.Key)
 		if err != nil {
 			return err
 		}
