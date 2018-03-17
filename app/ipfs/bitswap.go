@@ -1,19 +1,19 @@
 package ipfs
 
 import (
-	u "gx/ipfs/QmSU6eubNdhXjFBJBSksTp8kv8YRub8mGAPv8tVJHmL2EU/go-ipfs-util"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
-	pstore "gx/ipfs/QmPgDWmTmuzvP7QE5zwo1TmjbJme9pmZHNujB2453jkCTr/go-libp2p-peerstore"
-	"gx/ipfs/QmSn9Td7xgxm9EV7iEjTckpUWmWApggzPxu7eFGWkkpwin/go-block-format"
-	"gx/ipfs/QmNp85zy9RLrQ5oQD4hPyS39ezrrXpcaa7R4Y9kxdWQLLQ/go-cid"
-	b58 "gx/ipfs/QmT8rehPR3F6bmwL6zjUN8XpiDBFFpMP2myPdC6ApsWfJf/go-base58"
-	"gx/ipfs/QmPR2JzfKd9poHx9XBhzoFeBBC31ZM3W5iUPKJZWyaoZZm/go-libp2p-routing"
+	u "gx/ipfs/QmNiJuT8Ja3hMVpBHXv3Q6dwmperaQ6JjLtpMQgMCD7xvx/go-ipfs-util"
+	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
+	pstore "gx/ipfs/QmXauCuJzmzapetmC6W4TuDJLL1yFFrVzSHoWv8YdbmnxH/go-libp2p-peerstore"
+	"gx/ipfs/Qmej7nf81hi2x2tvjRBF3mcp74sQyuDH4VMYDGd1YtXjb2/go-block-format"
+	"gx/ipfs/QmcZfnkapfECQGcLZaf9B79NRg7cRa9EnZh4LSbkCzwNvY/go-cid"
+	b58 "gx/ipfs/QmWFAMPqsEyUX7gDUsRVmMWz59FxSpJ1b2v6bJ1yYzo7jY/go-base58-fast/base58"
+	"gx/ipfs/QmTiWLZ6Fo5j4KcTVutZJ5KWRRJrbxzmxA4td8NfEdrPh7/go-libp2p-routing"
 	"context"
 	"github.com/iain17/logger"
-	ipdht "gx/ipfs/QmWRBYr99v8sjrpbyNWMuGkQekn7b9ELoLSCe8Ny7Nxain/go-libp2p-kad-dht"
+	ipdht "gx/ipfs/QmVSep2WwKcXxMonPASsAJ3nZVjfVMKgMcaSigxKnUWpJv/go-libp2p-kad-dht"
 	"errors"
 	"fmt"
-	"gx/ipfs/QmbxkgUceEcuSZ4ZdBA3x74VUDSSYjHYmmeEqkjxbtZ6Jg/go-libp2p-record"
+	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 	"strings"
 	"github.com/hashicorp/golang-lru"
 	"hash/crc32"
@@ -59,8 +59,8 @@ func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.
 	b.mutex.Lock()
 	defer b.mutex.Unlock()
 	b.dht.Validator[keyType] = &record.ValidChecker{
-		Func: func(key string, value[]byte) error {
-			cacheKey := b.getValidatorKey(keyType, value)
+		Func: func(r *record.ValidationRecord) error {
+			cacheKey := b.getValidatorKey(keyType, r.Value)
 			if cacheVal, ok := b.dhtCache.Get(cacheKey); ok {
 				if val, ok := cacheVal.(bool); ok {
 					if val {
@@ -70,7 +70,7 @@ func (b *BitswapService) RegisterValidator(keyType string, validatorFunc record.
 					}
 				}
 			}
-			result := validatorFunc(key, value)
+			result := validatorFunc(r)
 			b.dhtCache.Add(cacheKey, result == nil)
 			return result
 		},
@@ -103,7 +103,8 @@ func (b *BitswapService) DecodeKey(key string) (string, error) {
 	if len(parts) != 3 {
 		return "", errors.New("invalid key")
 	}
-	return string(b58.Decode(parts[2])), nil
+	data, err := b58.Decode(parts[2])
+	return string(data), err
 }
 
 func (b *BitswapService) getKey(keyType string, rawKey string) string {

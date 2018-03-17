@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"context"
 	"fmt"
+	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 )
 
 func TestStringToCid(t *testing.T) {
@@ -17,7 +18,7 @@ func TestDHTSimple(t *testing.T) {
 	//Setup
 	const KEYTYPE = "test"
 	const KEY = "hey"
-	var validatorFunc = func(key string, val []byte) error{
+	var validatorFunc = func(record *record.ValidationRecord) error{
 		return nil
 	}
 	ctx, cancel := context.WithCancel(context.Background())

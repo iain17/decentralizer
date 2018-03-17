@@ -11,6 +11,7 @@ import (
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/decentralizer/stime"
+	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 )
 
 func (d *Decentralizer) getPublisherKey() string {
@@ -19,9 +20,9 @@ func (d *Decentralizer) getPublisherKey() string {
 }
 
 func (d *Decentralizer) initPublisherFiles() {
-	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(key string, val []byte) error{
+	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(r *record.ValidationRecord) error{
 		var record pb.DNPublisherRecord
-		err := d.unmarshal(val, &record)
+		err := d.unmarshal(r.Value, &record)
 		if err != nil {
 			return err
 		}

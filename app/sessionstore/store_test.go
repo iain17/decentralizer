@@ -5,7 +5,7 @@ import (
 	"time"
 	"github.com/stretchr/testify/assert"
 	"github.com/iain17/decentralizer/pb"
-	libp2pPeer "gx/ipfs/QmXYjuNuxVzXKJCfWasQk1RqkhVLDM9jtUKhqc2WPQmFSB/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
 	"context"
 	"github.com/iain17/decentralizer/stime"
 )

@@ -107,22 +107,22 @@ var AuthRequest = func(req *http.Request) (any, sensitive bool) {
 }
 
 func init() {
-	//http.HandleFunc("/debug/requests", func(w http.ResponseWriter, req *http.Request) {
-	//	any, sensitive := AuthRequest(req)
-	//	if !any {
-	//		http.Error(w, "not allowed", http.StatusUnauthorized)
-	//		return
-	//	}
-	//	Render(w, req, sensitive)
-	//})
-	//http.HandleFunc("/debug/events", func(w http.ResponseWriter, req *http.Request) {
-	//	any, sensitive := AuthRequest(req)
-	//	if !any {
-	//		http.Error(w, "not allowed", http.StatusUnauthorized)
-	//		return
-	//	}
-	//	RenderEvents(w, req, sensitive)
-	//})
+	http.HandleFunc("/debug/requestss", func(w http.ResponseWriter, req *http.Request) {
+		any, sensitive := AuthRequest(req)
+		if !any {
+			http.Error(w, "not allowed", http.StatusUnauthorized)
+			return
+		}
+		Render(w, req, sensitive)
+	})
+	http.HandleFunc("/debug/eventss", func(w http.ResponseWriter, req *http.Request) {
+		any, sensitive := AuthRequest(req)
+		if !any {
+			http.Error(w, "not allowed", http.StatusUnauthorized)
+			return
+		}
+		RenderEvents(w, req, sensitive)
+	})
 }
 
 // Render renders the HTML page typically served at /debug/requests.

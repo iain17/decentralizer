@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core"
+	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
 	"net"
 	"github.com/jasonlvhit/gocron"
 	"github.com/shibukawa/configdir"
@@ -11,7 +11,7 @@ import (
 	"github.com/iain17/discovery/network"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/kvcache/lttlru"
-	"gx/ipfs/QmYHpXQEWuhwgRFBnrf4Ua6AZhcqXCYa7Biv65SLGgTgq5/go-ipfs/core/coreapi"
+	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi"
 	"github.com/spf13/afero"
 	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
 	"context"
