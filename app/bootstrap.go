@@ -8,7 +8,6 @@ import (
 	"gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
 	"io/ioutil"
 	"strings"
-	"time"
 	"github.com/pkg/errors"
 )
 
@@ -112,7 +111,7 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 			result = append(result, restoredAddrs...)
 		}
 	}
-	peers := d.d.WaitForPeers(1, 0 * time.Second)
+	peers := d.d.WaitForPeers(1, 0)
 	for _, peer := range peers {
 		peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
 		if err != nil {

@@ -141,13 +141,15 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		crcTable:				crc32.NewIEEE(),
 		fs:						afero.NewCacheOnReadFs(base, layer, 30 * time.Minute),
 	}
-	instance.initializeComponents()
+	instance.initializeComponents(false)
 	return instance, err
 }
 
-func (s *Decentralizer) initializeComponents() () {
-	s.initDiscovery()
-	s.initBootstrap()
+func (s *Decentralizer) initializeComponents(testing bool) () {
+	if !testing {
+		s.initDiscovery()
+		s.initBootstrap()
+	}
 	s.initStorage()
 	s.initMatchmaking()
 	s.initMessaging()

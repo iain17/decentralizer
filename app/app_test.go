@@ -79,10 +79,10 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 	instance.WaitTilEnoughPeers()
 	Base = &configdir.Config{
 		Type: configdir.Cache,
-		Path: "/tmp/"+time.Now().Format("ANSIC"),
+		Path: "/tmp/"+time.Now().Format("20060102150405"),
 	}
 
-	instance.initializeComponents()
+	instance.initializeComponents(true)
 
 	go func() {
 		<- instance.ctx.Done()
