@@ -35,7 +35,7 @@ then
     fi
 
     if [ "$HOSTNAME" = "Iains-MacBook.local" ]; then
-       cp bin/linux/amd64/unpacked-adna ] /Users/iain17/work/src/gitlab.com/atlascorporation/publisher/bin/adna
+       cp bin/linux/amd64/unpacked-adna /Users/iain17/work/src/gitlab.com/atlascorporation/publisher/bin/adna
     fi
 
     echo "Built!"
