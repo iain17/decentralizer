@@ -82,6 +82,9 @@ func (d *Decentralizer) getBootstrapAddrs() ([]config.BootstrapPeer, error) {
 	connections := d.i.PeerHost.Network().Conns()
 	var result []string
 	for _, conn := range connections {
+		if len(result) > MAX_BOOTSTRAP_SHARE {
+			break
+		}
 		addr := conn.RemoteMultiaddr().String() + "/ipfs/" + conn.RemotePeer().Pretty()
 		result = append(result, addr)
 	}
@@ -113,6 +116,9 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 	}
 	peers := d.d.WaitForPeers(1, 0)
 	for _, peer := range peers {
+		if len(result) > MAX_BOOTSTRAP_SHARE {
+			break
+		}
 		peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
 		if err != nil {
 			logger.Warning(err)

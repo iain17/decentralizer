@@ -7,6 +7,7 @@ import (
 )
 
 const MAX_DISCOVERED_PEERS = 30
+const MAX_BOOTSTRAP_SHARE = 80
 var MIN_CONNECTED_PEERS = 2//40
 const DELIMITER_ADDR = ";;"
 var EXPIRE_TIME_SESSION = 30 * time.Minute
