@@ -1,27 +1,29 @@
 package logger
 
 import (
-	"os"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 type Fileout struct {
-	file *os.File
+	l *lumberjack.Logger
 	MinLevel int
 }
 
 func NewFileOut(path string, minLevel int) (*Fileout, error) {
-	f, err := os.OpenFile(path, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
-	if err != nil {
-		return nil, err
-	}
 	return &Fileout{
-		file: f,
+		l: &lumberjack.Logger{
+			Filename:   path,
+			MaxSize:    500, // megabytes
+			MaxBackups: 3,
+			MaxAge:     28, //days
+			Compress:   true, // disabled by default
+		},
 		MinLevel: minLevel,
 	}, nil
 }
 
 func (s *Fileout) Close() {
-	s.file.Close()
+	s.l.Close()
 }
 
 func (s *Fileout) Print(level int, message string) error {
@@ -31,10 +33,10 @@ func (s *Fileout) Print(level int, message string) error {
 	}
 
 	data := prefixes[level] + message + "\n"
-	_, err := s.file.WriteString(data)
+	_, err := s.l.Write([]byte(data))
 	return err
 }
 
 func (s *Fileout) Write(p []byte) (n int, err error) {
-	return s.file.Write(p)
+	return s.l.Write(p)
 }

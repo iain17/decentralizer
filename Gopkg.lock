@@ -246,7 +246,7 @@
   branch = "master"
   name = "github.com/iain17/logger"
   packages = ["."]
-  revision = "bd3892d3cd33b6e02b9329abc0fa0273c3d0ee0b"
+  revision = "4a8a918d0aed3cd7f4fc579a4a6357af80c95971"
 
 [[projects]]
   branch = "master"
