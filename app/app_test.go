@@ -73,20 +73,16 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 		unmarshalCache:			unmarshalCache,
 		crcTable:				crc32.NewIEEE(),
 	}
-	//Mock UFS
-	instance.ufs = afero.NewMemMapFs()
+	//Mock filesystem
+	instance.peerFileSystem = afero.NewMemMapFs()
+	instance.fs = instance.peerFileSystem
 	instance.WaitTilEnoughPeers()
 	Base = &configdir.Config{
 		Type: configdir.Cache,
-		Path: "/tmp/"+time.Now().Format("ANSIC"),
+		Path: "/tmp/"+time.Now().Format("20060102150405"),
 	}
 
-	instance.cronChan = instance.cron.Start()
-	instance.initStorage()
-	instance.initMatchmaking()
-	instance.initMessaging()
-	instance.initAddressbook()
-	instance.initPublisherFiles()
+	instance.initializeComponents(true)
 
 	go func() {
 		<- instance.ctx.Done()

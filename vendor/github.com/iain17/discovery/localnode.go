@@ -12,6 +12,11 @@ import (
 	"sync"
 )
 
+type ExternalMessage struct {
+	from *RemoteNode
+	data []byte
+}
+
 type LocalNode struct {
 	Node
 	discovery    *Discovery
@@ -31,6 +36,7 @@ type LocalNode struct {
 	discoveryDHT  DiscoveryDHT
 	discoveryIRC  DiscoveryIRC
 	discoveryMDNS DiscoveryMDNS
+	ReceivedMessage chan ExternalMessage
 }
 
 func newLocalNode(discovery *Discovery) (*LocalNode, error) {

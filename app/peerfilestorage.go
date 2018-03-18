@@ -27,7 +27,7 @@ func (d *Decentralizer) initStorage() {
 	}
 	base := afero.NewBasePathFs(afero.NewOsFs(), paths[0].Path+"/peer-data")
 	layer := afero.NewMemMapFs()
-	d.ufs = afero.NewCacheOnReadFs(base, layer, 30 * time.Minute)
+	d.peerFileSystem = afero.NewCacheOnReadFs(base, layer, 30 * time.Minute)
 
 	go d.republishPeerFiles()
 }
@@ -53,9 +53,9 @@ func (d *Decentralizer) republishPeerFiles() (string, error) {
 
 func (d *Decentralizer) getPeerPath(owner libp2pPeer.ID) string {
 	basePath := "/"+owner.Pretty()
-	_, err := d.ufs.Stat(basePath)
+	_, err := d.peerFileSystem.Stat(basePath)
 	if os.IsNotExist(err) {
-		d.ufs.MkdirAll(basePath, 0777)
+		d.peerFileSystem.MkdirAll(basePath, 0777)
 	}
 	return basePath
 }
@@ -80,7 +80,7 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 }
 
 func (d *Decentralizer) writeFile(path string, data []byte) error {
-	f, err := d.ufs.Create(path)
+	f, err := d.peerFileSystem.Create(path)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (d *Decentralizer) writeFile(path string, data []byte) error {
 }
 
 func (d *Decentralizer) getFile(path string) ([]byte, error) {
-	f, err := d.ufs.Open(path)
+	f, err := d.peerFileSystem.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	var result []byte
 	refresh := false
 	path := d.getPeerFilePath(id, name)
-	info, err := d.ufs.Stat(path)
+	info, err := d.peerFileSystem.Stat(path)
 	if info != nil && info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
 		refresh = true
 	}
@@ -149,7 +149,7 @@ func (d *Decentralizer) GetPeerFiles(peerId string) (map[string]uint64, error) {
 	//fetch locally
 	path := d.getPeerPath(id)
 	result := map[string]uint64{}
-	err = afero.Walk(d.ufs, path, func(path string, info os.FileInfo, err error) error{
+	err = afero.Walk(d.peerFileSystem, path, func(path string, info os.FileInfo, err error) error{
 		if err != nil {
 			return err
 		}

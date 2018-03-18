@@ -29,10 +29,6 @@ func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, error) {
 		}
 		numPeers = len(d.i.PeerHost.Network().Peers())
 		if numPeers < MIN_CONNECTED_PEERS {
-			err := d.bootstrap()
-			if err != nil {
-				return false, err
-			}
 			percentage := 0.0
 			if numPeers > 0 {
 				total := float64(MIN_CONNECTED_PEERS)

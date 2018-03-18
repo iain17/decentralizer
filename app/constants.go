@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-const USE_OWN_BOOTSTRAPPING = true//If set to false. We join the public IPFS network.
 const MAX_DISCOVERED_PEERS = 30
+const MAX_BOOTSTRAP_SHARE = 80
 var MIN_CONNECTED_PEERS = 2//40
 const DELIMITER_ADDR = ";;"
 var EXPIRE_TIME_SESSION = 30 * time.Minute
@@ -28,6 +28,7 @@ const MESSAGE_DEADLINE = time.Minute * 10
 const DHT_PEER_KEY_TYPE = "dPeer"
 const DHT_SESSIONS_KEY_TYPE = "sessions"
 const DHT_PUBLISHER_KEY_TYPE = "publisher"
+const BOOTSTRAP_FILE = "bootstrap.dat"
 var FILE_EXPIRE = time.Hour * 1
 
 func init() {

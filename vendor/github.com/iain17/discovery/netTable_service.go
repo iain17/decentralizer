@@ -198,8 +198,9 @@ func (nt *NetTableService) AddRemoteNode(rn *RemoteNode) {
 
 	addr := rn.conn.RemoteAddr().String()
 	nt.logger.Infof("Connected to %s: %s", addr, rn.id)
-	go rn.listen(nt.localNode)
+	go rn.listen()
 	err := nt.Save()
+	go nt.localNode.discovery.PeerDiscovered(rn)
 	if err != nil {
 		nt.logger.Warningf("Error saving peers: %s", err)
 	}

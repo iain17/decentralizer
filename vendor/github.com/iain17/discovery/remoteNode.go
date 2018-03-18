@@ -59,13 +59,13 @@ func (rn *RemoteNode) sendHeartBeat() error {
 	return framed.Write(rn.conn, heartbeat)
 }
 
-func (rn *RemoteNode) Send(message string) error {
+func (rn *RemoteNode) Send(data []byte) error {
 	rn.logger.Debug("sending data...")
 	transfer, err := proto.Marshal(&pb.Message{
 		Version: env.VERSION,
 		Msg: &pb.Message_Transfer{
 			Transfer: &pb.Transfer{
-				Data: message,
+				Data: data,
 			},
 		},
 	})
@@ -97,14 +97,14 @@ func (rn *RemoteNode) Close() error {
 	return framed.Write(rn.conn, transfer)
 }
 
-func (rn *RemoteNode) listen(ln *LocalNode) {
+func (rn *RemoteNode) listen() {
 	defer func() {
 		if r := recover(); r != nil {
 			rn.logger.Errorf("[%s]: %s", rn.id, r)
 		}
 		rn.logger.Debug("Stopping with listening.")
 		rn.conn.Close()
-		ln.netTableService.RemoveRemoteNode(rn)
+		rn.ln.netTableService.RemoveRemoteNode(rn)
 	}()
 	rn.SharePeers()
 
@@ -136,6 +136,13 @@ func (rn *RemoteNode) listen(ln *LocalNode) {
 		case *pb.Message_PeerInfo:
 			msg := packet.GetMsg().(*pb.Message_PeerInfo).PeerInfo
 			rn.SetMapInfo(msg.Info)
+			break
+		case *pb.Message_Transfer:
+			data := packet.GetMsg().(*pb.Message_Transfer).Transfer.Data
+			rn.ln.ReceivedMessage <- ExternalMessage{
+				from: rn,
+				data: data,
+			}
 			break
 		}
 	}

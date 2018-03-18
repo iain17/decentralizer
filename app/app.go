@@ -25,6 +25,7 @@ import (
 	"github.com/hashicorp/golang-lru"
 	"hash"
 	"hash/crc32"
+	"gx/ipfs/QmSwZMWwFZSUpe5muU2xgTUwppH24KfMwdPXiwbEp2c6G5/go-libp2p-swarm"
 )
 
 type Decentralizer struct {
@@ -39,6 +40,7 @@ type Decentralizer struct {
 	ip                     *net.IP
 	api 				   coreiface.CoreAPI
 	limitedConnection	   bool
+	fs					   afero.Fs//general file system
 
 	//Peer ids that did not respond to our queries.
 	ignore 				   *lttlru.LruWithTTL
@@ -47,7 +49,7 @@ type Decentralizer struct {
 
 	//Storage
 	filesApi       		   *ipfs.FilesAPI
-	ufs					   afero.Fs
+	peerFileSystem		   afero.Fs
 
 	//Matchmaking
 	matchmakingMutex	   sync.Mutex
@@ -119,6 +121,12 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
+	paths := configPath.QueryFolders(configdir.Global)
+	if len(paths) == 0 {
+		return nil, errors.New("could not resolve config path")
+	}
+	base := afero.NewBasePathFs(afero.NewOsFs(), paths[0].Path)
+	layer := afero.NewMemMapFs()
 	instance := &Decentralizer{
 		limitedConnection:		limitedConnection,
 		ctx:					ctx,
@@ -131,16 +139,23 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		ignore:					ignore,
 		unmarshalCache:			unmarshalCache,
 		crcTable:				crc32.NewIEEE(),
+		fs:						afero.NewCacheOnReadFs(base, layer, 30 * time.Minute),
 	}
-	go instance.bootstrap()
-
-	instance.initStorage()
-	instance.initMatchmaking()
-	instance.initMessaging()
-	instance.initAddressbook()
-	instance.initPublisherFiles()
-	instance.cronChan = instance.cron.Start()
+	instance.initializeComponents(false)
 	return instance, err
+}
+
+func (s *Decentralizer) initializeComponents(testing bool) () {
+	if !testing {
+		s.initDiscovery()
+		s.initBootstrap()
+	}
+	s.initStorage()
+	s.initMatchmaking()
+	s.initMessaging()
+	s.initAddressbook()
+	s.initPublisherFiles()
+	s.cronChan = s.cron.Start()
 }
 
 func (s *Decentralizer) decodePeerId(id string) (libp2pPeer.ID, error) {
@@ -184,5 +199,12 @@ func (s *Decentralizer) Stop() {
 	s.cronChan <- false
 	if s.i != nil {
 		s.i.Close()
+	}
+}
+
+func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
+	snet, ok := d.i.PeerHost.Network().(*swarm.Network)
+	if ok {
+		snet.Swarm().Backoff().Clear(id)
 	}
 }

@@ -9,6 +9,8 @@ import (
 	"github.com/iain17/logger"
 )
 
+type discoveredCB func(peer *RemoteNode)
+
 type Discovery struct {
 	max int//Once we've reached it we won't engage new connections. ones connecting to us will trigger dropping the oldest connection.
 
@@ -17,9 +19,10 @@ type Discovery struct {
 	network *network.Network
 	LocalNode *LocalNode
 	limited bool//Means we are on a limited connection. Means we won't advertise on DHT
+	PeerDiscovered discoveredCB
 }
 
-func New(ctx context.Context, network *network.Network, max int, limitedConnection bool, info map[string]string) (*Discovery, error) {
+func New(ctx context.Context, network *network.Network, max int, cb discoveredCB, limitedConnection bool, info map[string]string) (*Discovery, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer func() {
 		if r := recover(); r != nil {
@@ -39,6 +42,7 @@ func New(ctx context.Context, network *network.Network, max int, limitedConnecti
 		cancel: cancel,
 		network: network,
 		limited: limitedConnection,
+		PeerDiscovered: cb,
 	}
 	var err error
 	self.LocalNode, err = newLocalNode(self)
