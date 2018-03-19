@@ -3,7 +3,7 @@ package discovery
 import (
 	"context"
 	"time"
-	"github.com/thoj/go-ircevent"
+	"github.com/iain17/go-ircevent"
 	"github.com/Pallinder/go-randomdata"
 	"crypto/tls"
 	"encoding/hex"

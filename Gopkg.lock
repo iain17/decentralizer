@@ -96,6 +96,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/certifi/gocertifi"
+  packages = ["."]
+  revision = "deb3ae2ef2610fde3330947281941c562861188b"
+  version = "2018.01.18"
+
+[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -118,6 +124,12 @@
   name = "github.com/getlantern/testify"
   packages = ["assert"]
   revision = "2eeb3906e78fc89e76ba11e5694adeb64c0a0b43"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/getsentry/raven-go"
+  packages = ["."]
+  revision = "563b81fc02b75d664e54da31f787c2cc2186780b"
 
 [[projects]]
   name = "github.com/giantswarm/retry-go"
@@ -219,13 +231,19 @@
     "network",
     "pb"
   ]
-  revision = "237d5fac475350c6e3bb25f472eed3bf58f704af"
+  revision = "833f8d1164040528af4ac08fe44cfc5c4e6ca643"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/framed"
   packages = ["."]
   revision = "89d391c9e037b3e26186779264ccc69a1036566e"
+
+[[projects]]
+  name = "github.com/iain17/go-ircevent"
+  packages = ["."]
+  revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
+  version = "0.1"
 
 [[projects]]
   branch = "master"
@@ -384,12 +402,6 @@
   version = "v1.2.1"
 
 [[projects]]
-  name = "github.com/thoj/go-ircevent"
-  packages = ["."]
-  revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
-  version = "0.1"
-
-[[projects]]
   name = "github.com/willf/bitset"
   packages = ["."]
   revision = "d860f346b89450988a379d7d705e83c58d1ea227"
@@ -512,6 +524,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "119e31a6949e1e44f2cacc856bb0fea64b9d0f3b89a4992f455d131e945beb6b"
+  inputs-digest = "c951dcfe783fc98123c5a2d4fd566ba0aff69c779bdef54eaae2b5caa9fdaef2"
   solver-name = "gps-cdcl"
   solver-version = 1
