@@ -19,8 +19,5 @@ func (s *Server) initHTTP(port int) error {
 	if err != nil {
 		return err
 	}
-	go func() {
-		logger.Info(http.ListenAndServe("localhost:9090", nil))
-	}()
 	return http.ListenAndServe(address, mux)
 }

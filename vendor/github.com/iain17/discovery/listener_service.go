@@ -69,7 +69,6 @@ func (l *ListenerService) Serve(ctx context.Context) {
 		default:
 			conn, err := l.socket.Accept()
 			if err != nil {
-				logger.Warning(err)
 				break
 			}
 			key := conn.RemoteAddr().String()
