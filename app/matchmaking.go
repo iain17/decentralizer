@@ -94,7 +94,13 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 	defer d.matchmakingMutex.Unlock()
 	if d.sessions[sessionType] == nil {
 		var err error
-		d.sessions[sessionType], err = sessionstore.New(d.ctx, MAX_SESSIONS, time.Duration(EXPIRE_TIME_SESSION), d.i.Identity, fmt.Sprintf("%s/%d_%s", Base.Path, sessionType, SESSIONS_FILE))
+		d.sessions[sessionType], err = sessionstore.New(
+			d.ctx,
+			MAX_SESSIONS,
+			time.Duration(EXPIRE_TIME_SESSION),
+			d.i.Identity, fmt.Sprintf("%s/%d_%s", Base.Path, sessionType, SESSIONS_FILE),
+			d.setSessionIdToType,
+		)
 		if err != nil {
 			logger.Warningf("Could not get session storage: %v", err)
 			return nil
@@ -200,26 +206,20 @@ func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 	return d.b.PutValue(DHT_SESSIONS_KEY_TYPE, d.getMatchmakingKey(sessionType), data)
 }
 
-func (d *Decentralizer) setSessionIdToType(sessionId uint64, sessionType uint64) {
-	d.matchmakingMutex.Lock()
-	defer d.matchmakingMutex.Unlock()
-	d.sessionIdToSessionType[sessionId] = sessionType
-}
-
 func (d *Decentralizer) DeleteSession(sessionId uint64) error {
-	if d.sessionIdToSessionType[sessionId] == 0 {
+	sessionType := d.getSessionIdToType(sessionId)
+	if sessionType == 0 {
 		return fmt.Errorf("session %d does not exists in sessionIdToSessionType", sessionId)
 	}
-	sessionType := d.sessionIdToSessionType[sessionId]
 	sessions := d.getSessionStorage(sessionType)
 	return sessions.Remove(sessionId)
 }
 
 func (d *Decentralizer) GetSession(sessionId uint64) (*pb.Session, error) {
-	if d.sessionIdToSessionType[sessionId] == 0 {
+	sessionType := d.getSessionIdToType(sessionId)
+	if sessionType == 0 {
 		return nil, fmt.Errorf("session %d does not exists in sessionIdToSessionType", sessionId)
 	}
-	sessionType := d.sessionIdToSessionType[sessionId]
 	sessions := d.getSessionStorage(sessionType)
 	return sessions.FindSessionId(sessionId)
 }
@@ -267,4 +267,16 @@ func (d *Decentralizer) GetSessionsByPeer(peerId string) ([]*pb.Session, error) 
 		result = append(result, peers...)
 	}
 	return result, nil
+}
+
+func (d *Decentralizer) setSessionIdToType(sessionId uint64, sessionType uint64) {
+	d.sessionIdToSessionTypeMutex.Lock()
+	defer d.sessionIdToSessionTypeMutex.Unlock()
+	d.sessionIdToSessionType[sessionId] = sessionType
+}
+
+func (d *Decentralizer) getSessionIdToType(sessionId uint64) uint64 {
+	d.sessionIdToSessionTypeMutex.RLock()
+	defer d.sessionIdToSessionTypeMutex.RUnlock()
+	return d.sessionIdToSessionType[sessionId]
 }

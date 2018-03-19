@@ -57,6 +57,7 @@ type Decentralizer struct {
 	sessionQueries		   chan sessionRequest
 	sessions               map[uint64]*sessionstore.Store
 	sessionIdToSessionType map[uint64]uint64
+	sessionIdToSessionTypeMutex	   sync.RWMutex
 	searches 			   *lttlru.LruWithTTL
 
 	//addressbook

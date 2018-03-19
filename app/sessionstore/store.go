@@ -15,6 +15,8 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
+type mapperFunc func(sessionId uint64, sessionType uint64)
+
 type Store struct {
 	self       libp2pPeer.ID
 	db *memdb.MemDB
@@ -22,6 +24,7 @@ type Store struct {
 	expireAt time.Duration
 	changed     bool
 	path	   string
+	mapper mapperFunc
 }
 
 const TABLE = "sessions"
@@ -51,7 +54,7 @@ var schema = &memdb.DBSchema{
 	},
 }
 
-func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID, path string) (*Store, error) {
+func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.ID, path string, mapper mapperFunc) (*Store, error) {
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return nil, err
@@ -61,6 +64,7 @@ func New(ctx context.Context, size int, expireAt time.Duration, self libp2pPeer.
 		db: db,
 		expireAt: expireAt,
 		path: path,
+		mapper: mapper,
 	}
 	instance.sessionIds, err = lru.NewTTLWithEvict(ctx, size, instance.onEvicted)
 	instance.restore()
@@ -84,6 +88,7 @@ func (s *Store) restore() {
 			continue
 		}
 		_, err = s.Insert(session)
+		s.mapper(session.SessionId, session.Type)
 		if err != nil {
 			logger.Warningf("Error saving session %s: %s", session.PId, err.Error())
 			continue
