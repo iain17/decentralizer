@@ -10,11 +10,15 @@ import (
 	"github.com/iain17/decentralizer/stime"
 )
 
+func nop(sessionId uint64, sessionType uint64) {
+
+}
+
 func TestSessionsStore_Unique(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(ctx,10, 1 * time.Hour, self, "")
+	store, err := New(ctx,10, 1 * time.Hour, self, "", nop)
 	assert.NoError(t, err)
 
 	_, err = store.Insert(&pb.Session {
@@ -50,7 +54,7 @@ func TestSessionsStore_FindByPeerId(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(ctx,10, 1 * time.Hour, self, "")
+	store, err := New(ctx,10, 1 * time.Hour, self, "", nop)
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
 		Published: uint64(stime.Now().Unix()),
@@ -85,7 +89,7 @@ func TestSessionsStore_Expire(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(ctx,10, 1 * time.Second, self, "")
+	store, err := New(ctx,10, 1 * time.Second, self, "", nop)
 	assert.NoError(t, err)
 	//Our own sessions never expire.
 	_, err = store.Insert(&pb.Session {
@@ -126,7 +130,7 @@ func TestSessionsStore_Limit(t *testing.T) {
 	defer cancel()
 	owner := "QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381"
 	self, err := libp2pPeer.IDB58Decode(owner)
-	store, err := New(ctx,1, 2 * time.Hour, self, "")
+	store, err := New(ctx,1, 2 * time.Hour, self, "", nop)
 	assert.NoError(t, err)
 	//Because self has added this. we'll have 2
 	_, err = store.Insert(&pb.Session {
@@ -171,7 +175,7 @@ func TestSessionsStore_FindByDetails(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	self, err := libp2pPeer.IDB58Decode("QmTq1jNgbHarKgYkZfLJAmtUewyWYniTupQf7ZYsSFQ381")
-	store, err := New(ctx,10, 1 * time.Hour, self, "")
+	store, err := New(ctx,10, 1 * time.Hour, self, "", nop)
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
 		Published: uint64(stime.Now().Unix()),
