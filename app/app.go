@@ -142,7 +142,6 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		crcTable:				crc32.NewIEEE(),
 		fs:						afero.NewCacheOnReadFs(base, layer, 30 * time.Minute),
 	}
-	panic("big tests")
 	instance.initializeComponents(false)
 	return instance, err
 }
