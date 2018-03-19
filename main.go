@@ -1,21 +1,18 @@
-// Copyright © 2018 Iain Munro <iain@imunro.nl>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
-import "github.com/iain17/decentralizer/cmd"
+import (
+	"github.com/iain17/decentralizer/cmd"
+	"github.com/getsentry/raven-go"
+)
+
+func init() {
+	raven.SetDSN("https://0cf522b0b3d841d1b601296ed41e9b5c:4317615fa9ab47b28718b33fd843e497@sentry.io/306393")
+}
 
 func main() {
-	cmd.Execute()
+	raven.CapturePanicAndWait(func() {
+		cmd.Execute()
+	}, map[string]string{
+		"version": "1.0",
+	})
 }

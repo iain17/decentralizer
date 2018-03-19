@@ -24,7 +24,7 @@ func (d *Decentralizer) initBootstrap() error {
 	bs := core.DefaultBootstrapConfig
 	bs.BootstrapPeers = d.bootstrapPeers
 	core.DefaultBootstrapConfig = bs
-	d.i.Bootstrap(bs)
+	go d.i.Bootstrap(bs)
 	d.cron.Every(10).Seconds().Do(func() {
 		d.shareOurBootstrap()
 		d.saveBootstrapState()
