@@ -15,9 +15,9 @@ namespace libdn {
 			grpc::Status status = context.client->stub_->UpsertSession(ctx, request, &reply);
 			request.release_session();
 
-			DNSID result;
+			DNSID result = 0;
 			if (status.ok()) {
-				auto sessionId = reply.sessionid();
+				result = reply.sessionid();
 			} else {
 				promise->reject(fmt::format("[Could not upsert session] {0}: {1}", status.error_code(), status.error_message().c_str()));
 			}
