@@ -8,9 +8,9 @@ import (
 	"context"
 )
 
-func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, error) {
+func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, int, error) {
+	numPeers := len(d.i.PeerHost.Network().Peers())
 	if WaitForMinConnections {
-		numPeers := len(d.i.PeerHost.Network().Peers())
 		if numPeers < MIN_CONNECTED_PEERS {
 			timeout.Do(func(ctx context.Context) {
 				for {
@@ -34,15 +34,15 @@ func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, error) {
 				total := float64(MIN_CONNECTED_PEERS)
 				percentage = float64(numPeers) / total * 100
 			}
-			return false, errors.New(fmt.Sprintf("Bootstrapping to ADNA. %.2f %% complete", percentage))
+			return false, numPeers, errors.New(fmt.Sprintf("Bootstrapping to ADNA. %.2f %% complete", percentage))
 		}
 	}
 
 	if d.publisherRecord == nil {
-		return false, errors.New(fmt.Sprintf("Waiting for publisher file..."))
+		return false, numPeers, errors.New(fmt.Sprintf("Waiting for publisher file..."))
 	}
 	if !d.publisherDefinition.Status {
-		return false, errors.New("closed")
+		return false, numPeers, errors.New("closed")
 	}
-	return true, nil
+	return true, numPeers, nil
 }

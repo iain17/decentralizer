@@ -382,6 +382,12 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
   bool ready() const;
   void set_ready(bool value);
 
+  // uint32 numConnections = 4;
+  void clear_numconnections();
+  static const int kNumConnectionsFieldNumber = 4;
+  ::google::protobuf::uint32 numconnections() const;
+  void set_numconnections(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:pb.RPCHealthReply)
  private:
 
@@ -389,6 +395,7 @@ class RPCHealthReply : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::internal::ArenaStringPtr basepath_;
   bool ready_;
+  ::google::protobuf::uint32 numconnections_;
   mutable int _cached_size_;
   friend struct ::protobuf_pb_2fplatform_2eproto::TableStruct;
   friend void ::protobuf_pb_2fplatform_2eproto::InitDefaultsRPCHealthReplyImpl();
@@ -544,6 +551,20 @@ inline void RPCHealthReply::set_allocated_basepath(::std::string* basepath) {
   }
   basepath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), basepath);
   // @@protoc_insertion_point(field_set_allocated:pb.RPCHealthReply.basePath)
+}
+
+// uint32 numConnections = 4;
+inline void RPCHealthReply::clear_numconnections() {
+  numconnections_ = 0u;
+}
+inline ::google::protobuf::uint32 RPCHealthReply::numconnections() const {
+  // @@protoc_insertion_point(field_get:pb.RPCHealthReply.numConnections)
+  return numconnections_;
+}
+inline void RPCHealthReply::set_numconnections(::google::protobuf::uint32 value) {
+  
+  numconnections_ = value;
+  // @@protoc_insertion_point(field_set:pb.RPCHealthReply.numConnections)
 }
 
 #ifdef __GNUC__

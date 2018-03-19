@@ -15,7 +15,7 @@ import (
 //
 func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RPCHealthReply, error) {
 	logger.Info("Getting health..")
-	ready, err := s.App.Health(in.WaitForMinConnections)
+	ready, numConns, err := s.App.Health(in.WaitForMinConnections)
 	var error string
 	if err != nil {
 		error = err.Error()
@@ -24,6 +24,7 @@ func (s *Server) GetHealth(ctx context.Context, in *pb.RPCHealthRequest) (*pb.RP
 		Ready: ready,
 		Message: error,
 		BasePath: app.Base.Path,
+		NumConnections: uint32(numConns),
 	}, nil
 }
 

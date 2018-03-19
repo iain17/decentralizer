@@ -17,6 +17,7 @@ message RPCHealthReply {
 	bool ready = 1;
 	string message = 2;
 	string basePath = 3;
+	uint32 numConnections = 4;
 }
 
 service Decentralizer {
@@ -25,7 +26,7 @@ service Decentralizer {
 	//
 	// Get health of decentralizer.
 	rpc GetHealth(RPCHealthRequest) returns (RPCHealthReply) {
-		option (google.api.http) = { get: "/v1/health" };
+		option (google.api.http) = { get: "/v1/health/{waitForMinConnections}" };
 	}
 
 	//
