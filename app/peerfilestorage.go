@@ -74,7 +74,7 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	}
 	location, err := d.republishPeerFiles()
 	if err != nil {
-		return "", err
+		logger.Warningf("Could not republish file %s: %s", name, err.Error())
 	}
 	return location+"/"+name, err
 }
