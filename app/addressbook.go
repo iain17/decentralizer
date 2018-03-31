@@ -11,7 +11,7 @@ import (
 	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 	"fmt"
 	"github.com/iain17/decentralizer/utils"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 )
 
 func (d *Decentralizer) initAddressbook() {

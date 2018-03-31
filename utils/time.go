@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/iain17/logger"
 	"errors"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 )
 
 //Returns true if the second passed record is newer than the first one.

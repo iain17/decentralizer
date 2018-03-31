@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/decentralizer/app/peerstore"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 	"fmt"
 )
 

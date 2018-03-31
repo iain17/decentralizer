@@ -9,7 +9,7 @@ import (
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
 	"gx/ipfs/QmNh1kGFFdsPu79KNSaL4NUKUPb4Eiz4KHdMtFY6664RDp/go-libp2p/p2p/net/mock"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 )
 
 func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {

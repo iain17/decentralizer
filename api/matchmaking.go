@@ -4,7 +4,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"context"
 	"github.com/iain17/logger"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 )
 
 //

@@ -15,7 +15,7 @@ import (
 	"github.com/iain17/kvcache/lttlru"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
@@ -66,20 +66,18 @@ func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	//Check publish time
 	now := stime.Now()
 	publishedTime := time.Unix(int64(sessions.Published), 0).UTC()
-	publishedTimeText := publishedTime.String()
 	expireTime := now.Add(-EXPIRE_TIME_SESSION)
-	expireTimeText := expireTime.String()
 	if publishedTime.Before(expireTime) {
-		err := fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTimeText, expireTimeText)
+		err := fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTime, expireTime)
 		logger.Warning(err)
 		return err
 	}
-	if publishedTime.After(now) {
-		err := fmt.Errorf("record with publish date %s was published in the future", publishedTimeText)
+	if publishedTime.After( now.Add(DIFF_DIFFERENCE_ACCEPTANCE) ) {
+		err := fmt.Errorf("record with publish date %s was published in the future (t=%s)", publishedTime, now)
 		logger.Warning(err)
 		return err
 	}
-	logger.Infof("successfully validated DNSessions published at: %s", publishedTimeText)
+	logger.Infof("successfully validated DNSessions published at: %s", publishedTime)
 	return nil
 }
 

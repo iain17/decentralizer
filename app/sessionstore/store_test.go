@@ -7,7 +7,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
 	"context"
-	"github.com/iain17/decentralizer/stime"
+	"github.com/iain17/stime"
 )
 
 func nop(sessionId uint64, sessionType uint64) {
