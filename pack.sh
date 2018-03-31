@@ -5,6 +5,7 @@ FAIL=0
 echo "starting"
 
 make ARCH=amd64 GOOSE=windows TARGET=adna.exe pack &
+make ARCH=386 GOOSE=windows TARGET=adna.exe pack &
 make ARCH=amd64 GOOSE=linux pack &
 
 for job in `jobs -p`

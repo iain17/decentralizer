@@ -7,7 +7,7 @@ echo "starting"
 make ARCH=amd64 GOOSE=windows clean
 
 make ARCH=amd64 GOOSE=windows TARGET=adna.exe build &
-#make ARCH=386 GOOSE=windows TARGET=adna.exe build &
+make ARCH=386 GOOSE=windows TARGET=adna.exe build &
 
 make ARCH=amd64 GOOSE=linux clean
 
