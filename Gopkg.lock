@@ -16,21 +16,13 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/dht"
-  packages = [
-    ".",
-    "krpc"
-  ]
+  packages = [".","krpc"]
   revision = "0f2c5cd8da39f173f4337a5b40fa58f0b8a099d4"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/missinggo"
-  packages = [
-    ".",
-    "inproc",
-    "pproffd",
-    "slices"
-  ]
+  packages = [".","inproc","pproffd","slices"]
   revision = "f32f2dc367fb4fc0167b83145459f567abd59c49"
 
 [[projects]]
@@ -42,12 +34,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/torrent"
-  packages = [
-    "bencode",
-    "iplist",
-    "logonce",
-    "metainfo"
-  ]
+  packages = ["bencode","iplist","logonce","metainfo"]
   revision = "5a7c4fc135eda0996079a46b43bc0ee8116d7093"
 
 [[projects]]
@@ -59,10 +46,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/aybabtme/color"
-  packages = [
-    ".",
-    "brush"
-  ]
+  packages = [".","brush"]
   revision = "28ad4cc941d69a60df8d0af1233fd5a2793c2801"
 
 [[projects]]
@@ -140,16 +124,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/golang/protobuf"
-  packages = [
-    "jsonpb",
-    "proto",
-    "protoc-gen-go/descriptor",
-    "ptypes",
-    "ptypes/any",
-    "ptypes/duration",
-    "ptypes/struct",
-    "ptypes/timestamp"
-  ]
+  packages = ["jsonpb","proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/struct","ptypes/timestamp"]
   revision = "bbd03ef6da3a115852eaf24c8a1c46aeb39aa175"
 
 [[projects]]
@@ -161,21 +136,12 @@
 [[projects]]
   branch = "master"
   name = "github.com/grpc-ecosystem/go-grpc-middleware"
-  packages = [
-    ".",
-    "auth",
-    "recovery",
-    "util/metautils"
-  ]
+  packages = [".","auth","recovery","util/metautils"]
   revision = "eb23b08d08bbe930113a6512a7a829050341448c"
 
 [[projects]]
   name = "github.com/grpc-ecosystem/grpc-gateway"
-  packages = [
-    "runtime",
-    "runtime/internal",
-    "utilities"
-  ]
+  packages = ["runtime","runtime/internal","utilities"]
   revision = "07f5e79768022f9a3265235f0db4ac8c3f675fec"
   version = "v1.3.1"
 
@@ -200,37 +166,19 @@
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/golang-lru"
-  packages = [
-    ".",
-    "simplelru"
-  ]
+  packages = [".","simplelru"]
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/hcl"
-  packages = [
-    ".",
-    "hcl/ast",
-    "hcl/parser",
-    "hcl/scanner",
-    "hcl/strconv",
-    "hcl/token",
-    "json/parser",
-    "json/scanner",
-    "json/token"
-  ]
+  packages = [".","hcl/ast","hcl/parser","hcl/scanner","hcl/strconv","hcl/token","json/parser","json/scanner","json/token"]
   revision = "23c074d0eceb2b8a5bfdbb271ab780cde70f05a8"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/discovery"
-  packages = [
-    ".",
-    "env",
-    "network",
-    "pb"
-  ]
+  packages = [".","env","network","pb"]
   revision = "5f932c4e6fe0f4055f1aa1b6d2212437233c746f"
 
 [[projects]]
@@ -254,10 +202,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/iain17/kvcache"
-  packages = [
-    "lttlru",
-    "ttlru"
-  ]
+  packages = ["lttlru","ttlru"]
   revision = "3b7a63bd72a172f5ab4b5bc2c9f12b8467c4a677"
 
 [[projects]]
@@ -265,6 +210,12 @@
   name = "github.com/iain17/logger"
   packages = ["."]
   revision = "4a8a918d0aed3cd7f4fc579a4a6357af80c95971"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/iain17/stime"
+  packages = ["."]
+  revision = "17a7ba9da59d4f21afe040e5930596cdfd0990ca"
 
 [[projects]]
   branch = "master"
@@ -358,10 +309,7 @@
 
 [[projects]]
   name = "github.com/spf13/afero"
-  packages = [
-    ".",
-    "mem"
-  ]
+  packages = [".","mem"]
   revision = "bb8f1927f2a9d3ab41c9340aa034f6b803f4359c"
   version = "v1.0.2"
 
@@ -416,29 +364,13 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = [
-    "ed25519",
-    "ed25519/internal/edwards25519"
-  ]
+  packages = ["ed25519","ed25519/internal/edwards25519"]
   revision = "374053ea96cb300f8671b8d3b07edeeb06e203b4"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = [
-    "bpf",
-    "context",
-    "http2",
-    "http2/hpack",
-    "idna",
-    "internal/iana",
-    "internal/socket",
-    "internal/timeseries",
-    "ipv4",
-    "ipv6",
-    "lex/httplex",
-    "trace"
-  ]
+  packages = ["bpf","context","http2","http2/hpack","idna","internal/iana","internal/socket","internal/timeseries","ipv4","ipv6","lex/httplex","trace"]
   revision = "24dd3780ca4f75fed9f321890729414a4b5d3f13"
 
 [[projects]]
@@ -449,63 +381,19 @@
 
 [[projects]]
   name = "golang.org/x/text"
-  packages = [
-    "collate",
-    "collate/build",
-    "internal/colltab",
-    "internal/gen",
-    "internal/tag",
-    "internal/triegen",
-    "internal/ucd",
-    "language",
-    "secure/bidirule",
-    "transform",
-    "unicode/bidi",
-    "unicode/cldr",
-    "unicode/norm",
-    "unicode/rangetable"
-  ]
+  packages = ["collate","collate/build","internal/colltab","internal/gen","internal/tag","internal/triegen","internal/ucd","language","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable"]
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
   branch = "master"
   name = "google.golang.org/genproto"
-  packages = [
-    "googleapis/api/annotations",
-    "googleapis/rpc/status"
-  ]
+  packages = ["googleapis/api/annotations","googleapis/rpc/status"]
   revision = "f8c8703595236ae70fdf8789ecb656ea0bcdcf46"
 
 [[projects]]
   name = "google.golang.org/grpc"
-  packages = [
-    ".",
-    "balancer",
-    "balancer/base",
-    "balancer/roundrobin",
-    "codes",
-    "connectivity",
-    "credentials",
-    "encoding",
-    "encoding/proto",
-    "grpclb/grpc_lb_v1/messages",
-    "grpclog",
-    "internal",
-    "keepalive",
-    "metadata",
-    "naming",
-    "peer",
-    "reflection",
-    "reflection/grpc_reflection_v1alpha",
-    "resolver",
-    "resolver/dns",
-    "resolver/passthrough",
-    "stats",
-    "status",
-    "tap",
-    "transport"
-  ]
+  packages = [".","balancer","balancer/base","balancer/roundrobin","codes","connectivity","credentials","encoding","encoding/proto","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","reflection","reflection/grpc_reflection_v1alpha","resolver","resolver/dns","resolver/passthrough","stats","status","tap","transport"]
   revision = "8e4536a86ab602859c20df5ebfd0bd4228d08655"
   version = "v1.10.0"
 
@@ -524,6 +412,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c951dcfe783fc98123c5a2d4fd566ba0aff69c779bdef54eaae2b5caa9fdaef2"
+  inputs-digest = "9469a4c4898ce7e66e01cd8eb75d11eed6ae55ebfb369879ca8aa284f5552e90"
   solver-name = "gps-cdcl"
   solver-version = 1
