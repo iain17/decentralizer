@@ -83,12 +83,17 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 
 	//Wait for a session request. This is done by sending one uint64
 	var sessionId uint64
+	i := 0
 	for resData, err = framed.Read(stream); err == nil; {
 		binary.Read(bytes.NewReader(resData), binary.LittleEndian, &sessionId)
 		session, err := sessionsStorage.FindSessionId(sessionId)
 		if err != nil {
 			err = fmt.Errorf("%s requested session %d which we didn't have: %s", stream.Conn().RemotePeer().Pretty(), sessionId, err.Error())
 			logger.Warning(err)
+			i++
+			if i > 10 {
+				return
+			}
 			continue
 		}
 		response, err := gogoProto.Marshal(session)
