@@ -179,19 +179,13 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "358908d52c24ded31092366adcd3b097563427fd"
+  revision = "b9b25bd1778183da522582791ae9f448cbc7abc2"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/framed"
   packages = ["."]
   revision = "89d391c9e037b3e26186779264ccc69a1036566e"
-
-[[projects]]
-  name = "github.com/iain17/go-ircevent"
-  packages = ["."]
-  revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
-  version = "0.1"
 
 [[projects]]
   branch = "master"
@@ -348,6 +342,12 @@
   packages = ["assert"]
   revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
   version = "v1.2.1"
+
+[[projects]]
+  name = "github.com/thoj/go-ircevent"
+  packages = ["."]
+  revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
+  version = "0.1"
 
 [[projects]]
   name = "github.com/willf/bitset"

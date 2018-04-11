@@ -11,26 +11,18 @@
   branch = "master"
   name = "github.com/Pallinder/go-randomdata"
   packages = ["."]
-  revision = "0eb4fb8a64d92747aa9c557b4c3cafca945802cd"
+  revision = "dab270d296c6c8fb98de3b4334bbd7d7b0ceca53"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/dht"
-  packages = [
-    ".",
-    "krpc"
-  ]
-  revision = "0f2c5cd8da39f173f4337a5b40fa58f0b8a099d4"
+  packages = [".","krpc"]
+  revision = "faa1d74e0e543f84e74b4ee302455c6908b19ed0"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/missinggo"
-  packages = [
-    ".",
-    "inproc",
-    "pproffd",
-    "slices"
-  ]
+  packages = [".","inproc","pproffd","slices"]
   revision = "f32f2dc367fb4fc0167b83145459f567abd59c49"
 
 [[projects]]
@@ -42,13 +34,8 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/torrent"
-  packages = [
-    "bencode",
-    "iplist",
-    "logonce",
-    "metainfo"
-  ]
-  revision = "5a7c4fc135eda0996079a46b43bc0ee8116d7093"
+  packages = ["bencode","iplist","logonce","metainfo"]
+  revision = "92f6209c5f7cd438b9f6d255c78507ff1d370de5"
 
 [[projects]]
   branch = "master"
@@ -59,10 +46,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/aybabtme/color"
-  packages = [
-    ".",
-    "brush"
-  ]
+  packages = [".","brush"]
   revision = "28ad4cc941d69a60df8d0af1233fd5a2793c2801"
 
 [[projects]]
@@ -86,8 +70,8 @@
 [[projects]]
   name = "github.com/cenkalti/backoff"
   packages = ["."]
-  revision = "61153c768f31ee5f130071d08fc82b85208528de"
-  version = "v1.1.0"
+  revision = "2ea60e5f094469f9e65adb9cd103795b73ae743e"
+  version = "v2.0.0"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
@@ -105,21 +89,18 @@
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "bbd03ef6da3a115852eaf24c8a1c46aeb39aa175"
+  revision = "e09c5db296004fbe3f74490e84dcd62c3c5ddb1b"
 
 [[projects]]
   branch = "master"
   name = "github.com/grandcat/zeroconf"
   packages = ["."]
-  revision = "8219919fca892353a082b184bca66db55c55b583"
+  revision = "df75bb3ccae13e625e5b60e68d9c9590056dded1"
 
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/golang-lru"
-  packages = [
-    ".",
-    "simplelru"
-  ]
+  packages = [".","simplelru"]
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
@@ -127,12 +108,6 @@
   name = "github.com/iain17/framed"
   packages = ["."]
   revision = "89d391c9e037b3e26186779264ccc69a1036566e"
-
-[[projects]]
-  name = "github.com/iain17/go-ircevent"
-  packages = ["."]
-  revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
-  version = "0.1"
 
 [[projects]]
   branch = "master"
@@ -155,8 +130,8 @@
 [[projects]]
   name = "github.com/miekg/dns"
   packages = ["."]
-  revision = "5364553f1ee9cddc7ac8b62dce148309c386695b"
-  version = "v1.0.4"
+  revision = "83c435cc65d2862736428b9b4d07d0ab10ad3e4d"
+  version = "v1.0.5"
 
 [[projects]]
   branch = "master"
@@ -201,6 +176,12 @@
   version = "v1.2.1"
 
 [[projects]]
+  name = "github.com/thoj/go-ircevent"
+  packages = ["."]
+  revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
+  version = "0.1"
+
+[[projects]]
   name = "github.com/willf/bitset"
   packages = ["."]
   revision = "d860f346b89450988a379d7d705e83c58d1ea227"
@@ -215,24 +196,14 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = [
-    "ed25519",
-    "ed25519/internal/edwards25519"
-  ]
-  revision = "c3a3ad6d03f7a915c0f7e194b7152974bb73d287"
+  packages = ["ed25519","ed25519/internal/edwards25519"]
+  revision = "f70185d77e8278766928032ee1355e3da47e7181"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = [
-    "bpf",
-    "context",
-    "internal/iana",
-    "internal/socket",
-    "ipv4",
-    "ipv6"
-  ]
-  revision = "92b859f39abd2d91a854c9f9c4621b2f5054a92d"
+  packages = ["bpf","context","internal/iana","internal/socket","ipv4","ipv6"]
+  revision = "61147c48b25b599e5b561d2e9c4f3e1ef489ca41"
 
 [[projects]]
   name = "gopkg.in/natefinch/lumberjack.v2"
@@ -243,6 +214,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6dc224d3debed429146d5479be92d3563639705e93bd2e6aa6bbf6f652118577"
+  inputs-digest = "959793e8cd2c3310395085afd7756c5e2c650a8c29ccf8ab6d96db80aab33641"
   solver-name = "gps-cdcl"
   solver-version = 1

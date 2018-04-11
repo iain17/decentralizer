@@ -14,7 +14,6 @@ import (
 func init() {
 	bs := core.DefaultBootstrapConfig
 	bs.BootstrapPeers = func() []pstore.PeerInfo {
-		logger.Info("Nulled bootstrap")
 		return nil
 	}
 	core.DefaultBootstrapConfig = bs
@@ -38,7 +37,9 @@ func (d *Decentralizer) shareOurBootstrap() {
 		logger.Warning(err)
 		return
 	}
-	d.d.LocalNode.SetInfo("bootstrap", serializeBootstrapAddrs(peers))
+	bootstrapNodes := serializeBootstrapAddrs(peers)
+	d.d.LocalNode.SetInfo("bootstrap", bootstrapNodes)
+	d.d.SetNetworkMessage(bootstrapNodes)
 }
 
 func (d *Decentralizer) saveBootstrapState() {
@@ -120,6 +121,14 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 			break
 		}
 		peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
+		if err != nil {
+			logger.Warning(err)
+			continue
+		}
+		result = append(result, peerBootstrap...)
+	}
+	for _, message := range d.d.GetNetworkMessages() {
+		peerBootstrap, err := unSerializeBootstrapAddrs(message)
 		if err != nil {
 			logger.Warning(err)
 			continue

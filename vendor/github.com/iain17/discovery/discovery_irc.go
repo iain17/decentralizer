@@ -3,7 +3,7 @@ package discovery
 import (
 	"context"
 	"time"
-	"github.com/iain17/go-ircevent"
+	"github.com/thoj/go-ircevent"
 	"github.com/Pallinder/go-randomdata"
 	"crypto/tls"
 	"encoding/hex"
@@ -73,17 +73,21 @@ func (d *DiscoveryIRC) init(ctx context.Context) (err error) {
 		message := event.Message()
 		parts := strings.Split(message, IRC_SEPERATOR)
 		if len(parts) != 2 {
+			//legacy
+			if strings.HasPrefix(message,"JOIN US:") {
+				d.onReceiveJoin(message[len("JOIN US:"):])
+				return
+			}
+
 			d.logger.Debugf("Malformed message: '%s'", message)
 			return
 		}
 		data := message[len(parts[0]):]
 		switch parts[0] {
 		case IRC_JOIN_HANDLE:
-			logger.Debugf("Received IRC join message: %s", data)
 			d.onReceiveJoin(data)
 			break
 		case IRC_MESSAGE_HANDLE:
-			logger.Debugf("Received IRC network message: %s", data)
 			d.onReceiveNetworkMessage(data)
 			break
 		default:
@@ -95,6 +99,7 @@ func (d *DiscoveryIRC) init(ctx context.Context) (err error) {
 }
 
 func (d *DiscoveryIRC) onReceiveJoin(data string) {
+	logger.Debugf("Received IRC join message: %s", data)
 	ipPort := strings.Split(data, ":")
 	if len(ipPort) != 2 {
 		d.logger.Warningf("Received a weird IRC message: %s", data)
@@ -112,6 +117,7 @@ func (d *DiscoveryIRC) onReceiveJoin(data string) {
 }
 
 func (d *DiscoveryIRC) onReceiveNetworkMessage(data string) {
+	logger.Debugf("Received IRC network message: %s", data)
 	d.crcTable.Reset()
 	d.crcTable.Write([]byte(data))
 	d.messages.AddWithTTL(d.crcTable.Sum32(), data, 30 * time.Minute)
