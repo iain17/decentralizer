@@ -1,7 +1,7 @@
 package discovery
 
 import (
-	"github.com/anacrolix/dht"
+	"github.com/iain17/dht"
 	"context"
 	"time"
 	"net"
@@ -36,7 +36,6 @@ func (d *DiscoveryDHT) init(ctx context.Context) (err error) {
 	d.node, err = dht.NewServer(&dht.ServerConfig{
 		Conn: conn,
 		StartingNodes: dht.GlobalBootstrapAddrs,
-		NoSecurity: true,
 	})
 	if err != nil {
 		return err

@@ -16,7 +16,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/dht"
-  packages = [".","krpc"]
+  packages = ["krpc"]
   revision = "faa1d74e0e543f84e74b4ee302455c6908b19ed0"
 
 [[projects]]
@@ -102,6 +102,12 @@
   name = "github.com/hashicorp/golang-lru"
   packages = [".","simplelru"]
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/iain17/dht"
+  packages = ["."]
+  revision = "0b93a5a84191ad02c58352a04ab941ab7cc391cd"
 
 [[projects]]
   branch = "master"
@@ -197,7 +203,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "f70185d77e8278766928032ee1355e3da47e7181"
+  revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
 [[projects]]
   branch = "master"
@@ -214,6 +220,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "959793e8cd2c3310395085afd7756c5e2c650a8c29ccf8ab6d96db80aab33641"
+  inputs-digest = "bf37459404e66371c7f57c9f60a97f3cbf15e6b71572b47c7f0d75eed13bac24"
   solver-name = "gps-cdcl"
   solver-version = 1

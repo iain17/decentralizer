@@ -16,7 +16,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/dht"
-  packages = [".","krpc"]
+  packages = ["krpc"]
   revision = "faa1d74e0e543f84e74b4ee302455c6908b19ed0"
 
 [[projects]]
@@ -177,9 +177,15 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/iain17/dht"
+  packages = ["."]
+  revision = "0b93a5a84191ad02c58352a04ab941ab7cc391cd"
+
+[[projects]]
+  branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "0db80707173ca2eadfff54485daca8a1c7434fc7"
+  revision = "a023f752224e05e7fbdff9f48de77408b8d1de04"
 
 [[projects]]
   branch = "master"
@@ -264,6 +270,12 @@
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
+
+[[projects]]
+  name = "github.com/newrelic/go-agent"
+  packages = [".","internal","internal/cat","internal/jsonx","internal/logger","internal/sysinfo","internal/utilization"]
+  revision = "f5bce3387232559bcbe6a5f8227c4bf508dac1ba"
+  version = "v1.11.0"
 
 [[projects]]
   name = "github.com/pelletier/go-toml"
@@ -412,6 +424,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9469a4c4898ce7e66e01cd8eb75d11eed6ae55ebfb369879ca8aa284f5552e90"
+  inputs-digest = "3eb88512834c66a6d064a84e35d600e187219f7a1554e0812fb58b20f1091937"
   solver-name = "gps-cdcl"
   solver-version = 1

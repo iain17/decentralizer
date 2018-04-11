@@ -109,6 +109,7 @@ func (rn *RemoteNode) listen() {
 	rn.SharePeers()
 
 	rn.logger.Debug("listening...")
+	i := 0
 	for {
 		rn.conn.SetDeadline(time.Now().Add((HEARTBEAT_DELAY * 1.5) * time.Second))
 		packet, err := pb.Decode(rn.conn)
@@ -117,6 +118,10 @@ func (rn *RemoteNode) listen() {
 			if err == io.EOF || err.Error() == "no packet read timeout" || err.Error() == "timed out waiting for ack" || err.Error() == "i/o timeout" || err.Error() == "closed" {
 				break
 			}
+			if i > 10 {
+				break
+			}
+			i++
 			continue
 		}
 		//rn.logger.Debugf("received, %+v", packet)
