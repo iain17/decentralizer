@@ -46,10 +46,10 @@ func New(ctx context.Context, network *network.Network, max int, cb discoveredCB
 	}
 	var err error
 	self.LocalNode, err = newLocalNode(self)
-	self.LocalNode.info = info
 	if err != nil {
 		return nil, err
 	}
+	self.LocalNode.info = info
 	return self, nil
 }
 
@@ -73,4 +73,18 @@ func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {
 func (d *Discovery) GetIP() net.IP {
 	d.LocalNode.waitTilReady()
 	return net.ParseIP(d.LocalNode.ip)
+}
+
+func (d *Discovery) SetNetworkMessage(message string) {
+	d.LocalNode.discoveryIRC.message = message
+}
+
+func (d *Discovery) GetNetworkMessages() []string {
+	var messages []string
+	for _, key := range d.LocalNode.discoveryIRC.messages.Keys() {
+		if message, ok := d.LocalNode.discoveryIRC.messages.Get(key); ok {
+			messages = append(messages, message.(string))
+		}
+	}
+	return messages
 }
