@@ -26,6 +26,7 @@ import (
 	"hash"
 	"hash/crc32"
 	"gx/ipfs/QmSwZMWwFZSUpe5muU2xgTUwppH24KfMwdPXiwbEp2c6G5/go-libp2p-swarm"
+	"github.com/iain17/stime"
 )
 
 type Decentralizer struct {
@@ -101,6 +102,11 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	swarmKey, err := Asset("static/swarm.key")
 	if err != nil {
 		return nil, err
+	}
+
+	if stime.IsBadNetwork() {
+		logger.Info("Detected a bad network. Enabling limited connection mode")
+		limitedConnection = true
 	}
 
 	ipfsPath := Base.Path+"/ipfs"
