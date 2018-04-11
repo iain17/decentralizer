@@ -50,7 +50,7 @@ func (d *DiscoveryMDNS) Serve(ctx context.Context) {
 		d.localNode.lastError = err
 		panic(err)
 	}
-	d.localNode.waitTilReady()
+	d.localNode.WaitTilReady()
 	entriesCh := make(chan *zeroconf.ServiceEntry)
 	err := d.resolver.Browse(d.context, SERVICE, "", entriesCh)
 	if err != nil {

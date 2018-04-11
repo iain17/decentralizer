@@ -60,9 +60,9 @@ func (d *Discovery) Stop() {
 }
 
 func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {
-	d.LocalNode.waitTilReady()
+	d.LocalNode.WaitTilReady()
 	timeout.Do(func(ctx context.Context) {
-		d.LocalNode.waitTilReady()
+		d.LocalNode.WaitTilReady()
 		for d.LocalNode.netTableService.peers.Len() < num {
 			time.Sleep(100 * time.Millisecond)
 		}
@@ -71,12 +71,16 @@ func (d *Discovery) WaitForPeers(num int, expire time.Duration) []*RemoteNode {
 }
 
 func (d *Discovery) GetIP() net.IP {
-	d.LocalNode.waitTilReady()
+	d.LocalNode.WaitTilReady()
 	return net.ParseIP(d.LocalNode.ip)
 }
 
 func (d *Discovery) SetNetworkMessage(message string) {
 	d.LocalNode.discoveryIRC.message = message
+}
+
+func (d *Discovery) IsReady() bool {
+	return d.LocalNode.wg == nil
 }
 
 func (d *Discovery) GetNetworkMessages() []string {

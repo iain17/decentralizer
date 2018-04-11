@@ -179,7 +179,7 @@
   branch = "master"
   name = "github.com/iain17/discovery"
   packages = [".","env","network","pb"]
-  revision = "6ce8390e21a1357df287d0fdffaebad8862462b2"
+  revision = "0db80707173ca2eadfff54485daca8a1c7434fc7"
 
 [[projects]]
   branch = "master"
@@ -365,7 +365,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ed25519","ed25519/internal/edwards25519"]
-  revision = "f70185d77e8278766928032ee1355e3da47e7181"
+  revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
 [[projects]]
   branch = "master"

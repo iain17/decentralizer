@@ -131,7 +131,7 @@ func (d *DiscoveryIRC) Serve(ctx context.Context) {
 		d.localNode.lastError = err
 		panic(err)
 	}
-	d.localNode.waitTilReady()
+	d.localNode.WaitTilReady()
 	advertiseTicker := time.Tick(30 * time.Second)
 	messageTicker := time.Tick(120 * time.Second)
 	for {

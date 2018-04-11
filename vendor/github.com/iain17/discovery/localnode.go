@@ -80,7 +80,7 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 }
 
 //Hangs until all servers have at least initialized once
-func (ln *LocalNode) waitTilReady() {
+func (ln *LocalNode) WaitTilReady() {
 	if ln.wg != nil {
 		ln.wg.Wait()
 		ln.wg = nil

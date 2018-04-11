@@ -42,7 +42,7 @@ func (s *UPnPService) Serve(ctx context.Context) {
 		s.localNode.lastError = err
 		panic(err)
 	}
-	s.localNode.waitTilReady()
+	s.localNode.WaitTilReady()
 	ticker := time.Tick(1 * time.Minute)
 	for {
 		select {

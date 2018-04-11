@@ -51,7 +51,7 @@ func (d *DiscoveryDHT) Serve(ctx context.Context) {
 		d.localNode.lastError = err
 		panic(err)
 	}
-	d.localNode.waitTilReady()
+	d.localNode.WaitTilReady()
 	if d.node == nil {
 		panic("Can't initiate DHT.")
 	}

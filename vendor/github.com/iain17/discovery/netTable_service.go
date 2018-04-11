@@ -79,7 +79,7 @@ func (nt *NetTableService) Serve(ctx context.Context) {
 		nt.localNode.lastError = err
 		panic(err)
 	}
-	nt.localNode.waitTilReady()
+	nt.localNode.WaitTilReady()
 	//Spawn some workers
 	for i := 0; i < CONCCURENT_NEW_CONNECTION; i++ {
 		go nt.processNewConnection()

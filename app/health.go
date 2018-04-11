@@ -9,6 +9,10 @@ import (
 )
 
 func (d *Decentralizer) Health(WaitForMinConnections bool) (bool, int, error) {
+	if !d.d.IsReady() {
+		return false, 0, nil
+	}
+
 	numPeers := len(d.i.PeerHost.Network().Peers())
 	if WaitForMinConnections {
 		if numPeers < MIN_CONNECTED_PEERS {

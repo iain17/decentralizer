@@ -161,6 +161,8 @@ func (s *search) fetch() (*sessionstore.Store, error) {
 		}
 	}, 5 * time.Second)
 	cancel()
+
+	relic.RecordCustomMetric("sessions found", float64(s.storage.Len()))
 	//Keep it to yourself eh. If we have results. Show em!
 	if err != nil && s.storage.Len() > 0 {
 		logger.Warning(err)
