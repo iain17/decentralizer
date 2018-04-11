@@ -82,13 +82,12 @@ func (d *DiscoveryIRC) init(ctx context.Context) (err error) {
 			d.logger.Debugf("Malformed message: '%s'", message)
 			return
 		}
-		data := message[len(parts[0]):]
 		switch parts[0] {
 		case IRC_JOIN_HANDLE:
-			d.onReceiveJoin(data)
+			d.onReceiveJoin(parts[1])
 			break
 		case IRC_MESSAGE_HANDLE:
-			d.onReceiveNetworkMessage(data)
+			d.onReceiveNetworkMessage(parts[1])
 			break
 		default:
 			d.logger.Warningf("Unknown handle '%s'.", parts[0])
