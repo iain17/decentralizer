@@ -52,7 +52,7 @@ var apiCmd = &cobra.Command{
 	Short: "Runs the GRPC and HTTP api",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
-			logLvl := logger.INFO
+		logLvl := logger.INFO
 		if verbose {
 			logLvl = logger.DEBUG
 			logging.Configure(logging.LevelDebug)
@@ -82,6 +82,8 @@ var apiCmd = &cobra.Command{
 				logger.Warning(err)
 			}
 		}
+
+		logger.Infof("Version: %s - %s", BRANCH, COMMIT_HASH)
 
 		ctx, cancel := context.WithCancel(context.Background())
 		s, err := api.New(ctx, port)
