@@ -11,6 +11,9 @@ import (
 )
 
 func (s *Server) initHTTP(port int) error {
+	go func() {
+		http.ListenAndServe("localhost:6060", nil)
+	}()
 	mux := runtime.NewServeMux()
 	address := fmt.Sprintf(":%d", port)
 	logger.Infof("Serving HTTP API on: %s", address)
