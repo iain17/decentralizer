@@ -21,20 +21,28 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/anacrolix/go-libutp"
+  name = "github.com/iain17/go-libutp"
   packages = ["."]
-  revision = "5dd53cb61ef096fa0d98c5f791b162d303488970"
+  revision = "3fb99fdeb41e5f1d6268e5aa51f79dd43b17e4fa"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/missinggo"
-  packages = [".","expect","inproc","slices"]
+  packages = [
+    ".",
+    "expect",
+    "inproc",
+    "slices"
+  ]
   revision = "ef490447bf2efe3b83e875f2722a2b74e6a8e756"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/mmsg"
-  packages = [".","socket"]
+  packages = [
+    ".",
+    "socket"
+  ]
   revision = "b6a9725daf1e3b189c5bd7cdc78dca5226750c78"
 
 [[projects]]
@@ -46,13 +54,21 @@
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/torrent"
-  packages = ["bencode","iplist","logonce","metainfo"]
+  packages = [
+    "bencode",
+    "iplist",
+    "logonce",
+    "metainfo"
+  ]
   revision = "d7225aed03e22743bbce46c5ed813342d9cbaa6a"
 
 [[projects]]
   branch = "master"
   name = "github.com/aybabtme/color"
-  packages = [".","brush"]
+  packages = [
+    ".",
+    "brush"
+  ]
   revision = "28ad4cc941d69a60df8d0af1233fd5a2793c2801"
 
 [[projects]]
@@ -106,7 +122,10 @@
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/golang-lru"
-  packages = [".","simplelru"]
+  packages = [
+    ".",
+    "simplelru"
+  ]
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
@@ -214,13 +233,23 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["ed25519","ed25519/internal/edwards25519"]
+  packages = [
+    "ed25519",
+    "ed25519/internal/edwards25519"
+  ]
   revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["bpf","context","internal/iana","internal/socket","ipv4","ipv6"]
+  packages = [
+    "bpf",
+    "context",
+    "internal/iana",
+    "internal/socket",
+    "ipv4",
+    "ipv6"
+  ]
   revision = "61147c48b25b599e5b561d2e9c4f3e1ef489ca41"
 
 [[projects]]
@@ -232,6 +261,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7b15400054db53648aa15000b89e3de64c6a4032cdfc46bbd11c7b335e3703d1"
+  inputs-digest = "643b1b3409cdfef2a82dac4fe8d76712729fd9e6d5f030b361540cbb6120bafd"
   solver-name = "gps-cdcl"
   solver-version = 1
