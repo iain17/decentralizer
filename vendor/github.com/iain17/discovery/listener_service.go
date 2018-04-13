@@ -1,7 +1,7 @@
 package discovery
 
 import (
-	"github.com/anacrolix/go-libutp"
+	"github.com/iain17/go-libutp"
 	"net"
 	"context"
 	"github.com/iain17/discovery/pb"

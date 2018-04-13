@@ -21,12 +21,6 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/anacrolix/go-libutp"
-  packages = ["."]
-  revision = "5dd53cb61ef096fa0d98c5f791b162d303488970"
-
-[[projects]]
-  branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [
     ".",
@@ -250,13 +244,19 @@
     "network",
     "pb"
   ]
-  revision = "1d24ee0e715ee0c8ae8faca468fb6013b8a9f3f6"
+  revision = "58c37d484bbf5de65d0226e164b8061d8d5e650c"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/framed"
   packages = ["."]
   revision = "89d391c9e037b3e26186779264ccc69a1036566e"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/iain17/go-libutp"
+  packages = ["."]
+  revision = "3fb99fdeb41e5f1d6268e5aa51f79dd43b17e4fa"
 
 [[projects]]
   branch = "master"
