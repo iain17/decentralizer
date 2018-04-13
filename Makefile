@@ -40,14 +40,12 @@ gx:
 dep:
 	mv vendor/gx /tmp/
 	dep ensure
-	dep prune
 	mv /tmp/gx vendor/
 
 dep-update:
 	mv vendor/gx /tmp/
 	dep ensure
 	dep ensure --update
-	dep prune
 	mv /tmp/gx vendor/
 
 #https://github.com/jteeuwen/go-bindata
