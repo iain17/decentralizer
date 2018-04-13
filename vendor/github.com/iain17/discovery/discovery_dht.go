@@ -81,6 +81,7 @@ func (d *DiscoveryDHT) Serve(ctx context.Context) {
 			}
 			break
 		}
+		time.Sleep(1 * time.Second)
 	}
 }
 

@@ -1,7 +1,7 @@
 package discovery
 
 import (
-	"github.com/anacrolix/utp"
+	"github.com/anacrolix/go-libutp"
 	"net"
 	"context"
 	"github.com/iain17/discovery/pb"
@@ -64,14 +64,15 @@ func (l *ListenerService) Serve(ctx context.Context) {
 		case <-l.context.Done():
 			return
 		default:
+			l.logger.Debug("Listening...")
 			conn, err := l.socket.Accept()
 			if err != nil {
-				break
+				continue
 			}
 			key := conn.RemoteAddr().String()
 			if _, ok := l.localNode.netTableService.blackList.Get(key); ok {
 				conn.Close()
-				return
+				continue
 			}
 
 			go func(conn net.Conn) {

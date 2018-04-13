@@ -226,9 +226,9 @@ func getDictField(dict reflect.Value, key string) dictField {
 			})
 		}
 		return dictField{
-			Value: dict.FieldByIndex(sf.Index),
-			Ok:    true,
-			Set:   func() {},
+			Value:                    dict.FieldByIndex(sf.Index),
+			Ok:                       true,
+			Set:                      func() {},
 			IgnoreUnmarshalTypeError: getTag(sf.Tag).IgnoreUnmarshalTypeError(),
 		}
 	default:
@@ -495,8 +495,9 @@ func (d *Decoder) parseValue(v reflect.Value) (bool, error) {
 		return true, nil
 	default:
 		if b >= '0' && b <= '9' {
-			// string
-			// append first digit of the length to the buffer
+			// It's a string.
+			d.buf.Reset()
+			// Write the  first digit of the length to the buffer.
 			d.buf.WriteByte(b)
 			return true, d.parseString(v)
 		}

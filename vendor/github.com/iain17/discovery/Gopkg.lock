@@ -17,13 +17,25 @@
   branch = "master"
   name = "github.com/anacrolix/dht"
   packages = ["krpc"]
-  revision = "faa1d74e0e543f84e74b4ee302455c6908b19ed0"
+  revision = "24cbf25b72a4c565e49c4f3262cc47526fb5ebdf"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/anacrolix/go-libutp"
+  packages = ["."]
+  revision = "5dd53cb61ef096fa0d98c5f791b162d303488970"
 
 [[projects]]
   branch = "master"
   name = "github.com/anacrolix/missinggo"
-  packages = [".","inproc","pproffd","slices"]
-  revision = "f32f2dc367fb4fc0167b83145459f567abd59c49"
+  packages = [".","expect","inproc","slices"]
+  revision = "ef490447bf2efe3b83e875f2722a2b74e6a8e756"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/anacrolix/mmsg"
+  packages = [".","socket"]
+  revision = "b6a9725daf1e3b189c5bd7cdc78dca5226750c78"
 
 [[projects]]
   branch = "master"
@@ -35,13 +47,7 @@
   branch = "master"
   name = "github.com/anacrolix/torrent"
   packages = ["bencode","iplist","logonce","metainfo"]
-  revision = "92f6209c5f7cd438b9f6d255c78507ff1d370de5"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/anacrolix/utp"
-  packages = ["."]
-  revision = "9e0e1d1d0572f5a09a669d4ea0372d8e8078dcc9"
+  revision = "d7225aed03e22743bbce46c5ed813342d9cbaa6a"
 
 [[projects]]
   branch = "master"
@@ -102,6 +108,12 @@
   name = "github.com/hashicorp/golang-lru"
   packages = [".","simplelru"]
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
+
+[[projects]]
+  name = "github.com/huandu/xstrings"
+  packages = ["."]
+  revision = "2bf18b218c51864a87384c06996e40ff9dcff8e1"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -220,6 +232,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "bf37459404e66371c7f57c9f60a97f3cbf15e6b71572b47c7f0d75eed13bac24"
+  inputs-digest = "7b15400054db53648aa15000b89e3de64c6a4032cdfc46bbd11c7b335e3703d1"
   solver-name = "gps-cdcl"
   solver-version = 1
