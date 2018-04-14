@@ -58,5 +58,5 @@ pack:
     - cd $REPO_BASE
     - chmod +x $REPO_BASE/pack.sh
     - ./pack.sh
-    - mkdir -p $CI_PROJECT_DIR/packed
+    - rm $CI_PROJECT_DIR/bin/* || true
     - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/bin
