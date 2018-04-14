@@ -27,6 +27,7 @@ build:
 pack:
 	rm bin/$(ARCH)/$(TARGET) || true
 	upx -o bin/$(GOOSE)/$(ARCH)/$(TARGET) bin/$(GOOSE)/$(ARCH)/unpacked-$(TARGET)
+	rm bin/$(GOOSE)/$(ARCH)/unpacked-$(TARGET) || true
 
 ci:
 	gitlab-runner --debug exec docker build
