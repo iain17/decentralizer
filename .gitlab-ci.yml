@@ -38,6 +38,8 @@ build:
     - cd $REPO_BASE
     - chmod +x $REPO_BASE/build.sh
     - ./build.sh
+    - rm -rf $CI_PROJECT_DIR/bin/* || true
+    - mkdir -p $CI_PROJECT_DIR/bin || true
     - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/bin
 
 pack:
@@ -58,5 +60,6 @@ pack:
     - cd $REPO_BASE
     - chmod +x $REPO_BASE/pack.sh
     - ./pack.sh
-    - rm $CI_PROJECT_DIR/bin/* || true
+    - rm -rf $CI_PROJECT_DIR/bin/* || true
+    - mkdir -p $CI_PROJECT_DIR/bin || true
     - cp -r $REPO_BASE/bin/* $CI_PROJECT_DIR/bin
