@@ -26,7 +26,7 @@ func (s *StunService) init(ctx context.Context) (err error) {
 	s.initialized = true
 	s.logger = logger.New(s.String())
 	s.context = ctx
-	s.client = stun.NewClientWithConnection(s.localNode.listenerService.socket)
+	s.client = stun.NewClient()
 	return nil
 }
 
@@ -49,6 +49,7 @@ func (s *StunService) Serve(ctx context.Context) (err error) {
 	if host != nil {
 		s.logger.Debugf("processed, family %d, host %q, port %d", host.Family(), host.IP(), host.Port())
 		s.localNode.ip = host.IP()
+		s.localNode.port = int(host.Port())
 	}
 
 	switch nat {

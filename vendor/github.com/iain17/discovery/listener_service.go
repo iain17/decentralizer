@@ -1,20 +1,20 @@
 package discovery
 
 import (
-	"github.com/iain17/go-libutp"
 	"net"
 	"context"
 	"github.com/iain17/discovery/pb"
 	"github.com/iain17/logger"
 	"errors"
 	"fmt"
+	"github.com/xtaci/kcp-go"
 )
 
 type ListenerService struct {
 	localNode *LocalNode
 	context context.Context
 	listener	  net.PacketConn
-	socket    *utp.Socket
+	socket    *kcp.Listener
 
 	logger *logger.Logger
 }
@@ -36,8 +36,13 @@ func (l *ListenerService) init(ctx context.Context) error {
 	l.logger = logger.New(l.String())
 	l.context = ctx
 
+	stunErr := l.localNode.StunService.Serve(ctx)
+	if stunErr != nil {
+		logger.Warningf("Stun error: %s", stunErr)
+	}
+
 	var err error
-	l.socket, err = utp.NewSocket("udp4", ":0")
+	l.socket, err = kcp.ListenWithOptions(fmt.Sprintf(":%d", l.localNode.port), nil, 10, 3)
 	if err != nil {
 		return fmt.Errorf("could not listen: %s", err.Error())
 	}
@@ -45,10 +50,6 @@ func (l *ListenerService) init(ctx context.Context) error {
 	l.localNode.port = addr.Port
 	l.logger.Infof("listening on %d", l.localNode.port)
 
-	stunErr := l.localNode.StunService.Serve(ctx)
-	if stunErr != nil {
-		logger.Warningf("Stun error: %s", stunErr)
-	}
 	return err
 }
 

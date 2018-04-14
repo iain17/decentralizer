@@ -5,6 +5,7 @@ import (
 	"net"
 	"time"
 	"fmt"
+	"github.com/xtaci/kcp-go"
 )
 
 //Initiate a handshake procedure.
@@ -12,7 +13,7 @@ import (
 func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	accepted := false
 
-	conn, errDial := ln.listenerService.socket.DialContext(ln.discovery.ctx, "udp4", h.String())
+	conn, errDial := kcp.DialWithOptions(h.String(), nil, 10, 3)
 	defer func() {
 		//s.Close()
 		if !accepted && conn != nil{
@@ -22,6 +23,7 @@ func connect(h *net.UDPAddr, ln *LocalNode) (*RemoteNode, error) {
 	if errDial != nil {
 		return nil, fmt.Errorf("error dialing %s: %s", h.String(), errDial.Error())
 	}
+	conn.SetNoDelay(1, 40, 1, 1)
 	conn.SetDeadline(time.Now().Add(1 * time.Second))
 
 	rn := NewRemoteNode(conn, ln)

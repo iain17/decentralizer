@@ -21,29 +21,12 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/iain17/go-libutp"
-  packages = ["."]
-  revision = "3fb99fdeb41e5f1d6268e5aa51f79dd43b17e4fa"
-
-[[projects]]
-  branch = "master"
   name = "github.com/anacrolix/missinggo"
   packages = [
     ".",
-    "expect",
-    "inproc",
     "slices"
   ]
   revision = "ef490447bf2efe3b83e875f2722a2b74e6a8e756"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/anacrolix/mmsg"
-  packages = [
-    ".",
-    "socket"
-  ]
-  revision = "b6a9725daf1e3b189c5bd7cdc78dca5226750c78"
 
 [[projects]]
   branch = "master"
@@ -60,7 +43,7 @@
     "logonce",
     "metainfo"
   ]
-  revision = "d7225aed03e22743bbce46c5ed813342d9cbaa6a"
+  revision = "39ccb140362f485a627ef644b95ed8c8409bc817"
 
 [[projects]]
   branch = "master"
@@ -165,6 +148,18 @@
   revision = "648cd1776b0827c6fe51effa719a67eca6dae3f1"
 
 [[projects]]
+  name = "github.com/klauspost/cpuid"
+  packages = ["."]
+  revision = "ae7887de9fa5d2db4eaa8174a7eff2c1ac00f2da"
+  version = "v1.1"
+
+[[projects]]
+  name = "github.com/klauspost/reedsolomon"
+  packages = ["."]
+  revision = "6bb6130ff6a76a904c1841707d65603aec9cc288"
+  version = "v1.6"
+
+[[projects]]
   name = "github.com/miekg/dns"
   packages = ["."]
   revision = "83c435cc65d2862736428b9b4d07d0ab10ad3e4d"
@@ -213,10 +208,28 @@
   version = "v1.2.1"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/templexxx/cpufeat"
+  packages = ["."]
+  revision = "3794dfbfb04749f896b521032f69383f24c3687e"
+
+[[projects]]
+  name = "github.com/templexxx/xor"
+  packages = ["."]
+  revision = "0af8e873c554da75f37f2049cdffda804533d44c"
+  version = "0.1.2"
+
+[[projects]]
   name = "github.com/thoj/go-ircevent"
   packages = ["."]
   revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
   version = "0.1"
+
+[[projects]]
+  name = "github.com/tjfoc/gmsm"
+  packages = ["sm4"]
+  revision = "98aa888b79d8de04afe0fccf45ed10594efc858b"
+  version = "v1.1"
 
 [[projects]]
   name = "github.com/willf/bitset"
@@ -231,11 +244,25 @@
   version = "v2.0.3"
 
 [[projects]]
+  name = "github.com/xtaci/kcp-go"
+  packages = ["."]
+  revision = "42bc1dfefff592fdb3affa793980c4f6ab4213e5"
+  version = "v3.25"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
+    "blowfish",
+    "cast5",
     "ed25519",
-    "ed25519/internal/edwards25519"
+    "ed25519/internal/edwards25519",
+    "pbkdf2",
+    "salsa20",
+    "salsa20/salsa",
+    "tea",
+    "twofish",
+    "xtea"
   ]
   revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
@@ -261,6 +288,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "643b1b3409cdfef2a82dac4fe8d76712729fd9e6d5f030b361540cbb6120bafd"
+  inputs-digest = "5336a41e6887dcac291637da45ded6e4bdac3cb1ca2714123398bce288315df8"
   solver-name = "gps-cdcl"
   solver-version = 1

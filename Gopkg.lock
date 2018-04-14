@@ -24,20 +24,9 @@
   name = "github.com/anacrolix/missinggo"
   packages = [
     ".",
-    "expect",
-    "inproc",
     "slices"
   ]
   revision = "ef490447bf2efe3b83e875f2722a2b74e6a8e756"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/anacrolix/mmsg"
-  packages = [
-    ".",
-    "socket"
-  ]
-  revision = "b6a9725daf1e3b189c5bd7cdc78dca5226750c78"
 
 [[projects]]
   branch = "master"
@@ -54,7 +43,7 @@
     "logonce",
     "metainfo"
   ]
-  revision = "d7225aed03e22743bbce46c5ed813342d9cbaa6a"
+  revision = "39ccb140362f485a627ef644b95ed8c8409bc817"
 
 [[projects]]
   branch = "master"
@@ -96,12 +85,6 @@
   version = "v2.0.0"
 
 [[projects]]
-  name = "github.com/certifi/gocertifi"
-  packages = ["."]
-  revision = "deb3ae2ef2610fde3330947281941c562861188b"
-  version = "2018.01.18"
-
-[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -124,12 +107,6 @@
   name = "github.com/getlantern/testify"
   packages = ["assert"]
   revision = "2eeb3906e78fc89e76ba11e5694adeb64c0a0b43"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/getsentry/raven-go"
-  packages = ["."]
-  revision = "d1470f50d3a3a38533355a9fab7393e25a3b4226"
 
 [[projects]]
   name = "github.com/giantswarm/retry-go"
@@ -244,19 +221,13 @@
     "network",
     "pb"
   ]
-  revision = "58c37d484bbf5de65d0226e164b8061d8d5e650c"
+  revision = "d8a259608ca5f2e03f327b856548ffed8a1a2e09"
 
 [[projects]]
   branch = "master"
   name = "github.com/iain17/framed"
   packages = ["."]
   revision = "89d391c9e037b3e26186779264ccc69a1036566e"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/iain17/go-libutp"
-  packages = ["."]
-  revision = "3fb99fdeb41e5f1d6268e5aa51f79dd43b17e4fa"
 
 [[projects]]
   branch = "master"
@@ -308,6 +279,18 @@
   name = "github.com/juju/errgo"
   packages = ["."]
   revision = "08cceb5d0b5331634b9826762a8fd53b29b86ad8"
+
+[[projects]]
+  name = "github.com/klauspost/cpuid"
+  packages = ["."]
+  revision = "ae7887de9fa5d2db4eaa8174a7eff2c1ac00f2da"
+  version = "v1.1"
+
+[[projects]]
+  name = "github.com/klauspost/reedsolomon"
+  packages = ["."]
+  revision = "6bb6130ff6a76a904c1841707d65603aec9cc288"
+  version = "v1.6"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -435,10 +418,28 @@
   version = "v1.2.1"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/templexxx/cpufeat"
+  packages = ["."]
+  revision = "3794dfbfb04749f896b521032f69383f24c3687e"
+
+[[projects]]
+  name = "github.com/templexxx/xor"
+  packages = ["."]
+  revision = "0af8e873c554da75f37f2049cdffda804533d44c"
+  version = "0.1.2"
+
+[[projects]]
   name = "github.com/thoj/go-ircevent"
   packages = ["."]
   revision = "a6b1561a016c2a4aae183c3ef152c25d134c095d"
   version = "0.1"
+
+[[projects]]
+  name = "github.com/tjfoc/gmsm"
+  packages = ["sm4"]
+  revision = "98aa888b79d8de04afe0fccf45ed10594efc858b"
+  version = "v1.1"
 
 [[projects]]
   name = "github.com/willf/bitset"
@@ -453,11 +454,25 @@
   version = "v2.0.3"
 
 [[projects]]
+  name = "github.com/xtaci/kcp-go"
+  packages = ["."]
+  revision = "42bc1dfefff592fdb3affa793980c4f6ab4213e5"
+  version = "v3.25"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
+    "blowfish",
+    "cast5",
     "ed25519",
-    "ed25519/internal/edwards25519"
+    "ed25519/internal/edwards25519",
+    "pbkdf2",
+    "salsa20",
+    "salsa20/salsa",
+    "tea",
+    "twofish",
+    "xtea"
   ]
   revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
@@ -484,7 +499,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "f6f352972f061230a99fbf49d1eb8073ebdb36cb"
+  revision = "2281fa97ef7b0c26324634d5a22f04babdac8713"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -563,6 +578,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3eb88512834c66a6d064a84e35d600e187219f7a1554e0812fb58b20f1091937"
+  inputs-digest = "6fb4e2f5d20b3b934eb9842f28a5e2522c4fc4a44006b2101e6e5c109984edba"
   solver-name = "gps-cdcl"
   solver-version = 1

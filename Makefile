@@ -29,7 +29,7 @@ pack:
 	upx -o bin/$(GOOSE)/$(ARCH)/$(TARGET) bin/$(GOOSE)/$(ARCH)/unpacked-$(TARGET)
 
 ci:
-	gitlab-runner --debug exec docker test
+	gitlab-runner --debug exec docker build
 
 test:
 	go test -v -cover ./...

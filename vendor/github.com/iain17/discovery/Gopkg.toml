@@ -31,7 +31,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/iain17/go-libutp"
+  name = "github.com/xtaci/kcp-go"
 
 [[constraint]]
   name = "github.com/ccding/go-stun"
