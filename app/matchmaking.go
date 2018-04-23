@@ -198,7 +198,7 @@ func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 	go func() {
 		err := d.b.Provide(d.getMatchmakingKey(sessionType))
 		if err != nil {
-			logger.Warning("Could not become a provider of sessions: %s", err.Error())
+			logger.Warningf("Could not be a provider of sessions: %s", err.Error())
 		}
 	}()
 	return d.b.PutValue(DHT_SESSIONS_KEY_TYPE, d.getMatchmakingKey(sessionType), data)

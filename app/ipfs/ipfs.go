@@ -61,6 +61,15 @@ func OpenIPFSRepo(ctx context.Context, path string, limited bool, swarmkey []byt
 		return nil, err
 	}
 
+	//IPFS UPDATER
+	//if !cfg.Experimental.FilestoreEnabled {
+	//	logger.Info("Enabling experimental file store")
+	//	cfg.Experimental.FilestoreEnabled = true
+	//	r.SetConfig(cfg)
+	//	node.Close()
+	//	return OpenIPFSRepo(ctx, path, limited, swarmkey)
+	//}
+
 	//Start gateway etc..
 	go func() {
 		err, gwErrc := serveHTTPGateway(node)

@@ -27,7 +27,6 @@ import (
 	"hash/crc32"
 	"gx/ipfs/QmSwZMWwFZSUpe5muU2xgTUwppH24KfMwdPXiwbEp2c6G5/go-libp2p-swarm"
 	"github.com/iain17/stime"
-	"github.com/newrelic/go-agent"
 )
 
 type Decentralizer struct {
@@ -71,13 +70,6 @@ type Decentralizer struct {
 	//Publisher files
 	publisherRecord     *pb.DNPublisherRecord
 	publisherDefinition *pb.PublisherDefinition
-}
-
-var relic newrelic.Application
-
-func init() {
-	config := newrelic.NewConfig("ADNA", "053b2b413fa83c2e2525d1558001ffd374d591b6")
-	relic, _ = newrelic.NewApplication(config)
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
