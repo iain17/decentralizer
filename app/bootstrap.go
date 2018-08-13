@@ -133,10 +133,20 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 			logger.Warning(err)
 			continue
 		}
+		logger.Debugf("Bootstrapping using: %s", message)
 		result = append(result, peerBootstrap...)
 	}
 	logger.Infof("Bootstrapping with %d addresses.", len(result))
+	d.displayConnected()
 	return toPeerInfos(result)
+}
+
+func (d *Decentralizer) displayConnected() {
+	logger.Info("Connected table list:")
+	for i, peer := range d.i.PeerHost.Network().Peers() {
+		conns := d.i.PeerHost.Network().ConnsToPeer(peer)
+		logger.Infof("%d. %s via %s", i, peer.Pretty(), conns[0].RemoteMultiaddr().String())
+	}
 }
 
 func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
