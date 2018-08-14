@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
 
 	"github.com/spf13/cobra"
 	"github.com/iain17/logger"

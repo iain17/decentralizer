@@ -1,33 +1,33 @@
 package ipfs
 
 import (
-	u "gx/ipfs/QmNiJuT8Ja3hMVpBHXv3Q6dwmperaQ6JjLtpMQgMCD7xvx/go-ipfs-util"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
-	pstore "gx/ipfs/QmXauCuJzmzapetmC6W4TuDJLL1yFFrVzSHoWv8YdbmnxH/go-libp2p-peerstore"
-	"gx/ipfs/Qmej7nf81hi2x2tvjRBF3mcp74sQyuDH4VMYDGd1YtXjb2/go-block-format"
-	"gx/ipfs/QmcZfnkapfECQGcLZaf9B79NRg7cRa9EnZh4LSbkCzwNvY/go-cid"
-	b58 "gx/ipfs/QmWFAMPqsEyUX7gDUsRVmMWz59FxSpJ1b2v6bJ1yYzo7jY/go-base58-fast/base58"
-	"gx/ipfs/QmTiWLZ6Fo5j4KcTVutZJ5KWRRJrbxzmxA4td8NfEdrPh7/go-libp2p-routing"
 	"context"
-	"github.com/iain17/logger"
-	ipdht "gx/ipfs/QmVSep2WwKcXxMonPASsAJ3nZVjfVMKgMcaSigxKnUWpJv/go-libp2p-kad-dht"
 	"errors"
 	"fmt"
-	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 	"github.com/hashicorp/golang-lru"
-	"hash/crc32"
+	"github.com/iain17/logger"
+	u "gx/ipfs/QmPdKqUcHGFdeSpvjVoaTRPPstGif9GBZb5Q56RVw9o69A/go-ipfs-util"
+	"gx/ipfs/QmZ383TySJVeZWzGnWui6pRcKyYZk9VkKTuW7tmKRWk5au/go-libp2p-routing"
+	"gx/ipfs/QmVsp2KdPYE6M8ryzCk5KHLo3zprcY5hBDaYx6uPCFUdxA/go-libp2p-record"
+	ipdht "gx/ipfs/QmTktQYCKzQjhxF6dk5xJPRuhHn3JBiKGvMLoiDy1mYmxC/go-libp2p-kad-dht"
+	b58 "gx/ipfs/QmWFAMPqsEyUX7gDUsRVmMWz59FxSpJ1b2v6bJ1yYzo7jY/go-base58-fast/base58"
+	pstore "gx/ipfs/QmZR2XWVVBCtbgBWnQhWk2xcQfaR3W8faQPriAiaaj7rsr/go-libp2p-peerstore"
+	"gx/ipfs/QmYVNvtQkeZ6AKSwDrjQTs432QtL6umrrK41EBq3cu7iSP/go-cid"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
+	"gx/ipfs/QmVzK524a2VWLqyvtBeiHKsUAWYgeAk4DBeZoY7vpNPNRx/go-block-format"
 	"hash"
+	"hash/crc32"
 	"sync"
 )
 
 //Find other peers around a subject.
 //This is done by using kad-DHT.
 type BitswapService struct {
-	node    *core.IpfsNode
-	dht		*ipdht.IpfsDHT
-	dhtCache	*lru.Cache//Cache our result to certain DHT values.
+	node     *core.IpfsNode
+	dht      *ipdht.IpfsDHT
+	dhtCache *lru.Cache //Cache our result to certain DHT values.
 	crcTable hash.Hash32
-	mutex sync.Mutex
+	mutex    sync.Mutex
 }
 
 func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
@@ -37,10 +37,10 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 	}
 	if dht, ok := node.Routing.(*ipdht.IpfsDHT); ok {
 		return &BitswapService{
-			node:    node,
+			node:     node,
 			dhtCache: dhtCache,
 			crcTable: crc32.NewIEEE(),
-			dht: dht,
+			dht:      dht,
 		}, nil
 	} else {
 		return nil, errors.New("interface conversion: node.Routing is not *ipdht.IpfsDHT")

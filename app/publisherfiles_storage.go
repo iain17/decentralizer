@@ -2,16 +2,16 @@ package app
 
 import (
 	"errors"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
 	"io/ioutil"
-	//"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreunix"
-	//ipfsfiles "gx/ipfs/QmceUdzxkimdYsgtX733uNgzf1DLHyBKN6ehGSp85ayppM/go-ipfs-cmdkit/files"
+	//"github.com/ipfs/go-ipfs/core/coreunix"
+	//ipfsfiles "gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
 	//"os"
 	//"github.com/iain17/old/ipLookup/src/utils/logger"
 	//"fmt"
 )
 
-func (d * Decentralizer) GetPublisherFile(name string) ([]byte, error) {
+func (d *Decentralizer) GetPublisherFile(name string) ([]byte, error) {
 	if d.publisherRecord == nil {
 		return nil, errors.New("Publisher definition not defined")
 	}

@@ -1,27 +1,27 @@
 package app
 
 import (
+	"context"
+	"github.com/hashicorp/golang-lru"
 	"github.com/iain17/decentralizer/app/ipfs"
+	"github.com/iain17/decentralizer/pb"
+	"github.com/iain17/discovery/network"
+	"github.com/iain17/kvcache/lttlru"
 	"github.com/iain17/logger"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
-	"net"
 	"github.com/jasonlvhit/gocron"
 	"github.com/shibukawa/configdir"
-	"os"
-	"github.com/iain17/discovery/network"
-	"github.com/iain17/decentralizer/pb"
-	"github.com/iain17/kvcache/lttlru"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi"
 	"github.com/spf13/afero"
-	logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
-	"context"
+	logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
 	"hash/crc32"
-	"github.com/hashicorp/golang-lru"
+	"net"
+	"os"
 	"time"
 )
 
 var testNetwork *network.Network
-var testSlaveNetwork *network.Network//just the public key
+var testSlaveNetwork *network.Network //just the public key
 
 func init() {
 	MIN_CONNECTED_PEERS = 1
@@ -61,17 +61,17 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 	}
 	ip := net.ParseIP("127.0.0.1")
 	instance := &Decentralizer{
-		ctx:					ctx,
-		cron:					gocron.NewScheduler(),
-		n:						n,
-		ip:                     &ip,
-		i:                      node,
-		b:                      b,
-		api:					coreapi.NewCoreAPI(node),
-		directMessageChannels: 	make(map[uint32]chan *pb.RPCDirectMessage),
-		ignore:					ignore,
-		unmarshalCache:			unmarshalCache,
-		crcTable:				crc32.NewIEEE(),
+		ctx:  ctx,
+		cron: gocron.NewScheduler(),
+		n:    n,
+		ip:   &ip,
+		i:    node,
+		b:    b,
+		api:  coreapi.NewCoreAPI(node),
+		directMessageChannels: make(map[uint32]chan *pb.RPCDirectMessage),
+		ignore:                ignore,
+		unmarshalCache:        unmarshalCache,
+		crcTable:              crc32.NewIEEE(),
 	}
 	//Mock filesystem
 	instance.peerFileSystem = afero.NewMemMapFs()
@@ -79,13 +79,13 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 	instance.WaitTilEnoughPeers()
 	Base = &configdir.Config{
 		Type: configdir.Cache,
-		Path: "/tmp/"+time.Now().Format("20060102150405"),
+		Path: "/tmp/" + time.Now().Format("20060102150405"),
 	}
 
 	instance.initializeComponents(true)
 
 	go func() {
-		<- instance.ctx.Done()
+		<-instance.ctx.Done()
 		instance.cronChan <- false
 	}()
 

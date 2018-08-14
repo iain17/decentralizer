@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"context"
 	"fmt"
-	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
+	"gx/ipfs/QmVsp2KdPYE6M8ryzCk5KHLo3zprcY5hBDaYx6uPCFUdxA/go-libp2p-record"
 )
 
 func TestStringToCid(t *testing.T) {

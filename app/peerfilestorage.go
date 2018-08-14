@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
-	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
 	"github.com/iain17/logger"
 	"github.com/spf13/afero"
 	"time"
@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 	"os"
 	"github.com/shibukawa/configdir"
-	ipfsfiles "gx/ipfs/QmceUdzxkimdYsgtX733uNgzf1DLHyBKN6ehGSp85ayppM/go-ipfs-cmdkit/files"
+	ipfsfiles "gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
 	"bytes"
 )
 
