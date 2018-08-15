@@ -120,7 +120,7 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 		}
 	}
 	if len(result) == 0 {
-		d.initDiscovery()
+		d.startDiscovering()
 	}
 
 	if d.d != nil {
@@ -134,7 +134,7 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 				logger.Warning(err)
 				continue
 			}
-			logger.Debugf("Bootstrapping using: %s", peerBootstrap)
+			logger.Debugf("Discovered using: %s", peerBootstrap)
 			result = append(result, peerBootstrap...)
 		}
 		for _, message := range d.d.GetNetworkMessages() {
@@ -143,7 +143,7 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 				logger.Warning(err)
 				continue
 			}
-			logger.Debugf("Bootstrapping using: %s", message)
+			logger.Debugf("Discovered using: %s", message)
 			result = append(result, peerBootstrap...)
 		}
 	}

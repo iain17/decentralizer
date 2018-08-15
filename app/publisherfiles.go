@@ -71,7 +71,7 @@ func (d *Decentralizer) initPublisherFiles() {
 
 func (d *Decentralizer) validateDNPublisherRecord(record *pb.DNPublisherRecord) error {
 	definition, err := d.unmarshalDNPublisherRecord(record)
-	if d.publisherRecord != nil && !utils.IsNewerRecord(d.publisherDefinition.Published, definition.Published) {
+	if d.publisherRecord != nil && d.publisherDefinition.Published != definition.Published && !utils.IsNewerRecord(d.publisherDefinition.Published, definition.Published) {
 		return errors.New("definition is older")
 	}
 	return err
@@ -260,7 +260,7 @@ func (d *Decentralizer) PushPublisherRecord() error {
 	if err != nil {
 		return err
 	}
-	logger.Info("Publishing publisher update")
+	logger.Info("Publishing our publisher version")
 	return d.b.PutValue(DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey(), data)
 }
 

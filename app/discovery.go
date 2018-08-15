@@ -24,7 +24,7 @@ func (d *Decentralizer) initDiscovery() error {
 }
 
 func (d *Decentralizer) startDiscovering() error {
-	if d.d == nil {
+	if d.d != nil {
 		return nil
 	}
 	addrs, err := getAddrs(d.i.PeerHost)
