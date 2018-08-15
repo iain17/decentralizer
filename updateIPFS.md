@@ -5,3 +5,9 @@ Firstly know that this is going to take quite long. But here are some hints on h
 3. ```gx publish``` and get the has for the base IPFS repo.
 4. Copy all the files from: ```$GOPATH/src/gx``` into this projects vendor/gx directory.
 5. Update all the import paths.
+6. Run:
+```
+    	find vendor/gx/ -name 'trace.go' -exec sed -i '.bak' -e 's/requests"/requestss"/g' {} \;
+    	find vendor/gx/ -name 'trace.go' -exec sed -i '.bak' -e 's/events"/eventss"/g' {} \;
+    	find vendor/gx/ -name '*.bak' -type f -exec rm -f {} +
+```
