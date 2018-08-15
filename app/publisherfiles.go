@@ -11,7 +11,6 @@ import (
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/stime"
-	"gx/ipfs/QmVsp2KdPYE6M8ryzCk5KHLo3zprcY5hBDaYx6uPCFUdxA/go-libp2p-record"
 )
 
 func (d *Decentralizer) getPublisherKey() string {
@@ -20,9 +19,9 @@ func (d *Decentralizer) getPublisherKey() string {
 }
 
 func (d *Decentralizer) initPublisherFiles() {
-	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(r *record.ValidationRecord) error{
+	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(key string, value []byte) error{
 		var record pb.DNPublisherRecord
-		err := d.unmarshal(r.Value, &record)
+		err := d.unmarshal(value, &record)
 		if err != nil {
 			return err
 		}
@@ -34,9 +33,7 @@ func (d *Decentralizer) initPublisherFiles() {
 			return fmt.Errorf("you're doing it wrong! Path should not be empty")
 		}
 		return d.validateDNPublisherRecord(&record)
-	}, false, true)
-
-	d.b.RegisterSelector(DHT_PUBLISHER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+	}, func(key string, values [][]byte) (int, error) {
 		var currDefinition *pb.PublisherDefinition
 		best := 0
 		for i, val := range values {
@@ -57,7 +54,8 @@ func (d *Decentralizer) initPublisherFiles() {
 			}
 		}
 		return best, nil
-	})
+	}, true)
+
 	err := d.restorePublisherDefinition()
 	if err != nil {
 		logger.Warning(err)

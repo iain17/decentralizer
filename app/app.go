@@ -16,7 +16,7 @@ import (
 	"github.com/jasonlvhit/gocron"
 	"github.com/shibukawa/configdir"
 	"github.com/spf13/afero"
-	"gx/ipfs/QmemVjhp1UuWPQqrWSvPcaqH3QJRMjMqNm4T2RULMkDDQe/go-libp2p-swarm"
+	//"gx/ipfs/QmemVjhp1UuWPQqrWSvPcaqH3QJRMjMqNm4T2RULMkDDQe/go-libp2p-swarm"
 	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
@@ -210,8 +210,9 @@ func (s *Decentralizer) Stop() {
 }
 
 func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
-	snet, ok := d.i.PeerHost.Network().(*swarm.Network)
-	if ok {
-		snet.Swarm().Backoff().Clear(id)
-	}
+	//TODO: Fix this again
+	//snet, ok := d.i.PeerHost.Network().(*swarm.Network)
+	//if ok {
+	//	snet.Swarm().Backoff().Clear(id)
+	//}
 }

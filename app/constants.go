@@ -30,6 +30,7 @@ const DHT_PEER_KEY_TYPE = "dPeer"
 const DHT_SESSIONS_KEY_TYPE = "sessions"
 const DHT_PUBLISHER_KEY_TYPE = "publisher"
 const BOOTSTRAP_FILE = "bootstrap.dat"
+
 var FILE_EXPIRE = time.Hour * 1
 
 func init() {

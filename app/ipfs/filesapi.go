@@ -9,11 +9,11 @@ import (
 	"gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/blockservice"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
-	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi/interface"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreunix"
 	dag "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/merkledag"
 	Path "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/path"
+	ipld "gx/ipfs/QmZtNq8dArGfnpCZfx2pUNY7UcjGhVp5qqwQ4hH6mpTMRQ/go-ipld-format"
 	"io/ioutil"
 )
 
@@ -68,10 +68,13 @@ func (d *FilesAPI) PublishPeerFiles(files []files.File) (string, error) {
 	return "/ipns/" + d.i.Identity.Pretty(), err
 }
 
-func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*iface.Link, error) {
+func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*ipld.Link, error) {
 	logger.Infof("Get peer files of peer id %s", owner.Pretty())
 	rawPath := "/ipns/" + owner.Pretty()
-	pth := coreapi.ResolvedPath(rawPath, nil, nil)
+	pth, err := iface.ParsePath(rawPath)
+	if err != nil {
+		return nil, err
+	}
 	//d.api.ResolveNode(d.i.Context(), pth)
 	//return coreapi.NewCoreAPI(d.i).Unixfs().Ls(d.i.Context(), pth)
 	return d.api.Unixfs().Ls(d.i.Context(), pth)
@@ -100,8 +103,8 @@ func (d *FilesAPI) GetPeerFile(owner libp2pPeer.ID, name string) ([]byte, error)
 func (d *FilesAPI) GetFile(path string) ([]byte, error) {
 	logger.Infof("Get file: %s", path)
 
-	pth := coreapi.ResolvedPath(path, nil, nil)
-	_, err := d.api.ResolvePath(d.i.Context(), pth)
+	pth, err := iface.ParsePath(path)
+	_, err = d.api.ResolvePath(d.i.Context(), pth)
 	if err != nil {
 		return nil, fmt.Errorf("could not get file %s. Could not resolve path: %s", path, err.Error())
 	}

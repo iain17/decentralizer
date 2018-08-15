@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
+	//logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
 
 	"github.com/spf13/cobra"
 	"github.com/iain17/logger"
@@ -55,10 +55,10 @@ var apiCmd = &cobra.Command{
 		logLvl := logger.INFO
 		if verbose {
 			logLvl = logger.DEBUG
-			logging.Configure(logging.LevelDebug)
+			//logging.Configure(logging.LevelDebug)
 		} else {
 			//Set ipfs logging
-			logging.Configure(logging.LevelError)
+			//logging.Configure(logging.LevelError)
 		}
 		logger.AddOutput(logger.Stdout{
 			MinLevel: logLvl,
@@ -71,10 +71,10 @@ var apiCmd = &cobra.Command{
 				logger.Fatal(err)
 			}
 			logger.AddOutput(fileOut)
-			if verbose {
-				ipfsLogOption := logging.Output(fileOut)
-				logging.Configure(ipfsLogOption)
-			}
+			//if verbose {
+			//	ipfsLogOption := logging.Output(fileOut)
+			//	logging.Configure(ipfsLogOption)
+			//}
 		}
 		if removeLock {
 			err := os.Remove(app.Base.Path+"/ipfs/repo.lock")

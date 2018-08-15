@@ -2,13 +2,13 @@ package app
 
 import (
 	"errors"
-	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
 	"io/ioutil"
 	//"github.com/ipfs/go-ipfs/core/coreunix"
 	//ipfsfiles "gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
 	//"os"
 	//"github.com/iain17/old/ipLookup/src/utils/logger"
 	//"fmt"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi/interface"
 )
 
 func (d *Decentralizer) GetPublisherFile(name string) ([]byte, error) {
@@ -26,7 +26,10 @@ func (d *Decentralizer) GetPublisherFile(name string) ([]byte, error) {
 		//Fetch from IPFS
 		if d.publisherDefinition.Links[name] != "" {
 			path := d.publisherDefinition.Links[name]
-			pth := coreapi.ResolvedPath(path, nil, nil)
+			pth, err := iface.ParsePath(path)
+			if err != nil {
+				return nil, err
+			}
 			r, err := d.api.Unixfs().Cat(d.i.Context(), pth)
 			if err != nil {
 				return nil, err

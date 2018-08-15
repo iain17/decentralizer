@@ -14,7 +14,6 @@ import (
 	"context"
 	"github.com/iain17/kvcache/lttlru"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
-	"gx/ipfs/QmVsp2KdPYE6M8ryzCk5KHLo3zprcY5hBDaYx6uPCFUdxA/go-libp2p-record"
 	"github.com/iain17/stime"
 )
 
@@ -33,16 +32,14 @@ func (d *Decentralizer) initMatchmaking() {
 		logger.Fatal(err)
 	}
 
-	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(r *record.ValidationRecord) error{
+	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, value []byte) error{
 		var sessions pb.DNSessionsRecord
-		err = d.unmarshal(r.Value, &sessions)
+		err = d.unmarshal(value, &sessions)
 		if err != nil {
 			return err
 		}
 		return validateDNSessionsRecord(&sessions)
-	}, true, false)
-
-	d.b.RegisterSelector(DHT_SESSIONS_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+	}, func(key string, values [][]byte) (int, error) {
 		var currRecord pb.DNSessionsRecord
 		best := 0
 		for i, val := range values {
@@ -58,7 +55,7 @@ func (d *Decentralizer) initMatchmaking() {
 			}
 		}
 		return best, nil
-	})
+	}, false)
 }
 
 //Checks if its past the publication time

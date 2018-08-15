@@ -8,7 +8,6 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"time"
 	"github.com/iain17/timeout"
-	"github.com/iain17/kvcache/lttlru"
 	"gx/ipfs/QmPjvxTpVH8qJyQDnxnsxF9kv9jezKD1kozz1hs3fCGsNh/go-libp2p-net"
 	pstore "gx/ipfs/QmZR2XWVVBCtbgBWnQhWk2xcQfaR3W8faQPriAiaaj7rsr/go-libp2p-peerstore"
 	"fmt"
@@ -20,21 +19,15 @@ type search struct {
 	sessionType uint64
 	ctx context.Context
 	storage *sessionstore.Store
-	seen *lttlru.LruWithTTL//Tells us if we've already pased the result of this peer.
 }
 
 func (d *Decentralizer) newSearch(ctx context.Context, sessionType uint64) (*search, error) {
 	storage := d.getSessionStorage(sessionType)
-	seen, err := lttlru.NewTTL(MAX_IGNORE)
-	if err != nil {
-		return nil, err
-	}
 	instance := &search{
 		d: d,
 		sessionType: sessionType,
 		ctx: ctx,
 		storage: storage,
-		seen: seen,
 	}
 	go instance.connectToProviders()
 	d.cron.Every(30).Seconds().Do(instance.search)
@@ -57,39 +50,28 @@ func (s *search) run(ctx context.Context) error {
 	defer s.mutex.Unlock()
 
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	values, err := s.d.b.GetValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType), 3)
+	values, err := s.d.b.GetShardedValue(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType))
 	if err != nil {
 		return fmt.Errorf("could not find session with type %d: %s", s.sessionType, err.Error())
 	}
 	queried := 0
 	total := 0
-	s.seen.Purge()
 	self := s.d.i.Identity.Pretty()
 	for _, value := range values {
 		total++
-		id := value.From.Pretty()
-		if id == self {
-			continue
-		}
-		if s.d.ignore.Contains(id) {
-			logger.Debugf("%s is on the ignore list", id)
-			continue
-		}
-		if s.seen.Contains(id) {
-			logger.Debugf("%s is on the seen list", id)
-			continue
-		}
-		s.seen.Add(id, true)
-
 		var record pb.DNSessionsRecord
-		err = s.d.unmarshal(value.Val, &record)
+		err = s.d.unmarshal(value, &record)
 		if err != nil {
 			logger.Warning(err)
 			continue
 		}
-		logger.Infof("Got %d sessions from %s", len(record.Results), id)
+
 		for _, session := range record.Results {
 			if session.PId == self {
+				continue
+			}
+			if s.d.ignore.Contains(session.PId) {
+				logger.Debugf("%s is on the ignore list", session.PId)
 				continue
 			}
 			s.d.setSessionIdToType(session.SessionId, session.Type)
@@ -97,14 +79,16 @@ func (s *search) run(ctx context.Context) error {
 			if err != nil {
 				logger.Warning(err)
 			}
+			//if s.d.i.PeerHost.Network().Connectedness(value.From) == net.Connected {
+			//	s.d.sessionQueries <- sessionRequest{
+			//		search: s,
+			//		id:     value.From,
+			//	}
+			//	queried++
+			//}
 		}
-		if s.d.i.PeerHost.Network().Connectedness(value.From) == net.Connected {
-			s.d.sessionQueries <- sessionRequest{
-				search: s,
-				id:     value.From,
-			}
-			queried++
-		}
+
+		logger.Infof("Got %d sessions", len(record.Results))
 	}
 	logger.Infof("Queried %d of the %d for sessions of type %d", queried, total, s.sessionType)
 	return nil
