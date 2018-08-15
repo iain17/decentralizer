@@ -14,7 +14,6 @@ import (
 )
 
 func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 5)
@@ -47,7 +46,6 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 3)
@@ -103,7 +101,6 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 //2 peer have published their session. Then all a third peer joins the network. He should have two sessions.
 func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	mn := mocknet.New(ctx)
@@ -149,7 +146,6 @@ func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 2)
@@ -183,7 +179,6 @@ func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	const num = 10
@@ -212,7 +207,6 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 
 //One peer is trying to be evil
 func TestDecentralizer_GetSessionsByDetailsEvil(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 3)
@@ -251,8 +245,6 @@ func TestDecentralizer_GetSessionsByDetailsEvil(t *testing.T) {
 }
 
 func TestValidateDNSessions(t *testing.T) {
-	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
-
 	//Future
 	assert.Error(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
 		Published: uint64(stime.Now().Add(2 * time.Hour).Unix()),
@@ -320,4 +312,5 @@ func TestDecentralizer_GetSessionsByDetailsExpire(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 1, store.Len(), "Because app2 has republished again")
 	cancel()
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 }

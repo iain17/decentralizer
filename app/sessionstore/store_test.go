@@ -22,7 +22,7 @@ func TestSessionsStore_Unique(t *testing.T) {
 	assert.NoError(t, err)
 
 	_, err = store.Insert(&pb.Session {
-		Published: 1,
+		Published: uint64(time.Now().Unix()),
 		Address: 1,
 		Port: 1,
 		Type: 1,
@@ -33,7 +33,7 @@ func TestSessionsStore_Unique(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	_, err = store.Insert(&pb.Session {
-		Published: 2,
+		Published: uint64(time.Now().Unix()),
 		Address: 1,
 		Port: 1,
 		Type: 1,
