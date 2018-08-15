@@ -3,7 +3,6 @@ package api
 
 import (
 	"google.golang.org/grpc"
-	"context"
 	"time"
 )
 
@@ -19,14 +18,14 @@ func (s *Server) AliveStreamInterceptor() grpc.StreamServerInterceptor {
 	}
 }
 
-func (s *Server) AliveUnaryInterceptor() grpc.UnaryServerInterceptor {
-	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (_ interface{}, err error) {
-		s.Wg.Add(1)
-		go func() {
-			<- ctx.Done()
-			time.Sleep(30 * time.Second)
-			s.Wg.Done()
-		}()
-		return handler(ctx, req)
-	}
-}
+//func (s *Server) AliveUnaryInterceptor() grpc.UnaryServerInterceptor {
+//	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (_ interface{}, err error) {
+//		s.Wg.Add(1)
+//		go func() {
+//			<- ctx.Done()
+//			time.Sleep(30 * time.Second)
+//			s.Wg.Done()
+//		}()
+//		return handler(ctx, req)
+//	}
+//}

@@ -27,7 +27,6 @@ func (d *Decentralizer) initBootstrap() error {
 	go d.i.Bootstrap(bs)
 	d.cron.Every(10).Seconds().Do(func() {
 		d.shareOurBootstrap()
-		d.saveBootstrapState()
 	})
 	//Instantly start discovering and telling about ourselves if we are not on a limited connection.
 	if !d.limitedConnection {
@@ -52,10 +51,6 @@ func (d *Decentralizer) saveBootstrapState() {
 	peers, err := d.getBootstrapAddrs()
 	if err != nil {
 		logger.Debugf("Could not save bootstrap state: %s", err)
-		return
-	}
-	if len(peers) == 0 {
-		logger.Debug("Could not save bootstrap state: no peers yet")
 		return
 	}
 	data := serializeBootstrapAddrs(peers)
@@ -163,6 +158,7 @@ func (d *Decentralizer) displayConnected() {
 		conns := d.i.PeerHost.Network().ConnsToPeer(peer)
 		logger.Infof("%d. %s via %s", i, peer.Pretty(), conns[0].RemoteMultiaddr().String())
 	}
+	d.saveBootstrapState()
 }
 
 func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
