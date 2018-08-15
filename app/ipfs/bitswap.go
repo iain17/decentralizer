@@ -23,6 +23,7 @@ type BitswapService struct {
 	node     *core.IpfsNode
 	dht      *ipdht.IpfsDHT
 	mutex    sync.Mutex
+	slot	 int
 }
 
 func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
@@ -30,6 +31,7 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 		return &BitswapService{
 			node:     node,
 			dht:      dht,
+			slot:	  rand.Intn(NUM_MATCHMAKING_SLOTS),
 		}, nil
 	} else {
 		return nil, errors.New("interface conversion: node.Routing is not *ipdht.IpfsDHT")
@@ -65,11 +67,8 @@ func (b *BitswapService) getKey(keyType string, rawKey string) string {
 }
 
 func (b *BitswapService) getShardedKey(keyType string, rawKey string, slot int) string {
-	return fmt.Sprintf("/%s/%s_%d", keyType, b58.Encode([]byte(rawKey)), slot)
-}
-
-func getSlot() int {
-	return rand.Intn(NUM_MATCHMAKING_SLOTS)
+	key := append([]byte(rawKey), byte(slot))
+	return fmt.Sprintf("/%s/%s", keyType, b58.Encode(key))
 }
 
 func (b *BitswapService) PutValue(keyType string, rawKey string, data []byte) error {
@@ -85,14 +84,14 @@ func (b *BitswapService) GetValue(ctx context.Context, keyType string, rawKey st
 }
 
 //Sharded value means that on this key type we can have several values. The value put in here will get shared over slots
-func (b *BitswapService) PutShardedValue(keyType string, rawKey string, data []byte) error {
+func (b *BitswapService) PutShardedValues(keyType string, rawKey string, data []byte) error {
 	logger.Infof("Put sharded value for type %s for key %s", keyType, rawKey)
-	key := b.getShardedKey(keyType, rawKey, getSlot())
+	key := b.getShardedKey(keyType, rawKey, b.slot)
 	return b.node.Routing.PutValue(b.node.Context(), key, data)
 }
 
-func (b *BitswapService) GetShardedValue(ctx context.Context, keyType string, rawKey string) ([][]byte, error) {
-	logger.Infof("Get sharded best value for type %s for key %s", keyType, rawKey)
+func (b *BitswapService) GetShardedValues(ctx context.Context, keyType string, rawKey string) ([][]byte, error) {
+	logger.Infof("Get sharded values for type %s for key %s", keyType, rawKey)
 	var result [][]byte
 	var err error
 	for i := 0; i <= NUM_MATCHMAKING_SLOTS; i++ {
@@ -100,12 +99,12 @@ func (b *BitswapService) GetShardedValue(ctx context.Context, keyType string, ra
 		var value []byte
 		value, err = b.node.Routing.GetValue(ctx, key)
 		if err != nil {
-			logger.Debug(err)
+			//logger.Debug(err)
 			continue
 		}
 		result = append(result, value)
 	}
-	if len(result) == 0 {
+	if len(result) == 0 && err.Error() != "routing: not found" {
 		return nil, err
 	}
 	return result, nil
