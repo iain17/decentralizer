@@ -29,6 +29,10 @@ func (d *Decentralizer) initBootstrap() error {
 		d.shareOurBootstrap()
 		d.saveBootstrapState()
 	})
+	//Instantly start discovering and telling about ourselves if we are not on a limited connection.
+	if !d.limitedConnection {
+		d.startDiscovering()
+	}
 	return nil
 }
 
