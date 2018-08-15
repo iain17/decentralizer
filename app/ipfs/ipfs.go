@@ -10,7 +10,6 @@ import (
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/config"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/fsrepo"
 	"os"
-	"strings"
 	//logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
 	"github.com/iain17/logger"
 	//"gx/ipfs/QmZNkThpqfVXs9GNbexPrfBbXSLNYeKrE7jwFM2oqHbyqN/go-libp2p-protocol"
@@ -99,7 +98,15 @@ func OpenIPFSRepo(ctx context.Context, path string, limited bool, swarmkey []byt
 }
 
 func getIPFSRepo(path string, limited bool, swarmkey []byte) (repo.Repo, error) {
+	open:
 	r, err := fsrepo.Open(path)
+
+	if err != nil && err.Error() == "ipfs repo needs migration" {
+		logger.Info("Resetting IPFS repo... It was too old")
+		os.RemoveAll(path)
+		goto open
+	}
+
 	if _, ok := err.(fsrepo.NoRepoError); ok {
 		var conf *config.Config
 		conf, err = config.Init(os.Stdout, 2048)
@@ -142,7 +149,7 @@ func changeConfig(r repo.Repo, limited bool) error {
 
 	//apiPort := fmt.Sprintf("500%d", 12)
 	//gatewayPort := fmt.Sprintf("808%d", 12)
-	swarmPort := "4123"
+	//swarmPort := "4123"
 
 	bitswap.ProtocolBitswapOne = "/decentralizer/bitswap/1.0.0"
 	bitswap.ProtocolBitswapNoVers = "/decentralizer/bitswap"
@@ -150,9 +157,9 @@ func changeConfig(r repo.Repo, limited bool) error {
 
 	//rc.Addresses.API = strings.Replace(rc.Addresses.API, "5001", apiPort, -1)
 	//rc.Addresses.Gateway = strings.Replace(rc.Addresses.Gateway, "8080", gatewayPort, -1)
-	for i, addr := range rc.Addresses.Swarm {
-		rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
-	}
+	//for i, addr := range rc.Addresses.Swarm {
+	//	rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
+	//}
 	//rc.Swarm.DisableNatPortMap = true
 	rc.Swarm.EnableRelayHop = !limited
 	err = r.SetConfig(rc)
