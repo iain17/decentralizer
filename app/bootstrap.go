@@ -32,6 +32,7 @@ func (d *Decentralizer) initBootstrap() error {
 }
 
 func (d *Decentralizer) shareOurBootstrap() {
+	if d.d == nil {return}
 	peers, err := d.getBootstrapAddrs()
 	if err != nil {
 		logger.Warning(err)
@@ -45,19 +46,21 @@ func (d *Decentralizer) shareOurBootstrap() {
 func (d *Decentralizer) saveBootstrapState() {
 	peers, err := d.getBootstrapAddrs()
 	if err != nil {
-		logger.Warning(err)
+		logger.Debugf("Could not save bootstrap state: %s", err)
 		return
 	}
 	if len(peers) == 0 {
+		logger.Debug("Could not save bootstrap state: no peers yet")
 		return
 	}
 	data := serializeBootstrapAddrs(peers)
 	file, err := d.fs.Create(BOOTSTRAP_FILE)
 	if err != nil {
-		logger.Warning(err)
+		logger.Debugf("Could not save bootstrap state: %s", err)
 		return
 	}
 	file.WriteString(data)
+	logger.Debug("Saved bootstrap state")
 }
 
 func serializeBootstrapAddrs(bootstrapAddrs []config.BootstrapPeer) string {
@@ -112,29 +115,37 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 		if err != nil {
 			logger.Warning(err)
 		} else {
+			logger.Debugf("Bootstrapping with %d previous addresses", len(restoredAddrs))
 			result = append(result, restoredAddrs...)
 		}
 	}
-	peers := d.d.WaitForPeers(1, 0)
-	for _, peer := range peers {
-		if len(result) > MAX_BOOTSTRAP_SHARE {
-			break
-		}
-		peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
-		if err != nil {
-			logger.Warning(err)
-			continue
-		}
-		result = append(result, peerBootstrap...)
+	if len(result) == 0 {
+		d.initDiscovery()
 	}
-	for _, message := range d.d.GetNetworkMessages() {
-		peerBootstrap, err := unSerializeBootstrapAddrs(message)
-		if err != nil {
-			logger.Warning(err)
-			continue
+
+	if d.d != nil {
+		peers := d.d.WaitForPeers(1, 0)
+		for _, peer := range peers {
+			if len(result) > MAX_BOOTSTRAP_SHARE {
+				break
+			}
+			peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			logger.Debugf("Bootstrapping using: %s", peerBootstrap)
+			result = append(result, peerBootstrap...)
 		}
-		logger.Debugf("Bootstrapping using: %s", message)
-		result = append(result, peerBootstrap...)
+		for _, message := range d.d.GetNetworkMessages() {
+			peerBootstrap, err := unSerializeBootstrapAddrs(message)
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			logger.Debugf("Bootstrapping using: %s", message)
+			result = append(result, peerBootstrap...)
+		}
 	}
 	logger.Infof("Bootstrapping with %d addresses.", len(result))
 	d.displayConnected()

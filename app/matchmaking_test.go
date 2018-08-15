@@ -8,7 +8,7 @@ import (
 	"time"
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
-	"gx/ipfs/QmNh1kGFFdsPu79KNSaL4NUKUPb4Eiz4KHdMtFY6664RDp/go-libp2p/p2p/net/mock"
+	"gx/ipfs/QmY51bqSM5XgxQZqsBrQcRkKTnCb8EKpJpR9K6Qax7Njco/go-libp2p/p2p/net/mock"
 	"github.com/iain17/stime"
 )
 
@@ -59,6 +59,7 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 	_, err := app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{"0": "0"})
 	assert.NoError(t, err)
+	time.Sleep(500 * time.Millisecond)
 
 	app1Search := app1.getSessionSearch(1337)
 	app1Store, err := app1Search.fetch()
@@ -75,6 +76,7 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 	_, err = app3.UpsertSession(1337, "App 3 session :D", 308, map[string]string{"0": "0"})
 	assert.NoError(t, err)
+	time.Sleep(500 * time.Millisecond)
 
 	app1Store, err = app1Search.fetch()
 	assert.NoError(t, err)
@@ -88,6 +90,7 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 	_, err = app1.UpsertSession(1337, "App 1 session :D", 111, map[string]string{"0": "0"})
 	assert.NoError(t, err)
+	time.Sleep(500 * time.Millisecond)
 
 	app1Store, err = app1Search.fetch()
 	assert.NoError(t, err)

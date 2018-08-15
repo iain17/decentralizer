@@ -85,7 +85,7 @@ func (d *Decentralizer) AdvertisePeerRecord() error {
 	}
 	err = d.b.PutValue(DHT_PEER_KEY_TYPE, getDecentralizedIdKey(d.peers.Self.DnId), data)
 	if err != nil {
-		logger.Warning(err)
+		logger.Warningf("Could not provide self: %s", err)
 	} else {
 		logger.Info("Successfully provided self")
 	}

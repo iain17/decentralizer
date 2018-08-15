@@ -39,7 +39,8 @@ func (d *Decentralizer) initMatchmaking() {
 			return err
 		}
 		return validateDNSessionsRecord(&sessions)
-	}, func(key string, values [][]byte) (int, error) {
+	},
+	func(key string, values [][]byte) (int, error) {
 		var currRecord pb.DNSessionsRecord
 		best := 0
 		for i, val := range values {

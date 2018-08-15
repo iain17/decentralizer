@@ -11,7 +11,6 @@ import (
 	"github.com/jasonlvhit/gocron"
 	"github.com/shibukawa/configdir"
 	"github.com/spf13/afero"
-	logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
 	"hash/crc32"
@@ -29,7 +28,7 @@ func init() {
 		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
 	})
-	logging.Configure(logging.LevelInfo)
+	//logging.Configure(logging.LevelInfo) //TODO: Fix this again.
 	configPath = configdir.New("ECorp", "Decentralizer-test")
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
 	testNetwork, _ = network.New()

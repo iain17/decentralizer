@@ -16,6 +16,17 @@ import (
 )
 
 func (d *Decentralizer) initDiscovery() error {
+	d.cron.Every(10).Seconds().Do(func() {
+		d.setSelfAddrs()
+		d.setReachableAddrs()
+	})
+	return nil
+}
+
+func (d *Decentralizer) startDiscovering() error {
+	if d.d == nil {
+		return nil
+	}
 	addrs, err := getAddrs(d.i.PeerHost)
 	if err != nil {
 		return err
@@ -24,17 +35,13 @@ func (d *Decentralizer) initDiscovery() error {
 		"peerId": d.i.Identity.Pretty(),
 		"addr": addrs,
 	})
-	if err != nil {
-		logger.Fatal(err)
-	}
-	d.cron.Every(10).Seconds().Do(func() {
-		d.setSelfAddrs()
-		d.setReachableAddrs()
-	})
-	return nil
+	return err
 }
 
 func (d *Decentralizer) setSelfAddrs() {
+	if d.d == nil {
+		return
+	}
 	addrs, err := getAddrs(d.i.PeerHost)
 	if err != nil {
 		logger.Warning(err)
@@ -44,6 +51,9 @@ func (d *Decentralizer) setSelfAddrs() {
 }
 
 func (d *Decentralizer) setReachableAddrs() {
+	if d.d == nil {
+		return
+	}
 	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := remoteNodeToPeerInfo(peer)
 		if err != nil {
