@@ -17,13 +17,14 @@ import (
 	"net"
 	"os"
 	"time"
+	"github.com/iain17/decentralizer/vars"
 )
 
 var testNetwork *network.Network
 var testSlaveNetwork *network.Network //just the public key
 
 func init() {
-	MIN_CONNECTED_PEERS = 1
+	vars.MIN_CONNECTED_PEERS = 1
 	logger.AddOutput(logger.Stdout{
 		MinLevel: logger.INFO, //logger.DEBUG,
 		Colored:  true,
@@ -50,11 +51,11 @@ func fakeNew(ctx context.Context, node *core.IpfsNode, master bool) *Decentraliz
 	} else {
 		n = testSlaveNetwork
 	}
-	ignore, err := lttlru.NewTTL(MAX_IGNORE)
+	ignore, err := lttlru.NewTTL(vars.MAX_IGNORE)
 	if err != nil {
 		panic(err)
 	}
-	unmarshalCache, err := lru.New(MAX_UNMARSHAL_CACHE)
+	unmarshalCache, err := lru.New(vars.MAX_UNMARSHAL_CACHE)
 	if err != nil {
 		panic(err)
 	}

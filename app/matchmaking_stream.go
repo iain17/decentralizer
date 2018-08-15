@@ -11,6 +11,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type sessionRequest struct{
@@ -22,13 +23,13 @@ type sessionRequest struct{
 //This is because DHT will only allow one value for one key. hashmap, duh. But this means a new user won't receive the whole list
 //in one go as we want. By querying the peers that are giving these session from DHT (already connected etc) we can fetch the bigger list.
 func (d *Decentralizer) initMatchmakingStream() {
-	d.sessionQueries 			= make(chan sessionRequest, CONCURRENT_SESSION_REQUEST)
+	d.sessionQueries 			= make(chan sessionRequest, vars.CONCURRENT_SESSION_REQUEST)
 	if !d.limitedConnection {
-		d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
+		d.i.PeerHost.SetStreamHandler(vars.GET_SESSION_REQ, d.getSessionResponse)
 	}
 	//Spawn some workers
-	logger.Debugf("Running %d session request workers", CONCURRENT_SESSION_REQUEST)
-	for i := 0; i < CONCURRENT_SESSION_REQUEST; i++ {
+	logger.Debugf("Running %d session request workers", vars.CONCURRENT_SESSION_REQUEST)
+	for i := 0; i < vars.CONCURRENT_SESSION_REQUEST; i++ {
 		go d.processSessionRequest()
 	}
 }
@@ -108,7 +109,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 
 // Get in contact with a peer and ask it for session of a certain type
 func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
-	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
+	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, vars.GET_SESSION_REQ)
 	if err != nil {
 		return err
 	}

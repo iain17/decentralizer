@@ -16,6 +16,7 @@ import (
 	"context"
 	"math/rand"
 	"strings"
+	"github.com/iain17/decentralizer/vars"
 )
 
 //Find other peers around a subject.
@@ -32,7 +33,7 @@ func NewBitSwap(node *core.IpfsNode) (*BitswapService, error) {
 		return &BitswapService{
 			node:     node,
 			dht:      dht,
-			slot:	  rand.Intn(NUM_MATCHMAKING_SLOTS),
+			slot:	  rand.Intn(vars.NUM_MATCHMAKING_SLOTS),
 		}, nil
 	} else {
 		return nil, errors.New("interface conversion: node.Routing is not *ipdht.IpfsDHT")
@@ -99,7 +100,7 @@ func (b *BitswapService) GetShardedValues(ctx context.Context, keyType string, r
 	logger.Infof("Get sharded values for type %s for key %s", keyType, rawKey)
 	var result [][]byte
 	var err error
-	for i := 0; i <= NUM_MATCHMAKING_SLOTS; i++ {
+	for i := 0; i <= vars.NUM_MATCHMAKING_SLOTS; i++ {
 		key := b.getShardedKey(keyType, rawKey, i)
 		var value []byte
 		value, err = b.node.Routing.GetValue(ctx, key)

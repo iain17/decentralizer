@@ -12,6 +12,7 @@ import (
 	"strings"
 	"context"
 	"fmt"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type DirectMessage struct {
@@ -20,7 +21,7 @@ type DirectMessage struct {
 }
 
 func (d *Decentralizer) initMessaging() {
-	d.i.PeerHost.SetStreamHandler(SEND_DIRECT_MESSAGE, d.directMessageReceived)
+	d.i.PeerHost.SetStreamHandler(vars.SEND_DIRECT_MESSAGE, d.directMessageReceived)
 }
 
 func (d *Decentralizer) GetMessagingChan(channel uint32) chan *pb.RPCDirectMessage {
@@ -53,7 +54,7 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 	op := func() (err error) {
 		logger.Infof("Trying to open stream to (to: %s:%d)", id.Pretty(), channel)
 		d.clearBackOff(id)
-		stream, err = d.i.PeerHost.NewStream(ctx, id, SEND_DIRECT_MESSAGE)
+		stream, err = d.i.PeerHost.NewStream(ctx, id, vars.SEND_DIRECT_MESSAGE)
 		return
 	}
 	err = retry.Do(op,

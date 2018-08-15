@@ -27,6 +27,7 @@ import (
 	"os"
 	"sync"
 	"time"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type Decentralizer struct {
@@ -120,11 +121,11 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
-	ignore, err := lttlru.NewTTL(MAX_IGNORE)
+	ignore, err := lttlru.NewTTL(vars.MAX_IGNORE)
 	if err != nil {
 		return nil, err
 	}
-	unmarshalCache, err := lru.New(MAX_UNMARSHAL_CACHE)
+	unmarshalCache, err := lru.New(vars.MAX_UNMARSHAL_CACHE)
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +191,7 @@ func (d *Decentralizer) IsEnoughPeers() bool {
 		return false
 	}
 	lenPeers := len(d.i.PeerHost.Network().Peers())
-	return lenPeers >= MIN_CONNECTED_PEERS
+	return lenPeers >= vars.MIN_CONNECTED_PEERS
 }
 
 func (d *Decentralizer) WaitTilEnoughPeers() {

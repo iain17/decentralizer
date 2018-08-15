@@ -11,6 +11,7 @@ import (
 	"gx/ipfs/QmPjvxTpVH8qJyQDnxnsxF9kv9jezKD1kozz1hs3fCGsNh/go-libp2p-net"
 	pstore "gx/ipfs/QmZR2XWVVBCtbgBWnQhWk2xcQfaR3W8faQPriAiaaj7rsr/go-libp2p-peerstore"
 	"fmt"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type search struct {
@@ -50,7 +51,7 @@ func (s *search) run(ctx context.Context) error {
 	defer s.mutex.Unlock()
 
 	logger.Infof("Searching for sessions with type %d", s.sessionType)
-	values, err := s.d.b.GetShardedValues(ctx, DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType))
+	values, err := s.d.b.GetShardedValues(ctx, vars.DHT_SESSIONS_KEY_TYPE, s.d.getMatchmakingKey(s.sessionType))
 	if err != nil {
 		return fmt.Errorf("could not find session with type %d: %s", s.sessionType, err.Error())
 	}

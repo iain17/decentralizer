@@ -7,6 +7,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/stime"
+	"github.com/iain17/decentralizer/vars"
 )
 
 var benchData = buildPb()
@@ -28,7 +29,7 @@ func buildPb() []byte {
 }
 
 func BenchmarkDecentralizer_unmarshal1(b *testing.B) {
-	unmarshalCache, err := lru.New(MAX_UNMARSHAL_CACHE)
+	unmarshalCache, err := lru.New(vars.MAX_UNMARSHAL_CACHE)
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +48,7 @@ func BenchmarkDecentralizer_unmarshal1(b *testing.B) {
 }
 
 func BenchmarkDecentralizer_unmarshal2(b *testing.B) {
-	_, err := lru.New(MAX_UNMARSHAL_CACHE)
+	_, err := lru.New(vars.MAX_UNMARSHAL_CACHE)
 	if err != nil {
 		panic(err)
 	}

@@ -9,6 +9,7 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/stime"
 	"fmt"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func getDecentralizedIdKey(decentralizedId uint64) string {
@@ -54,7 +55,7 @@ func (d *Decentralizer) getPeerFromNetwork(decentralizedId uint64) (*pb.Peer, er
 
 func (d *Decentralizer) getPeerFromDHT(decentralizedId uint64) (*pb.Peer, error) {
 	logger.Infof("Querying DHT network for peer %d", decentralizedId)
-	data, err := d.b.GetValue(d.i.Context(), DHT_PEER_KEY_TYPE, getDecentralizedIdKey(decentralizedId))
+	data, err := d.b.GetValue(d.i.Context(), vars.DHT_PEER_KEY_TYPE, getDecentralizedIdKey(decentralizedId))
 	if err != nil {
 		return nil, fmt.Errorf("could not find peer with id %d: %s", decentralizedId, err.Error())
 	}

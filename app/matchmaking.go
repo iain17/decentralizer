@@ -15,6 +15,7 @@ import (
 	"github.com/iain17/kvcache/lttlru"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/stime"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) getMatchmakingKey(sessionType uint64) string {
@@ -27,12 +28,12 @@ func (d *Decentralizer) initMatchmaking() {
 	d.sessions 					= make(map[uint64]*sessionstore.Store)
 	d.sessionIdToSessionType	= make(map[uint64]uint64)
 	var err error
-	d.searches, err = lttlru.NewTTL(MAX_SESSION_SEARCHES)
+	d.searches, err = lttlru.NewTTL(vars.MAX_SESSION_SEARCHES)
 	if err != nil {
 		logger.Fatal(err)
 	}
 
-	d.b.RegisterValidator(DHT_SESSIONS_KEY_TYPE, func(key string, value []byte) error{
+	d.b.RegisterValidator(vars.DHT_SESSIONS_KEY_TYPE, func(key string, value []byte) error{
 		var sessions pb.DNSessionsRecord
 		err = d.unmarshal(value, &sessions)
 		if err != nil {
@@ -64,13 +65,13 @@ func validateDNSessionsRecord(sessions *pb.DNSessionsRecord) error {
 	//Check publish time
 	now := stime.Now()
 	publishedTime := time.Unix(int64(sessions.Published), 0).UTC()
-	expireTime := now.Add(-EXPIRE_TIME_SESSION)
+	expireTime := now.Add(-vars.EXPIRE_TIME_SESSION)
 	if publishedTime.Before(expireTime) {
 		err := fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTime, expireTime)
 		logger.Warning(err)
 		return err
 	}
-	if publishedTime.After(now.Add(DIFF_DIFFERENCE_ACCEPTANCE) ) {
+	if publishedTime.After(now.Add(vars.DIFF_DIFFERENCE_ACCEPTANCE) ) {
 		err := fmt.Errorf("record with publish date %s was published in the future (t=%s)", publishedTime, now)
 		logger.Warning(err)
 		return err
@@ -92,9 +93,9 @@ func (d *Decentralizer) getSessionStorage(sessionType uint64) *sessionstore.Stor
 		var err error
 		d.sessions[sessionType], err = sessionstore.New(
 			d.ctx,
-			MAX_SESSIONS,
-			time.Duration(EXPIRE_TIME_SESSION),
-			d.i.Identity, fmt.Sprintf("%s/%d_%s", Base.Path, sessionType, SESSIONS_FILE),
+			vars.MAX_SESSIONS,
+			time.Duration(vars.EXPIRE_TIME_SESSION),
+			d.i.Identity, fmt.Sprintf("%s/%d_%s", Base.Path, sessionType, vars.SESSIONS_FILE),
 			d.setSessionIdToType,
 		)
 		if err != nil {
@@ -199,7 +200,7 @@ func (d *Decentralizer) advertiseSessionsRecord(sessionType uint64) error {
 			logger.Warningf("Could not be a provider of sessions: %s", err.Error())
 		}
 	}()
-	return d.b.PutValue(DHT_SESSIONS_KEY_TYPE, d.getMatchmakingKey(sessionType), data)
+	return d.b.PutShardedValues(vars.DHT_SESSIONS_KEY_TYPE, d.getMatchmakingKey(sessionType), data)
 }
 
 func (d *Decentralizer) DeleteSession(sessionId uint64) error {

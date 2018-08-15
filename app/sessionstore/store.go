@@ -13,6 +13,9 @@ import (
 	"github.com/iain17/decentralizer/utils"
 	"io/ioutil"
 	"github.com/golang/protobuf/proto"
+	"github.com/iain17/stime"
+	"fmt"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type mapperFunc func(sessionId uint64, sessionType uint64)
@@ -182,6 +185,15 @@ func (s *Store) Insert(info *pb.Session) (uint64, error) {
 	if !s.IsNewer(info) {
 		return 0, errors.New("record is older")
 	}
+	now := stime.Now()
+	publishedTime := time.Unix(int64(info.Published), 0).UTC()
+	expireTime := now.Add(-vars.EXPIRE_TIME_SESSION)
+	if publishedTime.Before(expireTime) {
+		err := fmt.Errorf("record with publish date %s has expired. It was before %s", publishedTime, expireTime)
+		logger.Warning(err)
+		return 0, err
+	}
+
 	logger.Infof("Inserting session: %v", info)
 	info.SessionId = GetId(info)
 	pId, err := s.decodeId(info.PId)

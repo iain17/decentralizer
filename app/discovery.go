@@ -13,6 +13,7 @@ import (
 	libp2pnet "gx/ipfs/QmPjvxTpVH8qJyQDnxnsxF9kv9jezKD1kozz1hs3fCGsNh/go-libp2p-net"
 	"strings"
 	"time"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) initDiscovery() error {
@@ -31,7 +32,7 @@ func (d *Decentralizer) startDiscovering() error {
 	if err != nil {
 		return err
 	}
-	d.d, err = discovery.New(d.ctx, d.n, MAX_DISCOVERED_PEERS, d.peerDiscovered, d.limitedConnection, map[string]string{
+	d.d, err = discovery.New(d.ctx, d.n, vars.MAX_DISCOVERED_PEERS, d.peerDiscovered, d.limitedConnection, map[string]string{
 		"peerId": d.i.Identity.Pretty(),
 		"addr": addrs,
 	})
@@ -54,7 +55,7 @@ func (d *Decentralizer) setReachableAddrs() {
 	if d.d == nil {
 		return
 	}
-	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
+	for _, peer := range d.d.WaitForPeers(vars.MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := remoteNodeToPeerInfo(peer)
 		if err != nil {
 			//logger.Warning(err)
@@ -108,14 +109,14 @@ func serializeAddrs(multiAddrs []ma.Multiaddr) string {
 	}
 	addrs := ""
 	for _, addr := range multiAddrs {
-		addrs += addr.String() + DELIMITER_ADDR
+		addrs += addr.String() + vars.DELIMITER_ADDR
 	}
 	return addrs
 }
 
 func unSerializeAddrs(addrText string) []ma.Multiaddr {
 	var addrs []ma.Multiaddr
-	rawAddr := strings.Split(addrText, DELIMITER_ADDR)
+	rawAddr := strings.Split(addrText, vars.DELIMITER_ADDR)
 	for _, strAddr := range rawAddr {
 		addr, err := ma.NewMultiaddr(strAddr)
 		if err != nil && addr != nil {

@@ -9,6 +9,7 @@ import (
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/config"
 	"io/ioutil"
 	"strings"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func init() {
@@ -54,7 +55,7 @@ func (d *Decentralizer) saveBootstrapState() {
 		return
 	}
 	data := serializeBootstrapAddrs(peers)
-	file, err := d.fs.Create(BOOTSTRAP_FILE)
+	file, err := d.fs.Create(vars.BOOTSTRAP_FILE)
 	if err != nil {
 		logger.Debugf("Could not save bootstrap state: %s", err)
 		return
@@ -69,13 +70,13 @@ func serializeBootstrapAddrs(bootstrapAddrs []config.BootstrapPeer) string {
 	}
 	addrs := ""
 	for _, addr := range bootstrapAddrs {
-		addrs += addr.String() + DELIMITER_ADDR
+		addrs += addr.String() + vars.DELIMITER_ADDR
 	}
 	return addrs
 }
 
 func unSerializeBootstrapAddrs(addrText string) ([]config.BootstrapPeer, error) {
-	addrs := strings.Split(addrText, DELIMITER_ADDR)
+	addrs := strings.Split(addrText, vars.DELIMITER_ADDR)
 	if len(addrs) == 0 {
 		return nil, errors.New("no addressed given")
 	}
@@ -86,7 +87,7 @@ func (d *Decentralizer) getBootstrapAddrs() ([]config.BootstrapPeer, error) {
 	connections := d.i.PeerHost.Network().Conns()
 	var result []string
 	for _, conn := range connections {
-		if len(result) > MAX_BOOTSTRAP_SHARE {
+		if len(result) > vars.MAX_BOOTSTRAP_SHARE {
 			break
 		}
 		addr := conn.RemoteMultiaddr().String() + "/ipfs/" + conn.RemotePeer().Pretty()
@@ -96,7 +97,7 @@ func (d *Decentralizer) getBootstrapAddrs() ([]config.BootstrapPeer, error) {
 }
 
 func (d *Decentralizer) readBootstrapState() ([]config.BootstrapPeer, error) {
-	file, err := d.fs.Open(BOOTSTRAP_FILE)
+	file, err := d.fs.Open(vars.BOOTSTRAP_FILE)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +127,7 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 	if d.d != nil {
 		peers := d.d.WaitForPeers(1, 0)
 		for _, peer := range peers {
-			if len(result) > MAX_BOOTSTRAP_SHARE {
+			if len(result) > vars.MAX_BOOTSTRAP_SHARE {
 				break
 			}
 			peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))

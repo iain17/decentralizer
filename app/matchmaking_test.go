@@ -10,10 +10,11 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"gx/ipfs/QmY51bqSM5XgxQZqsBrQcRkKTnCb8EKpJpR9K6Qax7Njco/go-libp2p/p2p/net/mock"
 	"github.com/iain17/stime"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 5)
@@ -46,7 +47,7 @@ func TestDecentralizer_GetSessionsByDetailsSimple(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 3)
@@ -59,7 +60,6 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 	_, err := app2.UpsertSession(1337, "App 2 session :D", 304, map[string]string{"0": "0"})
 	assert.NoError(t, err)
-	time.Sleep(500 * time.Millisecond)
 
 	app1Search := app1.getSessionSearch(1337)
 	app1Store, err := app1Search.fetch()
@@ -76,7 +76,6 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 	_, err = app3.UpsertSession(1337, "App 3 session :D", 308, map[string]string{"0": "0"})
 	assert.NoError(t, err)
-	time.Sleep(500 * time.Millisecond)
 
 	app1Store, err = app1Search.fetch()
 	assert.NoError(t, err)
@@ -90,7 +89,6 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 	_, err = app1.UpsertSession(1337, "App 1 session :D", 111, map[string]string{"0": "0"})
 	assert.NoError(t, err)
-	time.Sleep(500 * time.Millisecond)
 
 	app1Store, err = app1Search.fetch()
 	assert.NoError(t, err)
@@ -105,7 +103,7 @@ func TestDecentralizer_GetSessionsByDetailsTrio(t *testing.T) {
 
 //2 peer have published their session. Then all a third peer joins the network. He should have two sessions.
 func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	mn := mocknet.New(ctx)
@@ -132,12 +130,8 @@ func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	time.Sleep(500 * time.Millisecond)
-
 	app1Search := app1.getSessionSearch(1337)
 	app1Search.refresh(ctx)
-
-	time.Sleep(1 * time.Second)
 
 	assert.Equal(t, 3, app1Search.storage.Len())
 
@@ -149,17 +143,13 @@ func TestDecentralizer_GetSessionsLateJoiner(t *testing.T) {
 
 	app4Search := app4.getSessionSearch(1337)
 
-	time.Sleep(500 * time.Millisecond)
-
 	app4Search.refresh(ctx)
-
-	time.Sleep(1 * time.Second)
 
 	assert.Equal(t, 3, app4Search.storage.Len())
 }
 
 func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 2)
@@ -183,8 +173,6 @@ func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(500 * time.Millisecond)
-
 	search := app1.getSessionSearch(1337)
 	search.refresh(ctx)
 	store, err := search.fetch()
@@ -195,7 +183,7 @@ func TestDecentralizer_GetSessionsByDetailsSimple2(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	const num = 10
@@ -215,8 +203,6 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sessId > 0)
 
-	time.Sleep(500 * time.Millisecond)
-
 	//App 1 gets only non cool sessions
 	sessions, err := app1.GetSessionsByDetails(1337, "cool", "no")
 	assert.NoError(t, err)
@@ -226,7 +212,7 @@ func TestDecentralizer_GetSessionsByDetails(t *testing.T) {
 
 //One peer is trying to be evil
 func TestDecentralizer_GetSessionsByDetailsEvil(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 3)
@@ -249,7 +235,7 @@ func TestDecentralizer_GetSessionsByDetailsEvil(t *testing.T) {
 				case <- ctx.Done():
 					return
 				default:
-					app3.b.PutValue(DHT_SESSIONS_KEY_TYPE, app3.getMatchmakingKey(1337), []byte{0, 1, 2})
+					app3.b.PutValue(vars.DHT_SESSIONS_KEY_TYPE, app3.getMatchmakingKey(1337), []byte{0, 1, 2})
 					time.Sleep(300 * time.Millisecond)
 			}
 		}
@@ -265,7 +251,7 @@ func TestDecentralizer_GetSessionsByDetailsEvil(t *testing.T) {
 }
 
 func TestValidateDNSessions(t *testing.T) {
-	EXPIRE_TIME_SESSION = 3 * time.Hour
+	vars.EXPIRE_TIME_SESSION = 3 * time.Hour
 
 	//Future
 	assert.Error(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
@@ -282,7 +268,7 @@ func TestValidateDNSessions(t *testing.T) {
 		Published: uint64(stime.Now().Unix()),
 	}))
 
-	EXPIRE_TIME_SESSION = 1 * time.Second
+	vars.EXPIRE_TIME_SESSION = 1 * time.Second
 	//Just in time
 	assert.NoError(t, validateDNSessionsRecord(&pb.DNSessionsRecord{
 		Published: uint64(stime.Now().Unix()),
@@ -290,7 +276,7 @@ func TestValidateDNSessions(t *testing.T) {
 }
 
 func TestDecentralizer_GetSessionsByDetailsExpire(t *testing.T) {
-	EXPIRE_TIME_SESSION = 2 * time.Second
+	vars.EXPIRE_TIME_SESSION = 2 * time.Second
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx, 2)
@@ -314,7 +300,7 @@ func TestDecentralizer_GetSessionsByDetailsExpire(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 1, store.Len(), "Because it hasn't YET expired")
 
-	time.Sleep(EXPIRE_TIME_SESSION * 2)
+	time.Sleep(vars.EXPIRE_TIME_SESSION * 2)
 
 	searchCtx, cancel := context.WithCancel(app1.i.Context())
 	search.refresh(searchCtx)

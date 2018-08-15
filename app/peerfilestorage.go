@@ -13,6 +13,7 @@ import (
 	"github.com/shibukawa/configdir"
 	ipfsfiles "gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
 	"bytes"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) initStorage() {
@@ -113,7 +114,7 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	refresh := false
 	path := d.getPeerFilePath(id, name)
 	info, err := d.peerFileSystem.Stat(path)
-	if info != nil && info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
+	if info != nil && info.ModTime().After(time.Now().Add(vars.FILE_EXPIRE)) {
 		refresh = true
 	}
 	if id.Pretty() != d.i.Identity.Pretty() {

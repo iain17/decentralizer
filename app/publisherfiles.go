@@ -11,6 +11,7 @@ import (
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/stime"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) getPublisherKey() string {
@@ -19,7 +20,7 @@ func (d *Decentralizer) getPublisherKey() string {
 }
 
 func (d *Decentralizer) initPublisherFiles() {
-	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(key string, value []byte) error{
+	d.b.RegisterValidator(vars.DHT_PUBLISHER_KEY_TYPE, func(key string, value []byte) error{
 		var record pb.DNPublisherRecord
 		err := d.unmarshal(value, &record)
 		if err != nil {
@@ -108,10 +109,10 @@ func (d *Decentralizer) resolveDNPublisherRecord(record *pb.DNPublisherRecord) e
 }
 
 func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
-	data, err := configPath.QueryCacheFolder().ReadFile(PUBLISHER_DEFINITION_FILE)
+	data, err := configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
 	if err != nil {
 		//Check if publisher file is in the same director as us
-		data, err = ioutil.ReadFile("./" + PUBLISHER_DEFINITION_FILE)
+		data, err = ioutil.ReadFile("./" + vars.PUBLISHER_DEFINITION_FILE)
 	}
 	return data, err
 }
@@ -119,7 +120,7 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 func (d *Decentralizer) readPublisherRecordFromNetwork() ([]byte, error) {
 	d.WaitTilEnoughPeers()
 	logger.Debugf("Asking the network for a publisher record")
-	data, err := d.b.GetValue(d.ctx, DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey())
+	data, err := d.b.GetValue(d.ctx, vars.DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey())
 	if err != nil {
 		return nil, fmt.Errorf("failed to get best publisher record value: %s", err.Error())
 	}
@@ -180,7 +181,7 @@ func (d *Decentralizer) savePublisherRecordToDisk() error {
 	if err != nil {
 		return fmt.Errorf("could not marshal publisherRecord: %s", err.Error())
 	}
-	err = configPath.QueryCacheFolder().WriteFile(PUBLISHER_DEFINITION_FILE, data)
+	err = configPath.QueryCacheFolder().WriteFile(vars.PUBLISHER_DEFINITION_FILE, data)
 	if err != nil {
 		return fmt.Errorf("could not publisherRecord to disk: %s", err.Error())
 	}
@@ -261,7 +262,7 @@ func (d *Decentralizer) PushPublisherRecord() error {
 		return err
 	}
 	logger.Info("Publishing our publisher version")
-	return d.b.PutValue(DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey(), data)
+	return d.b.PutValue(vars.DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey(), data)
 }
 
 //Called when the publisher file has been loaded

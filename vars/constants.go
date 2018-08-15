@@ -1,4 +1,4 @@
-package app
+package vars
 
 import (
 	"github.com/c2h5oh/datasize"
@@ -30,6 +30,7 @@ const DHT_PEER_KEY_TYPE = "dPeer"
 const DHT_SESSIONS_KEY_TYPE = "sessions"
 const DHT_PUBLISHER_KEY_TYPE = "publisher"
 const BOOTSTRAP_FILE = "bootstrap.dat"
+const NUM_MATCHMAKING_SLOTS = int(100)
 
 var FILE_EXPIRE = time.Hour * 1
 
