@@ -10,6 +10,6 @@ func PeerToDnId(id libp2pPeer.ID) (pId string, dID uint64) {
 	h := fnv.New32a()
 	pId = id.Pretty()
 	h.Write([]byte(pId))
-	dID = 0x110000100000000 + uint64(h.Sum32())
+	dID = uint64(h.Sum32())
 	return
 }

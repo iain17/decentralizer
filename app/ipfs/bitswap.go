@@ -15,6 +15,7 @@ import (
 	"sync"
 	"context"
 	"math/rand"
+	"strings"
 )
 
 //Find other peers around a subject.
@@ -58,7 +59,11 @@ func (b *BitswapService) Provide(subject string) error {
 }
 
 func (b *BitswapService) DecodeKey(key string) (string, error) {
-	data, err := b58.Decode(key)
+	parts := strings.Split(key, "/")
+	if len(parts) != 3 {
+		return "", errors.New("A key should consist of 3 slashes")
+	}
+	data, err := b58.Decode(parts[len(parts)-1])
 	return string(data), err
 }
 
