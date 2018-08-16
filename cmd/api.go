@@ -27,6 +27,7 @@ import (
 	"syscall"
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/app"
+	"gx/ipfs/QmQvJiADDe7JR4m968MwXobTCCzUqQkP87aRHe29MEBGHV/go-logging"
 )
 var verbose, daemon, isPrivateKey, isLimited, removeLock bool
 var logPath, networkKey string
@@ -55,10 +56,10 @@ var apiCmd = &cobra.Command{
 		logLvl := logger.INFO
 		if verbose {
 			logLvl = logger.DEBUG
-			//logging.Configure(logging.LevelDebug)
+			logging.InitForTesting(logging.DEBUG)
 		} else {
 			//Set ipfs logging
-			//logging.Configure(logging.LevelError)
+			logging.InitForTesting(logging.ERROR)
 		}
 		logger.AddOutput(logger.Stdout{
 			MinLevel: logLvl,

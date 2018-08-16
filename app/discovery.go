@@ -25,6 +25,8 @@ func (d *Decentralizer) initDiscovery() error {
 }
 
 func (d *Decentralizer) startDiscovering() error {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 	if d.d != nil {
 		return nil
 	}

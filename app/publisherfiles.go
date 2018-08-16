@@ -195,7 +195,7 @@ func (d *Decentralizer) loadNewPublisherRecord(record *pb.DNPublisherRecord) err
 		return err
 	}
 	if d.publisherRecord != nil && d.publisherDefinition.Published >= definition.Published {
-		return errors.New("definition is older or same")
+		return nil
 	}
 	d.publisherRecord = record
 	d.publisherDefinition = definition
@@ -223,7 +223,6 @@ func (d *Decentralizer) signPublisherRecord(definition *pb.PublisherDefinition) 
 }
 
 func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) error {
-	d.WaitTilEnoughPeers()
 	update, err := d.signPublisherRecord(definition)
 	if err != nil {
 		return err

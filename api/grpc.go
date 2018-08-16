@@ -29,7 +29,7 @@ func (s *Server) initGRPC(port int) error {
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_auth.UnaryServerInterceptor(s.auth),
 			grpc_recovery.UnaryServerInterceptor(),
-			s.AliveUnaryInterceptor(),
+			//s.AliveUnaryInterceptor(),
 		)),
 	)
 	pb.RegisterDecentralizerServer(s.grpc, s)
