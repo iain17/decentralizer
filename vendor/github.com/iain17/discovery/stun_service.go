@@ -27,6 +27,7 @@ func (s *StunService) init(ctx context.Context) (err error) {
 	s.logger = logger.New(s.String())
 	s.context = ctx
 	s.client = stun.NewClient()
+	go s.Serve(ctx)
 	return nil
 }
 

@@ -159,7 +159,7 @@ func (rn *RemoteNode) receiveSharedPeers(peers []*pb.DPeer) {
 		return
 	}
 	for _, peer := range peers {
-		rn.ln.netTableService.Discovered(&net.UDPAddr{
+		rn.ln.netTableService.Discovered(&net.TCPAddr{
 			IP:   net.ParseIP(peer.Ip),
 			Port: int(peer.Port),
 		})

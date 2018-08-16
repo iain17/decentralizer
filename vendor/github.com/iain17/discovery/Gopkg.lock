@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  name = "cirello.io/supervisor"
-  packages = ["."]
-  revision = "3ae4051c50e006498b4b8aee130185a53caab86e"
-  version = "v0.5.3"
+  name = "cirello.io"
+  packages = ["supervisor"]
+  revision = "fc9be7c91ed06d529fb2b182cd04156146372201"
+  version = "v1.1.8"
 
 [[projects]]
   branch = "master"
@@ -65,12 +65,6 @@
   name = "github.com/c2h5oh/datasize"
   packages = ["."]
   revision = "4eba002a5eaea69cf8d235a388fc6b65ae68d2dd"
-
-[[projects]]
-  name = "github.com/ccding/go-stun"
-  packages = ["stun"]
-  revision = "04a4eed61c57ecc9903f8983d1d2c17b88d2e9e1"
-  version = "0.1.0"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -172,6 +166,12 @@
   revision = "5a16783aedfedeb1de52eeee4d015f04190b37d0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/pions/pkg"
+  packages = ["stun"]
+  revision = "7c593763038f3853fb69dbec8b57db2093fedcc5"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -246,8 +246,8 @@
 [[projects]]
   name = "github.com/xtaci/kcp-go"
   packages = ["."]
-  revision = "42bc1dfefff592fdb3affa793980c4f6ab4213e5"
-  version = "v3.25"
+  revision = "60be01eef6f665151bfbcde38429ee1d8710f68f"
+  version = "v4.0"
 
 [[projects]]
   branch = "master"
@@ -288,6 +288,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5336a41e6887dcac291637da45ded6e4bdac3cb1ca2714123398bce288315df8"
+  inputs-digest = "18d02ff5733f149f133de78a9df1e9fa8f7176af5395ebfccb89aea107d7bc41"
   solver-name = "gps-cdcl"
   solver-version = 1

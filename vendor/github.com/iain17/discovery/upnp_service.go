@@ -31,7 +31,7 @@ func (s *UPnPService) init(ctx context.Context) error {
 }
 
 func (s *UPnPService) Stop() {
-	s.mapping.DelPortMapping(s.localNode.port, "UDP")
+	s.mapping.DelPortMapping(s.localNode.port, "TCP")
 }
 
 func (s *UPnPService) Serve(ctx context.Context) {
@@ -59,7 +59,7 @@ func (s *UPnPService) Serve(ctx context.Context) {
 
 func (s *UPnPService) process(port int) (err error) {
 	s.logger.Debugf("trying to map port %d...", port)
-	if err := s.mapping.AddPortMapping(port, port, "UDP"); err == nil {
+	if err := s.mapping.AddPortMapping(port, port, "TCP"); err == nil {
 		if s.mapping.GatewayOutsideIP != "" {
 			s.localNode.ip = s.mapping.GatewayOutsideIP
 			//Disabled: Seems empty?

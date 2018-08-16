@@ -31,6 +31,7 @@ const DHT_SESSIONS_KEY_TYPE = "sessions"
 const DHT_PUBLISHER_KEY_TYPE = "publisher"
 const BOOTSTRAP_FILE = "bootstrap.dat"
 const NUM_MATCHMAKING_SLOTS = int(100)
+const MAX_IDLE_TIME = 5 * time.Minute//Ignored in daemon mode
 
 var FILE_EXPIRE = time.Hour * 1
 

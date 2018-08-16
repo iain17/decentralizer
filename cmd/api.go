@@ -28,6 +28,7 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/decentralizer/app"
 	"gx/ipfs/QmQvJiADDe7JR4m968MwXobTCCzUqQkP87aRHe29MEBGHV/go-logging"
+	"github.com/iain17/decentralizer/vars"
 )
 var verbose, daemon, isPrivateKey, isLimited, removeLock bool
 var logPath, networkKey string
@@ -46,7 +47,6 @@ func init() {
 	apiCmd.Flags().BoolVar(&removeLock, "removeLock", false, "If set to true. It will remove to lock file")
 }
 
-const MAX_IDLE_TIME = 5 * time.Minute//Ignored in daemon mode
 // apiCmd represents the api command
 var apiCmd = &cobra.Command{
 	Use:   "api",
@@ -126,17 +126,10 @@ var apiCmd = &cobra.Command{
 
 func KillOnIdle(s *api.Server, cancel context.CancelFunc) {
 	logger.Warning("Killing on idle")
-	var free time.Time
 	for {
-		time.Sleep(MAX_IDLE_TIME)
-		s.Wg.Wait()
-		free = time.Now()
-		s.Wg.Wait()
-		if s.App != nil {
-			s.App.WaitTilEnoughPeers()
-		}
-		if s.App != nil && free.Add(MAX_IDLE_TIME).After(time.Now()) {
-			logger.Warning("Idle. Closing process.")
+		time.Sleep(vars.MAX_IDLE_TIME)
+		if s.App != nil && time.Since(s.LastCall) > vars.MAX_IDLE_TIME {
+			logger.Warningf("Idle detected. No request for %f minutes. Closing process.", vars.MAX_IDLE_TIME.Minutes())
 			cancel()
 		}
 	}

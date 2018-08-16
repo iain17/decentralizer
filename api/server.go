@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 )
 
 type Server struct {
@@ -16,7 +17,7 @@ type Server struct {
 	endpoint          string
 	mutex             sync.Mutex
 	listeningChannels map[uint32]bool//To keep track if a client is already listening for direct messages on this channel.
-	Wg                sync.WaitGroup
+	LastCall          time.Time//Time of last call
 }
 
 func New(ctx context.Context, port int) (*Server, error) {

@@ -109,7 +109,7 @@ func (d *DiscoveryIRC) onReceiveJoin(data string) {
 		d.logger.Warning(err)
 		return
 	}
-	d.localNode.netTableService.Discovered(&net.UDPAddr{
+	d.localNode.netTableService.Discovered(&net.TCPAddr{
 		IP:   net.ParseIP(ipPort[0]),
 		Port: port,
 	})
