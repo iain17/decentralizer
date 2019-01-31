@@ -9,6 +9,7 @@ import (
 )
 
 //Returns true if the second passed record is newer than the first one.
+//If its the same it will return true as well
 func IsNewerRecord(current uint64, new uint64) bool {
 	if new == 0 {
 		return false

@@ -72,7 +72,7 @@ func (d *DiscoveryDHT) Serve(ctx context.Context) {
 			}
 			if !d.localNode.netTableService.isEnoughPeers() {
 				for _, peer := range v.Peers {
-					addr := &net.UDPAddr{
+					addr := &net.TCPAddr{
 						IP:   peer.IP[:],
 						Port: int(peer.Port),
 					}

@@ -8,15 +8,15 @@ import (
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/ipinfo"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
-	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
 	"fmt"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/stime"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) initAddressbook() {
 	var err error
-	d.peers, err = peerstore.New(d.ctx, MAX_CONTACTS, time.Duration((EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity, Base.Path+"/"+ADDRESS_BOOK_FILE)
+	d.peers, err = peerstore.New(d.ctx, vars.MAX_CONTACTS, time.Duration((vars.EXPIRE_TIME_CONTACT*1.5)*time.Second), d.i.Identity, Base.Path+"/"+vars.ADDRESS_BOOK_FILE)
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -30,14 +30,14 @@ func (d *Decentralizer) initAddressbook() {
 	})
 	go d.AdvertisePeerRecord()
 
-	d.b.RegisterValidator(DHT_PEER_KEY_TYPE, func(r *record.ValidationRecord) error {
+	d.b.RegisterValidator(vars.DHT_PEER_KEY_TYPE, func(key string, value []byte) error {
 		var record pb.DNPeerRecord
-		err = d.unmarshal(r.Value, &record)
+		err = d.unmarshal(value, &record)
 		if err != nil {
 			return fmt.Errorf("peer record invalid. could not unmarshal: %s", err.Error())
 		}
 		//Check key
-		key, err := d.b.DecodeKey(r.Key)
+		key, err := d.b.DecodeKey(key)
 		if err != nil {
 			return err
 		}
@@ -49,9 +49,7 @@ func (d *Decentralizer) initAddressbook() {
 			return fmt.Errorf("reversing decentralized key id failed. Expected %d, received %d", expectedDecentralizedId, record.Peer.DnId)
 		}
 		return nil
-	}, true, true)
-
-	d.b.RegisterSelector(DHT_PEER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+	}, func(key string, values [][]byte) (int, error) {
 		var currPeer pb.Peer
 		best := 0
 		for i, val := range values {
@@ -67,7 +65,7 @@ func (d *Decentralizer) initAddressbook() {
 			}
 		}
 		return best, nil
-	})
+	}, true)
 
 	self, _ := d.peers.FindByPeerId("self")
 	if self != nil {
@@ -86,9 +84,9 @@ func (d *Decentralizer) AdvertisePeerRecord() error {
 	if err != nil {
 		return err
 	}
-	err = d.b.PutValue(DHT_PEER_KEY_TYPE, getDecentralizedIdKey(d.peers.Self.DnId), data)
+	err = d.b.PutValue(vars.DHT_PEER_KEY_TYPE, getDecentralizedIdKey(d.peers.Self.DnId), data)
 	if err != nil {
-		logger.Warning(err)
+		logger.Warningf("Could not provide self: %s", err)
 	} else {
 		logger.Info("Successfully provided self")
 	}

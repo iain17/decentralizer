@@ -77,7 +77,7 @@ func (d *DiscoveryMDNS) Serve(ctx context.Context) {
 			if ip == nil && len(entry.AddrIPv6) > 0  {
 				ip = entry.AddrIPv6[0]
 			}
-			addr := &net.UDPAddr{
+			addr := &net.TCPAddr{
 				IP:   ip,
 				Port: entry.Port,
 			}

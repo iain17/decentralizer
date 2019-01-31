@@ -12,6 +12,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"errors"
 	"google.golang.org/grpc/metadata"
+	"time"
 )
 
 func (s *Server) initGRPC(port int) error {
@@ -24,12 +25,12 @@ func (s *Server) initGRPC(port int) error {
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
 			grpc_auth.StreamServerInterceptor(s.auth),
 			grpc_recovery.StreamServerInterceptor(),
-			s.AliveStreamInterceptor(),
+			//nil,
 		)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_auth.UnaryServerInterceptor(s.auth),
 			grpc_recovery.UnaryServerInterceptor(),
-			s.AliveUnaryInterceptor(),
+			//nil,
 		)),
 	)
 	pb.RegisterDecentralizerServer(s.grpc, s)
@@ -42,10 +43,12 @@ func (s *Server) initGRPC(port int) error {
 }
 
 func (s *Server) auth(ctx context.Context) (context.Context, error) {
+	s.LastCall = time.Now()
+
 	var clientVersion, networkKey string
 	var isPrivateKey, limitedConnection bool
 	meta, ok := metadata.FromIncomingContext(ctx)
-	if ! ok {
+	if !ok {
 		return ctx, errors.New("set context pls")
 	}
 	if len(meta["cver"]) != 0 {

@@ -1,33 +1,33 @@
 package ipfs
 
 import (
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
-	"github.com/iain17/logger"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi/interface"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreunix"
-	Path "gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/path"
-	"io/ioutil"
-	"context"
-	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
-	"fmt"
-	 "gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/blockservice"
-	dag "gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/merkledag"
-	"gx/ipfs/QmceUdzxkimdYsgtX733uNgzf1DLHyBKN6ehGSp85ayppM/go-ipfs-cmdkit/files"
 	"bytes"
+	"context"
+	"fmt"
+	"github.com/iain17/logger"
+	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
+	"gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/blockservice"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi/interface"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreunix"
+	dag "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/merkledag"
+	Path "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/path"
+	ipld "gx/ipfs/QmZtNq8dArGfnpCZfx2pUNY7UcjGhVp5qqwQ4hH6mpTMRQ/go-ipld-format"
+	"io/ioutil"
 )
 
 //Simplifies all the interactions with IPFS.
 type FilesAPI struct {
-	ctx					   context.Context
-	i 				   	   *core.IpfsNode
-	api					   iface.CoreAPI
+	ctx context.Context
+	i   *core.IpfsNode
+	api iface.CoreAPI
 }
 
 func NewFilesAPI(ctx context.Context, node *core.IpfsNode, api iface.CoreAPI) (*FilesAPI, error) {
 	instance := &FilesAPI{
 		ctx: ctx,
-		i: node,
+		i:   node,
 		api: api,
 	}
 	return instance, nil
@@ -38,7 +38,7 @@ func (d *FilesAPI) SaveFile(data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return "/ipfs/"+path, err
+	return "/ipfs/" + path, err
 }
 
 func (d *FilesAPI) PublishPeerFiles(files []files.File) (string, error) {
@@ -65,13 +65,16 @@ func (d *FilesAPI) PublishPeerFiles(files []files.File) (string, error) {
 		return "", err
 	}
 	err = PublishPath(d.i, ph)
-	return "/ipns/"+d.i.Identity.Pretty(), err
+	return "/ipns/" + d.i.Identity.Pretty(), err
 }
 
-func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*iface.Link, error) {
+func (d *FilesAPI) GetPeerFiles(owner libp2pPeer.ID) ([]*ipld.Link, error) {
 	logger.Infof("Get peer files of peer id %s", owner.Pretty())
 	rawPath := "/ipns/" + owner.Pretty()
-	pth := coreapi.ResolvedPath(rawPath, nil, nil)
+	pth, err := iface.ParsePath(rawPath)
+	if err != nil {
+		return nil, err
+	}
 	//d.api.ResolveNode(d.i.Context(), pth)
 	//return coreapi.NewCoreAPI(d.i).Unixfs().Ls(d.i.Context(), pth)
 	return d.api.Unixfs().Ls(d.i.Context(), pth)
@@ -100,8 +103,8 @@ func (d *FilesAPI) GetPeerFile(owner libp2pPeer.ID, name string) ([]byte, error)
 func (d *FilesAPI) GetFile(path string) ([]byte, error) {
 	logger.Infof("Get file: %s", path)
 
-	pth := coreapi.ResolvedPath(path, nil, nil)
-	_, err := d.api.ResolvePath(d.i.Context(), pth)
+	pth, err := iface.ParsePath(path)
+	_, err = d.api.ResolvePath(d.i.Context(), pth)
 	if err != nil {
 		return nil, fmt.Errorf("could not get file %s. Could not resolve path: %s", path, err.Error())
 	}

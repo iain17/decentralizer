@@ -2,13 +2,14 @@ package app
 
 import (
 	"github.com/iain17/logger"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
-	pstore "gx/ipfs/QmXauCuJzmzapetmC6W4TuDJLL1yFFrVzSHoWv8YdbmnxH/go-libp2p-peerstore"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/repo/config"
-	"gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
+	"github.com/pkg/errors"
+	pstore "gx/ipfs/QmZR2XWVVBCtbgBWnQhWk2xcQfaR3W8faQPriAiaaj7rsr/go-libp2p-peerstore"
+	"gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/config"
 	"io/ioutil"
 	"strings"
-	"github.com/pkg/errors"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func init() {
@@ -26,12 +27,16 @@ func (d *Decentralizer) initBootstrap() error {
 	go d.i.Bootstrap(bs)
 	d.cron.Every(10).Seconds().Do(func() {
 		d.shareOurBootstrap()
-		d.saveBootstrapState()
 	})
+	//Instantly start discovering and telling about ourselves if we are not on a limited connection.
+	if !d.limitedConnection {
+		d.startDiscovering()
+	}
 	return nil
 }
 
 func (d *Decentralizer) shareOurBootstrap() {
+	if d.d == nil {return}
 	peers, err := d.getBootstrapAddrs()
 	if err != nil {
 		logger.Warning(err)
@@ -45,19 +50,17 @@ func (d *Decentralizer) shareOurBootstrap() {
 func (d *Decentralizer) saveBootstrapState() {
 	peers, err := d.getBootstrapAddrs()
 	if err != nil {
-		logger.Warning(err)
-		return
-	}
-	if len(peers) == 0 {
+		logger.Debugf("Could not save bootstrap state: %s", err)
 		return
 	}
 	data := serializeBootstrapAddrs(peers)
-	file, err := d.fs.Create(BOOTSTRAP_FILE)
+	file, err := d.fs.Create(vars.BOOTSTRAP_FILE)
 	if err != nil {
-		logger.Warning(err)
+		logger.Debugf("Could not save bootstrap state: %s", err)
 		return
 	}
 	file.WriteString(data)
+	logger.Debug("Saved bootstrap state")
 }
 
 func serializeBootstrapAddrs(bootstrapAddrs []config.BootstrapPeer) string {
@@ -66,13 +69,13 @@ func serializeBootstrapAddrs(bootstrapAddrs []config.BootstrapPeer) string {
 	}
 	addrs := ""
 	for _, addr := range bootstrapAddrs {
-		addrs += addr.String() + DELIMITER_ADDR
+		addrs += addr.String() + vars.DELIMITER_ADDR
 	}
 	return addrs
 }
 
 func unSerializeBootstrapAddrs(addrText string) ([]config.BootstrapPeer, error) {
-	addrs := strings.Split(addrText, DELIMITER_ADDR)
+	addrs := strings.Split(addrText, vars.DELIMITER_ADDR)
 	if len(addrs) == 0 {
 		return nil, errors.New("no addressed given")
 	}
@@ -83,7 +86,7 @@ func (d *Decentralizer) getBootstrapAddrs() ([]config.BootstrapPeer, error) {
 	connections := d.i.PeerHost.Network().Conns()
 	var result []string
 	for _, conn := range connections {
-		if len(result) > MAX_BOOTSTRAP_SHARE {
+		if len(result) > vars.MAX_BOOTSTRAP_SHARE {
 			break
 		}
 		addr := conn.RemoteMultiaddr().String() + "/ipfs/" + conn.RemotePeer().Pretty()
@@ -93,7 +96,7 @@ func (d *Decentralizer) getBootstrapAddrs() ([]config.BootstrapPeer, error) {
 }
 
 func (d *Decentralizer) readBootstrapState() ([]config.BootstrapPeer, error) {
-	file, err := d.fs.Open(BOOTSTRAP_FILE)
+	file, err := d.fs.Open(vars.BOOTSTRAP_FILE)
 	if err != nil {
 		return nil, err
 	}
@@ -112,31 +115,50 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 		if err != nil {
 			logger.Warning(err)
 		} else {
+			logger.Debugf("Bootstrapping with %d previous addresses", len(restoredAddrs))
 			result = append(result, restoredAddrs...)
 		}
 	}
-	peers := d.d.WaitForPeers(1, 0)
-	for _, peer := range peers {
-		if len(result) > MAX_BOOTSTRAP_SHARE {
-			break
-		}
-		peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
-		if err != nil {
-			logger.Warning(err)
-			continue
-		}
-		result = append(result, peerBootstrap...)
+	if len(result) == 0 {
+		d.startDiscovering()
 	}
-	for _, message := range d.d.GetNetworkMessages() {
-		peerBootstrap, err := unSerializeBootstrapAddrs(message)
-		if err != nil {
-			logger.Warning(err)
-			continue
+
+	if d.d != nil {
+		peers := d.d.WaitForPeers(1, 0)
+		for _, peer := range peers {
+			if len(result) > vars.MAX_BOOTSTRAP_SHARE {
+				break
+			}
+			peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			logger.Debugf("Discovered using: %s", peerBootstrap)
+			result = append(result, peerBootstrap...)
 		}
-		result = append(result, peerBootstrap...)
+		for _, message := range d.d.GetNetworkMessages() {
+			peerBootstrap, err := unSerializeBootstrapAddrs(message)
+			if err != nil {
+				logger.Warning(err)
+				continue
+			}
+			logger.Debugf("Discovered using: %s", message)
+			result = append(result, peerBootstrap...)
+		}
 	}
 	logger.Infof("Bootstrapping with %d addresses.", len(result))
+	d.displayConnected()
 	return toPeerInfos(result)
+}
+
+func (d *Decentralizer) displayConnected() {
+	logger.Info("Connected table list:")
+	for i, peer := range d.i.PeerHost.Network().Peers() {
+		conns := d.i.PeerHost.Network().ConnsToPeer(peer)
+		logger.Infof("%d. %s via %s", i, peer.Pretty(), conns[0].RemoteMultiaddr().String())
+	}
+	d.saveBootstrapState()
 }
 
 func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {

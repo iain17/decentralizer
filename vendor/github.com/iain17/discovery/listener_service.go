@@ -7,14 +7,13 @@ import (
 	"github.com/iain17/logger"
 	"errors"
 	"fmt"
-	"github.com/xtaci/kcp-go"
 )
 
 type ListenerService struct {
 	localNode *LocalNode
 	context context.Context
 	listener	  net.PacketConn
-	socket    *kcp.Listener
+	socket    net.Listener
 
 	logger *logger.Logger
 }
@@ -36,17 +35,17 @@ func (l *ListenerService) init(ctx context.Context) error {
 	l.logger = logger.New(l.String())
 	l.context = ctx
 
-	stunErr := l.localNode.StunService.Serve(ctx)
-	if stunErr != nil {
-		logger.Warningf("Stun error: %s", stunErr)
-	}
+	//stunErr := l.localNode.StunService.Serve(ctx)
+	//if stunErr != nil {
+	//	logger.Warningf("Stun error: %s", stunErr)
+	//}
 
 	var err error
-	l.socket, err = kcp.ListenWithOptions(fmt.Sprintf(":%d", l.localNode.port), nil, 10, 3)
+	l.socket, err = net.Listen("tcp", ":0")
 	if err != nil {
 		return fmt.Errorf("could not listen: %s", err.Error())
 	}
-	addr := l.socket.Addr().(*net.UDPAddr)
+	addr := l.socket.Addr().(*net.TCPAddr)
 	l.localNode.port = addr.Port
 	l.logger.Infof("listening on %d", l.localNode.port)
 
@@ -59,36 +58,39 @@ func (l *ListenerService) Serve(ctx context.Context) {
 		l.localNode.lastError = err
 		panic(err)
 	}
-
-	for {
-		select {
-		case <-l.context.Done():
-			return
-		default:
-			l.logger.Debug("Listening...")
-			conn, err := l.socket.Accept()
-			if err != nil {
-				continue
-			}
-			key := conn.RemoteAddr().String()
-			if _, ok := l.localNode.netTableService.blackList.Get(key); ok {
-				conn.Close()
-				continue
-			}
-
-			go func(conn net.Conn) {
-				l.logger.Debugf("new connection from %s", conn.RemoteAddr().String())
-
-				if err = l.process(conn); err != nil {
-					conn.Close()
-					if err.Error() == "peer reset" || err.Error() == "we can't add ourselves" {
-						return
-					}
-					l.logger.Warningf("[%s] error on processing new connection, %s", conn.RemoteAddr().String(), err)
+	go func () {
+		for {
+			select {
+			case <-l.context.Done():
+				l.logger.Info("Stopped listening.")
+				return
+			default:
+				l.logger.Debug("Listening...")
+				conn, err := l.socket.Accept()
+				if err != nil {
+					continue
 				}
-			}(conn)
+				key := conn.RemoteAddr().String()
+				if _, ok := l.localNode.netTableService.blackList.Get(key); ok {
+					conn.Close()
+					continue
+				}
+
+				go func(conn net.Conn) {
+					l.logger.Debugf("new connection from %s", conn.RemoteAddr().String())
+
+					if err = l.process(conn); err != nil {
+						conn.Close()
+						if err.Error() == "peer reset" || err.Error() == "we can't add ourselves" {
+							return
+						}
+						l.logger.Warningf("[%s] error on processing new connection, %s", conn.RemoteAddr().String(), err)
+					}
+				}(conn)
+			}
 		}
-	}
+	}()
+	select{}
 }
 
 func (l *ListenerService) Stop() {

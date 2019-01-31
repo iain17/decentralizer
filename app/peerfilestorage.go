@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/iain17/decentralizer/app/ipfs"
-	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
 	"github.com/iain17/logger"
 	"github.com/spf13/afero"
 	"time"
@@ -11,8 +11,9 @@ import (
 	"github.com/pkg/errors"
 	"os"
 	"github.com/shibukawa/configdir"
-	ipfsfiles "gx/ipfs/QmceUdzxkimdYsgtX733uNgzf1DLHyBKN6ehGSp85ayppM/go-ipfs-cmdkit/files"
+	ipfsfiles "gx/ipfs/QmdE4gMduCKCGAcczM2F5ioYDfdeKuPix138wrES1YSr7f/go-ipfs-cmdkit/files"
 	"bytes"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) initStorage() {
@@ -113,7 +114,7 @@ func (d *Decentralizer) GetPeerFile(peerId string, name string) ([]byte, error) 
 	refresh := false
 	path := d.getPeerFilePath(id, name)
 	info, err := d.peerFileSystem.Stat(path)
-	if info != nil && info.ModTime().After(time.Now().Add(FILE_EXPIRE)) {
+	if info != nil && info.ModTime().After(time.Now().Add(vars.FILE_EXPIRE)) {
 		refresh = true
 	}
 	if id.Pretty() != d.i.Identity.Pretty() {

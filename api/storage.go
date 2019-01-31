@@ -6,7 +6,7 @@ import (
 	"github.com/iain17/logger"
 	"time"
 	"github.com/iain17/timeout"
-	//"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/namesys"
+	//"github.com/ipfs/go-ipfs/namesys"
 	"github.com/giantswarm/retry-go"
 )
 

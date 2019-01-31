@@ -20,7 +20,7 @@ import (
 type NetTableService struct {
 	localNode *LocalNode
 	context   context.Context
-	newConn   chan *net.UDPAddr
+	newConn   chan *net.TCPAddr
 
 	blackList *ttlru.LruWithTTL
 	seen      *ttlru.LruWithTTL
@@ -44,7 +44,7 @@ func (nt *NetTableService) init(ctx context.Context) error {
 	}()
 	nt.logger = logger.New(nt.String())
 	nt.context = ctx
-	nt.newConn = make(chan *net.UDPAddr, BACKLOG_NEW_CONNECTION)
+	nt.newConn = make(chan *net.TCPAddr, BACKLOG_NEW_CONNECTION)
 	var err error
 	nt.blackList, err = ttlru.NewTTL(1000)
 	if err != nil {
@@ -170,7 +170,7 @@ func (nt *NetTableService) Restore() error {
 	}
 	nt.logger.Infof("Restored %d peers from net table file", len(peers.Peers))
 	for _, peer := range peers.Peers {
-		nt.Discovered(&net.UDPAddr{
+		nt.Discovered(&net.TCPAddr{
 			IP:   net.ParseIP(peer.Ip),
 			Port: int(peer.Port),
 		})
@@ -178,7 +178,7 @@ func (nt *NetTableService) Restore() error {
 	return nil
 }
 
-func (nt *NetTableService) Discovered(addr *net.UDPAddr) {
+func (nt *NetTableService) Discovered(addr *net.TCPAddr) {
 	if addr.IP.String() == nt.localNode.ip && addr.Port == nt.localNode.port {
 		return
 	}
@@ -259,7 +259,7 @@ func (nt *NetTableService) heartbeat() {
 	}
 }
 
-func (nt *NetTableService) tryConnect(h *net.UDPAddr) (err error) {
+func (nt *NetTableService) tryConnect(h *net.TCPAddr) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("tryConnect panic: %s", r)
@@ -279,10 +279,10 @@ func (nt *NetTableService) tryConnect(h *net.UDPAddr) (err error) {
 }
 
 //The black list is a list of nodes we rather not hear anything from for a while
-func (nt *NetTableService) addToBlackList(h *net.UDPAddr) {
+func (nt *NetTableService) addToBlackList(h *net.TCPAddr) {
 	nt.blackList.AddWithTTL(h.String(), 0, 1 * time.Hour)
 }
 
-func (nt *NetTableService) isBlackListed(h *net.UDPAddr) bool {
+func (nt *NetTableService) isBlackListed(h *net.TCPAddr) bool {
 	return nt.blackList.Contains(h) || (h.IP.String() == nt.localNode.ip && h.Port == nt.localNode.port)
 }

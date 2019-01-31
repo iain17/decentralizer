@@ -6,6 +6,8 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/getlantern/testify/assert"
 	"github.com/iain17/decentralizer/pb"
+	//"io/ioutil"
+	//"os"
 )
 
 //In this test case: app1 wants to retrieve publisher file from the publisher definition
@@ -64,3 +66,22 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expected, data)
 }
+
+//func TestDecentralizer_AddPublisherFiles(t *testing.T) {
+//	ctx, cancel := context.WithCancel(context.Background())
+//	defer cancel()
+//	nodes := ipfs.FakeNewIPFSNodes(ctx,10)
+//	app1 := fakeNew(ctx, nodes[0], false)
+//	assert.NotNil(t, app1)
+//
+//	const basedir = "./ipfs_test/"
+//
+//	os.RemoveAll(basedir)
+//	os.MkdirAll(basedir, 0777)
+//	ioutil.WriteFile(basedir+"hello.txt", []byte("this works"), 0777)
+//	ioutil.WriteFile(basedir+"ok.txt", []byte("Nope!"), 0777)
+//
+//	err := app1.AddPublisherFiles(basedir)
+//	os.RemoveAll(basedir)
+//	assert.NoError(t, err)
+//}

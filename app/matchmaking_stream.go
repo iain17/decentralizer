@@ -2,8 +2,8 @@ package app
 
 import (
 	"github.com/iain17/logger"
-	"gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
-	inet "gx/ipfs/QmXfkENeeBvh3zYA51MaSdGUdBjhQ99cP5WQe8zgr6wchG/go-libp2p-net"
+	"gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
+	inet "gx/ipfs/QmPjvxTpVH8qJyQDnxnsxF9kv9jezKD1kozz1hs3fCGsNh/go-libp2p-net"
 	"github.com/iain17/framed"
 	"github.com/iain17/decentralizer/pb"
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
@@ -11,6 +11,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type sessionRequest struct{
@@ -22,13 +23,13 @@ type sessionRequest struct{
 //This is because DHT will only allow one value for one key. hashmap, duh. But this means a new user won't receive the whole list
 //in one go as we want. By querying the peers that are giving these session from DHT (already connected etc) we can fetch the bigger list.
 func (d *Decentralizer) initMatchmakingStream() {
-	d.sessionQueries 			= make(chan sessionRequest, CONCURRENT_SESSION_REQUEST)
+	d.sessionQueries 			= make(chan sessionRequest, vars.CONCURRENT_SESSION_REQUEST)
 	if !d.limitedConnection {
-		d.i.PeerHost.SetStreamHandler(GET_SESSION_REQ, d.getSessionResponse)
+		d.i.PeerHost.SetStreamHandler(vars.GET_SESSION_REQ, d.getSessionResponse)
 	}
 	//Spawn some workers
-	logger.Debugf("Running %d session request workers", CONCURRENT_SESSION_REQUEST)
-	for i := 0; i < CONCURRENT_SESSION_REQUEST; i++ {
+	logger.Debugf("Running %d session request workers", vars.CONCURRENT_SESSION_REQUEST)
+	for i := 0; i < vars.CONCURRENT_SESSION_REQUEST; i++ {
 		go d.processSessionRequest()
 	}
 }
@@ -108,7 +109,7 @@ func (d *Decentralizer) getSessionResponse(stream inet.Stream) {
 
 // Get in contact with a peer and ask it for session of a certain type
 func (d *Decentralizer) getSessionsRequest(peer peer.ID, search *search) error {
-	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, GET_SESSION_REQ)
+	stream, err := d.i.PeerHost.NewStream(d.i.Context(), peer, vars.GET_SESSION_REQ)
 	if err != nil {
 		return err
 	}

@@ -3,30 +3,20 @@ package app
 import (
 	"github.com/iain17/discovery"
 	"github.com/iain17/logger"
-	pstore "gx/ipfs/QmXauCuJzmzapetmC6W4TuDJLL1yFFrVzSHoWv8YdbmnxH/go-libp2p-peerstore"
+	pstore "gx/ipfs/QmZR2XWVVBCtbgBWnQhWk2xcQfaR3W8faQPriAiaaj7rsr/go-libp2p-peerstore"
 	"net"
 	"errors"
-	"gx/ipfs/QmNmJZL7FQySMtE2BQuLMuZg2EB2CLEunJJUSVSc9YnnbV/go-libp2p-host"
-	manet "gx/ipfs/QmRK2LxanhK2gZq6k6R7vk5ZoYZk8ULSSTB7FzDsMUX6CB/go-multiaddr-net"
-	ma "gx/ipfs/QmWWQ2Txc2c6tqjsBpzg5Ar652cHPGNsQQp2SejkNmkUMb/go-multiaddr"
-	"gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
-	libp2pnet "gx/ipfs/QmXfkENeeBvh3zYA51MaSdGUdBjhQ99cP5WQe8zgr6wchG/go-libp2p-net"
+	"gx/ipfs/Qmb8T6YBBsjYsVGfrihQLfCJveczZnneSBqBKkYEBWDjge/go-libp2p-host"
+	manet "gx/ipfs/QmV6FjemM1K8oXjrvuq3wuVWWoU2TLDPmNnKrxHzY3v6Ai/go-multiaddr-net"
+	ma "gx/ipfs/QmYmsdtJ3HsodkePE3eU3TsCaP2YvPZJ4LoXnNkDE5Tpt7/go-multiaddr"
+	"gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
+	libp2pnet "gx/ipfs/QmPjvxTpVH8qJyQDnxnsxF9kv9jezKD1kozz1hs3fCGsNh/go-libp2p-net"
 	"strings"
 	"time"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) initDiscovery() error {
-	addrs, err := getAddrs(d.i.PeerHost)
-	if err != nil {
-		return err
-	}
-	d.d, err = discovery.New(d.ctx, d.n, MAX_DISCOVERED_PEERS, d.peerDiscovered, d.limitedConnection, map[string]string{
-		"peerId": d.i.Identity.Pretty(),
-		"addr": addrs,
-	})
-	if err != nil {
-		logger.Fatal(err)
-	}
 	d.cron.Every(10).Seconds().Do(func() {
 		d.setSelfAddrs()
 		d.setReachableAddrs()
@@ -34,7 +24,27 @@ func (d *Decentralizer) initDiscovery() error {
 	return nil
 }
 
+func (d *Decentralizer) startDiscovering() error {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
+	if d.d != nil {
+		return nil
+	}
+	addrs, err := getAddrs(d.i.PeerHost)
+	if err != nil {
+		return err
+	}
+	d.d, err = discovery.New(d.ctx, d.n, vars.MAX_DISCOVERED_PEERS, d.peerDiscovered, d.limitedConnection, map[string]string{
+		"peerId": d.i.Identity.Pretty(),
+		"addr": addrs,
+	})
+	return err
+}
+
 func (d *Decentralizer) setSelfAddrs() {
+	if d.d == nil {
+		return
+	}
 	addrs, err := getAddrs(d.i.PeerHost)
 	if err != nil {
 		logger.Warning(err)
@@ -44,7 +54,10 @@ func (d *Decentralizer) setSelfAddrs() {
 }
 
 func (d *Decentralizer) setReachableAddrs() {
-	for _, peer := range d.d.WaitForPeers(MIN_CONNECTED_PEERS, 10*time.Second) {
+	if d.d == nil {
+		return
+	}
+	for _, peer := range d.d.WaitForPeers(vars.MIN_CONNECTED_PEERS, 10*time.Second) {
 		peerInfo, err := remoteNodeToPeerInfo(peer)
 		if err != nil {
 			//logger.Warning(err)
@@ -98,14 +111,14 @@ func serializeAddrs(multiAddrs []ma.Multiaddr) string {
 	}
 	addrs := ""
 	for _, addr := range multiAddrs {
-		addrs += addr.String() + DELIMITER_ADDR
+		addrs += addr.String() + vars.DELIMITER_ADDR
 	}
 	return addrs
 }
 
 func unSerializeAddrs(addrText string) []ma.Multiaddr {
 	var addrs []ma.Multiaddr
-	rawAddr := strings.Split(addrText, DELIMITER_ADDR)
+	rawAddr := strings.Split(addrText, vars.DELIMITER_ADDR)
 	for _, strAddr := range rawAddr {
 		addr, err := ma.NewMultiaddr(strAddr)
 		if err != nil && addr != nil {

@@ -1,83 +1,76 @@
 package app
 
 import (
-	"github.com/iain17/decentralizer/app/ipfs"
 	"context"
 	"errors"
+	"github.com/hashicorp/golang-lru"
+	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/iain17/decentralizer/app/peerstore"
 	"github.com/iain17/decentralizer/app/sessionstore"
-	"github.com/iain17/discovery/network"
-	"github.com/iain17/logger"
-	"github.com/shibukawa/configdir"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
-	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
-	"net"
-	"time"
-	"github.com/jasonlvhit/gocron"
-	"github.com/iain17/discovery"
 	"github.com/iain17/decentralizer/pb"
-	"os"
-	coreiface "gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi/interface"
-	"sync"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core/coreapi"
+	"github.com/iain17/discovery"
+	"github.com/iain17/discovery/network"
 	"github.com/iain17/kvcache/lttlru"
+	"github.com/iain17/logger"
+	"github.com/iain17/stime"
+	"github.com/jasonlvhit/gocron"
+	"github.com/shibukawa/configdir"
 	"github.com/spf13/afero"
-	"github.com/hashicorp/golang-lru"
+	//"gx/ipfs/QmemVjhp1UuWPQqrWSvPcaqH3QJRMjMqNm4T2RULMkDDQe/go-libp2p-swarm"
+	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi"
+	coreiface "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core/coreapi/interface"
 	"hash"
 	"hash/crc32"
-	"gx/ipfs/QmSwZMWwFZSUpe5muU2xgTUwppH24KfMwdPXiwbEp2c6G5/go-libp2p-swarm"
-	"github.com/iain17/stime"
-	"github.com/newrelic/go-agent"
+	"net"
+	"os"
+	"sync"
+	"time"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type Decentralizer struct {
-	mutex				   sync.Mutex
-	ctx 				   context.Context
-	n 					   *network.Network
-	cron				   *gocron.Scheduler
-	cronChan			   chan bool
-	d					   *discovery.Discovery
-	i                      *core.IpfsNode
-	b                      *ipfs.BitswapService
-	ip                     *net.IP
-	api 				   coreiface.CoreAPI
-	limitedConnection	   bool
-	fs					   afero.Fs//general file system
+	mutex             sync.Mutex
+	ctx               context.Context
+	n                 *network.Network
+	cron              *gocron.Scheduler
+	cronChan          chan bool
+	d                 *discovery.Discovery
+	i                 *core.IpfsNode
+	b                 *ipfs.BitswapService
+	ip                *net.IP
+	api               coreiface.CoreAPI
+	limitedConnection bool
+	fs                afero.Fs //general file system
 
 	//Peer ids that did not respond to our queries.
-	ignore 				   *lttlru.LruWithTTL
-	crcTable			   hash.Hash32
-	unmarshalCache		   *lru.Cache//We unmarshal the same data over and over. Let us cache this.
+	ignore         *lttlru.LruWithTTL
+	crcTable       hash.Hash32
+	unmarshalCache *lru.Cache //We unmarshal the same data over and over. Let us cache this.
 
 	//Storage
-	filesApi       		   *ipfs.FilesAPI
-	peerFileSystem		   afero.Fs
+	filesApi       *ipfs.FilesAPI
+	peerFileSystem afero.Fs
 
 	//Matchmaking
-	matchmakingMutex	   sync.Mutex
-	searchMutex			   sync.Mutex
-	sessionQueries		   chan sessionRequest
-	sessions               map[uint64]*sessionstore.Store
-	sessionIdToSessionType map[uint64]uint64
-	sessionIdToSessionTypeMutex	   sync.RWMutex
-	searches 			   *lttlru.LruWithTTL
+	matchmakingMutex            sync.Mutex
+	searchMutex                 sync.Mutex
+	sessionQueries              chan sessionRequest
+	sessions                    map[uint64]*sessionstore.Store
+	sessionIdToSessionType      map[uint64]uint64
+	sessionIdToSessionTypeMutex sync.RWMutex
+	searches                    *lttlru.LruWithTTL
 
 	//addressbook
-	peers                  *peerstore.Store
+	peers *peerstore.Store
 
 	//messaging
-	directMessageChannels  map[uint32]chan *pb.RPCDirectMessage
+	directMessageChannels map[uint32]chan *pb.RPCDirectMessage
 
 	//Publisher files
 	publisherRecord     *pb.DNPublisherRecord
 	publisherDefinition *pb.PublisherDefinition
-}
-
-var relic newrelic.Application
-
-func init() {
-	config := newrelic.NewConfig("ADNA", "053b2b413fa83c2e2525d1558001ffd374d591b6")
-	relic, _ = newrelic.NewApplication(config)
 }
 
 var configPath = configdir.New("ECorp", "Decentralizer")
@@ -93,7 +86,7 @@ func getBasePath() *configdir.Config {
 
 func Reset() {
 	os.RemoveAll(configPath.QueryCacheFolder().Path)
-	os.RemoveAll(getBasePath().Path+"/ipfs")
+	os.RemoveAll(getBasePath().Path + "/ipfs")
 }
 
 func New(ctx context.Context, networkStr string, privateKey bool, limitedConnection bool) (*Decentralizer, error) {
@@ -117,7 +110,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		limitedConnection = true
 	}
 
-	ipfsPath := Base.Path+"/ipfs"
+	ipfsPath := Base.Path + "/ipfs"
 	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
 	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection, swarmKey)
@@ -128,11 +121,11 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	if err != nil {
 		return nil, err
 	}
-	ignore, err := lttlru.NewTTL(MAX_IGNORE)
+	ignore, err := lttlru.NewTTL(vars.MAX_IGNORE)
 	if err != nil {
 		return nil, err
 	}
-	unmarshalCache, err := lru.New(MAX_UNMARSHAL_CACHE)
+	unmarshalCache, err := lru.New(vars.MAX_UNMARSHAL_CACHE)
 	if err != nil {
 		return nil, err
 	}
@@ -143,24 +136,24 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 	base := afero.NewBasePathFs(afero.NewOsFs(), paths[0].Path)
 	layer := afero.NewMemMapFs()
 	instance := &Decentralizer{
-		limitedConnection:		limitedConnection,
-		ctx:					ctx,
-		cron: 				    gocron.NewScheduler(),
-		n:   					n,
-		i:                      i,
-		b:                      b,
-		api:					coreapi.NewCoreAPI(i),
-		directMessageChannels:  make(map[uint32]chan *pb.RPCDirectMessage),
-		ignore:					ignore,
-		unmarshalCache:			unmarshalCache,
-		crcTable:				crc32.NewIEEE(),
-		fs:						afero.NewCacheOnReadFs(base, layer, 30 * time.Minute),
+		limitedConnection: limitedConnection,
+		ctx:               ctx,
+		cron:              gocron.NewScheduler(),
+		n:                 n,
+		i:                 i,
+		b:                 b,
+		api:               coreapi.NewCoreAPI(i),
+		directMessageChannels: make(map[uint32]chan *pb.RPCDirectMessage),
+		ignore:                ignore,
+		unmarshalCache:        unmarshalCache,
+		crcTable:              crc32.NewIEEE(),
+		fs:                    afero.NewCacheOnReadFs(base, layer, 30*time.Minute),
 	}
 	instance.initializeComponents(false)
 	return instance, err
 }
 
-func (s *Decentralizer) initializeComponents(testing bool) () {
+func (s *Decentralizer) initializeComponents(testing bool) {
 	if !testing {
 		s.initDiscovery()
 		s.initBootstrap()
@@ -198,7 +191,7 @@ func (d *Decentralizer) IsEnoughPeers() bool {
 		return false
 	}
 	lenPeers := len(d.i.PeerHost.Network().Peers())
-	return lenPeers >= MIN_CONNECTED_PEERS
+	return lenPeers >= vars.MIN_CONNECTED_PEERS
 }
 
 func (d *Decentralizer) WaitTilEnoughPeers() {
@@ -218,8 +211,9 @@ func (s *Decentralizer) Stop() {
 }
 
 func (d *Decentralizer) clearBackOff(id libp2pPeer.ID) {
-	snet, ok := d.i.PeerHost.Network().(*swarm.Network)
-	if ok {
-		snet.Swarm().Backoff().Clear(id)
-	}
+	//TODO: Fix this again
+	//snet, ok := d.i.PeerHost.Network().(*swarm.Network)
+	//if ok {
+	//	snet.Swarm().Backoff().Clear(id)
+	//}
 }

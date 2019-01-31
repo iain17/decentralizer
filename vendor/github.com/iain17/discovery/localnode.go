@@ -54,24 +54,24 @@ func newLocalNode(discovery *Discovery) (*LocalNode, error) {
 		logger.Debugf("[supervisor]: %s", s)
 	}
 	i.upNpService.localNode = i
-	i.supervisor.AddService(&i.upNpService, supervisor.Temporary)
+	i.supervisor.Add(&i.upNpService, supervisor.Temporary)
 	if !i.discovery.limited {
 		i.discoveryDHT.localNode = i
-		i.supervisor.AddService(&i.discoveryDHT, supervisor.Permanent)
+		i.supervisor.Add(&i.discoveryDHT, supervisor.Permanent)
 	}
 	i.discoveryIRC.localNode = i
-	i.supervisor.AddService(&i.discoveryIRC, supervisor.Permanent)
+	i.supervisor.Add(&i.discoveryIRC, supervisor.Permanent)
 	i.discoveryMDNS.localNode = i
-	i.supervisor.AddService(&i.discoveryMDNS, supervisor.Permanent)
+	i.supervisor.Add(&i.discoveryMDNS, supervisor.Permanent)
 
 	i.netTableService.localNode = i
-	i.supervisor.AddService(&i.netTableService, supervisor.Transient)
+	i.supervisor.Add(&i.netTableService, supervisor.Transient)
 
 	//Listener and stun service
 	i.StunService.localNode = i
 	i.listenerService.localNode = i
 	i.coreWg.Add(1)
-	i.supervisor.AddService(&i.listenerService, supervisor.Permanent)
+	i.supervisor.Add(&i.listenerService, supervisor.Permanent)
 
 	numServices := len(i.supervisor.Services())
 	i.wg.Add(numServices)

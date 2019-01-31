@@ -1,7 +1,7 @@
 package peerstore
 
 import (
-	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
+	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
 	"hash/fnv"
 )
 
@@ -10,6 +10,6 @@ func PeerToDnId(id libp2pPeer.ID) (pId string, dID uint64) {
 	h := fnv.New32a()
 	pId = id.Pretty()
 	h.Write([]byte(pId))
-	dID = 0x110000100000000 + uint64(h.Sum32())
+	dID = uint64(h.Sum32())
 	return
 }

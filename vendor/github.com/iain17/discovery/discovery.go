@@ -84,6 +84,9 @@ func (d *Discovery) IsReady() bool {
 }
 
 func (d *Discovery) GetNetworkMessages() []string {
+	if d.LocalNode.discoveryIRC.messages == nil {
+		return []string{}
+	}
 	var messages []string
 	for _, key := range d.LocalNode.discoveryIRC.messages.Keys() {
 		if message, ok := d.LocalNode.discoveryIRC.messages.Get(key); ok {

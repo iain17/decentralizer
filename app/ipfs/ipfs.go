@@ -2,17 +2,17 @@ package ipfs
 
 import (
 	"context"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/core"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/repo"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/repo/config"
-	"gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/repo/fsrepo"
-	bitswap "gx/ipfs/QmUvjLCSYy7t4msRzrxfsfj99wboPhTUy7WktCv2LxS7BT/go-ipfs/exchange/bitswap/network"
-	dht "gx/ipfs/QmVSep2WwKcXxMonPASsAJ3nZVjfVMKgMcaSigxKnUWpJv/go-libp2p-kad-dht"
 	utilmain "github.com/iain17/decentralizer/app/ipfs/util"
+	//dht "gx/ipfs/QmTktQYCKzQjhxF6dk5xJPRuhHn3JBiKGvMLoiDy1mYmxC/go-libp2p-kad-dht"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
+	bitswap "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/exchange/bitswap/network"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/config"
+	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/fsrepo"
 	"os"
-	"strings"
-	//logging "gx/ipfs/QmSpJByNKFX1sCsHBEp3R73FL4NF6FnQTEGyNAXHm2GS52/go-log"
+	//logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
 	"github.com/iain17/logger"
+	//"gx/ipfs/QmZNkThpqfVXs9GNbexPrfBbXSLNYeKrE7jwFM2oqHbyqN/go-libp2p-protocol"
 )
 
 func init() {
@@ -56,40 +56,57 @@ func OpenIPFSRepo(ctx context.Context, path string, limited bool, swarmkey []byt
 		return nil, err
 	}
 
-	cfg, err := node.Repo.Config()
-	if err != nil {
-		return nil, err
-	}
+	//cfg, err := node.Repo.Config()
+	//if err != nil {
+	//	return nil, err
+	//}
+
+	//IPFS UPDATER
+	//if !cfg.Experimental.FilestoreEnabled {
+	//	logger.Info("Enabling experimental file store")
+	//	cfg.Experimental.FilestoreEnabled = true
+	//	r.SetConfig(cfg)
+	//	node.Close()
+	//	return OpenIPFSRepo(ctx, path, limited, swarmkey)
+	//}
 
 	//Start gateway etc..
-	go func() {
-		err, gwErrc := serveHTTPGateway(node)
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-		logger.Infof("IPFS Gateway running on %s", cfg.Addresses.Gateway)
-		for err := range gwErrc {
-			logger.Warning(err)
-		}
-	}()
-	go func() {
-		err, gwErrc := serveHTTPApi(node)
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-		logger.Infof("IPFS API running on %s", cfg.Addresses.API)
-		for err := range gwErrc {
-			logger.Warning(err)
-		}
-	}()
+	//go func() {
+	//	err, gwErrc := serveHTTPGateway(node)
+	//	if err != nil {
+	//		logger.Error(err)
+	//		return
+	//	}
+	//	logger.Infof("IPFS Gateway running on %s", cfg.Addresses.Gateway)
+	//	for err := range gwErrc {
+	//		logger.Warning(err)
+	//	}
+	//}()
+	//go func() {
+	//	err, gwErrc := serveHTTPApi(node)
+	//	if err != nil {
+	//		logger.Error(err)
+	//		return
+	//	}
+	//	logger.Infof("IPFS API running on %s", cfg.Addresses.API)
+	//	for err := range gwErrc {
+	//		logger.Warning(err)
+	//	}
+	//}()
 
 	return node, nil
 }
 
 func getIPFSRepo(path string, limited bool, swarmkey []byte) (repo.Repo, error) {
+	open:
 	r, err := fsrepo.Open(path)
+
+	if err != nil && err.Error() == "ipfs repo needs migration" {
+		logger.Info("Resetting IPFS repo... It was too old")
+		os.RemoveAll(path)
+		goto open
+	}
+
 	if _, ok := err.(fsrepo.NoRepoError); ok {
 		var conf *config.Config
 		conf, err = config.Init(os.Stdout, 2048)
@@ -110,13 +127,13 @@ func getIPFSRepo(path string, limited bool, swarmkey []byte) (repo.Repo, error) 
 	return makePrivateRepo(r, swarmkey), err
 }
 
-type privateRepo struct{
+type privateRepo struct {
 	repo.Repo
 	swarmkey []byte
 }
 
 func makePrivateRepo(r repo.Repo, swarmkey []byte) repo.Repo {
-	return &privateRepo{Repo: r, swarmkey:swarmkey}
+	return &privateRepo{Repo: r, swarmkey: swarmkey}
 }
 
 func (r *privateRepo) SwarmKey() ([]byte, error) {
@@ -132,16 +149,17 @@ func changeConfig(r repo.Repo, limited bool) error {
 
 	//apiPort := fmt.Sprintf("500%d", 12)
 	//gatewayPort := fmt.Sprintf("808%d", 12)
-	swarmPort := "4123"
+	//swarmPort := "4123"
 
-	bitswap.ProtocolBitswap = "/decentralizer/bitswap/testnet/1.1.0"
-	dht.ProtocolDHT = "/decentralizer/kad/testnet/1.0.0"
+	bitswap.ProtocolBitswapOne = "/decentralizer/bitswap/1.0.0"
+	bitswap.ProtocolBitswapNoVers = "/decentralizer/bitswap"
+	bitswap.ProtocolBitswap = "/decentralizer/bitswap/1.1.0"
 
 	//rc.Addresses.API = strings.Replace(rc.Addresses.API, "5001", apiPort, -1)
 	//rc.Addresses.Gateway = strings.Replace(rc.Addresses.Gateway, "8080", gatewayPort, -1)
-	for i, addr := range rc.Addresses.Swarm {
-		rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
-	}
+	//for i, addr := range rc.Addresses.Swarm {
+	//	rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
+	//}
 	//rc.Swarm.DisableNatPortMap = true
 	rc.Swarm.EnableRelayHop = !limited
 	err = r.SetConfig(rc)

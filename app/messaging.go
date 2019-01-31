@@ -3,8 +3,8 @@ package app
 import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
-	inet "gx/ipfs/QmXfkENeeBvh3zYA51MaSdGUdBjhQ99cP5WQe8zgr6wchG/go-libp2p-net"
-	libp2pPeer "gx/ipfs/QmZoWKhxUmZ2seW4BzX6fJkNR8hh9PsGModr7q171yq2SS/go-libp2p-peer"
+	inet "gx/ipfs/QmPjvxTpVH8qJyQDnxnsxF9kv9jezKD1kozz1hs3fCGsNh/go-libp2p-net"
+	libp2pPeer "gx/ipfs/QmdVrMn1LhB4ybb8hMVaMLXnA8XRSewMnK6YqXKXoTcRvN/go-libp2p-peer"
 	"github.com/iain17/framed"
 	"github.com/golang/protobuf/proto"
 	"github.com/giantswarm/retry-go"
@@ -12,6 +12,7 @@ import (
 	"strings"
 	"context"
 	"fmt"
+	"github.com/iain17/decentralizer/vars"
 )
 
 type DirectMessage struct {
@@ -20,7 +21,7 @@ type DirectMessage struct {
 }
 
 func (d *Decentralizer) initMessaging() {
-	d.i.PeerHost.SetStreamHandler(SEND_DIRECT_MESSAGE, d.directMessageReceived)
+	d.i.PeerHost.SetStreamHandler(vars.SEND_DIRECT_MESSAGE, d.directMessageReceived)
 }
 
 func (d *Decentralizer) GetMessagingChan(channel uint32) chan *pb.RPCDirectMessage {
@@ -53,7 +54,7 @@ func (d *Decentralizer) SendMessage(channel uint32, peerId string, message []byt
 	op := func() (err error) {
 		logger.Infof("Trying to open stream to (to: %s:%d)", id.Pretty(), channel)
 		d.clearBackOff(id)
-		stream, err = d.i.PeerHost.NewStream(ctx, id, SEND_DIRECT_MESSAGE)
+		stream, err = d.i.PeerHost.NewStream(ctx, id, vars.SEND_DIRECT_MESSAGE)
 		return
 	}
 	err = retry.Do(op,

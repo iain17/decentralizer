@@ -7,6 +7,7 @@ import (
 	"github.com/iain17/decentralizer/app/ipfs"
 	"time"
 	"github.com/iain17/logger"
+	"github.com/iain17/decentralizer/vars"
 )
 
 //One user saves a file. The other gets it by its hash.
@@ -109,7 +110,7 @@ func TestDecentralizer_SaveGetTwoUserFiles(t *testing.T) {
 }
 
 func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {
-	FILE_EXPIRE = 0
+	vars.FILE_EXPIRE = 0
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)
@@ -143,7 +144,7 @@ func TestDecentralizer_GetPeerFileUpdated(t *testing.T) {
 }
 
 func TestDecentralizer_GetPeerFileCache(t *testing.T) {
-	FILE_EXPIRE = 0
+	vars.FILE_EXPIRE = 0
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	nodes := ipfs.FakeNewIPFSNodes(ctx,2)

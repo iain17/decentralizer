@@ -11,7 +11,7 @@ import (
 	gogoProto "gx/ipfs/QmZ4Qi3GaRbjcx28Sme5eMH7RQjGkt8wHxt2a65oLaeFEV/gogo-protobuf/proto"
 	"github.com/iain17/decentralizer/utils"
 	"github.com/iain17/stime"
-	"gx/ipfs/QmUpttFinNDmNPgFwKN8sZK6BUtBmA68Y4KdSBDXa8t9sJ/go-libp2p-record"
+	"github.com/iain17/decentralizer/vars"
 )
 
 func (d *Decentralizer) getPublisherKey() string {
@@ -20,9 +20,9 @@ func (d *Decentralizer) getPublisherKey() string {
 }
 
 func (d *Decentralizer) initPublisherFiles() {
-	d.b.RegisterValidator(DHT_PUBLISHER_KEY_TYPE, func(r *record.ValidationRecord) error{
+	d.b.RegisterValidator(vars.DHT_PUBLISHER_KEY_TYPE, func(key string, value []byte) error{
 		var record pb.DNPublisherRecord
-		err := d.unmarshal(r.Value, &record)
+		err := d.unmarshal(value, &record)
 		if err != nil {
 			return err
 		}
@@ -34,9 +34,7 @@ func (d *Decentralizer) initPublisherFiles() {
 			return fmt.Errorf("you're doing it wrong! Path should not be empty")
 		}
 		return d.validateDNPublisherRecord(&record)
-	}, false, true)
-
-	d.b.RegisterSelector(DHT_PUBLISHER_KEY_TYPE, func(key string, values [][]byte) (int, error) {
+	}, func(key string, values [][]byte) (int, error) {
 		var currDefinition *pb.PublisherDefinition
 		best := 0
 		for i, val := range values {
@@ -57,7 +55,8 @@ func (d *Decentralizer) initPublisherFiles() {
 			}
 		}
 		return best, nil
-	})
+	}, true)
+
 	err := d.restorePublisherDefinition()
 	if err != nil {
 		logger.Warning(err)
@@ -73,7 +72,7 @@ func (d *Decentralizer) initPublisherFiles() {
 
 func (d *Decentralizer) validateDNPublisherRecord(record *pb.DNPublisherRecord) error {
 	definition, err := d.unmarshalDNPublisherRecord(record)
-	if d.publisherRecord != nil && !utils.IsNewerRecord(d.publisherDefinition.Published, definition.Published) {
+	if d.publisherRecord != nil && d.publisherDefinition.Published != definition.Published && !utils.IsNewerRecord(d.publisherDefinition.Published, definition.Published) {
 		return errors.New("definition is older")
 	}
 	return err
@@ -110,10 +109,10 @@ func (d *Decentralizer) resolveDNPublisherRecord(record *pb.DNPublisherRecord) e
 }
 
 func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
-	data, err := configPath.QueryCacheFolder().ReadFile(PUBLISHER_DEFINITION_FILE)
+	data, err := configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
 	if err != nil {
 		//Check if publisher file is in the same director as us
-		data, err = ioutil.ReadFile("./" + PUBLISHER_DEFINITION_FILE)
+		data, err = ioutil.ReadFile("./" + vars.PUBLISHER_DEFINITION_FILE)
 	}
 	return data, err
 }
@@ -121,7 +120,7 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 func (d *Decentralizer) readPublisherRecordFromNetwork() ([]byte, error) {
 	d.WaitTilEnoughPeers()
 	logger.Debugf("Asking the network for a publisher record")
-	data, err := d.b.GetValue(d.ctx, DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey())
+	data, err := d.b.GetValue(d.ctx, vars.DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey())
 	if err != nil {
 		return nil, fmt.Errorf("failed to get best publisher record value: %s", err.Error())
 	}
@@ -182,7 +181,7 @@ func (d *Decentralizer) savePublisherRecordToDisk() error {
 	if err != nil {
 		return fmt.Errorf("could not marshal publisherRecord: %s", err.Error())
 	}
-	err = configPath.QueryCacheFolder().WriteFile(PUBLISHER_DEFINITION_FILE, data)
+	err = configPath.QueryCacheFolder().WriteFile(vars.PUBLISHER_DEFINITION_FILE, data)
 	if err != nil {
 		return fmt.Errorf("could not publisherRecord to disk: %s", err.Error())
 	}
@@ -196,7 +195,7 @@ func (d *Decentralizer) loadNewPublisherRecord(record *pb.DNPublisherRecord) err
 		return err
 	}
 	if d.publisherRecord != nil && d.publisherDefinition.Published >= definition.Published {
-		return errors.New("definition is older or same")
+		return nil
 	}
 	d.publisherRecord = record
 	d.publisherDefinition = definition
@@ -224,7 +223,6 @@ func (d *Decentralizer) signPublisherRecord(definition *pb.PublisherDefinition) 
 }
 
 func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) error {
-	d.WaitTilEnoughPeers()
 	update, err := d.signPublisherRecord(definition)
 	if err != nil {
 		return err
@@ -262,8 +260,8 @@ func (d *Decentralizer) PushPublisherRecord() error {
 	if err != nil {
 		return err
 	}
-	logger.Info("Publishing publisher update")
-	return d.b.PutValue(DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey(), data)
+	logger.Info("Publishing our publisher version")
+	return d.b.PutValue(vars.DHT_PUBLISHER_KEY_TYPE, d.getPublisherKey(), data)
 }
 
 //Called when the publisher file has been loaded
