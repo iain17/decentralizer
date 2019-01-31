@@ -1,0 +1,5 @@
+language: go
+sudo: false
+go_import_path: cirello.io/supervisor
+go:
+  - "1.x"

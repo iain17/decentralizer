@@ -1,0 +1,8 @@
+[v3_client]
+subjectAltName = email:u@example.com
+
+[v3_server]
+subjectAltName = email:svc@example.com
+
+[v3_ca]
+subjectAltName = email:ca@example.com

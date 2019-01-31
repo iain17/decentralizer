@@ -1,0 +1,20 @@
+.user-snippet-content {
+	height: 100px !important;
+	width: 50%;
+	margin-left: 25%;
+	margin-bottom: 5px;
+}
+
+.user-snippet-submit {
+	text-align: center;
+}
+
+.user-snippet-current-container {
+	height: 270px;
+	overflow: hidden;
+}
+
+.user-past-snippet{
+	margin-left: 30px;
+	margin-bottom: 10px;
+}

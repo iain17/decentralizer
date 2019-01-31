@@ -1,0 +1,6 @@
+workdir: $GOPATH/src/cirello.io/exp/cdci
+observe: *.go
+ignore: /vendor
+build-backend: CC=gcc vgo install cirello.io/exp/cdci/cmd/cdci
+server:        restart=always $GOPATH/bin/cdci server
+agent:         restart=always $GOPATH/bin/cdci agent

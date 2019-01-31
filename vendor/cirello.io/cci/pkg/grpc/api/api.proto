@@ -1,0 +1,75 @@
+// Copyright 2018 github.com/ucirello
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package api;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+service Runner {
+    rpc Configuration(ConfigurationRequest) returns (ConfigurationResponse) {}
+    rpc Run(stream JobRequest) returns (stream JobResponse) {}
+}
+
+message ConfigurationRequest {}
+
+message ConfigurationResponse {
+	map<string, Recipe> configuration = 1;
+}
+
+message JobResponse {
+	Recipe recipe = 1;
+	Build build = 2;
+}
+
+message JobRequest {
+	oneof command {
+		BuildRequest build = 1;
+		KeepAlive keepAlive = 2;
+		Build markInProgress = 3;
+		Build markComplete = 4;
+	}
+}
+
+message BuildRequest {
+	string repoFullName  = 1;
+}
+
+message KeepAlive {
+}
+
+message Recipe {
+	int64 concurrency = 1;
+	string clone = 2;
+	string slackWebhook = 3;
+	string githubSecret = 4;
+	string environment = 5;
+	string commands = 6;
+	google.protobuf.Duration timeout = 7 [(gogoproto.stdduration) = true];
+}
+
+message Build {
+	int64 ID = 1;
+	string repoFullName  = 2;
+	string commitHash = 3;
+	string commitMessage = 4;
+	google.protobuf.Timestamp startedAt = 5 [(gogoproto.stdtime) = true];
+	bool success = 6;
+	string log = 7;
+	google.protobuf.Timestamp completedAt = 8 [(gogoproto.stdtime) = true];
+}
+

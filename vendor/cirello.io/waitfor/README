@@ -1,0 +1,3 @@
+go get [-f -u] cirello.io/waitfor
+
+http://godoc.org/cirello.io/waitfor

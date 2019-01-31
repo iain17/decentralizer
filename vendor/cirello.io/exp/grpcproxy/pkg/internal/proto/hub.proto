@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package proto;
+
+service Hub {
+	rpc Gateway(stream Packet) returns (stream Packet) {}
+	rpc Proxy(stream Packet) returns (stream Packet) {}
+}
+
+message Packet {
+	int64 connID = 1;
+	string targetAddress = 2;
+	enum State {
+		Flowing = 0;
+		Handshake = 1;
+		Closed = 2;
+	}
+	State state = 3;
+	bytes body = 4;
+}

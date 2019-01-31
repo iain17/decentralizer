@@ -1,0 +1,8 @@
+workdir: $GOPATH/src/cirello.io/exp/grpcproxy
+observe: *.go *.proto Makefile
+build-hub: vgo build -o hub ./cmd/hub
+build-proxy: vgo build -o proxy ./cmd/proxy
+build-gateway: vgo build -o gateway ./cmd/gateway
+hub: ./hub
+proxy: waitfor=localhost:8080 ./proxy
+gateway: waitfor=localhost:8080 ./gateway

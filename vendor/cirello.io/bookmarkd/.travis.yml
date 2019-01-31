@@ -1,0 +1,6 @@
+language: go
+sudo: false
+go_import_path: cirello.io/bookmarkd
+go:
+  - "1.x"
+script: make test

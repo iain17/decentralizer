@@ -1,0 +1,98 @@
+/*
+// Copyright 2018 github.com/ucirello
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+*/
+
+.row-count {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.filter-box {
+  text-align: center;
+}
+
+.link-card {
+  width: 32%;
+  margin-left: 1%;
+  display: inline-block;
+  vertical-align: top;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  padding: 10px 16px;
+}
+
+.link-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.link-card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+}
+
+.link-card-title-url {
+  font-size: 10px;
+  color: gray;
+  font-style: italic;
+}
+
+.link-card-button-open {
+  float: left;
+  width: 80%;
+}
+
+.link-card-button-delete {
+  float: left;
+  width: 20%;
+  text-align: right;
+}
+
+.link-card-button-delete-trash {
+  color: red;
+}
+
+.link-card-button-delete-ban-circle {
+  color: lightgray;
+}
+
+.link-list {
+  vertical-align: top;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  padding: 10px 16px;
+}
+
+.link-list-title {
+  float: left;
+}
+
+.link-list-title-secondary {
+  float: left;
+  padding-left: 25px;
+}
+
+.link-list-title-host {
+  font-size: 10px;
+  color: gray;
+  font-style: italic;
+  margin-left: 15px;
+}
+
+.link-list .link-list-secondary-container {
+  padding-top: 5px;
+}

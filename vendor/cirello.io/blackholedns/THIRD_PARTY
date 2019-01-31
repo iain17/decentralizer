@@ -1,0 +1,5 @@
+github.com/urfave/cli: MIT
+github.com/miekg/dns: Go license
+golang.com/x/crypto: Go license
+golang.com/x/net: Go license
+

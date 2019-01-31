@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package api;
+
+service Runner {
+    rpc Run(stream RunResponse) returns (stream RunRequest) {}
+}
+
+message Recipe {
+    int64 id = 1;
+    repeated string environment = 3;
+    string commands = 4;
+}
+
+message RunRequest {
+    oneof action {
+        Recipe recipe = 1;
+        Ping ping = 2;
+    }
+}
+
+message RunResponse {
+    oneof response {
+        Result result = 1;
+        Pong pong = 2;
+    }
+}
+
+message Ping {}
+
+message Result {
+    string output = 1;
+    bool success = 2;
+    int64 agentID = 3;
+}
+
+message Pong {
+    int64 agentID = 1;
+}

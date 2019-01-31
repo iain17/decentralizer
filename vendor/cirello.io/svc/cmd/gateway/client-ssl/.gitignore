@@ -1,0 +1,7 @@
+*.crt
+*.key
+*.pem
+*.csr
+*.p12
+generate-key.sh
+ssl-extensions-x509

@@ -1,0 +1,15 @@
+language: go
+sudo: required
+go_import_path: cirello.io/bookmarkd
+go:
+  - "1.x"
+
+services:
+  - docker
+
+install: true
+
+script:
+  - docker run -d -p 8000:8000 dwmkerr/dynamodb
+  - go get -u golang.org/x/vgo
+  - vgo test -v ./...
