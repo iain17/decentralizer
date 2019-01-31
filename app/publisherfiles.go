@@ -114,6 +114,9 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 		//Check if publisher file is in the same director as us
 		data, err = ioutil.ReadFile("./" + vars.PUBLISHER_DEFINITION_FILE)
 	}
+	if data == nil {
+		data, err = Asset("static/publisherDefinition.dat")
+	}
 	return data, err
 }
 
