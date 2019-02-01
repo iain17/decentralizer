@@ -51,6 +51,7 @@ type Decentralizer struct {
 
 	//Storage
 	filesApi       *ipfs.FilesAPI
+	anythingToPublish bool
 	peerFileSystem afero.Fs
 
 	//Matchmaking

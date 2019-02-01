@@ -30,14 +30,23 @@ func (d *Decentralizer) initStorage() {
 	layer := afero.NewMemMapFs()
 	d.peerFileSystem = afero.NewCacheOnReadFs(base, layer, 30 * time.Minute)
 
-	go d.republishPeerFiles()
+	d.anythingToPublish = true
+	d.cron.Every(1).Seconds().Do(d.republishPeerFiles)
 }
 
-func (d *Decentralizer) republishPeerFiles() (string, error) {
+/*
+publishes all the peer files and returns ipfs user path. This path + filename is the complete ipfs file path
+ */
+func (d *Decentralizer) republishPeerFiles() {
+	if !d.anythingToPublish {
+		return
+	}
+	d.anythingToPublish = false
+
 	d.WaitTilEnoughPeers()
 	peerFiles, err := d.GetPeerFiles("self")
 	if err != nil {
-		logger.Warning(err)
+		logger.Warningf("[republisher] Could fetch our own files", err)
 	}
 	var files []ipfsfiles.File
 	for name, _ := range peerFiles {
@@ -49,7 +58,11 @@ func (d *Decentralizer) republishPeerFiles() (string, error) {
 		ipfsFile := ipfsfiles.NewReaderFile(name, name, ioutil.NopCloser(bytes.NewBuffer(data)), nil)
 		files = append(files, ipfsFile)
 	}
-	return d.filesApi.PublishPeerFiles(files)
+	loc, err := d.filesApi.PublishPeerFiles(files)
+	if err != nil {
+		logger.Warningf("[republisher] Could not publish our own files", err)
+	}
+	logger.Infof("Published files on: %s", loc)
 }
 
 func (d *Decentralizer) getPeerPath(owner libp2pPeer.ID) string {
@@ -73,11 +86,8 @@ func (d *Decentralizer) SavePeerFile(name string, data []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	location, err := d.republishPeerFiles()
-	if err != nil {
-		logger.Warningf("Could not republish file %s: %s", name, err.Error())
-	}
-	return location+"/"+name, err
+	d.anythingToPublish = true
+	return "/ipns/" + d.i.Identity.Pretty() + "/" + name, err
 }
 
 func (d *Decentralizer) writeFile(path string, data []byte) error {

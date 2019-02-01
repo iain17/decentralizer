@@ -5,7 +5,6 @@ import (
 	"github.com/iain17/decentralizer/pb"
 	"github.com/iain17/logger"
 	"time"
-	"github.com/iain17/timeout"
 	//"github.com/ipfs/go-ipfs/namesys"
 	"github.com/giantswarm/retry-go"
 )
@@ -15,13 +14,10 @@ import (
 //
 // Write a user file. Takes a file name and the data it should save.
 func (s *Server) WritePeerFile(ctx context.Context, request *pb.RPCWritePeerFileRequest) (*pb.RPCWritePeerFileResponse, error) {
-	var err error
-	timeout.Do(func(ctx context.Context) {
-		_, err = s.App.SavePeerFile(request.Name, request.File)
-		if err != nil {
-			logger.Warning(err)
-		}
-	}, 5 * time.Second)
+	_, err := s.App.SavePeerFile(request.Name, request.File)
+	if err != nil {
+		logger.Warning(err)
+	}
 	return &pb.RPCWritePeerFileResponse{
 		Success: err != nil,
 	}, err

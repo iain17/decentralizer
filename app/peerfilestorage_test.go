@@ -31,13 +31,16 @@ func TestDecentralizer_SaveGetFile(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, ph1)
 
-	//Self is able to get
+	//It's on IPFS after a second
+	time.Sleep(2 * time.Second)
+
+	//Self is able to get instantly
 	data, err := app2.getIPFSFile(ph1)
 	assert.NoError(t, err)
+	assert.Equal(t, string(message), string(data))
 	data, err = app2.getIPFSFile(ph2)
+	assert.Equal(t, string(message2), string(data))
 	assert.NoError(t, err)
-
-	time.Sleep(1 * time.Second)
 
 	data, err = app1.getIPFSFile(ph1)
 	assert.NoError(t, err)
@@ -64,9 +67,14 @@ func TestDecentralizer_SaveGetUserFile(t *testing.T) {
 	_, err := app1.SavePeerFile(filename, message)
 	assert.NoError(t, err)
 
+	file, err := app1.GetPeerFile(app1.i.Identity.Pretty(), filename)
+	assert.NoError(t, err)
+	assert.Equal(t, string(message), string(file), "Should be able to direct get it")
+
+	//Others after a second
 	time.Sleep(1 * time.Second)
 
-	file, err := app2.filesApi.GetPeerFile(app1.i.Identity, filename)
+	file, err = app2.filesApi.GetPeerFile(app1.i.Identity, filename)
 	assert.NoError(t, err)
 	assert.Equal(t, string(message), string(file), "Should work fine calling directly IPFS")
 
