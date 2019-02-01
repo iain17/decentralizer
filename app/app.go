@@ -112,7 +112,7 @@ func New(ctx context.Context, networkStr string, privateKey bool, limitedConnect
 		limitedConnection = true
 	}
 
-	ipfsPath := Base.Path + "/ipfs"
+	ipfsPath := configPath.QueryCacheFolder().Path + "/ipfs"
 	logger.Infof("IPFS path: %s", ipfsPath)
 	logger.Infof("Cache path: %s", configPath.QueryCacheFolder().Path)
 	i, err := ipfs.OpenIPFSRepo(ctx, ipfsPath, limitedConnection, swarmKey)

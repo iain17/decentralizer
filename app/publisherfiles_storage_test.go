@@ -1,11 +1,11 @@
 package app
 
 import (
-	"testing"
 	"context"
-	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/getlantern/testify/assert"
+	"github.com/iain17/decentralizer/app/ipfs"
 	"github.com/iain17/decentralizer/pb"
+	"testing"
 	//"io/ioutil"
 	//"os"
 )
@@ -47,6 +47,7 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 	expected := []byte("Ok")
 	ipfsPath, err := app2.SavePeerFile(filename, expected)
 	assert.NoError(t, err)
+	app2.republishPeerFiles()//we could also wait 1 second.
 
 	publisherUpdate := &pb.DNPublisherRecord{}
 	definition := &pb.PublisherDefinition{
@@ -55,7 +56,7 @@ func TestDecentralizer_GetPublisherFile2(t *testing.T) {
 			filename: ipfsPath,
 		},
 	}
-	//
+
 	////Mocked publisher update
 	app1.publisherRecord = publisherUpdate
 	app1.publisherDefinition = definition

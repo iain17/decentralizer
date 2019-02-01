@@ -74,10 +74,17 @@ func serializeBootstrapAddrs(bootstrapAddrs []config.BootstrapPeer) string {
 	return addrs
 }
 
-func unSerializeBootstrapAddrs(addrText string) ([]config.BootstrapPeer, error) {
+/*
+unserializes the ;; way of sharing bootstrap peers. the add parameter is what extra string should be appended to each entry. This can be helpful if you want to just append the
+ipfs id so a multiaddr can qualifies for a bootstrap addr
+ */
+func unSerializeBootstrapAddrs(addrText string, add string) ([]config.BootstrapPeer, error) {
 	addrs := strings.Split(addrText, vars.DELIMITER_ADDR)
 	if len(addrs) == 0 {
 		return nil, errors.New("no addressed given")
+	}
+	for i, _ := range addrs {
+		addrs[i] += add
 	}
 	return config.ParseBootstrapPeers(addrs[:len(addrs)-1])
 }
@@ -104,7 +111,7 @@ func (d *Decentralizer) readBootstrapState() ([]config.BootstrapPeer, error) {
 	if err != nil {
 		return nil, err
 	}
-	return unSerializeBootstrapAddrs(string(data))
+	return unSerializeBootstrapAddrs(string(data), "")
 }
 
 func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
@@ -129,22 +136,37 @@ func (d *Decentralizer) bootstrapPeers() []pstore.PeerInfo {
 			if len(result) > vars.MAX_BOOTSTRAP_SHARE {
 				break
 			}
-			peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"))
+
+			//Peer sharing their bootstrap peers
+			peer2peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("bootstrap"), "")
 			if err != nil {
 				logger.Warning(err)
 				continue
 			}
-			logger.Debugf("Discovered using: %s", peerBootstrap)
-			result = append(result, peerBootstrap...)
+			logger.Debugf("Discovered using: %s", peer2peerBootstrap)
+			result = append(result, peer2peerBootstrap...)
 		}
 		for _, message := range d.d.GetNetworkMessages() {
-			peerBootstrap, err := unSerializeBootstrapAddrs(message)
+			peerBootstrap, err := unSerializeBootstrapAddrs(message, "")
 			if err != nil {
 				logger.Warning(err)
 				continue
 			}
 			logger.Debugf("Discovered using: %s", message)
 			result = append(result, peerBootstrap...)
+		}
+
+		//Throw the peers that are sharing their bootstrap list in as bootstrap peers.
+		if len(result) == 0 {
+			for _, peer := range peers {
+				peerBootstrap, err := unSerializeBootstrapAddrs(peer.GetInfo("addr"), "/ipfs/"+peer.GetInfo("peerId"))
+				if err != nil {
+					logger.Warning(err)
+				} else {
+					result = append(result, peerBootstrap...)
+					logger.Debugf("Discovered using: %s", peerBootstrap)
+				}
+			}
 		}
 	}
 	logger.Infof("Bootstrapping with %d addresses.", len(result))
