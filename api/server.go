@@ -16,15 +16,17 @@ type Server struct {
 	grpc              *grpc.Server
 	endpoint          string
 	mutex             sync.Mutex
+	profile			  string
 	listeningChannels map[uint32]bool//To keep track if a client is already listening for direct messages on this channel.
 	LastCall          time.Time//Time of last call
 }
 
-func New(ctx context.Context, port int) (*Server, error) {
+func New(ctx context.Context, port int, profile string) (*Server, error) {
 	i := &Server {
 		ctx: ctx,
 		endpoint: fmt.Sprintf(":%d", port),
 		listeningChannels: make(map[uint32]bool),
+		profile: profile,
 	}
 	go func() {
 		err := i.initGRPC(port)

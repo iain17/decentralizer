@@ -31,7 +31,7 @@ import (
 	"github.com/iain17/decentralizer/vars"
 )
 var verbose, daemon, isPrivateKey, isLimited, removeLock bool
-var logPath, networkKey string
+var logPath, networkKey, profile string
 var port int
 
 func init() {
@@ -45,6 +45,7 @@ func init() {
 	apiCmd.Flags().BoolVar(&isPrivateKey, "isPrivate", false, "Is network key a private key or not (not used if network key not set)")
 	apiCmd.Flags().BoolVar(&isLimited, "limited", false, "If we are on a limited (slower) connection (not used if network key not set)")
 	apiCmd.Flags().BoolVar(&removeLock, "removeLock", false, "If set to true. It will remove to lock file")
+	apiCmd.Flags().StringVarP(&profile, "profile", "x", "dolores", "Profile name. Change if you're running multiple instances")
 }
 
 // apiCmd represents the api command
@@ -87,7 +88,7 @@ var apiCmd = &cobra.Command{
 		logger.Infof("Version: %s - %s", BRANCH, COMMIT_HASH)
 
 		ctx, cancel := context.WithCancel(context.Background())
-		s, err := api.New(ctx, port)
+		s, err := api.New(ctx, port, profile)
 		if err != nil {
 			logger.Fatal(err)
 		}

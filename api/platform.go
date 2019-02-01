@@ -45,7 +45,7 @@ func (s *Server) SetNetwork(clientVersion string, networkKey string, isPrivateKe
 		return errors.New("please update your client")
 	}
 	make:
-	s.App, err = app.New(s.ctx, networkKey, isPrivateKey, limitedConnection)
+	s.App, err = app.New(s.ctx, networkKey, isPrivateKey, limitedConnection, s.profile)
 	if err != nil && strings.Contains(err.Error(), "corrupted") {
 		logger.Warningf("%s: Resetting...", err)
 		app.Reset()

@@ -73,7 +73,7 @@ type Decentralizer struct {
 	publisherDefinition *pb.PublisherDefinition
 }
 
-var configPath = configdir.New("ECorp", "Decentralizer")
+var configPath configdir.ConfigDir
 var Base = getBasePath()
 
 func getBasePath() *configdir.Config {
@@ -89,7 +89,8 @@ func Reset() {
 	os.RemoveAll(getBasePath().Path + "/ipfs")
 }
 
-func New(ctx context.Context, networkStr string, privateKey bool, limitedConnection bool) (*Decentralizer, error) {
+func New(ctx context.Context, networkStr string, privateKey bool, limitedConnection bool, profile string) (*Decentralizer, error) {
+	configPath = configdir.New("ECorp", profile)
 	var n *network.Network
 	var err error
 	if privateKey {
