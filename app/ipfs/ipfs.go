@@ -170,7 +170,7 @@ func changeConfig(r repo.Repo, limited bool) error {
 		rc.Addresses.Swarm[i] = string(swarmPortRegex.ReplaceAll([]byte(addr), swarmPort))
 	}
 
-	logger.Infof("Swarm listening to %s. Please forward if possible port %d on TCP: %s", rc.Addresses.Swarm, swarmPortInt)
+	logger.Infof("Swarm listening to %s. Please forward if possible port %d on TCP", rc.Addresses.Swarm, swarmPortInt)
 
 	//rc.Swarm.DisableNatPortMap = true
 	rc.Swarm.EnableRelayHop = !limited
