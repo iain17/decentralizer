@@ -144,6 +144,11 @@ func (d *Decentralizer) updatePublisherDefinition() error {
 	return d.ReadPublisherDefinition(data)
 }
 
+func (d *Decentralizer) ResetPublisherDefinition() {
+	d.publisherDefinition = nil
+	d.publisherRecord = nil
+}
+
 //Restores from disk
 func (d *Decentralizer) restorePublisherDefinition() error {
 	data, err := d.readPublisherRecordFromDisk()
@@ -198,7 +203,7 @@ func (d *Decentralizer) loadNewPublisherRecord(record *pb.DNPublisherRecord) err
 		return err
 	}
 	if d.publisherRecord != nil && d.publisherDefinition.Published >= definition.Published {
-		return nil
+		return fmt.Errorf("our publisher record(%d) is newer or equal to %d", d.publisherDefinition.Published, definition.Published)
 	}
 	d.publisherRecord = record
 	d.publisherDefinition = definition
@@ -225,7 +230,7 @@ func (d *Decentralizer) signPublisherRecord(definition *pb.PublisherDefinition) 
 	}, nil
 }
 
-func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) (*pb.DNPublisherRecord, error) {
+func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) ([]byte, error) {
 	update, err := d.signPublisherRecord(definition)
 	if err != nil {
 		return nil, err
@@ -240,10 +245,7 @@ func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinitio
 			err = nil
 		}
 	}
-	if err == nil {
-		d.cron.Every(10).Seconds().Do(d.PushPublisherRecord)
-	}
-	return d.publisherRecord, err
+	return configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
 }
 
 func (d *Decentralizer) PushPublisherRecord() error {

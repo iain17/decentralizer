@@ -41,7 +41,7 @@ namespace protobuf_pb_2fpublisher_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[10];
+  static const ::google::protobuf::internal::ParseTable schema[11];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -76,6 +76,9 @@ extern RPCGetPublisherFileResponseDefaultTypeInternal _RPCGetPublisherFileRespon
 class RPCPublishPublisherUpdateRequest;
 class RPCPublishPublisherUpdateRequestDefaultTypeInternal;
 extern RPCPublishPublisherUpdateRequestDefaultTypeInternal _RPCPublishPublisherUpdateRequest_default_instance_;
+class RPCPublishPublisherUpdateResponse;
+class RPCPublishPublisherUpdateResponseDefaultTypeInternal;
+extern RPCPublishPublisherUpdateResponseDefaultTypeInternal _RPCPublishPublisherUpdateResponse_default_instance_;
 class loadPublisherDefinitionRequest;
 class loadPublisherDefinitionRequestDefaultTypeInternal;
 extern loadPublisherDefinitionRequestDefaultTypeInternal _loadPublisherDefinitionRequest_default_instance_;
@@ -91,6 +94,7 @@ template<> ::pb::PublisherDefinition_LinksEntry_DoNotUse* Arena::CreateMaybeMess
 template<> ::pb::RPCGetPublisherFileRequest* Arena::CreateMaybeMessage<::pb::RPCGetPublisherFileRequest>(Arena*);
 template<> ::pb::RPCGetPublisherFileResponse* Arena::CreateMaybeMessage<::pb::RPCGetPublisherFileResponse>(Arena*);
 template<> ::pb::RPCPublishPublisherUpdateRequest* Arena::CreateMaybeMessage<::pb::RPCPublishPublisherUpdateRequest>(Arena*);
+template<> ::pb::RPCPublishPublisherUpdateResponse* Arena::CreateMaybeMessage<::pb::RPCPublishPublisherUpdateResponse>(Arena*);
 template<> ::pb::loadPublisherDefinitionRequest* Arena::CreateMaybeMessage<::pb::loadPublisherDefinitionRequest>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -567,6 +571,117 @@ class RPCPublishPublisherUpdateRequest : public ::google::protobuf::Message /* @
 };
 // -------------------------------------------------------------------
 
+class RPCPublishPublisherUpdateResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCPublishPublisherUpdateResponse) */ {
+ public:
+  RPCPublishPublisherUpdateResponse();
+  virtual ~RPCPublishPublisherUpdateResponse();
+
+  RPCPublishPublisherUpdateResponse(const RPCPublishPublisherUpdateResponse& from);
+
+  inline RPCPublishPublisherUpdateResponse& operator=(const RPCPublishPublisherUpdateResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RPCPublishPublisherUpdateResponse(RPCPublishPublisherUpdateResponse&& from) noexcept
+    : RPCPublishPublisherUpdateResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline RPCPublishPublisherUpdateResponse& operator=(RPCPublishPublisherUpdateResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RPCPublishPublisherUpdateResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RPCPublishPublisherUpdateResponse* internal_default_instance() {
+    return reinterpret_cast<const RPCPublishPublisherUpdateResponse*>(
+               &_RPCPublishPublisherUpdateResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  void Swap(RPCPublishPublisherUpdateResponse* other);
+  friend void swap(RPCPublishPublisherUpdateResponse& a, RPCPublishPublisherUpdateResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RPCPublishPublisherUpdateResponse* New() const final {
+    return CreateMaybeMessage<RPCPublishPublisherUpdateResponse>(NULL);
+  }
+
+  RPCPublishPublisherUpdateResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RPCPublishPublisherUpdateResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const RPCPublishPublisherUpdateResponse& from);
+  void MergeFrom(const RPCPublishPublisherUpdateResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RPCPublishPublisherUpdateResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bytes definition = 1;
+  void clear_definition();
+  static const int kDefinitionFieldNumber = 1;
+  const ::std::string& definition() const;
+  void set_definition(const ::std::string& value);
+  #if LANG_CXX11
+  void set_definition(::std::string&& value);
+  #endif
+  void set_definition(const char* value);
+  void set_definition(const void* value, size_t size);
+  ::std::string* mutable_definition();
+  ::std::string* release_definition();
+  void set_allocated_definition(::std::string* definition);
+
+  // @@protoc_insertion_point(class_scope:pb.RPCPublishPublisherUpdateResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr definition_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class RPCGetPublisherFileRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.RPCGetPublisherFileRequest) */ {
  public:
   RPCGetPublisherFileRequest();
@@ -602,7 +717,7 @@ class RPCGetPublisherFileRequest : public ::google::protobuf::Message /* @@proto
                &_RPCGetPublisherFileRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(RPCGetPublisherFileRequest* other);
   friend void swap(RPCGetPublisherFileRequest& a, RPCGetPublisherFileRequest& b) {
@@ -713,7 +828,7 @@ class RPCGetPublisherFileResponse : public ::google::protobuf::Message /* @@prot
                &_RPCGetPublisherFileResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   void Swap(RPCGetPublisherFileResponse* other);
   friend void swap(RPCGetPublisherFileResponse& a, RPCGetPublisherFileResponse& b) {
@@ -824,7 +939,7 @@ class GetPublisherDefinitionRequest : public ::google::protobuf::Message /* @@pr
                &_GetPublisherDefinitionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   void Swap(GetPublisherDefinitionRequest* other);
   friend void swap(GetPublisherDefinitionRequest& a, GetPublisherDefinitionRequest& b) {
@@ -920,7 +1035,7 @@ class loadPublisherDefinitionRequest : public ::google::protobuf::Message /* @@p
                &_loadPublisherDefinitionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   void Swap(loadPublisherDefinitionRequest* other);
   friend void swap(loadPublisherDefinitionRequest& a, loadPublisherDefinitionRequest& b) {
@@ -1316,6 +1431,63 @@ inline void RPCPublishPublisherUpdateRequest::set_allocated_definition(::pb::Pub
 
 // -------------------------------------------------------------------
 
+// RPCPublishPublisherUpdateResponse
+
+// bytes definition = 1;
+inline void RPCPublishPublisherUpdateResponse::clear_definition() {
+  definition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RPCPublishPublisherUpdateResponse::definition() const {
+  // @@protoc_insertion_point(field_get:pb.RPCPublishPublisherUpdateResponse.definition)
+  return definition_.GetNoArena();
+}
+inline void RPCPublishPublisherUpdateResponse::set_definition(const ::std::string& value) {
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.RPCPublishPublisherUpdateResponse.definition)
+}
+#if LANG_CXX11
+inline void RPCPublishPublisherUpdateResponse::set_definition(::std::string&& value) {
+  
+  definition_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.RPCPublishPublisherUpdateResponse.definition)
+}
+#endif
+inline void RPCPublishPublisherUpdateResponse::set_definition(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.RPCPublishPublisherUpdateResponse.definition)
+}
+inline void RPCPublishPublisherUpdateResponse::set_definition(const void* value, size_t size) {
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.RPCPublishPublisherUpdateResponse.definition)
+}
+inline ::std::string* RPCPublishPublisherUpdateResponse::mutable_definition() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.RPCPublishPublisherUpdateResponse.definition)
+  return definition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RPCPublishPublisherUpdateResponse::release_definition() {
+  // @@protoc_insertion_point(field_release:pb.RPCPublishPublisherUpdateResponse.definition)
+  
+  return definition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RPCPublishPublisherUpdateResponse::set_allocated_definition(::std::string* definition) {
+  if (definition != NULL) {
+    
+  } else {
+    
+  }
+  definition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), definition);
+  // @@protoc_insertion_point(field_set_allocated:pb.RPCPublishPublisherUpdateResponse.definition)
+}
+
+// -------------------------------------------------------------------
+
 // RPCGetPublisherFileRequest
 
 // string name = 1;
@@ -1492,6 +1664,8 @@ inline void loadPublisherDefinitionRequest::set_allocated_definition(::std::stri
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

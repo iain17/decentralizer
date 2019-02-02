@@ -9,12 +9,20 @@ import (
 
 // Load a publisher definition. Will not work if its older!
 func (s *Server) ReadPublisherDefinition(ctx context.Context, req *pb.LoadPublisherDefinitionRequest) (*pb.Empty, error) {
-	return nil, s.App.ReadPublisherDefinition(req.Definition)
+	if len(req.Definition) == 0 {
+		return &pb.Empty{}, s.App.PushPublisherRecord()
+	}
+	s.App.ResetPublisherDefinition()
+	err := s.App.ReadPublisherDefinition(req.Definition)
+	return &pb.Empty{}, err
 }
 
 //Publish a new publisher update. (Only if you have the private key!)
-func (s *Server) PublishPublisherUpdate(ctx context.Context, req *pb.RPCPublishPublisherUpdateRequest) (*pb.DNPublisherRecord, error) {
-	return s.App.PublishPublisherRecord(req.Definition)
+func (s *Server) PublishPublisherUpdate(ctx context.Context, req *pb.RPCPublishPublisherUpdateRequest) (*pb.RPCPublishPublisherUpdateResponse, error) {
+	definition, err := s.App.PublishPublisherRecord(req.Definition)
+	return &pb.RPCPublishPublisherUpdateResponse{
+		Definition: definition,
+	}, err
 }
 
 // Get the full publisher definition

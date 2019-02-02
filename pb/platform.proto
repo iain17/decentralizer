@@ -84,7 +84,7 @@ service Decentralizer {
 	//Load a publisher definition. Will not work if its older!
 	rpc readPublisherDefinition(loadPublisherDefinitionRequest) returns (empty) {}
 	//Signs a new publisher update. (Only if you have the private key!)
-	rpc publishPublisherUpdate(RPCPublishPublisherUpdateRequest) returns (DNPublisherRecord) {}
+	rpc publishPublisherUpdate(RPCPublishPublisherUpdateRequest) returns (RPCPublishPublisherUpdateResponse) {}
 	//Get the full publisher definition
 	rpc GetPublisherDefinition(GetPublisherDefinitionRequest) returns (PublisherDefinition) {
 		option (google.api.http) = { get: "/v1/publisher" };

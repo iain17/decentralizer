@@ -48,6 +48,7 @@ It has these top-level messages:
 	PublisherDefinition
 	DNPublisherRecord
 	RPCPublishPublisherUpdateRequest
+	RPCPublishPublisherUpdateResponse
 	RPCGetPublisherFileRequest
 	RPCGetPublisherFileResponse
 	GetPublisherDefinitionRequest

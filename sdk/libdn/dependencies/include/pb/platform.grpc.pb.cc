@@ -288,20 +288,20 @@ void Decentralizer::Stub::experimental_async::readPublisherDefinition(::grpc::Cl
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::pb::empty>::Create(channel_.get(), cq, rpcmethod_readPublisherDefinition_, context, request, false);
 }
 
-::grpc::Status Decentralizer::Stub::publishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::pb::DNPublisherRecord* response) {
+::grpc::Status Decentralizer::Stub::publishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::pb::RPCPublishPublisherUpdateResponse* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_publishPublisherUpdate_, context, request, response);
 }
 
-void Decentralizer::Stub::experimental_async::publishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::DNPublisherRecord* response, std::function<void(::grpc::Status)> f) {
+void Decentralizer::Stub::experimental_async::publishPublisherUpdate(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::RPCPublishPublisherUpdateResponse* response, std::function<void(::grpc::Status)> f) {
   return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_publishPublisherUpdate_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::DNPublisherRecord>* Decentralizer::Stub::AsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::pb::DNPublisherRecord>::Create(channel_.get(), cq, rpcmethod_publishPublisherUpdate_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::pb::RPCPublishPublisherUpdateResponse>* Decentralizer::Stub::AsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::pb::RPCPublishPublisherUpdateResponse>::Create(channel_.get(), cq, rpcmethod_publishPublisherUpdate_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::DNPublisherRecord>* Decentralizer::Stub::PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::pb::DNPublisherRecord>::Create(channel_.get(), cq, rpcmethod_publishPublisherUpdate_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::pb::RPCPublishPublisherUpdateResponse>* Decentralizer::Stub::PrepareAsyncpublishPublisherUpdateRaw(::grpc::ClientContext* context, const ::pb::RPCPublishPublisherUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::pb::RPCPublishPublisherUpdateResponse>::Create(channel_.get(), cq, rpcmethod_publishPublisherUpdate_, context, request, false);
 }
 
 ::grpc::Status Decentralizer::Stub::GetPublisherDefinition(::grpc::ClientContext* context, const ::pb::GetPublisherDefinitionRequest& request, ::pb::PublisherDefinition* response) {
@@ -410,7 +410,7 @@ Decentralizer::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Decentralizer_method_names[14],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< Decentralizer::Service, ::pb::RPCPublishPublisherUpdateRequest, ::pb::DNPublisherRecord>(
+      new ::grpc::internal::RpcMethodHandler< Decentralizer::Service, ::pb::RPCPublishPublisherUpdateRequest, ::pb::RPCPublishPublisherUpdateResponse>(
           std::mem_fn(&Decentralizer::Service::publishPublisherUpdate), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Decentralizer_method_names[15],
@@ -525,7 +525,7 @@ Decentralizer::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Decentralizer::Service::publishPublisherUpdate(::grpc::ServerContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::DNPublisherRecord* response) {
+::grpc::Status Decentralizer::Service::publishPublisherUpdate(::grpc::ServerContext* context, const ::pb::RPCPublishPublisherUpdateRequest* request, ::pb::RPCPublishPublisherUpdateResponse* response) {
   (void) context;
   (void) request;
   (void) response;

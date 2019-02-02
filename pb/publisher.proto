@@ -21,6 +21,10 @@ message RPCPublishPublisherUpdateRequest {
     PublisherDefinition definition = 1;
 }
 
+message RPCPublishPublisherUpdateResponse {
+    bytes definition = 1;
+}
+
 message RPCGetPublisherFileRequest {
     string name = 1;
 }
