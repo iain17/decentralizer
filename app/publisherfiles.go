@@ -141,7 +141,7 @@ func (d *Decentralizer) updatePublisherDefinition() error {
 	if err != nil {
 		return fmt.Errorf("could not update publisher file from network: %s", err.Error())
 	}
-	return d.readPublisherDefinition(data)
+	return d.ReadPublisherDefinition(data)
 }
 
 //Restores from disk
@@ -150,10 +150,10 @@ func (d *Decentralizer) restorePublisherDefinition() error {
 	if err != nil {
 		return fmt.Errorf("could not restore publisher file from disk: %s", err.Error())
 	}
-	return d.readPublisherDefinition(data)
+	return d.ReadPublisherDefinition(data)
 }
 
-func (d *Decentralizer) readPublisherDefinition(data []byte) error {
+func (d *Decentralizer) ReadPublisherDefinition(data []byte) error {
 	var record pb.DNPublisherRecord
 	err := d.unmarshal(data, &record)
 	if err != nil {

@@ -51,6 +51,7 @@ It has these top-level messages:
 	RPCGetPublisherFileRequest
 	RPCGetPublisherFileResponse
 	GetPublisherDefinitionRequest
+	LoadPublisherDefinitionRequest
 	RPCWritePeerFileRequest
 	RPCWritePeerFileResponse
 	RPCGetPeerFileRequest

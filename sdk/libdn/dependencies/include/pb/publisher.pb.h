@@ -41,7 +41,7 @@ namespace protobuf_pb_2fpublisher_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[9];
+  static const ::google::protobuf::internal::ParseTable schema[10];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -76,6 +76,9 @@ extern RPCGetPublisherFileResponseDefaultTypeInternal _RPCGetPublisherFileRespon
 class RPCPublishPublisherUpdateRequest;
 class RPCPublishPublisherUpdateRequestDefaultTypeInternal;
 extern RPCPublishPublisherUpdateRequestDefaultTypeInternal _RPCPublishPublisherUpdateRequest_default_instance_;
+class loadPublisherDefinitionRequest;
+class loadPublisherDefinitionRequestDefaultTypeInternal;
+extern loadPublisherDefinitionRequestDefaultTypeInternal _loadPublisherDefinitionRequest_default_instance_;
 }  // namespace pb
 namespace google {
 namespace protobuf {
@@ -88,6 +91,7 @@ template<> ::pb::PublisherDefinition_LinksEntry_DoNotUse* Arena::CreateMaybeMess
 template<> ::pb::RPCGetPublisherFileRequest* Arena::CreateMaybeMessage<::pb::RPCGetPublisherFileRequest>(Arena*);
 template<> ::pb::RPCGetPublisherFileResponse* Arena::CreateMaybeMessage<::pb::RPCGetPublisherFileResponse>(Arena*);
 template<> ::pb::RPCPublishPublisherUpdateRequest* Arena::CreateMaybeMessage<::pb::RPCPublishPublisherUpdateRequest>(Arena*);
+template<> ::pb::loadPublisherDefinitionRequest* Arena::CreateMaybeMessage<::pb::loadPublisherDefinitionRequest>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace pb {
@@ -879,6 +883,117 @@ class GetPublisherDefinitionRequest : public ::google::protobuf::Message /* @@pr
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class loadPublisherDefinitionRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.loadPublisherDefinitionRequest) */ {
+ public:
+  loadPublisherDefinitionRequest();
+  virtual ~loadPublisherDefinitionRequest();
+
+  loadPublisherDefinitionRequest(const loadPublisherDefinitionRequest& from);
+
+  inline loadPublisherDefinitionRequest& operator=(const loadPublisherDefinitionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  loadPublisherDefinitionRequest(loadPublisherDefinitionRequest&& from) noexcept
+    : loadPublisherDefinitionRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline loadPublisherDefinitionRequest& operator=(loadPublisherDefinitionRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const loadPublisherDefinitionRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const loadPublisherDefinitionRequest* internal_default_instance() {
+    return reinterpret_cast<const loadPublisherDefinitionRequest*>(
+               &_loadPublisherDefinitionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  void Swap(loadPublisherDefinitionRequest* other);
+  friend void swap(loadPublisherDefinitionRequest& a, loadPublisherDefinitionRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline loadPublisherDefinitionRequest* New() const final {
+    return CreateMaybeMessage<loadPublisherDefinitionRequest>(NULL);
+  }
+
+  loadPublisherDefinitionRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<loadPublisherDefinitionRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const loadPublisherDefinitionRequest& from);
+  void MergeFrom(const loadPublisherDefinitionRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(loadPublisherDefinitionRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bytes definition = 1;
+  void clear_definition();
+  static const int kDefinitionFieldNumber = 1;
+  const ::std::string& definition() const;
+  void set_definition(const ::std::string& value);
+  #if LANG_CXX11
+  void set_definition(::std::string&& value);
+  #endif
+  void set_definition(const char* value);
+  void set_definition(const void* value, size_t size);
+  ::std::string* mutable_definition();
+  ::std::string* release_definition();
+  void set_allocated_definition(::std::string* definition);
+
+  // @@protoc_insertion_point(class_scope:pb.loadPublisherDefinitionRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr definition_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_pb_2fpublisher_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -1317,9 +1432,68 @@ inline void RPCGetPublisherFileResponse::set_allocated_file(::std::string* file)
 
 // GetPublisherDefinitionRequest
 
+// -------------------------------------------------------------------
+
+// loadPublisherDefinitionRequest
+
+// bytes definition = 1;
+inline void loadPublisherDefinitionRequest::clear_definition() {
+  definition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& loadPublisherDefinitionRequest::definition() const {
+  // @@protoc_insertion_point(field_get:pb.loadPublisherDefinitionRequest.definition)
+  return definition_.GetNoArena();
+}
+inline void loadPublisherDefinitionRequest::set_definition(const ::std::string& value) {
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.loadPublisherDefinitionRequest.definition)
+}
+#if LANG_CXX11
+inline void loadPublisherDefinitionRequest::set_definition(::std::string&& value) {
+  
+  definition_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:pb.loadPublisherDefinitionRequest.definition)
+}
+#endif
+inline void loadPublisherDefinitionRequest::set_definition(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.loadPublisherDefinitionRequest.definition)
+}
+inline void loadPublisherDefinitionRequest::set_definition(const void* value, size_t size) {
+  
+  definition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.loadPublisherDefinitionRequest.definition)
+}
+inline ::std::string* loadPublisherDefinitionRequest::mutable_definition() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.loadPublisherDefinitionRequest.definition)
+  return definition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* loadPublisherDefinitionRequest::release_definition() {
+  // @@protoc_insertion_point(field_release:pb.loadPublisherDefinitionRequest.definition)
+  
+  return definition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void loadPublisherDefinitionRequest::set_allocated_definition(::std::string* definition) {
+  if (definition != NULL) {
+    
+  } else {
+    
+  }
+  definition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), definition);
+  // @@protoc_insertion_point(field_set_allocated:pb.loadPublisherDefinitionRequest.definition)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

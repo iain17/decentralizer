@@ -149,7 +149,7 @@ void AddDescriptorsImpl() {
       "mpty\"1\n\020RPCHealthRequest\022\035\n\025waitForMinCo"
       "nnections\030\001 \001(\010\"Z\n\016RPCHealthReply\022\r\n\005rea"
       "dy\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\022\020\n\010basePath\030\003 "
-      "\001(\t\022\026\n\016numConnections\030\004 \001(\r2\316\013\n\rDecentra"
+      "\001(\t\022\026\n\016numConnections\030\004 \001(\r2\232\014\n\rDecentra"
       "lizer\022a\n\tGetHealth\022\024.pb.RPCHealthRequest"
       "\032\022.pb.RPCHealthReply\"*\202\323\344\223\002$\022\"/v1/health"
       "/{waitForMinConnections}\022_\n\rUpsertSessio"
@@ -179,18 +179,19 @@ void AddDescriptorsImpl() {
       "ge\022\024.pb.RPCDirectMessage\032\t.pb.empty\"\000\022T\n"
       "\024ReceiveDirectMessage\022\".pb.RPCReceiveDir"
       "ectMessageRequest\032\024.pb.RPCDirectMessage\""
-      "\0000\001\022W\n\026publishPublisherUpdate\022$.pb.RPCPu"
-      "blishPublisherUpdateRequest\032\025.pb.DNPubli"
-      "sherRecord\"\000\022k\n\026GetPublisherDefinition\022!"
-      ".pb.GetPublisherDefinitionRequest\032\027.pb.P"
-      "ublisherDefinition\"\025\202\323\344\223\002\017\022\r/v1/publishe"
-      "r\022q\n\020GetPublisherFile\022\036.pb.RPCGetPublish"
-      "erFileRequest\032\037.pb.RPCGetPublisherFileRe"
-      "sponse\"\034\202\323\344\223\002\026\022\024/v1/publisher/{name}b\006pr"
-      "oto3"
+      "\0000\001\022J\n\027readPublisherDefinition\022\".pb.load"
+      "PublisherDefinitionRequest\032\t.pb.empty\"\000\022"
+      "W\n\026publishPublisherUpdate\022$.pb.RPCPublis"
+      "hPublisherUpdateRequest\032\025.pb.DNPublisher"
+      "Record\"\000\022k\n\026GetPublisherDefinition\022!.pb."
+      "GetPublisherDefinitionRequest\032\027.pb.Publi"
+      "sherDefinition\"\025\202\323\344\223\002\017\022\r/v1/publisher\022q\n"
+      "\020GetPublisherFile\022\036.pb.RPCGetPublisherFi"
+      "leRequest\032\037.pb.RPCGetPublisherFileRespon"
+      "se\"\034\202\323\344\223\002\026\022\024/v1/publisher/{name}b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1804);
+      descriptor, 1880);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pb/platform.proto", &protobuf_RegisterTypes);
   ::protobuf_pb_2fmatchmaking_2eproto::AddDescriptors();

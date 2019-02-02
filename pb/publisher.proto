@@ -30,3 +30,7 @@ message RPCGetPublisherFileResponse {
 }
 
 message GetPublisherDefinitionRequest {}
+
+message loadPublisherDefinitionRequest {
+    bytes definition = 1;
+}
