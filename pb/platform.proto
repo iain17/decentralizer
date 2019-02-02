@@ -82,7 +82,7 @@ service Decentralizer {
 	// Publisher
 	//
 	//Publish a new publisher update. (Only if you have the private key!)
-	rpc publishPublisherUpdate(RPCPublishPublisherUpdateRequest) returns (empty) {}
+	rpc publishPublisherUpdate(RPCPublishPublisherUpdateRequest) returns (DNPublisherRecord) {}
 	//Get the full publisher definition
 	rpc GetPublisherDefinition(GetPublisherDefinitionRequest) returns (PublisherDefinition) {
 		option (google.api.http) = { get: "/v1/publisher" };

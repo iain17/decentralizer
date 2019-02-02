@@ -30,3 +30,11 @@ Use cases for this piece of software are endless. From games to commercial enter
 ## Disclaimer
 
 This project is a work in progress. Please do not use it unless you know what you're doing. I discourage anyone from using this in production.
+
+#Generate
+Build GRPC https://github.com/grpc/grpc/blob/v1.11.1/BUILDING.md
+go build GRPC: go build ./vendor/google.golang.org/grpc
+
+#Versions
+protobufs version 3.5.0 rev e09c5db296004fbe3f74490e84dcd62c3c5ddb1b
+grpc version v1.11.3 https://github.com/grpc/grpc/tree/v1.11.1
