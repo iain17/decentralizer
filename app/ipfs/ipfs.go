@@ -3,6 +3,9 @@ package ipfs
 import (
 	"context"
 	utilmain "github.com/iain17/decentralizer/app/ipfs/util"
+	"regexp"
+	"strconv"
+
 	//dht "gx/ipfs/QmTktQYCKzQjhxF6dk5xJPRuhHn3JBiKGvMLoiDy1mYmxC/go-libp2p-kad-dht"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/core"
 	bitswap "gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/exchange/bitswap/network"
@@ -10,6 +13,7 @@ import (
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/config"
 	"gx/ipfs/QmebqVUQQqQFhg74FtQFszUJo22Vpr3e8qBAkvvV4ho9HH/go-ipfs/repo/fsrepo"
 	"os"
+	"github.com/iain17/freeport"
 	//logging "gx/ipfs/QmcVVHfdyv15GVPk7NrxdWjh2hLVccXnoD8j2tyQShiXJb/go-log"
 	"github.com/iain17/logger"
 	//"gx/ipfs/QmZNkThpqfVXs9GNbexPrfBbXSLNYeKrE7jwFM2oqHbyqN/go-libp2p-protocol"
@@ -147,19 +151,27 @@ func changeConfig(r repo.Repo, limited bool) error {
 	}
 	rc.Bootstrap = []string{}
 
-	//apiPort := fmt.Sprintf("500%d", 12)
-	//gatewayPort := fmt.Sprintf("808%d", 12)
-	//swarmPort := "4123"
-
 	bitswap.ProtocolBitswapOne = "/decentralizer/bitswap/1.0.0"
 	bitswap.ProtocolBitswapNoVers = "/decentralizer/bitswap"
 	bitswap.ProtocolBitswap = "/decentralizer/bitswap/1.1.0"
 
+	//apiPort := fmt.Sprintf("500%d", 12)
+	//gatewayPort := fmt.Sprintf("808%d", 12)
+	swarmPortInt := 4001
+	if !freeport.IsFree("tcp", swarmPortInt) {
+		swarmPortInt = freeport.GetTCPPort()
+	}
+	swarmPort := []byte(strconv.Itoa(swarmPortInt))
+	var swarmPortRegex = regexp.MustCompile(`[0-9]+$`)
+
 	//rc.Addresses.API = strings.Replace(rc.Addresses.API, "5001", apiPort, -1)
 	//rc.Addresses.Gateway = strings.Replace(rc.Addresses.Gateway, "8080", gatewayPort, -1)
-	//for i, addr := range rc.Addresses.Swarm {
-	//	rc.Addresses.Swarm[i] = strings.Replace(addr, "4001", swarmPort, -1)
-	//}
+	for i, addr := range rc.Addresses.Swarm {
+		rc.Addresses.Swarm[i] = string(swarmPortRegex.ReplaceAll([]byte(addr), swarmPort))
+	}
+
+	logger.Infof("Swarm listening to %s. Please forward if possible port %d on TCP: %s", rc.Addresses.Swarm, swarmPortInt)
+
 	//rc.Swarm.DisableNatPortMap = true
 	rc.Swarm.EnableRelayHop = !limited
 	err = r.SetConfig(rc)
