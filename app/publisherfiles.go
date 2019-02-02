@@ -4,6 +4,7 @@ import (
 	"github.com/iain17/logger"
 	"github.com/iain17/decentralizer/pb"
 	"errors"
+	"os"
 	"time"
 	"io/ioutil"
 	"fmt"
@@ -108,10 +109,13 @@ func (d *Decentralizer) resolveDNPublisherRecord(record *pb.DNPublisherRecord) e
 }
 
 func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
-	data, err := configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
+	//Check if publisher file is in the same director as us
+	data, err := ioutil.ReadFile("./" + vars.PUBLISHER_DEFINITION_FILE)
 	if err != nil {
-		//Check if publisher file is in the same director as us
-		data, err = ioutil.ReadFile("./" + vars.PUBLISHER_DEFINITION_FILE)
+		_ = os.Remove("./" + vars.PUBLISHER_DEFINITION_FILE)
+	}
+	if data == nil {
+		data, err = configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
 	}
 	if data == nil {
 		data, err = Asset("static/publisherDefinition.dat")
