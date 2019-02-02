@@ -8,8 +8,8 @@ import (
 )
 
 //Publish a new publisher update. (Only if you have the private key!)
-func (s *Server) PublishPublisherUpdate(ctx context.Context, req *pb.RPCPublishPublisherUpdateRequest) (*pb.Empty, error) {
-	return &pb.Empty{}, s.App.PublishPublisherRecord(req.Definition)
+func (s *Server) PublishPublisherUpdate(ctx context.Context, req *pb.RPCPublishPublisherUpdateRequest) (*pb.DNPublisherRecord, error) {
+	return s.App.PublishPublisherRecord(req.Definition)
 }
 
 // Get the full publisher definition

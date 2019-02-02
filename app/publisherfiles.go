@@ -225,14 +225,14 @@ func (d *Decentralizer) signPublisherRecord(definition *pb.PublisherDefinition) 
 	}, nil
 }
 
-func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) error {
+func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinition) (*pb.DNPublisherRecord, error) {
 	update, err := d.signPublisherRecord(definition)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = d.loadNewPublisherRecord(update)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = d.PushPublisherRecord()
 	if err != nil {
@@ -243,7 +243,7 @@ func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinitio
 	if err == nil {
 		d.cron.Every(10).Seconds().Do(d.PushPublisherRecord)
 	}
-	return err
+	return d.publisherRecord, err
 }
 
 func (d *Decentralizer) PushPublisherRecord() error {
