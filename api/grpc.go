@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/iain17/decentralizer/pb"
+	"github.com/iain17/decentralizer/vars"
 	"net"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -68,6 +69,7 @@ func (s *Server) auth(ctx context.Context) (context.Context, error) {
 		err := s.SetNetwork(clientVersion, networkKey, isPrivateKey, limitedConnection)
 		if err != nil {
 			logger.Warningf("Failed to join network: %v", err)
+			vars.DEFAULT_PORT = vars.DEFAULT_PORT + 1//Try incrementing the default port. To fix Windows editions
 			return ctx, err
 		} else {
 			logger.Info("Joined network.")

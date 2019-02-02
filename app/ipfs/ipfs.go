@@ -3,6 +3,7 @@ package ipfs
 import (
 	"context"
 	utilmain "github.com/iain17/decentralizer/app/ipfs/util"
+	"github.com/iain17/decentralizer/vars"
 	"regexp"
 	"strconv"
 
@@ -157,7 +158,7 @@ func changeConfig(r repo.Repo, limited bool) error {
 
 	//apiPort := fmt.Sprintf("500%d", 12)
 	//gatewayPort := fmt.Sprintf("808%d", 12)
-	swarmPortInt := 4001
+	swarmPortInt := vars.DEFAULT_PORT
 	if !freeport.IsFree("tcp", swarmPortInt) {
 		swarmPortInt = freeport.GetTCPPort()
 	}
