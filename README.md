@@ -38,3 +38,6 @@ go build GRPC: go build ./vendor/google.golang.org/grpc
 #Versions
 protobufs version 3.5.0 rev e09c5db296004fbe3f74490e84dcd62c3c5ddb1b
 grpc version v1.11.3 https://github.com/grpc/grpc/tree/v1.11.1
+
+#UPX
+UPX is used to pack the binary so its less big. It is not there to protect it.
