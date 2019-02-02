@@ -29,7 +29,7 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 		},
 	}
 
-	err := master.PublishPublisherRecord(definition)
+	_, err := master.PublishPublisherRecord(definition)
 	assert.NoError(t, err)
 	assert.NotNil(t, master.publisherRecord)
 	time.Sleep(500 * time.Millisecond)
@@ -65,11 +65,11 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 		},
 	}
 	//start master
-	err := master.PublishPublisherRecord(definition)
+	_, err := master.PublishPublisherRecord(definition)
 	assert.NoError(t, err)
 
 	//A slave can't publish.
-	err = slaves[0].PublishPublisherRecord(definition)
+	_, err = slaves[0].PublishPublisherRecord(definition)
 	assert.Error(t, err)
 
 	//Check the rolling update
@@ -99,7 +99,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 			"cool": "2",
 		},
 	}
-	err = master.PublishPublisherRecord(definition)
+	_, err = master.PublishPublisherRecord(definition)
 	assert.NoError(t, err)
 
 	//Check the rolling update
