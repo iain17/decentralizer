@@ -48,6 +48,7 @@ type Decentralizer struct {
 	ignore         *lttlru.LruWithTTL
 	crcTable       hash.Hash32
 	unmarshalCache *lru.Cache //We unmarshal the same data over and over. Let us cache this.
+	connected	   bool//We have connected
 
 	//Storage
 	filesApi       *ipfs.FilesAPI

@@ -181,6 +181,7 @@ func (d *Decentralizer) displayConnected() {
 		logger.Infof("%d. %s via %s", i, peer.Pretty(), conns[0].RemoteMultiaddr().String())
 	}
 	d.saveBootstrapState()
+	d.onConnected()
 }
 
 func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
@@ -201,4 +202,10 @@ func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
 		peers = append(peers, *pinfo)
 	}
 	return peers
+}
+
+func (d *Decentralizer) onConnected() {
+	if d.connected { return }
+	d.connected = true
+	go d.updatePublisherDefinition()
 }
