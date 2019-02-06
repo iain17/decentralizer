@@ -207,5 +207,5 @@ func toPeerInfos(bpeers []config.BootstrapPeer) []pstore.PeerInfo {
 func (d *Decentralizer) onConnected() {
 	if d.connected { return }
 	d.connected = true
-	go d.updatePublisherDefinition()
+	go d.UpdatePublisherDefinition()
 }

@@ -34,7 +34,7 @@ func TestDecentralizer_getPublisherDefinition(t *testing.T) {
 	assert.NotNil(t, master.publisherRecord)
 	time.Sleep(500 * time.Millisecond)
 
-	slave.updatePublisherDefinition()
+	slave.UpdatePublisherDefinition()
 
 	assert.NotNil(t, slave.publisherRecord)
 	if slave.publisherRecord != nil {
@@ -78,7 +78,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 	for numNodesOnOldUpdate > 0 {
 		numNodesOnOldUpdate = 0
 		for i := 0; i < num - 1; i++ {
-			slaves[i].updatePublisherDefinition()
+			slaves[i].UpdatePublisherDefinition()
 			if slaves[i].publisherDefinition == nil {
 				numNodesOnOldUpdate++
 			}
@@ -109,7 +109,7 @@ func TestDecentralizer_publishPublisherUpdate(t *testing.T) {
 
 		numNodesOnOldUpdate = 0
 		for i := 0; i < num - 1; i++ {
-			slaves[i].updatePublisherDefinition()
+			slaves[i].UpdatePublisherDefinition()
 			if slaves[i].publisherDefinition.Details["cool"] == "1" {
 				numNodesOnOldUpdate++
 			} else {

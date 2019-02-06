@@ -63,7 +63,7 @@ func (d *Decentralizer) initPublisherFiles() {
 		logger.Warning(err)
 	}
 	d.cron.Every(300).Seconds().Do(func() {
-		err := d.updatePublisherDefinition()
+		err := d.UpdatePublisherDefinition()
 		if err != nil {
 			logger.Warning(err.Error())
 		}
@@ -111,7 +111,7 @@ func (d *Decentralizer) resolveDNPublisherRecord(record *pb.DNPublisherRecord) e
 func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 	//Check if publisher file is in the same director as us
 	data, err := ioutil.ReadFile("./" + vars.PUBLISHER_DEFINITION_FILE)
-	if err != nil {
+	if err == nil {
 		_ = os.Remove("./" + vars.PUBLISHER_DEFINITION_FILE)
 	}
 	if data == nil {
@@ -133,7 +133,7 @@ func (d *Decentralizer) readPublisherRecordFromNetwork() ([]byte, error) {
 	return data, nil
 }
 
-func (d *Decentralizer) updatePublisherDefinition() error {
+func (d *Decentralizer) UpdatePublisherDefinition() error {
 	data, err := d.readPublisherRecordFromNetwork()
 	if data == nil || len(data) == 0 {
 		err := d.PushPublisherRecord()
