@@ -125,7 +125,7 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 		_ = os.Remove("./" + vars.PUBLISHER_DEFINITION_FILE)
 	}
 	if data == nil {
-		data, err = configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
+		data, err = d.getFile(vars.PUBLISHER_DEFINITION_FILE)
 	}
 	return data, err
 }
@@ -198,11 +198,14 @@ func (d *Decentralizer) savePublisherRecordToDisk() error {
 	if d.publisherRecord == nil {
 		return fmt.Errorf("could not save publisher definition because it wasn't initialized")
 	}
+	if len(d.publisherRecord.Definition) == 0 {
+		return fmt.Errorf("defintion can not be 0 bytes when saved to disk")
+	}
 	data, err := gogoProto.Marshal(d.publisherRecord)
 	if err != nil {
 		return fmt.Errorf("could not marshal publisherRecord: %s", err.Error())
 	}
-	err = configPath.QueryCacheFolder().WriteFile(vars.PUBLISHER_DEFINITION_FILE, data)
+	err = d.writeFile(vars.PUBLISHER_DEFINITION_FILE, data)
 	if err != nil {
 		return fmt.Errorf("could not publisherRecord to disk: %s", err.Error())
 	}
@@ -258,7 +261,7 @@ func (d *Decentralizer) PublishPublisherRecord(definition *pb.PublisherDefinitio
 			err = nil
 		}
 	}
-	return configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
+	return d.readPublisherRecordFromDisk()
 }
 
 func (d *Decentralizer) PushPublisherRecord() error {
