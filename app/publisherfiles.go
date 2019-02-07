@@ -68,6 +68,16 @@ func (d *Decentralizer) initPublisherFiles() {
 			logger.Warning(err.Error())
 		}
 	})
+	//Eat any publisher file that might be in the current directory.
+	d.cron.Every(10).Seconds().Do(func() {
+		data, _ := d.readPublisherRecordFromDisk()
+		if data != nil {
+			err := d.ReadPublisherDefinition(data)
+			if err != nil {
+				logger.Warning(err.Error())
+			}
+		}
+	})
 }
 
 func (d *Decentralizer) validateDNPublisherRecord(record *pb.DNPublisherRecord) error {
@@ -117,9 +127,6 @@ func (d *Decentralizer) readPublisherRecordFromDisk() ([]byte, error) {
 	if data == nil {
 		data, err = configPath.QueryCacheFolder().ReadFile(vars.PUBLISHER_DEFINITION_FILE)
 	}
-	if data == nil {
-		data, err = Asset("static/publisherDefinition.dat")
-	}
 	return data, err
 }
 
@@ -155,6 +162,9 @@ func (d *Decentralizer) ResetPublisherDefinition() {
 //Restores from disk
 func (d *Decentralizer) restorePublisherDefinition() error {
 	data, err := d.readPublisherRecordFromDisk()
+	if data == nil {//Bundle this app with a static old version.
+		data, err = Asset("static/publisherDefinition.dat")
+	}
 	if err != nil {
 		return fmt.Errorf("could not restore publisher file from disk: %s", err.Error())
 	}
