@@ -223,10 +223,19 @@ func (d *Decentralizer) loadNewPublisherRecord(record *pb.DNPublisherRecord) err
 	}
 	d.publisherRecord = record
 	d.publisherDefinition = definition
-	d.savePublisherRecordToDisk()
-	d.savePublisherRecordToIpfs()
+	err = d.savePublisherRecordToDisk()
+	if err != nil {
+		logger.Warning("Could not save publisher record to disk:", err)
+	}
+	_, err = d.savePublisherRecordToIpfs()
+	if err != nil {
+		logger.Warning("Could not save publisher record to the network:", err)
+	}
 	d.runPublisherInstructions()
-	d.PushPublisherRecord()
+	err = d.PushPublisherRecord()
+	if err != nil {
+		logger.Warning("Could not push publisher record to the network:", err)
+	}
 	return nil
 }
 

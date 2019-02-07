@@ -29,6 +29,10 @@ func (d *Decentralizer) initStorage() {
 	base := afero.NewBasePathFs(afero.NewOsFs(), paths[0].Path+"/peer-data")
 	layer := afero.NewMemMapFs()
 	d.peerFileSystem = afero.NewCacheOnReadFs(base, layer, 30 * time.Minute)
+	err = d.peerFileSystem.MkdirAll("/", 0777)
+	if err != nil {
+		logger.Fatalf("Could not storage system: %s", err)
+	}
 
 	d.anythingToPublish = true
 	d.cron.Every(1).Seconds().Do(d.republishPeerFiles)
